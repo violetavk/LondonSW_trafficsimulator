@@ -1,105 +1,130 @@
 \author{Team: London SW}
 \title{Initial Report}
-\date{09/02/2016}
-\documentclass[11pt, a4paper]{article}
+\date{03/02/2016}
+\documentclass[11pt, a4]{article}
 \usepackage{enumitem}
+\usepackage{graphicx}
 \usepackage{fancyhdr}
+\usepackage{wrapfig}
 \pagestyle{fancy}
-\rhead{Team: LondonSW}
+\fancyhf{}
 \lhead{Initial Report}
+\rhead{Team: LondonSW}
+\rfoot{\thepage}
+
+
 \begin{document}
-​
+
 \part*{Project Description}
-\section{Introduction}
+\section{Introduction} \label{introduction}
 \paragraph{}
 Traffic congestion is becoming a major issue due to the rapid development of cities and the increase in population growth. Modelling traffic behaviour has a huge effect on how  transport systems are designed, and how such systems will be designed in the future.
 
-\section{Aims}
+\section{Aims} \label{aims}
 \paragraph{}
 The aim of this project is to design a Simulation Software for traffic management capable of modelling the behaviour of vehicles and drivers.
 Prior to embarking on such a task, research must be carried out to better understand the area, options on how to approach the design and finally, an efficient way of implementing the design.  
-​
+
 \paragraph{}
 Our aims were grouped into various categories with each category signifying the level of importance of associated tasks. 
-​
-\subsection{Must} 
+
+\subsection{Must} \label{sub:must}
 \begin{enumerate}[itemsep = -1ex]
 \item The system must adopt the cellular automaton model.
-\item The system must accommodate entry and exit of new vehicles
+\item The system must accommodate entry and exit of new vehicles to give a sense of realism.
 \item The system must allow vehicles to move and turn freely.
-\item The system must have at least one fixed map.
+\item The system must have at least a fixed map.
 \item Traffic light functions must be clearly shown.
-\item GUI must be able to show basic animation of cars moving on roads.
-\end{enumerate}
-​
-\subsection{Should} 
-\begin{enumerate}[itemsep = -1ex]
-\item User can create their own maps (with roads, intersections) and save them to disk
-\item Sliders in the GUI to allow the user to change the amount of cars in the simulation, speed of the simulation
-\item GUI should show cars turning along an arc
-\item User must be able to enable and disable several traffic rules to see effects on simulation
-\item User should be able to import pre-made maps and user-made maps
+\item GUI must show basic animations of cars moving on roads.
 \end{enumerate}
 
-\subsection{Would like to have/Future features:}
+\subsection{Should} \label{sub:should}
 \begin{enumerate}[itemsep = -1ex]
-\item Curved roads
-\item Various statistics of car movement (time spent at traffic light, etc.)
-\item Importing and parsing maps from OpenStreetMap on which to simulate traffic
+\item User can create their own maps (with roads, intersections) and save them to disk.
+\item GUI should have sliders to allow the user change the number of cars in the simulation, and the simulation speed.
+\item GUI should show cars turning along an arc.
+\item User should be able to enable/disable several traffic rules to see effects on simulation.
+\item User should be able to import pre-made maps and user-made maps.
 \end{enumerate}
 
-\section{Strategy and Rough Timetable} 
+\subsection{Would Like/ Future Features } \label{sub:would}
+\begin{enumerate}[itemsep = -1ex]
+\item Curved roads. 
+\item Various statistics of car movements (time spent at traffic light, e.t.c).
+\item Importing and parsing maps from OpenStreetMap on which to simulate.
+\end {enumerate}
+
+\section{Strategy/ Rough Timetable}\label{dev:meth}
 \paragraph{}
-We looked We looked into some traffic flow models (microscopic, macroscopic, mesoscophic, e.t.c...). However, we found the cellular automaton model was more in line with what we intend to achieve with our software, i.e. a sense of realism where every vehicle decides what to do for itself. In short, each car occupies a cell in a lane, moving fowards only when the cell in front of it is empty.
+We looked into some traffic flow models (microscopic, macroscopic, mesoscophic, e.t.c...). However, we found the cellular automaton model was more in line with what we intend to achieve with our software. i.e a sense of realism where every vehicle decides what to do for itself. That is to say, each car occupies a cell in a lane, moving forward only when the cell in front of it is empty.
 \paragraph{}
+\begin{wraptable}{c}{6cm}
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Iteration} & \textbf{Date}  \\ \hline
+    Iteration 1 & 10/02/16 - 20/02/16 \\ \hline
+    Iteration 2 & 21/02/16 - 02/03/16 \\ \hline
+    Iteration 3 & 03/03/16 - 13/03/16 \\ \hline
+    Iteration 4 & 14/03/16 - 24/03/16 \\ \hline
+   \end{tabular}    
+   \caption{Iteration Cycles}
+   \end{wraptable} 
 Our team preferred the agile development approach due to the short time frames for product delivery. The idea is to have repeated iterations, or cycles, each with some additional, core features. This is to ensure that the features we want developed get completed before moving on to the next iteration.
 \paragraph{}
-We will have four iterations, each with their own due date and features we should have functioning and tested at the end of the iteration. However, this is a rough plan and it can change (albeit, not significantly). Each iteration will last eleven days. The iterations will follow this timetable, spanning the following dates:
-\begin{description}[itemsep = -1ex]
-\item[Iteration 1] 10/02/16 to 20/02/16
-\item[Iteration 2] 21/02/16 to 02/03/16
-\item[Iteration 3] 03/03/16 to 13/03/16
-\item[Iteration 4] 14/03/16 to 24/03/16
-\end{description}
-\section{Progress} 
+Our plan consists of four iterations, each with their own due date and features we should have functioning and tested at the end of the iteration. However, this is a rough plan and it can change (albeit, not significantly). Each iteration will last eleven days. The iterations will follow this timetable, spanning the following dates: 
+
+\section{Progress}\label{prog}
 \paragraph{}
-Up to this point, our time has been accounted for as follows, each starting at the following dates:
-\begin{description}[itemsep = -1ex]
-\item[21/01/16] Team formation, research, and brainstorming ideas
-\item[29/01/16] Research
-\item[01/02/16] Refine development plan and documentation
-\end{description}
+Up to this point, our time has been accounted for as follows, each starting at the following dates: 
+\begin{table}{}
+\centering
+ \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Date} & \textbf{Activity}  \\ \hline
+    21/01/16 & Team formation, research and brainstorming \\ \hline
+    29/01/16 & Research \\ \hline
+    01/02/16 & Refined development plan and documentation \\ \hline
+\end{tabular}
+   \caption{Progress}
+\end{table}
 \paragraph{}
 Although research has taken a while, it is important that we understand the domain and the types of features we would like to have before proceeding with development.
-\section{System Architecture and Design}
-\paragraph{}
-We believe a correct architecture is extremely important to fulfill the needs of the project and to have it as scalable as possible to meet future requirements. Our main back-end development language will be Java and the front-end will be implemented using JavaFX. We will adhere to the MVC (Model-View-Controller) architecture pattern. 
-\paragraph{}
-We will be considering the following classes as the basis of our architecture: Simulation (hold the main simulation), Ticker (tracks internal system time), Map (holds layout for whole simulation model), Road (contains one or more lanes with a shape), Lane (part of the road which holds vehicles), Intersection (connecting two or more roads), Traffic Light (lives inside Intersection, controls traffic flow), Vehicle (interface for moving objects for scalability), Car (implements Vehicle, moves inside Lanes). 
 
-\part*{Project Organisation}
-\section{Group Organisation}
+\section{System Architecture and Design}\label{arch:desgn}
 \paragraph{}
-To most effectively work as a team, cooperation, equality, responsibility, and self-organisation are our working policies. We have flexible roles so that every member can make contributions for every part of the project. We have group meetings for each iteration and use online tools for remote discussion and collaboration.
-\subsection{Flexible Roles}
+A correct architecture is extremely important to fulfil the needs of the project and to have it as scalable as possible to meet future requirements. Our main back-end development language will be Java and the front-end will be implemented using JavaFX. We will adhere to the MVC (Model-View-Controller) architecture pattern.
 \paragraph{}
-There are three main roles: researcher, developer (functional developer, GUI developer), documentation analyst. All of us will participate in the design of the system and developing the system. Everyone will document the specific section they are working on using JavaDoc style comments.
-\subsection{Group Meetings}
-\paragraph{}
-As the developing process has been divided into different iterations, for each iteration, we will have two group meetings, one for clarifying each other's job for this iteration and another meeting before the deadline of the iteration to summarize our work.
-\subsection{Tools for communication}
-\paragraph{}
-We will use WhatsApp for general general communication, like coordinating meeting times. We will use Trello, an online tool to for managing to-do's and agile storyboards. We will use Slack for project discussion, like discussing problems, new ideas, and sharing documents. And finally, we will use Google Docs for live, remote collaboration on documents.
-\subsection{Development Tools}
-\paragraph{}
-We will use Eclipse and IntelliJ as our main platforms for coding. For documentation, we will use JavaDoc generation and LaTeX. Finally, we will use GitHub as our main source code repository. 
+We will be considering the following classes as the basis of our architecture: Simulation (hold the main simulation), Ticker (tracks internal system time), Map (holds layout for whole simulation model), Road (contains one or more lanes with a shape), Lane (part of the road which holds vehicles), Intersection (connecting two or more roads),TrafficLight(lives inside Intersection, controls traffic flow) Vehicle (interface for moving objects for
+scalability), Car (implements Vehicle, moves inside Lanes).
 
-\section{Teamwork}
+\part*{Project Orginisation}
+\section{Group Organisation}\label{proj:org}
 \paragraph{}
-To achieve the goal of the project in the most successful way, we will distribute peer assessment equally. Each member in the group has the same job in terms of amount, difficulty, and time. Only in situations of extreme refusal of collaboration, we will reassess peer assessment distribution.
+To most effectively work as a team, cooperation, equality, responsibility, and self-organisation are our working policies. We have flexible roles so that every member can make contributions in every part of the project. We have scheduled group meetings for each iteration and use online tools for remote discussion and collaboration.
+
+\subsection{Flexible Roles}\label{roles}
 \paragraph{}
-People have different opinions, perceptions, points of view, so conflict may occur in the team. Our team members have agreed to put the team first then our opinions. The point is to deal with conflicts in ways that benefit the project and and its members, and without having them escalate within the group. In fact, conflict might be a sign of healthy and effective team work. It tells us that our team members are trying their best and they have different experience and skills which could contribute to an effective project.
+There are three main roles: researcher, developer (functional developer, GUI developer), documentation analyst. All of us will participate in the design and development of the system. Everyone will document the specific section they are working on using JavaDoc style comments.
+
+\subsection{Group Meetings}\label{gm}
 \paragraph{}
-There are many ways in which we have discussed to resolve conflict, from private talking to group meetings. In some situations, private talking to the group member is sufficient to solve the problem. We agreed to use private message on Slack or WhatsApp. However, the group can meet to discuss any issue. In case two or more group members are undecided on an issue, we agreed to take a group vote. If group member does not pull their weight, we should talk to them privately and describe the situation. 
+As the developing process has been divided into different iterations, for each iteration, we will have two group meetings, one for clarifying each other's job for this iteration and another meeting before the deadline of the
+iteration to summarize our work.
+
+\subsection{Communication Tools}\label{comm:tools}
+\paragraph{}
+Whats App is used for general communication, like the coordination of meeting times. Trello, which is an online tool is used for management of TO-DO's and agile story boards. While Slack is used for project discussion. i.e the discussion of problems , new ideas and file/document sharing. Finally, Google Docs for live and remote collaboration on documents.
+\subsection{Development Tools}\label{dev:tools}
+\paragraph{}
+Eclipse and IntelliJ were our main platform choices for coding. Documentation wise, JavaDoc generation and LaTex were used. Finally GitHub will be used as our main source-code repository.
+
+\section{Teamwork}\label{team}
+\paragraph{}
+To achieve the goal of the project in the most successful way, peer assessment will be distributed equally. Each member in the group has the same job in terms of amount, difficulty, and time. Only in situations of extreme
+refusal of collaboration, will we reassess peer assessment distribution.
+\paragraph{}
+People have different opinions, perceptions, so conflict may occur in the team. We have agreed to put the team first, then our opinions. The point is to deal with conflicts in ways that benefit the project and the members without having them escalate within the group. Infact, conflict might be a sign of healthy and effective teamwork, it tells that members are trying their best and they have different experience and skills which could contribute to an effective project.
+\paragraph{}
+There are many ways we have proposed to resolve conflict: from private talking to group meetings. In some situations, private talking to the member will be sufficient to resolve the problem. We have agreed to use private message on Slack or WhatsApp.  However, the group can meet to discuss any issue. In the event where two members are undecided on an issue, a group vote will be taken. If a group member does not pull their weight, we would talk to them privately and describe the situation.
 
 \end{document}
