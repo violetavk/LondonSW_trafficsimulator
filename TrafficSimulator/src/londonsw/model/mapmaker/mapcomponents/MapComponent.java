@@ -1,5 +1,6 @@
 package londonsw.model.mapmaker.mapcomponents;
 
-public class Intersection {
+
+public class MapComponent {
 
 }
