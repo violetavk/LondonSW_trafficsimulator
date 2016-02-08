@@ -1,7 +1,7 @@
 \author{Team: London SW}
 \title{Initial Report}
-\date{03/02/2016}
-\documentclass[11pt, a4]{article}
+\date{09/02/2016}
+\documentclass[11pt, a4paper]{article}
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
@@ -18,15 +18,14 @@
 \part*{Project Description}
 \section{Introduction} \label{introduction}
 \paragraph{}
-Traffic congestion is becoming a major issue due to the rapid development of cities and the increase in population growth. Modelling traffic behaviour has a huge effect on how  transport systems are designed, and how such systems will be designed in the future.
+Traffic congestion is becoming a major issue due to the rapid development of cities and the increase in population growth. Modelling traffic behaviour has a huge effect on how transport systems are designed and how such systems will be designed in the future.
 
 \section{Aims} \label{aims}
 \paragraph{}
-The aim of this project is to design a Simulation Software for traffic management capable of modelling the behaviour of vehicles and drivers.
-Prior to embarking on such a task, research must be carried out to better understand the area, options on how to approach the design and finally, an efficient way of implementing the design.  
+The aim of this project is to design a simulation software for traffic management capable of modelling the behaviour of vehicles. Prior to embarking on such a task, research must be carried out to better understand the area and to think of options of how to approach the design and implementation.
 
 \paragraph{}
-Our aims were grouped into various categories with each category signifying the level of importance of associated tasks. 
+Our aims were grouped into various categories with each category signifying the level of importance of associated tasks.
 
 \subsection{Must} \label{sub:must}
 \begin{enumerate}[itemsep = -1ex]
@@ -49,53 +48,55 @@ Our aims were grouped into various categories with each category signifying the 
 
 \subsection{Would Like/ Future Features } \label{sub:would}
 \begin{enumerate}[itemsep = -1ex]
-\item Curved roads. 
+\item Curved roads.
 \item Various statistics of car movements (time spent at traffic light, e.t.c).
 \item Importing and parsing maps from OpenStreetMap on which to simulate.
-\end {enumerate}
+\end{enumerate}
 
 \section{Strategy/ Rough Timetable}\label{dev:meth}
 \paragraph{}
-We looked into some traffic flow models (microscopic, macroscopic, mesoscophic, e.t.c...). However, we found the cellular automaton model was more in line with what we intend to achieve with our software. i.e a sense of realism where every vehicle decides what to do for itself. That is to say, each car occupies a cell in a lane, moving forward only when the cell in front of it is empty.
+We looked into some traffic flow models (microscopic, macroscopic, mesoscophic, etc.). However, we found the cellular automaton model was more in line with what we intend to achieve with our software. i.e a sense of realism where every vehicle decides what to do for itself. That is to say, each car occupies a cell in a lane, moving forward only when the cell in front of it is empty.
 \paragraph{}
-\begin{wraptable}{c}{6cm}
-    \begin{tabular}{|c|c|}
-    \hline
-    \textbf{Iteration} & \textbf{Date}  \\ \hline
-    Iteration 1 & 10/02/16 - 20/02/16 \\ \hline
-    Iteration 2 & 21/02/16 - 02/03/16 \\ \hline
-    Iteration 3 & 03/03/16 - 13/03/16 \\ \hline
-    Iteration 4 & 14/03/16 - 24/03/16 \\ \hline
-   \end{tabular}    
-   \caption{Iteration Cycles}
-   \end{wraptable} 
 Our team preferred the agile development approach due to the short time frames for product delivery. The idea is to have repeated iterations, or cycles, each with some additional, core features. This is to ensure that the features we want developed get completed before moving on to the next iteration.
 \paragraph{}
-Our plan consists of four iterations, each with their own due date and features we should have functioning and tested at the end of the iteration. However, this is a rough plan and it can change (albeit, not significantly). Each iteration will last eleven days. The iterations will follow this timetable, spanning the following dates: 
+\begin{wraptable}{r}{6cm}
+\centering
+    \begin{tabular}{|c|c|}
+	\hline
+	\textbf{Iteration} & \textbf{Date}  \\ \hline
+	Iteration 1 & 10/02/16 - 20/02/16 \\ \hline
+	Iteration 2 & 21/02/16 - 02/03/16 \\ \hline
+	Iteration 3 & 03/03/16 - 13/03/16 \\ \hline
+	Iteration 4 & 14/03/16 - 24/03/16 \\ \hline
+ \end{tabular}
+\caption{Iteration Cycles}
+\label{tab:iterations}
+\end{wraptable}
+Our plan consists of four iterations, each with their own due date and features we should have functioning and tested at the end of the iteration. However, this is a rough plan and it can change (albeit, not significantly). Each iteration will last eleven days. The iterations will follow this timetable, spanning the following dates, as shown in Table~\ref{tab:iterations}.
 
 \section{Progress}\label{prog}
 \paragraph{}
-Up to this point, our time has been accounted for as follows, each starting at the following dates: 
-\begin{table}{}
+Up to this point, our time has been accounted for as follows, each starting at the dates shown in Table~\ref{tab:progress}.
+\begin{table}[!htbp]
 \centering
- \begin{tabular}{|c|c|}
-    \hline
-    \textbf{Date} & \textbf{Activity}  \\ \hline
-    21/01/16 & Team formation, research and brainstorming \\ \hline
-    29/01/16 & Research \\ \hline
-    01/02/16 & Refined development plan and documentation \\ \hline
+\begin{tabular}{|c|c|}
+	\hline
+	\textbf{Date} & \textbf{Activity}  \\ \hline
+	21/01/16 & Team formation, research and brainstorming \\ \hline
+	29/01/16 & Research \\ \hline
+	01/02/16 & Refined development plan and documentation \\ \hline
 \end{tabular}
-   \caption{Progress}
+\caption{Progress}
+\label{tab:progress}
 \end{table}
 \paragraph{}
 Although research has taken a while, it is important that we understand the domain and the types of features we would like to have before proceeding with development.
 
 \section{System Architecture and Design}\label{arch:desgn}
 \paragraph{}
-A correct architecture is extremely important to fulfil the needs of the project and to have it as scalable as possible to meet future requirements. Our main back-end development language will be Java and the front-end will be implemented using JavaFX. We will adhere to the MVC (Model-View-Controller) architecture pattern.
+A correct architecture is important to fulfil the needs of the project and to have it as scalable as possible to meet future requirements. Our main back-end development language is Java and the front-end will be implemented using JavaFX. We will adhere to the MVC (Model-View-Controller) architecture pattern.
 \paragraph{}
-We will be considering the following classes as the basis of our architecture: Simulation (hold the main simulation), Ticker (tracks internal system time), Map (holds layout for whole simulation model), Road (contains one or more lanes with a shape), Lane (part of the road which holds vehicles), Intersection (connecting two or more roads),TrafficLight(lives inside Intersection, controls traffic flow) Vehicle (interface for moving objects for
-scalability), Car (implements Vehicle, moves inside Lanes).
+We will be considering the following classes as the basis of our architecture: Simulation (hold the main simulation), Ticker (tracks internal system time), Map (holds layout for whole simulation model), Road (contains one or more lanes with a shape), Lane (part of the road which holds vehicles), Intersection (connecting two or more roads),TrafficLight (lives inside Intersection, controls traffic flow) Vehicle (interface for moving objects for scalability), Car (implements Vehicle, moves inside Lanes).
 
 \part*{Project Orginisation}
 \section{Group Organisation}\label{proj:org}
@@ -108,23 +109,21 @@ There are three main roles: researcher, developer (functional developer, GUI dev
 
 \subsection{Group Meetings}\label{gm}
 \paragraph{}
-As the developing process has been divided into different iterations, for each iteration, we will have two group meetings, one for clarifying each other's job for this iteration and another meeting before the deadline of the
-iteration to summarize our work.
+As the developing process has been divided into different iterations, for each iteration, we will have two group meetings, one for clarifying each other's job for this iteration and another meeting before the deadline of the iteration to summarize our work.
 
 \subsection{Communication Tools}\label{comm:tools}
 \paragraph{}
-Whats App is used for general communication, like the coordination of meeting times. Trello, which is an online tool is used for management of TO-DO's and agile story boards. While Slack is used for project discussion. i.e the discussion of problems , new ideas and file/document sharing. Finally, Google Docs for live and remote collaboration on documents.
+We use WhatsApp for general communication, like coordinating meeting times. We will use Slack for project discussion, like discussing new ideas/probems and sharing documents. We will use Mingle, a professional project management tool, to define our objectives, track a plan's progress, and assign group members and priorities to tasks. And finally, we will use Google Docs for live, remote collaboration on documents.
 \subsection{Development Tools}\label{dev:tools}
 \paragraph{}
-Eclipse and IntelliJ were our main platform choices for coding. Documentation wise, JavaDoc generation and LaTex were used. Finally GitHub will be used as our main source-code repository.
+Eclipse and IntelliJ are our main platforms for coding. For documentation, we will use JavaDoc generation and LaTex. Finally, GitHub is used as our main source-code repository.
 
 \section{Teamwork}\label{team}
 \paragraph{}
-To achieve the goal of the project in the most successful way, peer assessment will be distributed equally. Each member in the group has the same job in terms of amount, difficulty, and time. Only in situations of extreme
-refusal of collaboration, will we reassess peer assessment distribution.
+Because of the nature of the project, we decided to distribute peer assessment equally. Each member in the group has the same job in terms of amount, difficulty, and time. Only in situations of extreme refusal of collaboration, we will reassess peer assessment distribution.
 \paragraph{}
-People have different opinions, perceptions, so conflict may occur in the team. We have agreed to put the team first, then our opinions. The point is to deal with conflicts in ways that benefit the project and the members without having them escalate within the group. Infact, conflict might be a sign of healthy and effective teamwork, it tells that members are trying their best and they have different experience and skills which could contribute to an effective project.
+People have different opinions and perceptions so conflict may occur in the team. Our team members have agreed to put the team first, then our opinions. We will deal with conflicts in a timely matter to avoid having the problem escalate. Conflict is acually a sign of healthy and effective team work by telling us that our team members are trying their best and they have different experience and skills which could contribute to an effective project.
 \paragraph{}
-There are many ways we have proposed to resolve conflict: from private talking to group meetings. In some situations, private talking to the member will be sufficient to resolve the problem. We have agreed to use private message on Slack or WhatsApp.  However, the group can meet to discuss any issue. In the event where two members are undecided on an issue, a group vote will be taken. If a group member does not pull their weight, we would talk to them privately and describe the situation.
+There are many ways in which we have discussed to resolve conflict, from private talking to group meetings. In some situations, private talking to the group member is sufficient to solve the problem. We agreed to use private message on Slack or WhatsApp. However, the group can meet to discuss any issue. In case two or more group members are undecided on an issue, we agreed to take a group vote. If group member does not pull their weight, we should talk to them privately and describe the situation.
 
 \end{document}
