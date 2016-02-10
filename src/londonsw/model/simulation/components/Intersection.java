@@ -17,9 +17,12 @@ public class Intersection {
 
     int x,y;// location
 
-    public void SetIntersection(int x,int y){
-        this.x=x;
-        this.y=y;
+    //xPos x coordinate of the intersection
+    //yPos y coordinate of the intersection
+
+    public Intersection(int xPos,int yPos){
+        this.x=xPos;
+        this.y=yPos;
     }
 
     public void JoinRoad(Road R1,Road R2){//Add ID of R1 and R1 into the array IntersectionRoad
