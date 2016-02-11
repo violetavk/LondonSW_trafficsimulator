@@ -9,11 +9,29 @@ package londonsw.model.simulation.components.vehicles;
 // Add Car class layout
 public class Car implements Vehicle {
 
-    int location;
-    int direction;
+   //Location (x,y)
+    class location {
+       int x=0;
+       int y=0;
 
-public void setLocation (int location){};
-public int getlocation (){ return location; };
+       // constructor
+       public location (int x, int y)
+       {
+           this.x=x;
+           this.y=y;
+       }
+
+       //getter
+       public int getX (){return x;}
+       public int getY(){return y;}
+
+       //setter
+       public void setX (int x){this.x=x;}
+       public void setY (int y){this.y=y;}
+
+   }
+
+    int direction;
 
     public void moveforward () {};
     public void turn () {};
