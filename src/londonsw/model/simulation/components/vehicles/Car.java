@@ -10,6 +10,9 @@ package londonsw.model.simulation.components.vehicles;
 public class Car implements Vehicle {
 
    //Location (x,y)
+    // x represents lane
+    // y represents cell
+
     class location {
        int x=0;
        int y=0;
@@ -46,6 +49,7 @@ public class Car implements Vehicle {
 
     public void moveforward () {};
     public void turn () {};
+    public void priority(){};
 
 
 }
