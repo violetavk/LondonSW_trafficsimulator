@@ -32,6 +32,17 @@ public class Car implements Vehicle {
    }
 
     int direction;
+    int carID;
+    int status=0; // 0= still , 1 = moving
+
+    //getter
+    public int getStatus(){return status;}
+    public int getID (){return carID;}
+
+
+    //setter
+    public void setStatus(int status){this.status=status;}
+    public void setID(int id){this.carID=id;}
 
     public void moveforward () {};
     public void turn () {};
