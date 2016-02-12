@@ -62,8 +62,8 @@ public class LaneTest {
     }
 
     @Test
-    public void testIsCellNotEmpty() {
-        Vehicle v = new Car();
+    public void testIsCellNotEmpty() throws Exception {
+        Vehicle v = new Car(new Coordinate(0,2), 5, 7);
         x.setCell(v,2);
         boolean empty = x.isCellEmpty(2);
         assertFalse(empty);
