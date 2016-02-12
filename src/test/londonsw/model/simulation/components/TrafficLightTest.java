@@ -1,6 +1,10 @@
 package londonsw.model.simulation.components;
 
+import londonsw.model.simulation.TickerInverval;
 import org.junit.Test;
+
+import java.awt.*;
+
 import static org.junit.Assert.*;
 
 
@@ -31,6 +35,13 @@ public class TrafficLightTest {
 
     @Test
     public void testToggleLight() throws Exception {
-        assertTrue(true);
+
+        Color initialColor = Color.RED;
+
+        TrafficLight t = new TrafficLight(initialColor, new TickerInverval());
+
+        Color finalColor = Color.GREEN;
+
+        assertEquals(finalColor,t.toggleLight());
     }
 }
