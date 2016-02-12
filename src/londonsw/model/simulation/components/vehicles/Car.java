@@ -7,27 +7,16 @@ import londonsw.model.simulation.components.Coordinate;
  * Only moves forwards when the slot in front of it is empty
  */
 
-// Add Car class layout
+
 public class Car extends Vehicle {
 
+    public Car(Coordinate vehicleLocation, int vehicleId,  int direction) {
+        super(vehicleLocation, vehicleId,  direction);
+        this.vehicleLength=0;
+    }
 
 
-    int direction;
-    int carID;
-    int status=0; // 0= still , 1 = moving
-
-    //getter
-    public int getStatus(){return status;}
-    public int getID (){return carID;}
+    }
 
 
-    //setter
-    public void setStatus(int status){this.status=status;}
-    public void setID(int id){this.carID=id;}
 
-    public void moveforward () {};
-    public void turn () {};
-    public void priority(){};
-
-
-}

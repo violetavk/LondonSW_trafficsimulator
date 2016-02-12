@@ -8,8 +8,28 @@ import londonsw.model.simulation.components.Coordinate;
 public abstract class Vehicle {
 
 
-    //void moveVehicle();
-    //void priority();
+    public Coordinate vehicleLocation;
+    int vehicleId;
+    int vehicleLength;
+    int direction;
+
+    public Vehicle(Coordinate vehicleLocation, int vehicleId,  int direction) {
+        this.vehicleLocation = vehicleLocation;
+        this.vehicleId = vehicleId;
+        this.direction = direction;
+    }
+
+    public int getVehicleLength() {
+        return vehicleLength;
+    }
+
+
+    public void moveforward () {};
+    public void turn () {};
+    public void priority(){};
+
+
+
 
 }
 
