@@ -1,9 +1,6 @@
 package londonsw.model.simulation.components;
 
-import com.sun.tools.corba.se.idl.constExpr.Not;
 import londonsw.model.simulation.components.vehicles.Vehicle;
-
-import java.util.ArrayList;
 
 /**
  * This class is where the vehicles actually move
@@ -23,6 +20,14 @@ public class Lane {
         this.exit = exit;
         length = this.getLaneLength();
         lane = new Vehicle[length];
+    }
+
+    public MapDirection getMovingDirection() {
+        int aX = entry.getX();
+        int aY = entry.getY();
+        int bX = exit.getX();
+        int bY = exit.getY();
+        return MapDirection.NORTH; //TODO
     }
 
     private int getLaneLength() throws NotALaneException {
