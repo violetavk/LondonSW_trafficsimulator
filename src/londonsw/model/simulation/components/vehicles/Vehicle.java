@@ -12,22 +12,50 @@ public abstract class Vehicle {
     int vehicleId;
     int vehicleLength;
     int direction;
+    double vehicleSpeed;
+    private Vehicle[] lane;
 
-    public Vehicle(Coordinate vehicleLocation, int vehicleId,  int direction) {
+    public Vehicle(Coordinate vehicleLocation, int vehicleId) {
         this.vehicleLocation = vehicleLocation;
         this.vehicleId = vehicleId;
-        this.direction = direction;
     }
 
     public int getVehicleLength() {
         return vehicleLength;
     }
 
+    public Coordinate getVehicleLocation() {
+        return vehicleLocation;
+    }
 
-    public void moveForward() {};
+    public int getDirection() {
+        return direction;
+    }
+
+    public int getVehicleId() {
+        return vehicleId;
+    }
+
+    public double getVehicleSpeed() {
+        return vehicleSpeed;
+    }
+
+
+    public boolean moveCar(int currCell) {
+
+        Vehicle v = lane[currCell];
+        if(v == null) {
+            return false;
+        }
+        else {
+            lane[currCell+1] = v;
+            lane[currCell] = null;
+            return true;
+        }
+
+    }
+
     public void turn () {};
     public void priority(){};
-
-
 }
 

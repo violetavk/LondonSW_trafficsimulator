@@ -10,9 +10,10 @@ import londonsw.model.simulation.components.Coordinate;
 
 public class Car extends Vehicle {
 
-    public Car(Coordinate vehicleLocation, int vehicleId,  int direction) {
-        super(vehicleLocation, vehicleId,  direction);
+    public Car(Coordinate vehicleLocation, int vehicleId) {
+        super(vehicleLocation, vehicleId );
         this.vehicleLength=1;
+        this.vehicleSpeed=1.0;
     }
 
 
