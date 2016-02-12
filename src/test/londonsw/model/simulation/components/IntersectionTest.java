@@ -1,7 +1,10 @@
 package londonsw.model.simulation.components;
 
+import londonsw.model.simulation.TickerInverval;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.awt.*;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +24,7 @@ public class IntersectionTest {
     @Test
     public void testGetNorthTrafficLight() throws Exception {
 
-        TrafficLight t = new TrafficLight();
+        TrafficLight t = new TrafficLight(Color.GREEN,new TickerInverval());
         i.setNorthTrafficLight(t);
 
         TrafficLight output = i.getNorthTrafficLight();
