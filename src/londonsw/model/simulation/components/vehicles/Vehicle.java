@@ -24,11 +24,9 @@ public abstract class Vehicle {
     }
 
 
-    public void moveforward () {};
+    public void moveForward() {};
     public void turn () {};
     public void priority(){};
-
-
 
 
 }

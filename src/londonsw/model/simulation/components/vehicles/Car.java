@@ -12,7 +12,7 @@ public class Car extends Vehicle {
 
     public Car(Coordinate vehicleLocation, int vehicleId,  int direction) {
         super(vehicleLocation, vehicleId,  direction);
-        this.vehicleLength=0;
+        this.vehicleLength=1;
     }
 
 
