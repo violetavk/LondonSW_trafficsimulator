@@ -5,7 +5,12 @@ package londonsw.model.simulation.components;
         */
 public class Coordinate {
 
-    public Coordinate(int x, int y){
+    public Coordinate(int x, int y) throws NotACoordinateException {
+        if(x<0 || y<0)
+        {
+            throw new NotACoordinateException("X and Y must be positive");
+        }
+
         this.x=x;
         this.y=y;
     }
@@ -24,4 +29,11 @@ public class Coordinate {
         Coordinate other = (Coordinate)obj;
         return (x == other.getX()) && (y == other.getY());
     }
+}
+
+class NotACoordinateException extends Exception {
+    public NotACoordinateException() { super(); }
+    public NotACoordinateException(String msg) { super(msg); }
+    public NotACoordinateException(String msg, Throwable t) { super(msg,t); }
+    public NotACoordinateException(Throwable t) { super(t); }
 }

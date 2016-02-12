@@ -17,7 +17,7 @@ public class LaneTest {
     Coordinate b;
 
     @Before
-    public void setUpForTests() throws NotALaneException {
+    public void setUpForTests() throws Exception {
         a = new Coordinate(0, 1);
         b = new Coordinate(2, 1);
         x = new Lane(a, b);
@@ -30,19 +30,19 @@ public class LaneTest {
     }
 
     @Test(expected = NotALaneException.class)
-    public void testGetLaneLengthInvalid() throws NotALaneException {
+    public void testGetLaneLengthInvalid() throws Exception {
         Lane l = new Lane(new Coordinate(2,3),new Coordinate(3,4));
     }
 
     @Test
-    public void testGetEntryCoordinate()  {
+    public void testGetEntryCoordinate() throws Exception {
         Coordinate entry = x.getEntry();
         assertNotNull(entry);
         assertEquals(entry, new Coordinate(0,1));
     }
 
     @Test
-    public void testGetExitCoordinate() {
+    public void testGetExitCoordinate() throws Exception {
         Coordinate exit = x.getExit();
         assertNotNull(exit);
         assertEquals(exit, new Coordinate(2,1));
