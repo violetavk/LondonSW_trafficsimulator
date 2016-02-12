@@ -13,20 +13,101 @@ package londonsw.model.simulation.components;
 
 public class Intersection {
 
-    int[] IntersectionRoad; // the array stores all the roadsID for the intersection
+    private Road north;
+    private Road south;
+    private Road east;
+    private Road west;
 
-    int x,y;// location
+    private TrafficLight northTrafficLight;
+    private TrafficLight southTrafficLight;
+    private TrafficLight eastTrafficLight;
+    private TrafficLight westTrafficLight;
 
-    //xPos x coordinate of the intersection
-    //yPos y coordinate of the intersection
+    private Coordinate location;
 
-    public Intersection(int xPos,int yPos){
-        this.x=xPos;
-        this.y=yPos;
+    /* constructor */
+    public Intersection(Coordinate location){
+        this.north = null;
+        this.south = null;
+        this.east = null;
+        this.west = null;
+        this.location = location;
+        this.northTrafficLight = null;
+        this.southTrafficLight = null;
+        this.eastTrafficLight = null;
+        this.westTrafficLight = null;
     }
 
-    public void JoinRoad(Road R1,Road R2){//Add ID of R1 and R1 into the array IntersectionRoad
-
+    public TrafficLight getNorthTrafficLight() {
+        return northTrafficLight;
     }
 
+    public void setNorthTrafficLight(TrafficLight northTrafficLight) {
+        this.northTrafficLight = northTrafficLight;
+    }
+
+    public TrafficLight getSouthTrafficLight() {
+        return southTrafficLight;
+    }
+
+    public void setSouthTrafficLight(TrafficLight southTrafficLight) {
+        this.southTrafficLight = southTrafficLight;
+    }
+
+    public TrafficLight getEastTrafficLight() {
+        return eastTrafficLight;
+    }
+
+    public void setEastTrafficLight(TrafficLight eastTrafficLight) {
+        this.eastTrafficLight = eastTrafficLight;
+    }
+
+    public TrafficLight getWestTrafficLight() {
+        return westTrafficLight;
+    }
+
+    public void setWestTrafficLight(TrafficLight westTrafficLight) {
+        this.westTrafficLight = westTrafficLight;
+    }
+
+    public Road getNorth() {
+        return north;
+    }
+
+    public void setNorth(Road north) {
+        this.north = north;
+    }
+
+    public Road getSouth() {
+        return south;
+    }
+
+    public void setSouth(Road south) {
+        this.south = south;
+    }
+
+    public Road getEast() {
+        return east;
+    }
+
+    public void setEast(Road east) {
+        this.east = east;
+    }
+
+    public Road getWest() {
+        return west;
+    }
+
+    public void setWest(Road west) {
+        this.west = west;
+    }
+
+    public Coordinate getLocation() {
+        return location;
+    }
+
+    public void setLocation(Coordinate location) {
+        this.location = location;
+    }
 }
+
