@@ -1,6 +1,8 @@
 package londonsw.model.simulation.components;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
+
 
 /**
  * Created by yakubu on 12/02/2016.
@@ -29,6 +31,6 @@ public class TrafficLightTest {
 
     @Test
     public void testToggleLight() throws Exception {
-
+        assertTrue(true);
     }
 }
