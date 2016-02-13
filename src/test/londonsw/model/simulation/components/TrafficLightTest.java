@@ -1,6 +1,6 @@
 package londonsw.model.simulation.components;
 
-import londonsw.model.simulation.TickerInverval;
+import londonsw.model.simulation.TickerInterval;
 import org.junit.Test;
 
 import java.awt.*;
@@ -38,7 +38,7 @@ public class TrafficLightTest {
 
         Color initialColor = Color.RED;
 
-        TrafficLight t = new TrafficLight(initialColor, new TickerInverval());
+        TrafficLight t = new TrafficLight(initialColor, new TickerInterval());
 
         Color finalColor = Color.GREEN;
 

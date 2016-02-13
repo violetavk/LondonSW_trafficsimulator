@@ -8,8 +8,10 @@ package londonsw.model.simulation.components;
  */
 
 /* the traffic light belongs to the road
- * in each intersection, a can can choose(maybe randomly) Which road he can enter based on the array IntersectionRoad
+ * in each intersection, a car can choose(maybe randomly) Which road he can enter based on the array IntersectionRoad
  */
+
+//TODO I think we don't need a location
 
 public class Intersection {
 
@@ -70,43 +72,75 @@ public class Intersection {
         this.westTrafficLight = westTrafficLight;
     }
 
-    public Road getNorth() {
+    public Road getNorthRoad() {
         return northRoad;
     }
 
-    public void setNorth(Road northRoad) {
-        this.northRoad = northRoad;
+    public void setNorthRoad(Road northRoad) throws Exception {
+
+        if(northRoad.getEndLocation()==location)
+        {
+            this.northRoad = northRoad;
+        }
+        else
+            throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
-    public Road getSouth() {
+    public Road getSouthRoad() {
         return southRoad;
     }
 
-    public void setSouth(Road southRoad) {
-        this.southRoad = southRoad;
+    public void setSouthRoad(Road southRoad) throws Exception {
+
+        if(southRoad.getEndLocation()==location)
+        {
+            this.southRoad = southRoad;
+        }
+        else
+            throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
-    public Road getEast() {
+    public Road getEastRoad() {
         return eastRoad;
     }
 
-    public void setEast(Road east) {
-        this.eastRoad = east;
+    public void setEastRoad(Road eastRoad) throws Exception {
+
+        if(eastRoad.getEndLocation()==location)
+        {
+            this.eastRoad = eastRoad;
+        }
+        else
+            throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
-    public Road getWest() {
+    public Road getWestRoad() {
         return westRoad;
     }
 
-    public void setWest(Road westRoad) {
-        this.westRoad = westRoad;
+    public void setWestRoad(Road westRoad) throws IntersectionSetupException {
+
+        if(westRoad.getEndLocation()==location)
+        {
+            this.westRoad = westRoad;
+        }
+        else
+            throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
     public Coordinate getLocation() {
         return location;
     }
 
-    public void setLocation(Coordinate location) {
+    public void setLocation(Coordinate location) throws IntersectionSetupException {
+
         this.location = location;
     }
+}
+
+class IntersectionSetupException extends Exception {
+    public IntersectionSetupException() { super();}
+    public IntersectionSetupException(String msg) { super(); }
+    public IntersectionSetupException(String msg, Throwable t) { super(msg,t); }
+    public IntersectionSetupException(Throwable t) { super(t); }
 }
