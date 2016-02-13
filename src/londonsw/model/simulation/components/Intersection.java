@@ -13,10 +13,10 @@ package londonsw.model.simulation.components;
 
 public class Intersection {
 
-    private Road north;
-    private Road south;
-    private Road east;
-    private Road west;
+    private Road northRoad;
+    private Road southRoad;
+    private Road eastRoad;
+    private Road westRoad;
 
     private TrafficLight northTrafficLight;
     private TrafficLight southTrafficLight;
@@ -27,10 +27,10 @@ public class Intersection {
 
     /* constructor */
     public Intersection(Coordinate location){
-        this.north = null;
-        this.south = null;
-        this.east = null;
-        this.west = null;
+        this.northRoad = null;
+        this.southRoad = null;
+        this.eastRoad = null;
+        this.westRoad = null;
         this.location = location;
         this.northTrafficLight = null;
         this.southTrafficLight = null;
@@ -71,35 +71,35 @@ public class Intersection {
     }
 
     public Road getNorth() {
-        return north;
+        return northRoad;
     }
 
-    public void setNorth(Road north) {
-        this.north = north;
+    public void setNorth(Road northRoad) {
+        this.northRoad = northRoad;
     }
 
     public Road getSouth() {
-        return south;
+        return southRoad;
     }
 
-    public void setSouth(Road south) {
-        this.south = south;
+    public void setSouth(Road southRoad) {
+        this.southRoad = southRoad;
     }
 
     public Road getEast() {
-        return east;
+        return eastRoad;
     }
 
     public void setEast(Road east) {
-        this.east = east;
+        this.eastRoad = east;
     }
 
     public Road getWest() {
-        return west;
+        return westRoad;
     }
 
-    public void setWest(Road west) {
-        this.west = west;
+    public void setWest(Road westRoad) {
+        this.westRoad = westRoad;
     }
 
     public Coordinate getLocation() {
@@ -110,4 +110,3 @@ public class Intersection {
         this.location = location;
     }
 }
-
