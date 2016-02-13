@@ -1,6 +1,6 @@
 package londonsw.model.simulation.components;
 
-import londonsw.model.simulation.TickerInverval;
+import londonsw.model.simulation.TickerInterval;
 
 import java.awt.*;
 
@@ -12,10 +12,9 @@ import java.awt.*;
 public class TrafficLight {
 
     private Color color;
-    private TickerInverval duration;
+    private TickerInterval duration;
 
-
-    public TrafficLight(Color color, TickerInverval duration) {
+    public TrafficLight(Color color, TickerInterval duration) {
         this.color = color;
         this.duration = duration;
     }
@@ -28,23 +27,16 @@ public class TrafficLight {
         this.color = color;
     }
 
-    public TickerInverval getDuration() {
+    public TickerInterval getDuration() {
         return duration;
     }
 
-    public void setDuration(TickerInverval duration) {
+    public void setDuration(TickerInterval duration) {
         this.duration = duration;
     }
 
     public Color toggleLight()
     {
-        if(this.color.equals(Color.RED))
-        {
-            this.color = Color.GREEN;
-        }
-        else
-            this.color = Color.RED;
-
-        return this.color;
+        return !this.color.equals(Color.RED) ? Color.RED : Color.GREEN;
     }
 }
