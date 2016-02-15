@@ -14,20 +14,14 @@ public class Lane {
     private int length;
     private Coordinate entry;
     private Coordinate exit;
+    private MapDirection movingDirection;
 
-    public Lane(Coordinate entry, Coordinate exit) throws NotALaneException {
+    public Lane(Coordinate entry, Coordinate exit, MapDirection movingDirection) throws NotALaneException {
         this.entry = entry;
         this.exit = exit;
+        this.movingDirection = movingDirection;
         length = this.getLaneLength();
         lane = new Vehicle[length];
-    }
-
-    public MapDirection getMovingDirection() {
-        int aX = entry.getX();
-        int aY = entry.getY();
-        int bX = exit.getX();
-        int bY = exit.getY();
-        return MapDirection.NORTH; //TODO
     }
 
     private int getLaneLength() throws NotALaneException {
@@ -79,7 +73,6 @@ public class Lane {
     }
 
     public boolean moveCar(int currCell) {
-
         Vehicle v = lane[currCell];
         if(v == null) {
             return false;
@@ -89,10 +82,7 @@ public class Lane {
             lane[currCell] = null;
             return true;
         }
-
     }
-
-
 }
 
 class NotALaneException extends Exception {

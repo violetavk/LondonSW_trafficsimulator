@@ -20,7 +20,7 @@ public class LaneTest {
     public void setUpForTests() throws Exception {
         a = new Coordinate(0, 1);
         b = new Coordinate(2, 1);
-        x = new Lane(a, b);
+        x = new Lane(a, b, MapDirection.EAST);
     }
 
     @Test
@@ -31,7 +31,7 @@ public class LaneTest {
 
     @Test(expected = NotALaneException.class)
     public void testGetLaneLengthInvalid() throws Exception {
-        Lane l = new Lane(new Coordinate(2,3),new Coordinate(3,4));
+        Lane l = new Lane(new Coordinate(2,3),new Coordinate(3,4),MapDirection.ERROR);
     }
 
     @Test
