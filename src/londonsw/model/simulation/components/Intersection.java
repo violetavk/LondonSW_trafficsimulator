@@ -78,7 +78,7 @@ public class Intersection {
 
     public void setNorthRoad(Road northRoad) throws Exception {
 
-        if(northRoad.getEndLocation()==location)
+        if(northRoad.getEndLocation()==location || northRoad.getStartLocation()==location)
         {
             this.northRoad = northRoad;
         }
@@ -92,7 +92,7 @@ public class Intersection {
 
     public void setSouthRoad(Road southRoad) throws Exception {
 
-        if(southRoad.getEndLocation()==location)
+        if(southRoad.getEndLocation()==location || southRoad.getStartLocation()==location)
         {
             this.southRoad = southRoad;
         }
@@ -106,7 +106,7 @@ public class Intersection {
 
     public void setEastRoad(Road eastRoad) throws Exception {
 
-        if(eastRoad.getEndLocation()==location)
+        if(eastRoad.getEndLocation()==location || eastRoad.getStartLocation()==location)
         {
             this.eastRoad = eastRoad;
         }
@@ -120,7 +120,7 @@ public class Intersection {
 
     public void setWestRoad(Road westRoad) throws IntersectionSetupException {
 
-        if(westRoad.getEndLocation()==location)
+        if(westRoad.getEndLocation()==location || westRoad.getStartLocation()==location)
         {
             this.westRoad = westRoad;
         }
@@ -135,6 +135,10 @@ public class Intersection {
     public void setLocation(Coordinate location) throws IntersectionSetupException {
 
         this.location = location;
+    }
+
+    public void getIntersecttionLocation(Road[] road){
+        //TODO
     }
 }
 
