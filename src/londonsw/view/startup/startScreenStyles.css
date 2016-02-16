@@ -1,0 +1,19 @@
+.root {
+    -fx-background-color: papayawhip;
+}
+
+.button {
+    -fx-background-color: gold;
+    -fx-border-color: chocolate;
+}
+
+#londonSWlabel {
+    -fx-font-size: 21;
+    -fx-alignment: center;
+}
+
+#trafficSimLabel {
+    -fx-font-size: 26;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
