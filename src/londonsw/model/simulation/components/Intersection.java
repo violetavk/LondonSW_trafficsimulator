@@ -13,6 +13,9 @@ package londonsw.model.simulation.components;
 
 //TODO I think we don't need a location
 
+/**
+ * intersection test
+ */
 public class Intersection {
 
     private Road northRoad;

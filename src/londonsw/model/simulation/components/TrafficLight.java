@@ -9,6 +9,8 @@ import java.awt.*;
  * It will have 2 colors: red, green
  * It will toggle colors when its timer (based on the class Ticker runs out) and the timer will reset
  */
+
+
 public class TrafficLight {
 
     private Color color;
