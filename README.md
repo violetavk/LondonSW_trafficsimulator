@@ -1,8 +1,10 @@
-# LondonSW_trafficsimulator
+# LondonSW Traffic Simulator
 Group Project for KCL
 
-trafficsimulator is a group project aimed to build a traffic simulation software based on a Cellular Automata Model
+This traffic simulator is a group project aimed to build a traffic simulation software based on a Cellular Automaton Model
 
-The instructions to build the project are the following:
+##Pre-requisites for running the project:
+- You must have at least Java8u40 running on your machine
 
-//TODO
+##Building and running the project:
+- TODO
