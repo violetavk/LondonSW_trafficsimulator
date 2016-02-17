@@ -39,6 +39,8 @@ public class Intersection {
         this.eastTrafficLight = null;
         this.westTrafficLight = null;
     }
+    
+// Pul request test
 
     public TrafficLight getNorthTrafficLight() {
         return northTrafficLight;
