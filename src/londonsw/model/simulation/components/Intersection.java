@@ -16,7 +16,7 @@ package londonsw.model.simulation.components;
 /**
  * intersection test
  */
-public class Intersection {
+public class Intersection implements Component{
 
     private Road northRoad;
     private Road southRoad;

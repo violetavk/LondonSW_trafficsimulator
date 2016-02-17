@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * These are like the edges in our directed graph
  * Each has a start-location and an end-location
  */
-public class Road {
+public class Road implements Component {
 
     Coordinate startLocation;
     Coordinate endLocation;
