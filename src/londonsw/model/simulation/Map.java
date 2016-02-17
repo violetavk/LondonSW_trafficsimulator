@@ -11,11 +11,20 @@ import java.util.ArrayList;
 public class Map {
     private ArrayList<Road> roads;
     private ArrayList<Intersection> intersections;
+    private MapGrid grid;
 
     public Map() {
+
+
+    }
+
+    public Map(int width, int height) {
         roads = new ArrayList<Road>();
         intersections = new ArrayList<Intersection>();
+        grid = new MapGrid(width,height);
     }
+
+
 
     public Map(ArrayList<Road> roads, ArrayList<Intersection> intersections) {
         this.roads = roads;
