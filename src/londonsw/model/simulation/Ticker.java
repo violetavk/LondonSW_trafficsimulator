@@ -12,8 +12,31 @@ package londonsw.model.simulation;
 
 public class Ticker {
 
-    public void ResetTicker(){
+    private static double TICK_LENGTH = 1;
+    private static double currentTime;
 
+    private static Ticker instance;
+
+    public static Ticker getInstance() {
+        if(instance == null) {
+            instance = new Ticker();
+            currentTime = 0;
+        }
+        return instance;
+    }
+
+    public static void resetTicker(){
+        currentTime = 0;
+    }
+
+    public static void changeTickLength(double length) {
+        TICK_LENGTH = length;
+    }
+
+    public static void notifyTimeChange() {
+        // TODO must notify all things in system that the time has just incremented
+        // TODO return type may change
+        // TODO still need to think of the semantics of this method
     }
 
 }

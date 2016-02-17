@@ -7,4 +7,10 @@ package londonsw.model.simulation;
  */
 public class Simulation {
 
+    private Map map;
+    private Ticker ticker;
+
+    public Simulation() {
+
+    }
 }
