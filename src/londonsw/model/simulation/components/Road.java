@@ -14,13 +14,17 @@ public class Road {
     Coordinate endLocation;
     ArrayList<Lane> lanes;
 
-    public Road() {
-
+    public Road(Coordinate startLocation, Coordinate endLocation) {
+        lanes = new ArrayList<Lane>();
+        this.startLocation = startLocation;
+        this.endLocation = endLocation;
     }
 
     public ArrayList<Lane> getLanes() {
         return lanes;
     }
+
+    public Lane getLaneAtIndex(int i) { return lanes.get(i); }
 
     public Coordinate getStartLocation() {
         return startLocation;
@@ -33,6 +37,4 @@ public class Road {
     public int getNumberLanes() {
         return lanes.size();
     }
-
-
 }
