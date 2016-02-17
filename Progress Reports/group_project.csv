@@ -1,0 +1,20 @@
+Number,Name,Description,Type,Estimate,Owner,Priority,Status,Created by,Modified by
+11,Add stories based on project.mpp,Please add stories,Story,,,Must,New,santiago_anda,santiago_anda
+12,Assign stories to TM's,please assign,Story,,,Must,New,santiago_anda,santiago_anda
+18,Coordinates & Traffic Light,Attributes &amp; Methods,Story,,yakubu.aliyu_doma,Must,New,santiago_anda,santiago_anda
+16,Vehicle and Car Class,Attributes and Methods,Story,,rawan.alrahili,Must,In progress,santiago_anda,rawan.alrahili
+20,Ticker,Basic,Story,,violetta.avkhukova,Must,New,santiago_anda,santiago_anda
+21,Intersection,"<p>Implement Validations</p>
+
+<p>Give options for the car</p>",Story,,jia.liu,,New,santiago_anda,santiago_anda
+22,Vehicle,"<p>Vehicle.stop()</p>
+
+<p>Add Behaviour()</p>
+
+<p>Set Priority()</p>
+
+<p>Get Vehicle state()</p>",Story,,rawan.alrahili,,New,santiago_anda,santiago_anda
+23,Map,"<p>Map.add() Intersections, Roads</p>
+
+<p>Call mapGrid class</p>",Story,2,violetta.avkhukova,,New,santiago_anda,santiago_anda
+24,Integration Test,System overall test,Story,8,yakubu.aliyu_doma,,New,santiago_anda,santiago_anda
