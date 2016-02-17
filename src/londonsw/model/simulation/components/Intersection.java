@@ -1,5 +1,8 @@
 package londonsw.model.simulation.components;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * This class is our "node" in our directed graph
  * It will hold anywhere between 1 and 4 traffic lights
@@ -13,15 +16,14 @@ package londonsw.model.simulation.components;
 
 //TODO I think we don't need a location
 
-/**
- * intersection test
- */
+
 public class Intersection implements Component{
 
     private Road northRoad;
     private Road southRoad;
     private Road eastRoad;
     private Road westRoad;
+    public Road[] optionalRoads;
 
     private TrafficLight northTrafficLight;
     private TrafficLight southTrafficLight;
@@ -42,8 +44,6 @@ public class Intersection implements Component{
         this.eastTrafficLight = null;
         this.westTrafficLight = null;
     }
-    
-// Pul request test
 
     public TrafficLight getNorthTrafficLight() {
         return northTrafficLight;
@@ -83,7 +83,7 @@ public class Intersection implements Component{
 
     public void setNorthRoad(Road northRoad) throws Exception {
 
-        if(northRoad.getEndLocation()==location || northRoad.getStartLocation()==location)
+        if(northRoad.getEndLocation().getX()==location.getX() || northRoad.getStartLocation().getX()==location.getX())
         {
             this.northRoad = northRoad;
         }
@@ -97,7 +97,7 @@ public class Intersection implements Component{
 
     public void setSouthRoad(Road southRoad) throws Exception {
 
-        if(southRoad.getEndLocation()==location || southRoad.getStartLocation()==location)
+        if(southRoad.getEndLocation().getX()==location.getX() || southRoad.getStartLocation().getX()==location.getX())
         {
             this.southRoad = southRoad;
         }
@@ -111,7 +111,7 @@ public class Intersection implements Component{
 
     public void setEastRoad(Road eastRoad) throws Exception {
 
-        if(eastRoad.getEndLocation()==location || eastRoad.getStartLocation()==location)
+        if(eastRoad.getEndLocation().getY()==location.getY() || eastRoad.getStartLocation().getY()==location.getY())
         {
             this.eastRoad = eastRoad;
         }
@@ -125,7 +125,7 @@ public class Intersection implements Component{
 
     public void setWestRoad(Road westRoad) throws IntersectionSetupException {
 
-        if(westRoad.getEndLocation()==location || westRoad.getStartLocation()==location)
+        if(westRoad.getEndLocation().getY()==location.getY() || westRoad.getStartLocation().getY()==location.getY())
         {
             this.westRoad = westRoad;
         }
@@ -144,6 +144,26 @@ public class Intersection implements Component{
 
     public void getIntersecttionLocation(Road[] road){
         //TODO
+    }
+
+    public Road[] getOptionalRoads(){
+        int optionNumber=0;
+        if(getEastRoad()!= null){
+            optionalRoads[optionNumber]=this.getEastRoad();
+            optionNumber++;
+        }
+        if(getSouthRoad()!= null){
+            optionalRoads[optionNumber]=this.getSouthRoad();
+            optionNumber++;
+        }
+        if(getWestRoad()!= null){
+            optionalRoads[optionNumber]=this.getWestRoad();
+            optionNumber++;
+        }
+        if(getNorthRoad()!= null){
+            optionalRoads[optionNumber]=this.getNorthRoad();
+        }
+        return optionalRoads;
     }
 }
 
