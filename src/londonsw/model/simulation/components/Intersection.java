@@ -1,8 +1,5 @@
 package londonsw.model.simulation.components;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 /**
  * This class is our "node" in our directed graph
  * It will hold anywhere between 1 and 4 traffic lights

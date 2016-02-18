@@ -11,7 +11,7 @@ public class Simulation {
     private Ticker ticker;
 
     public Simulation() {
-        map = new Map();
+        map = new Map(10,10);
         ticker = Ticker.getInstance();
     }
 }
