@@ -78,12 +78,7 @@ public  class Vehicle {
 
     public void setVehicleBehavior(){}
     public void getVehicleBehavior(){}
-
-
-
-
-
-
+    
 
 
     
