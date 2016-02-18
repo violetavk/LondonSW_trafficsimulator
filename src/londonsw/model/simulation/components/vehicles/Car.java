@@ -14,7 +14,7 @@ public class Car extends Vehicle {
         super(vehicleLocation, vehicleId );
         this.vehicleLength=1;
         this.vehicleSpeed=1.0;
-        this.vehicleLifetime =10;
+        this.vehiclePriority = 1;
     }
   }
 
