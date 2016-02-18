@@ -5,38 +5,62 @@ package londonsw.model.simulation;
  * Time speed can be adjusted to increase/decrease the speed of our simulation
  */
 
-/**
- * we can just use java AnimationTimer as our animation timer
- * by import javafx.animation.AnimationTimer
- */
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Ticker {
 
-    private static double TICK_LENGTH = 1;
-    private static double currentTime;
+    private static TickerRunnable tr;
 
-    private static Ticker instance;
+    private static ArrayList<TickerListener> subscribers;
 
-    public static Ticker getInstance() {
-        if(instance == null) {
-            instance = new Ticker();
-            currentTime = 0;
+    private static long TICK_INTERVAL = 1000;
+
+    private static long CURRENT_TIME;
+
+    private static Timer timer;
+
+    public Ticker() {
+        CURRENT_TIME = 0;
+        subscribers = new ArrayList<TickerListener>();
+        timer = new Timer();
+        tr = TickerRunnable.getInstance();
+    } // TODO would be nice to have Ticker be a Singleton class
+
+    public static void subscribe(TickerListener tl) {
+        subscribers.add(tl);
+    }
+
+    public void start() {
+        timer.schedule(tr, TICK_INTERVAL, TICK_INTERVAL);
+    }
+
+
+    private static class TickerRunnable extends TimerTask {
+
+        //maybe a new thread for each, each will wait(TICK_INTERVAL) and then Ticker will notifyAll() or something...
+        private static TickerRunnable instance;
+
+        public static TickerRunnable getInstance() {
+            if(instance == null) {
+                instance = new TickerRunnable();
+            }
+            return instance;
         }
-        return instance;
-    }
 
-    public static void resetTicker(){
-        currentTime = 0;
-    }
+        @Override
+        public void run() {
+            System.out.println("Timer is working... Current time: " + CURRENT_TIME); // DEBUG ONLY
 
-    public static void changeTickLength(double length) {
-        TICK_LENGTH = length;
-    }
+            //basic version
+            for(TickerListener tl : subscribers)
+                tl.onTick(CURRENT_TIME);
 
-    public static void notifyTimeChange() {
-        // TODO must notify all things in system that the time has just incremented
-        // TODO return type may change
-        // TODO still need to think of the semantics of this method
+            //TODO try to send the update to all subscribers at the same time
+
+            CURRENT_TIME = CURRENT_TIME + TICK_INTERVAL;
+        }
     }
 
 }
