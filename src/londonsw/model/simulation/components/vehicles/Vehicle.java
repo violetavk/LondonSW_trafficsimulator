@@ -3,6 +3,8 @@ import londonsw.model.simulation.components.CarDirection;
 import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.TrafficLight;
 import java.awt.*;
+import java.util.*;
+
 import londonsw.model.simulation.components.TrafficLight.*;
 
 
@@ -17,12 +19,10 @@ public  class Vehicle {
     int vehicleLength;
     double vehicleSpeed;
     private Vehicle[] lane;
-   // CarDirection cDirection;
     int currentCell;
     int vehiclePriority;// 1 is the lowest
     int vehicleState;
-
-
+    vBehavior vehicleBehavior;
 
 
     
@@ -61,24 +61,27 @@ public  class Vehicle {
 
     public int getCurrentCell(){return currentCell;}
 
-    //1 is moving , 0 is static
-    public int getVehicleState(){
-       /* if  (TrafficLight.getColor()==Color.RED){
-            vehicleState= 0;
-
-        }
-        else if (TrafficLight.getColor()==Color.GREEN ){
-            vehicleState= 1;
-        }*/
-        return  vehicleState;
-    }
-
+    public int getVehicleState(){return  vehicleState;}
     public void setVehicleState(int vehicleState){this.vehicleState=vehicleState;}
+    //1 is moving, 0 is static
     public void stopVehicle(){vehicleState=0;}
 
-    public void setVehicleBehavior(){}
-    public void getVehicleBehavior(){}
-    
+
+    //give vehicle Behavior randomly
+    public enum vBehavior {
+        AVERAGE, CAUTIOUS, AGGRESSIVE;
+
+        private static final java.util.List<vBehavior> VALUES= Collections.unmodifiableList(Arrays.asList(values()));
+        private static final int size = VALUES.size();
+        private static  final Random RANDOM= new Random();
+        public static vBehavior randomLetter(){
+            return VALUES.get(RANDOM.nextInt(size));
+        }
+    }
+
+    public void setVehicleBehavior(vBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
+    public vBehavior getVehicleBehavior(){return vBehavior.randomLetter(); }
+
 
 
     
