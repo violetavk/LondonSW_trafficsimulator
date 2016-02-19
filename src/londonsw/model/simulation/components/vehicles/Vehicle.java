@@ -4,7 +4,6 @@ import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.TrafficLight;
 import java.awt.*;
 import java.util.*;
-
 import londonsw.model.simulation.components.TrafficLight.*;
 
 
@@ -81,35 +80,6 @@ public  class Vehicle {
 
     public void setVehicleBehavior(vBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
     public vBehavior getVehicleBehavior(){return vBehavior.randomLetter(); }
-
-
-
-    
-    /* I think we need a setLane() method, so when a car is in an intersection and wants to turn
-     left, right or straight,is has to choose a new lane, for example to turn left:
-     Vehicle.setlane(Left or laneID);*/
-
-    // vehicle chooese its direction randomly
-
-  /* public void vehicleDirection(){
-        switch (cDirection.randomLetter()){
-            case STRAIGHT:
-                moveVehicle(vehicleId);
-                break;
-
-            case LEFT:
-                //if (eastroad)
-               // Vechile.setlane(laneID);
-                break;
-
-            case RIGHT:
-
-                break;
-        }
-    }*/
-
-
-
 
 }
 
