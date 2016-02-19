@@ -18,11 +18,11 @@ import java.util.ArrayList;
 
 public class Intersection implements Component{
 
-    private Lane northLane;
-    private Lane southLane;
-    private Lane eastLane;
-    private Lane westLane;
-    public ArrayList<Lane> laneOptions = new ArrayList<Lane>();
+    private Road northRoad;
+    private Road southRoad;
+    private Road eastRoad;
+    private Road westRoad;
+    public ArrayList<Road> roadOptions = new ArrayList<Road>();
 
     private TrafficLight northTrafficLight;
     private TrafficLight southTrafficLight;
@@ -33,10 +33,10 @@ public class Intersection implements Component{
 
     /* constructor */
     public Intersection(Coordinate location){
-        this.northLane = null;
-        this.southLane = null;
-        this.eastLane = null;
-        this.westLane = null;
+        this.northRoad = null;
+        this.southRoad = null;
+        this.eastRoad = null;
+        this.westRoad = null;
         this.location = location;
         this.northTrafficLight = null;
         this.southTrafficLight = null;
@@ -76,59 +76,63 @@ public class Intersection implements Component{
         this.westTrafficLight = westTrafficLight;
     }
 
-    public Lane getNorthLane() {
-        return northLane;
+    public Road getNorthRoad() {
+        return northRoad;
     }
 
-    public void setNorthLane(Lane northLane) throws Exception {
+    public void setNorthRoad(Road northRoad) throws Exception {
 
-        if(northLane.getEntry().getX()==location.getX() || northLane.getExit().getX()==location.getX())
+        if((this.location.getX() == northRoad.getEndLocation().getX()
+                && (this.location.getY() - 1 == northRoad.getEndLocation().getY()
+                ||  this.location.getY() - 1 == northRoad.getStartLocation().getY())))
         {
-            this.northLane = northLane;
+            this.northRoad = northRoad;
         }
         else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
-    public Lane getSouthLane() {
-        return southLane;
+    public Road getSouthRoad() {
+        return southRoad;
     }
 
-    public void setSouthLane(Lane southLane) throws Exception {
+    public void setSouthRoad(Road southRoad) throws Exception {
 
-        if(southLane.getEntry().getX()==location.getX() || southLane.getExit().getX()==location.getX())
+        if((this.location.getX()==southRoad.getEndLocation().getX()
+                && (this.location.getY() + 1 == southRoad.getEndLocation().getY()
+                || this.location.getY() + 1 == southRoad.getStartLocation().getY())))
         {
-            this.southLane = southLane;
+            this.southRoad = southRoad;
         }
         else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
-    public Lane getEastLane() {
-        return eastLane;
+    public Road getEastRoad() {
+        return eastRoad;
     }
 
-    public void setEastLane(Lane eastLane) throws Exception {
+    public void setEastRoad(Road eastRoad) throws Exception {
 
-        if(eastLane.getEntry().getY()==location.getY() || eastLane.getExit().getY()==location.getY())
-        {
-            this.eastLane = eastLane;
-        }
-        else
+        if ((this.location.getY() == eastRoad.getEndLocation().getY()
+                && (this.location.getX() + 1  == eastRoad.getEndLocation().getY()
+                || this.location.getX() + 1 == eastRoad.getStartLocation().getY()))) {
+            this.eastRoad = eastRoad;
+        } else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
-    public Lane getWestLane() {
-        return westLane;
+    public Road getWestRoad() {
+        return westRoad;
     }
 
-    public void setWestLane(Lane westLane) throws IntersectionSetupException {
+    public void setWestRoad(Road westRoad) throws IntersectionSetupException {
 
-        if(westLane.getEntry().getY()==location.getY() || westLane.getExit().getY()==location.getY())
-        {
-            this.westLane = westLane;
-        }
-        else
+        if ((this.location.getY()  == westRoad.getEndLocation().getY()
+                && (this.location.getX() - 1 == westRoad.getEndLocation().getX()
+                || this.location.getX() -1 == westRoad.getStartLocation().getX()))) {
+            this.westRoad = westRoad;
+        } else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
@@ -141,33 +145,44 @@ public class Intersection implements Component{
         this.location = location;
     }
 
-    public void getIntersecttionLocation(Road[] road){
+    public void getIntersectionLocation(Road[] road){
         //TODO
     }
 
-    public ArrayList<Lane> getLaneOptions(){
+    public ArrayList<Road> getRoadOptions(){
 
-        laneOptions.clear();
+        roadOptions.clear();
 
-        if(this.getEastLane()!= null && this.getEastLane().getMovingDirection()==MapDirection.EAST){
-            laneOptions.add(this.getEastLane());
+        if(this.getEastRoad()!= null){
+            roadOptions.add(this.getEastRoad());
         }
-        if(this.getSouthLane()!= null && this.getSouthLane().getMovingDirection()==MapDirection.SOUTH){
-            laneOptions.add(this.getSouthLane());
+        if(this.getSouthRoad()!= null){
+            roadOptions.add(this.getSouthRoad());
         }
-        if(this.getWestLane()!= null && this.getWestLane().getMovingDirection()==MapDirection.WEST){
-           laneOptions.add(this.getWestLane());
+        if(this.getWestRoad()!= null){
+           roadOptions.add(this.getWestRoad());
         }
-        if(this.getNorthLane()!= null && this.getNorthLane().getMovingDirection()==MapDirection.NORTH){
-            laneOptions.add(this.getNorthLane());
+        if(this.getNorthRoad()!= null){
+            roadOptions.add(this.getNorthRoad());
         }
-        return laneOptions;
+        return roadOptions;
     }
 }
 
 class IntersectionSetupException extends Exception {
-    public IntersectionSetupException() { super();}
-    public IntersectionSetupException(String msg) { super(); }
-    public IntersectionSetupException(String msg, Throwable t) { super(msg,t); }
-    public IntersectionSetupException(Throwable t) { super(t); }
+    public IntersectionSetupException() {
+        super();
+    }
+
+    public IntersectionSetupException(String msg) {
+        super();
+    }
+
+    public IntersectionSetupException(String msg, Throwable t) {
+        super(msg, t);
+    }
+
+    public IntersectionSetupException(Throwable t) {
+        super(t);
+    }
 }

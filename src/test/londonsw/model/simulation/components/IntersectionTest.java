@@ -1,5 +1,6 @@
 package londonsw.model.simulation.components;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,15 +35,49 @@ public class IntersectionTest {
     }*/
 
 
-    @Test
-    public void testGetLaneOptions() throws Exception {
-        Lane sLane=new Lane(new Coordinate(4,3),new Coordinate(4,5),MapDirection.SOUTH);
-        Lane eLane=new Lane(new Coordinate(5,2),new Coordinate(9,2),MapDirection.EAST);
-        Intersection i=new Intersection(new Coordinate(4,2));
-        i.setSouthLane(sLane);
-        i.setEastLane(eLane);
-        ArrayList test = i.getLaneOptions();
+    @Test   //Test with south and west roads
+    public void testGetRoadOptions() throws Exception {
 
-        assertEquals(2,i.getLaneOptions().size());
+        Road sRoad=new Road(new Coordinate(3,1),new Coordinate(3,3));
+        Road wRoad=new Road(new Coordinate(0,0),new Coordinate(2,0));
+
+        Intersection i=new Intersection(new Coordinate(3,0));
+        i.setSouthRoad(sRoad);
+        i.setWestRoad(wRoad);
+
+        ArrayList<Road> test = i.getRoadOptions();
+
+        assertEquals(2,test.size());
+    }
+
+    @Test   //Test with north and east roads
+    public void testGetRoadOptions2() throws Exception {
+
+        Road nRoad=new Road(new Coordinate(1,1),new Coordinate(1,0));
+        Road eRoad=new Road(new Coordinate(2,2),new Coordinate(3,2));
+
+        Intersection i=new Intersection(new Coordinate(1,2));
+        i.setNorthRoad(nRoad);
+        i.setEastRoad(eRoad);
+
+        ArrayList<Road> test = i.getRoadOptions();
+
+        assertEquals(2,test.size());
+    }
+
+    @Test
+    public void testGetRoadOptionsFalse() throws Exception {
+
+        Road sRoad=new Road(new Coordinate(3,1),new Coordinate(3,3));
+        Road eRoad=new Road(new Coordinate(5,2),new Coordinate(9,2));
+        Intersection i=new Intersection(new Coordinate(0,3));
+
+        try {
+            i.setSouthRoad(sRoad);
+            i.setEastRoad(eRoad);
+        }catch (Exception ex)
+        {
+            new AssertionError();
+        }
     }
 }
