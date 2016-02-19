@@ -16,6 +16,10 @@ public class Lane {
     private Coordinate exit;
     private MapDirection movingDirection;
 
+    public MapDirection getMovingDirection(){
+        return movingDirection;
+    }
+
     public Lane(Coordinate entry, Coordinate exit, MapDirection movingDirection) throws NotALaneException {
         this.entry = entry;
         this.exit = exit;
