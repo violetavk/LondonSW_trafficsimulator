@@ -1,11 +1,9 @@
 package londonsw.model.simulation.components.vehicles;
-import londonsw.model.simulation.components.CarDirection;
 import londonsw.model.simulation.components.Coordinate;
-import londonsw.model.simulation.components.TrafficLight;
-import java.awt.*;
-import java.util.*;
-import londonsw.model.simulation.components.TrafficLight.*;
+import londonsw.model.simulation.components.VehicleBehavior;
 
+import java.util.*;
+//new
 
 /**
  * This is the interface that all vehicles will implement
@@ -21,7 +19,7 @@ public  class Vehicle {
     int currentCell;
     int vehiclePriority;// 1 is the lowest
     int vehicleState;
-    vBehavior vehicleBehavior;
+    VehicleBehavior vehicleBehavior;
 
 
     
@@ -65,21 +63,9 @@ public  class Vehicle {
     //1 is moving, 0 is static
     public void stopVehicle(){vehicleState=0;}
 
-
     //give vehicle Behavior randomly
-    public enum vBehavior {
-        AVERAGE, CAUTIOUS, AGGRESSIVE;
-
-        private static final java.util.List<vBehavior> VALUES= Collections.unmodifiableList(Arrays.asList(values()));
-        private static final int size = VALUES.size();
-        private static  final Random RANDOM= new Random();
-        public static vBehavior randomLetter(){
-            return VALUES.get(RANDOM.nextInt(size));
-        }
-    }
-
-    public void setVehicleBehavior(vBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
-    public vBehavior getVehicleBehavior(){return vBehavior.randomLetter(); }
+    public void setVehicleBehavior(VehicleBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
+    public VehicleBehavior getVehicleBehavior(){return VehicleBehavior.randomLetter(); }
 
 }
 
