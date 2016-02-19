@@ -1,47 +1,35 @@
 package londonsw.model.simulation.components;
 
-import londonsw.model.simulation.TickerInterval;
 import org.junit.Test;
 
-import java.awt.*;
+import static org.junit.Assert.assertEquals;
 
-import static org.junit.Assert.*;
-
-//@yakubu
 /**
- * Created by yakubu on 12/02/2016.
+ * Created by yakubu on 19/02/2016.
  */
 public class TrafficLightTest {
 
     @Test
-    public void testGetColor() throws Exception {
+    public void testNextState() throws Exception {
+        TrafficLight light = new TrafficLight();
+        assertEquals(LightColour.RED, light.state);
+        light.nextState();
+        assertEquals(LightColour.GREEN, light.state);
+        light.nextState();
+        assertEquals(LightColour.YELLOW, light.state);
+        light.nextState();
+        assertEquals(LightColour.RED, light.state);
+
 
     }
 
     @Test
-    public void testSetColor() throws Exception {
+    public void testChange() throws Exception {
+        TrafficLight light = new TrafficLight();
+        light.change(1);
+        // assertEquals(SignalColor.YELLOW, light.state);
+        assertEquals(LightColour.GREEN, light.state);
 
-    }
 
-    @Test
-    public void testGetDuration() throws Exception {
-
-    }
-
-    @Test
-    public void testSetDuration() throws Exception {
-
-    }
-
-    @Test
-    public void testToggleLight() throws Exception {
-
-        Color initialColor = Color.RED;
-
-        TrafficLight t = new TrafficLight(initialColor, new TickerInterval());
-
-        Color finalColor = Color.GREEN;
-
-        assertEquals(finalColor,t.toggleLight());
     }
 }

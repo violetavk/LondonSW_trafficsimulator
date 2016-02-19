@@ -1,44 +1,38 @@
 package londonsw.model.simulation.components;
-
-import londonsw.model.simulation.TickerInterval;
-
-import java.awt.*;
-
 /**
- * This class is the basis of a traffic light.
- * It will have 2 colors: red, green
- * It will toggle colors when its timer (based on the class Ticker runs out) and the timer will reset
+ * Created by yakubu on 19/02/2016.
  */
-//add states to traffic light class
-
 public class TrafficLight {
 
-    private Color color;
-    private TickerInterval duration;
+        LightColour state = LightColour.RED;
 
-    public TrafficLight(Color color, TickerInterval duration) {
-        this.color = color;
-        this.duration = duration;
+    /**
+     *
+     */
+        public void nextState() {
+            switch (state) {
+                case RED:
+                    state = LightColour.GREEN;
+                    break;
+                case YELLOW:
+                    state = LightColour.RED;
+                    break;
+                case GREEN:
+                    state = LightColour.YELLOW;
+                    break;
+                default:
+                    state = LightColour.RED;
+                    break;
+            }
+        }
+
+    /**
+     * @param no
+     */
+        public void change(int no) {
+            for (int i = 0; i < no; i++) {
+                nextState();
+            }
+        }
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public TickerInterval getDuration() {
-        return duration;
-    }
-
-    public void setDuration(TickerInterval duration) {
-        this.duration = duration;
-    }
-
-    public Color toggleLight()
-    {
-        return !this.color.equals(Color.RED) ? Color.RED : Color.GREEN;
-    }
-}

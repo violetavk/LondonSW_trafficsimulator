@@ -1,13 +1,11 @@
 package londonsw.model.simulation.components;
 
-import londonsw.model.simulation.TickerInterval;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by felix on 12/02/2016.
@@ -22,7 +20,7 @@ public class IntersectionTest {
         i = new Intersection(new Coordinate(0,0));
     }
 
-    @Test
+  /* @Test
     public void testGetNorthTrafficLight() throws Exception {
 
         TrafficLight t = new TrafficLight(Color.GREEN,new TickerInterval());
@@ -33,7 +31,7 @@ public class IntersectionTest {
         assertNotNull(output);
         assertEquals(output,t);
 
-    }
+    }*/
 
 
     @Test
