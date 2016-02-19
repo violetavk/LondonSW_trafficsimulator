@@ -76,17 +76,7 @@ public class Lane {
         return true;
     }
 
-    public boolean moveCar(int currCell) {
-        Vehicle v = lane[currCell];
-        if(v == null) {
-            return false;
-        }
-        else {
-            lane[currCell+1] = v;
-            lane[currCell] = null;
-            return true;
-        }
-    }
+
 }
 
 class NotALaneException extends Exception {

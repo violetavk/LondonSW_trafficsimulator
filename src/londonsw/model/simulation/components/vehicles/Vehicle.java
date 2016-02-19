@@ -1,8 +1,7 @@
 package londonsw.model.simulation.components.vehicles;
 import londonsw.model.simulation.components.Coordinate;
+import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.VehicleBehavior;
-
-import java.util.*;
 //new
 
 /**
@@ -11,61 +10,56 @@ import java.util.*;
  */
 public  class Vehicle {
 
-    public Coordinate vehicleLocation;
-    int vehicleId;
     int vehicleLength;
     double vehicleSpeed;
-    private Vehicle[] lane;
     int currentCell;
     int vehiclePriority;// 1 is the lowest
     int vehicleState;
     VehicleBehavior vehicleBehavior;
+    public Lane currentLane;
 
 
     
     //Constructor
-    public Vehicle(Coordinate vehicleLocation, int vehicleId) {
-        this.vehicleLocation = vehicleLocation;
-        this.vehicleId = vehicleId;}
+    public Vehicle( int currentCell, Lane currentLane) {
+        this.currentCell = currentCell;
+        this.currentLane = currentLane;}
 
     //Getter
     public int getVehicleLength() {return vehicleLength;}
-    public Coordinate getVehicleLocation() {return vehicleLocation;}
-    public int getVehicleId() {return vehicleId;}
     public double getVehicleSpeed() {return vehicleSpeed;}
-    public int getVehiclePriorty(){return  vehiclePriority;}
+    public int getVehiclePriority(){return  vehiclePriority;}
+    public Lane getCurrentLane(){return currentLane;}
+    public int getCurrentCell(){return currentCell;}
+    public int getVehicleState(){return  vehicleState;}
+    public VehicleBehavior getVehicleBehavior(){return VehicleBehavior.randomLetter(); }
 
     //Setter
     public void setVehicleLength(int vehicleLength){this.vehicleLength=vehicleLength;}
-    public void setVehicleLocation(Coordinate vehicleLocation){this.vehicleLocation=vehicleLocation;}
-    public void setVehicleId(int vehicleId){this.vehicleId=vehicleId;}
     public void setVehicleSpeed(double vehicleSpeed){this.vehicleSpeed=vehicleSpeed;}
     public void setVehiclePriority(int vehiclePriority){this.vehiclePriority=vehiclePriority;}
+    public void setCurrentLane(Lane currentLane){this.currentLane =currentLane;}
+    public void setCurrentCell(int curCell,Lane currentLane){this.currentCell=curCell;}
+    public void setVehicleState(int vehicleState){this.vehicleState=vehicleState;}
+    public void setVehicleBehavior(VehicleBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
 
 
     //Move a vehicle one step forward
-    public boolean moveVehicle(int currCell) {
-        Vehicle v = lane[currCell];
-        if(v == null) {
-            return false;
+    public boolean moveVehicle(int step) {
+       int curCell= this.getCurrentCell();
+        if(curCell+step >= this.currentLane.getLength()) {
+           return false;
         }
-        else {
-            lane[currCell+1] = v;
-            lane[currCell] = null;
+       else {
+            curCell= curCell+step;
+            this.setCurrentCell(curCell,this.getCurrentLane());
             return true;
-        }
+       }
     }
 
-    public int getCurrentCell(){return currentCell;}
-
-    public int getVehicleState(){return  vehicleState;}
-    public void setVehicleState(int vehicleState){this.vehicleState=vehicleState;}
     //1 is moving, 0 is static
     public void stopVehicle(){vehicleState=0;}
 
-    //give vehicle Behavior randomly
-    public void setVehicleBehavior(VehicleBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
-    public VehicleBehavior getVehicleBehavior(){return VehicleBehavior.randomLetter(); }
 
 }
 
