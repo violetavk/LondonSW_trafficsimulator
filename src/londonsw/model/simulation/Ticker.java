@@ -32,9 +32,13 @@ public class Ticker {
         subscribers.add(tl);
     }
 
+    public static long getTickInterval() { return TICK_INTERVAL; }
+
     public void start() {
         timer.schedule(tr, TICK_INTERVAL, TICK_INTERVAL);
     }
+
+    public void end() { timer.cancel(); }
 
 
     private static class TickerRunnable extends TimerTask {
@@ -51,7 +55,7 @@ public class Ticker {
 
         @Override
         public void run() {
-            System.out.println("Timer is working... Current time: " + CURRENT_TIME); // DEBUG ONLY
+//            System.out.println("Timer is working... Current time: " + CURRENT_TIME); // DEBUG ONLY
 
             //basic version
             for(TickerListener tl : subscribers)

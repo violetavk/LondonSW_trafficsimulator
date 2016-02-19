@@ -3,12 +3,13 @@ package londonsw.model.simulation;
 import londonsw.model.simulation.components.Intersection;
 import londonsw.model.simulation.components.Road;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * This is the graph structure that our map holds (Roads and Intersections)
  */
-public class Map {
+public class Map implements Serializable {
     private ArrayList<Road> roads;
     private ArrayList<Intersection> intersections;
     private MapGrid grid;

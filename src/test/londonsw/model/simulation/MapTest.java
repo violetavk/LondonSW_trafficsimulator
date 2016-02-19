@@ -22,8 +22,8 @@ public class MapTest {
 
         Intersection I1 = new Intersection(new Coordinate(3,0));
 
-        I1.setEastLane(L1); //setEastRoad
-        I1.setWestLane(L2); //setWestRoad
+//        I1.setEastLane(L1); //setEastRoad
+//        I1.setWestLane(L2); //setWestRoad
 
 
     }
