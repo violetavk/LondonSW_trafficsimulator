@@ -41,7 +41,7 @@ public  class Vehicle {
     public void setCurrentLane(Lane currentLane){this.currentLane =currentLane;}
     public void setCurrentCell(int curCell,Lane currentLane){this.currentCell=curCell;}
     public void setVehicleState(int vehicleState){this.vehicleState=vehicleState;}
-//    public void setVehicleBehavior(VehicleBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
+    public void setVehicleBehavior(VehicleBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
 
 
     //Move a vehicle one step forward
