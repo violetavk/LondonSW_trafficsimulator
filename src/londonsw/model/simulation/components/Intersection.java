@@ -1,5 +1,7 @@
 package londonsw.model.simulation.components;
 
+import java.util.ArrayList;
+
 /**
  * This class is our "node" in our directed graph
  * It will hold anywhere between 1 and 4 traffic lights
@@ -16,11 +18,11 @@ package londonsw.model.simulation.components;
 
 public class Intersection implements Component{
 
-    private Road northRoad;
-    private Road southRoad;
-    private Road eastRoad;
-    private Road westRoad;
-    public Road[] optionalRoads;
+    private Lane northLane;
+    private Lane southLane;
+    private Lane eastLane;
+    private Lane westLane;
+    public ArrayList<Lane> laneOptions = new ArrayList<Lane>();
 
     private TrafficLight northTrafficLight;
     private TrafficLight southTrafficLight;
@@ -31,10 +33,10 @@ public class Intersection implements Component{
 
     /* constructor */
     public Intersection(Coordinate location){
-        this.northRoad = null;
-        this.southRoad = null;
-        this.eastRoad = null;
-        this.westRoad = null;
+        this.northLane = null;
+        this.southLane = null;
+        this.eastLane = null;
+        this.westLane = null;
         this.location = location;
         this.northTrafficLight = null;
         this.southTrafficLight = null;
@@ -74,57 +76,57 @@ public class Intersection implements Component{
         this.westTrafficLight = westTrafficLight;
     }
 
-    public Road getNorthRoad() {
-        return northRoad;
+    public Lane getNorthLane() {
+        return northLane;
     }
 
-    public void setNorthRoad(Road northRoad) throws Exception {
+    public void setNorthLane(Lane northLane) throws Exception {
 
-        if(northRoad.getEndLocation().getX()==location.getX() || northRoad.getStartLocation().getX()==location.getX())
+        if(northLane.getEntry().getX()==location.getX() || northLane.getExit().getX()==location.getX())
         {
-            this.northRoad = northRoad;
+            this.northLane = northLane;
         }
         else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
-    public Road getSouthRoad() {
-        return southRoad;
+    public Lane getSouthLane() {
+        return southLane;
     }
 
-    public void setSouthRoad(Road southRoad) throws Exception {
+    public void setSouthLane(Lane southLane) throws Exception {
 
-        if(southRoad.getEndLocation().getX()==location.getX() || southRoad.getStartLocation().getX()==location.getX())
+        if(southLane.getEntry().getX()==location.getX() || southLane.getExit().getX()==location.getX())
         {
-            this.southRoad = southRoad;
+            this.southLane = southLane;
         }
         else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
-    public Road getEastRoad() {
-        return eastRoad;
+    public Lane getEastLane() {
+        return eastLane;
     }
 
-    public void setEastRoad(Road eastRoad) throws Exception {
+    public void setEastLane(Lane eastLane) throws Exception {
 
-        if(eastRoad.getEndLocation().getY()==location.getY() || eastRoad.getStartLocation().getY()==location.getY())
+        if(eastLane.getEntry().getY()==location.getY() || eastLane.getExit().getY()==location.getY())
         {
-            this.eastRoad = eastRoad;
+            this.eastLane = eastLane;
         }
         else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
-    public Road getWestRoad() {
-        return westRoad;
+    public Lane getWestLane() {
+        return westLane;
     }
 
-    public void setWestRoad(Road westRoad) throws IntersectionSetupException {
+    public void setWestLane(Lane westLane) throws IntersectionSetupException {
 
-        if(westRoad.getEndLocation().getY()==location.getY() || westRoad.getStartLocation().getY()==location.getY())
+        if(westLane.getEntry().getY()==location.getY() || westLane.getExit().getY()==location.getY())
         {
-            this.westRoad = westRoad;
+            this.westLane = westLane;
         }
         else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
@@ -143,24 +145,23 @@ public class Intersection implements Component{
         //TODO
     }
 
-    public Road[] getOptionalRoads(){
-        int optionNumber=0;
-        if(getEastRoad()!= null){
-            optionalRoads[optionNumber]=this.getEastRoad();
-            optionNumber++;
+    public ArrayList<Lane> getLaneOptions(){
+
+        laneOptions.clear();
+
+        if(this.getEastLane()!= null && this.getEastLane().getMovingDirection()==MapDirection.EAST){
+            laneOptions.add(this.getEastLane());
         }
-        if(getSouthRoad()!= null){
-            optionalRoads[optionNumber]=this.getSouthRoad();
-            optionNumber++;
+        if(this.getSouthLane()!= null && this.getSouthLane().getMovingDirection()==MapDirection.SOUTH){
+            laneOptions.add(this.getSouthLane());
         }
-        if(getWestRoad()!= null){
-            optionalRoads[optionNumber]=this.getWestRoad();
-            optionNumber++;
+        if(this.getWestLane()!= null && this.getWestLane().getMovingDirection()==MapDirection.WEST){
+           laneOptions.add(this.getWestLane());
         }
-        if(getNorthRoad()!= null){
-            optionalRoads[optionNumber]=this.getNorthRoad();
+        if(this.getNorthLane()!= null && this.getNorthLane().getMovingDirection()==MapDirection.NORTH){
+            laneOptions.add(this.getNorthLane());
         }
-        return optionalRoads;
+        return laneOptions;
     }
 }
 
