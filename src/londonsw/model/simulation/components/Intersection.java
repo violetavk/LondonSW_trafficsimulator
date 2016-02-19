@@ -1,5 +1,7 @@
 package londonsw.model.simulation.components;
 
+import java.util.ArrayList;
+
 /**
  * This class is our "node" in our directed graph
  * It will hold anywhere between 1 and 4 traffic lights
@@ -20,7 +22,7 @@ public class Intersection implements Component{
     private Lane southLane;
     private Lane eastLane;
     private Lane westLane;
-    public Lane[] laneOptions;
+    public ArrayList<Lane> laneOptions = new ArrayList<Lane>();
 
     private TrafficLight northTrafficLight;
     private TrafficLight southTrafficLight;
@@ -143,22 +145,21 @@ public class Intersection implements Component{
         //TODO
     }
 
-    public Lane[] getLaneOptions(){
-        int optionNumber=0;
-        if(getEastLane()!= null){
-            laneOptions[optionNumber]=this.getEastLane();
-            optionNumber++;
+    public ArrayList<Lane> getLaneOptions(){
+
+        laneOptions.clear();
+
+        if(this.getEastLane()!= null && this.getEastLane().getMovingDirection()==MapDirection.EAST){
+            laneOptions.add(this.getEastLane());
         }
-        if(getSouthLane()!= null){
-            laneOptions[optionNumber]=this.getSouthLane();
-            optionNumber++;
+        if(this.getSouthLane()!= null && this.getSouthLane().getMovingDirection()==MapDirection.SOUTH){
+            laneOptions.add(this.getSouthLane());
         }
-        if(getWestLane()!= null){
-            laneOptions[optionNumber]=this.getWestLane();
-            optionNumber++;
+        if(this.getWestLane()!= null && this.getWestLane().getMovingDirection()==MapDirection.WEST){
+           laneOptions.add(this.getWestLane());
         }
-        if(getNorthLane()!= null){
-            laneOptions[optionNumber]=this.getNorthLane();
+        if(this.getNorthLane()!= null && this.getNorthLane().getMovingDirection()==MapDirection.NORTH){
+            laneOptions.add(this.getNorthLane());
         }
         return laneOptions;
     }
