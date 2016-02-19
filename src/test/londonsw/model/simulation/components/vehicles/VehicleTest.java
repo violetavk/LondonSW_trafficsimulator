@@ -1,6 +1,8 @@
 package londonsw.model.simulation.components.vehicles;
 
 import londonsw.model.simulation.components.Coordinate;
+import londonsw.model.simulation.components.Lane;
+import londonsw.model.simulation.components.MapDirection;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,15 +19,15 @@ public class VehicleTest {
         v= new Vehicle(new Coordinate(1,2),2);
     }*/
 
-    @Test
-    public void testGetVehicleId() throws Exception {
-        Vehicle v= new Vehicle(new Coordinate(1,2),2);
-        assertEquals(2, v.getVehicleId()) ;
-    }
+
 
     @Test
     public void testMoveVehicle() throws Exception {
-        Vehicle v= new Vehicle(new Coordinate(1,2),2);
+        Lane l= new Lane(new Coordinate(1,5), new Coordinate(4,5), MapDirection.EAST);
+        Vehicle v= new Vehicle(1,l);
+        int curCell =v.getCurrentCell();
+        v.moveVehicle(1);
+        assertEquals(curCell+1,v.getCurrentCell());
 
 
     }
