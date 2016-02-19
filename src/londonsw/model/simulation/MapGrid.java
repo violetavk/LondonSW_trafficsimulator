@@ -1,19 +1,109 @@
 package londonsw.model.simulation;
 
 import londonsw.model.simulation.components.Component;
+import londonsw.model.simulation.components.Coordinate;
+import londonsw.model.simulation.components.Intersection;
+import londonsw.model.simulation.components.Road;
 
+/**
+ * This class is the underlying structure of our Map. It is a 2D-array of map Components,
+ * each Component being something that you would want to be displayed on the map, such as
+ * a Road or Intersection.
+ */
 public class MapGrid {
 
     private int width;
     private int height;
     private Component[][] grid;
 
+    /**
+     * Creates a brand new MapGrid instance to be part of a Map
+     * @param width width of the Map that this will be part of
+     * @param height height of the Map that this will be part of
+     */
     public MapGrid(int width, int height) {
         this.width = width;
         this.height = height;
-        grid = new Component[width][height];
+        grid = new Component[height][width];
     }
 
+    /**
+     * Returns the actual 2D-array of Components
+     * @return 2D-array array of Components signifying the layout of the Map
+     */
+    public Component[][] getGrid() {
+        return grid;
+    }
 
+    /**
+     * Gets the width of the grid
+     * @return width of the grid
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * Gets the height of the grid
+     * @return height of the grid
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Adds a Component to the map grid structure
+     * @param c the Component to be added
+     * @return true if successfully added, false otherwise
+     */
+    @SuppressWarnings("Duplicates")
+    public boolean addComponent(Component c) {
+        if(c instanceof Intersection) {
+            Intersection i = (Intersection) c;
+            Coordinate coord = i.getLocation();
+            grid[coord.getX()][coord.getY()] = i;
+            return true;
+        }
+        else if(c instanceof Road) { // TODO there must be a better way of representing a road cell
+            Road road = (Road) c;
+            Coordinate start = road.getStartLocation();
+            Coordinate end = road.getEndLocation();
+            int startX = start.getX();
+            int startY = start.getY();
+            int endX = end.getX();
+            int endY = end.getY();
+
+            if(road.runsVertically()) { // road runs vertically
+                if(startY <= endY) { // start coordinate is north of end coordinate
+                    for(int i = startY; i <= endY; i++) {
+                        grid[i][startX] = road;
+                    }
+                    return true;
+                }
+                else { // start coordinate is south of end coordinate
+                    for(int i = endY; i <= startY; i++) {
+                        grid[i][startX] = road;
+                    }
+                    return true;
+                }
+            }
+            else { // road runs horizontally
+                if(startX <= endX) { // start coordinate is west of end coordinate
+                    for(int i = startX; i <= endX; i++) {
+                        grid[startY][i] = road;
+                    }
+                    return true;
+                }
+                else {
+                    for(int i = endX; i <= startX; i++) { // start coordinate is east of end coordinate
+                        grid[startY][i] = road;
+                    }
+                    return true;
+                }
+            }
+        }
+        else
+            return false;
+    }
 
 }
