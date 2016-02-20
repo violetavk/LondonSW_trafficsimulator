@@ -3,12 +3,16 @@ package londonsw.model.simulation;
 import londonsw.model.simulation.components.Intersection;
 import londonsw.model.simulation.components.Road;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * This is the graph structure that our map holds (Roads and Intersections)
  */
-public class Map {
+public class Map implements Serializable {
     private ArrayList<Road> roads;
     private ArrayList<Intersection> intersections;
     private MapGrid grid;
@@ -93,6 +97,23 @@ public class Map {
     public void addIntersection(Intersection i) {
         intersections.add(i);
         grid.addComponent(i);
+    }
+
+    public void saveMap()
+    {
+        try
+        {
+            FileOutputStream fileOut =
+                    new FileOutputStream("/tmp/Fixed.map");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+            System.out.printf("Serialized data is saved in /tmp/Fixed.map");
+        }catch(IOException i)
+        {
+            i.printStackTrace();
+        }
     }
 
 }
