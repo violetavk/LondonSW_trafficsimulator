@@ -12,6 +12,7 @@ public class Simulation {
 
     public Simulation() {
         map = new Map(10,10);
+        // TODO map might need to be loaded from somewhere, not set to a default value!
         ticker = new Ticker();
     }
 

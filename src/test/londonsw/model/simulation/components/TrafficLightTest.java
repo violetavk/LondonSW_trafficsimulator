@@ -1,5 +1,7 @@
 package londonsw.model.simulation.components;
 
+import londonsw.model.simulation.Ticker;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -9,6 +11,13 @@ import static org.junit.Assert.assertEquals;
  */
 public class TrafficLightTest {
 
+    Ticker ticker;
+
+    @Before
+    public void setUp() {
+        ticker = new Ticker();
+    }
+
     @Test
     public void testNextState() throws Exception {
         TrafficLight light = new TrafficLight();
@@ -16,8 +25,8 @@ public class TrafficLightTest {
         light.nextState();
         assertEquals(LightColour.GREEN, light.state);
         light.nextState();
-        assertEquals(LightColour.YELLOW, light.state);
-        light.nextState();
+//        assertEquals(LightColour.YELLOW, light.state);
+//        light.nextState();
         assertEquals(LightColour.RED, light.state);
 
 
@@ -29,7 +38,15 @@ public class TrafficLightTest {
         light.change(1);
         // assertEquals(SignalColor.YELLOW, light.state);
         assertEquals(LightColour.GREEN, light.state);
+    }
 
 
+    /* Test with Ticker */
+    public static void main(String[] args) throws InterruptedException {
+        Ticker ticker = new Ticker();
+        TrafficLight tl = new TrafficLight();
+        ticker.start();
+        Thread.sleep(8000);
+        ticker.end();
     }
 }

@@ -3,9 +3,6 @@ package londonsw.model.simulation;
 import londonsw.model.simulation.components.Intersection;
 import londonsw.model.simulation.components.Road;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -97,23 +94,6 @@ public class Map implements Serializable {
     public void addIntersection(Intersection i) {
         intersections.add(i);
         grid.addComponent(i);
-    }
-
-    public void saveMap()
-    {
-        try
-        {
-            FileOutputStream fileOut =
-                    new FileOutputStream("/tmp/Fixed.map");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(this);
-            out.close();
-            fileOut.close();
-            System.out.printf("Serialized data is saved in /tmp/Fixed.map");
-        }catch(IOException i)
-        {
-            i.printStackTrace();
-        }
     }
 
 }
