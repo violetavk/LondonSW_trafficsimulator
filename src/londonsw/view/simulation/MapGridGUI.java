@@ -88,6 +88,8 @@ public class MapGridGUI extends MapGrid {
         Scene scene = new Scene(root, 500, 500);
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
+        primaryStage.setFullScreen(true);
+
         primaryStage.show();
     }
 }
