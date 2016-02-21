@@ -1,5 +1,4 @@
 package londonsw.model.simulation.components;
-
 import londonsw.model.simulation.components.vehicles.Vehicle;
 
 /**
@@ -15,8 +14,10 @@ public class Lane {
     private Coordinate entry;
     private Coordinate exit;
     private MapDirection movingDirection;
+    private Road road;
 
-    public MapDirection getMovingDirection(){
+
+    public MapDirection getMovingDirection() {
         return movingDirection;
     }
 
@@ -35,15 +36,13 @@ public class Lane {
         int bY = exit.getY();
         int length;
 
-        if(aX == bX) {
-            length = Math.abs(aY-bY) + 1;
+        if (aX == bX) {
+            length = Math.abs(aY - bY) + 1;
             return length;
-        }
-        else if(aY == bY) {
-            length = Math.abs(aX-bX) + 1;
+        } else if (aY == bY) {
+            length = Math.abs(aX - bX) + 1;
             return length;
-        }
-        else
+        } else
             throw new NotALaneException("Not a lane. Coordinate x or y must match for both");
     }
 
@@ -52,10 +51,10 @@ public class Lane {
     }
 
     public boolean isCellEmpty(int cell) {
-        if(cell < 0 || cell > this.length)
+        if (cell < 0 || cell > this.length)
             return false;
 
-        if(lane[cell] == null)
+        if (lane[cell] == null)
             return true;
         return false;
     }
@@ -63,19 +62,20 @@ public class Lane {
     public Coordinate getEntry() {
         return entry;
     }
-
     public Coordinate getExit() {
         return exit;
     }
+    public Road getRoad() { return road; }
+
+    public void setRoad(Road road) { this.road = road; }
 
     public boolean setCell(Vehicle v, int cell) {
-        if(cell < 0 || cell >= length)
+        if (cell < 0 || cell >= length)
             return false;
 
         lane[cell] = v;
         return true;
     }
-
 
 }
 

@@ -1,8 +1,6 @@
 package londonsw.model.simulation.components.vehicles;
-import londonsw.model.simulation.components.Coordinate;
-import londonsw.model.simulation.components.Lane;
-import londonsw.model.simulation.components.VehicleBehavior;
-//new
+import londonsw.model.simulation.components.*;
+
 
 /**
  * This is the interface that all vehicles will implement
@@ -17,6 +15,8 @@ public  class Vehicle {
     int vehicleState;
     VehicleBehavior vehicleBehavior;
     public Lane currentLane;
+
+
 
 
     
@@ -47,7 +47,7 @@ public  class Vehicle {
     //Move a vehicle one step forward
     public boolean moveVehicle(int step) {
        int curCell= this.getCurrentCell();
-        if(curCell+step >= this.currentLane.getLength()) {
+        if(curCell+step >= this.currentLane.getLength() || (!this.currentLane.isCellEmpty(curCell+step)) ) {
            return false;
         }
        else {
@@ -57,8 +57,47 @@ public  class Vehicle {
        }
     }
 
+    public void readTrafficLight(){
+        if (this.getCurrentCell() == this.currentLane.getLength() -1) {
+           this.getCurrentLane().getMovingDirection();
+            TrafficLight light= new TrafficLight();
+           switch (this.getCurrentLane().getMovingDirection()){
+               case NORTH:
+                   light= this.getCurrentLane().getRoad().getIntersection().getSouthTrafficLight();
+                   break;
+               case SOUTH:
+                   light= this.getCurrentLane().getRoad().getIntersection().getNorthTrafficLight();
+                   break;
+               case EAST:
+                   light= this.getCurrentLane().getRoad().getIntersection().getWestTrafficLight();
+                   break;
+               case WEST:
+                   light= this.getCurrentLane().getRoad().getIntersection().getEastTrafficLight();
+                   break;
+               case ERROR:
+                   System.out.println("Error Direction !");
+                   break;
+           }
+            if (light.getState()==LightColour.RED)
+                this.setVehicleState(0);
+            else
+                this.setVehicleState(1);
+          
+        }
+
+    }
+
+    public void vehicleDirection () {
+        if (this.getCurrentCell() == this.currentLane.getLength() -1){
+            //this.getCurrentLane().getRoad().getIntersection().chooseDirection();
+            //this.setCurrentCell(0,);
+        }
+
+    }
+
     //1 is moving, 0 is static
     public void stopVehicle(){vehicleState=0;}
+
 
 
 }
