@@ -3,23 +3,12 @@ package londonsw.model.simulation.components;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.TickerListener;
 
-/**
- * Created by yakubu on 19/02/2016.
- */
-public class TrafficLight implements TickerListener {
-
+public class TrafficLight extends Ticker implements ITrafficLight, TickerListener {
     LightColour state = LightColour.RED;
     private long duration = 2000;
     private long currentTime;
 
-    public TrafficLight() {
-        this.currentTime = 0;
-        Ticker.subscribe(this);
-    }
-
-    /**
-     *
-     */
+    @Override
     public void nextState() {
         switch (state) {
             case RED:
@@ -35,23 +24,32 @@ public class TrafficLight implements TickerListener {
                 state = LightColour.RED;
                 break;
         }
+
     }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
-
-    public long getDuration() {
-        return duration;
-    }
-
-    /**
-     * @param no
-     */
+    @Override
     public void change(int no) {
         for (int i = 0; i < no; i++) {
             nextState();
         }
+
+    }
+
+    public TrafficLight() {
+        this.currentTime = 0;
+        Ticker.subscribe(this);
+
+    }
+
+    @Override
+    public void setDuration(long duration) {
+        this.duration = duration;
+
+    }
+
+    @Override
+    public long getDuration() {
+        return duration;
     }
 
     @Override
@@ -65,5 +63,5 @@ public class TrafficLight implements TickerListener {
         }
         System.out.println("time: " + time + "  color: " + state); // debug only
     }
-}
 
+}
