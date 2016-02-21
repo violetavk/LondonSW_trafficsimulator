@@ -1,8 +1,11 @@
 package londonsw.view;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import londonsw.model.simulation.components.*;
+import londonsw.view.simulation.CarGUI;
 import londonsw.view.simulation.MapGridGUI;
 
 public class MapGridGUITestMain extends Application {
@@ -10,10 +13,11 @@ public class MapGridGUITestMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        MapGridGUI m = new MapGridGUI(10,10);
+        MapGridGUI m = new MapGridGUI(8,8);
 
-        Road R1 = new Road(new Coordinate(0,0),new Coordinate(9,0));
-        Lane L1 = new Lane(new Coordinate(0,0), new Coordinate(9,0), MapDirection.EAST);
+        Road R1 = new Road(new Coordinate(0,5),new Coordinate(7,5));
+        Lane L1 = new Lane(new Coordinate(0,5), new Coordinate(7,5), MapDirection.EAST);
+        CarGUI C1 = new CarGUI(0,L1);
         //Intersection I1 = new Intersection(new Coordinate(0,4));
 
         //Road R2 = new Road(new Coordinate(5,0),new Coordinate(5,9));
@@ -26,7 +30,24 @@ public class MapGridGUITestMain extends Application {
         //m.addComponent(I1);
         //m.addComponent(R2);
 
-        m.drawComponents(primaryStage);
+        //Create CarGUI
+
+        //GridPane rootGP = m.drawInitialLayout();
+        m.drawComponents();
+
+        GridPane rootGP = m.getGridPane();
+
+        Scene scene = new Scene(rootGP);
+
+        C1.setGridPane(rootGP);
+
+        C1.drawCar(new Coordinate(0,5));
+        C1.moveCar(6);
+
+        primaryStage.setTitle("Map Layout");
+        primaryStage.setScene(scene);
+        //primaryStage.setFullScreen(true);
+        primaryStage.show();
 
     }
 
