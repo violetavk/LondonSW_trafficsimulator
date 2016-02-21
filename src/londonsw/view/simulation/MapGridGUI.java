@@ -1,14 +1,10 @@
 package londonsw.view.simulation;
 
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import londonsw.model.simulation.MapGrid;
-import londonsw.model.simulation.components.Component;
-import londonsw.model.simulation.components.Intersection;
-import londonsw.model.simulation.components.Road;
+import londonsw.model.simulation.components.*;
 
 /**
  * Created by felix on 20/02/2016.
@@ -25,9 +21,19 @@ public class MapGridGUI extends MapGrid {
         super(width, height);
     }
 
-    public void drawInitialLayout(Stage primaryStage)
-    {
-        GridPane root = new GridPane();
+    public GridPane getGridPane() {
+        return gridPane;
+    }
+
+    public void setGridPane(GridPane gridPane) {
+        this.gridPane = gridPane;
+    }
+
+    private GridPane gridPane;
+
+    public void drawInitialLayout() throws Exception {
+
+        GridPane rootGP = new GridPane();
 
         for(int y = 0; y < this.getHeight(); y++){
             for(int x = 0; x < this.getWidth(); x++){
@@ -35,24 +41,30 @@ public class MapGridGUI extends MapGrid {
                 Image im  = new Image("Grass.png");
                 ImageView iv = new ImageView(im);
 
-                // Iterate the Index using the loops
-                root.setRowIndex(iv,y);
-                root.setColumnIndex(iv,x);
+                //change image size
 
-                root.getChildren().add(iv);
+                //iv.setImage(im);
+                //iv.setFitWidth(this.getWidth()*7);
+                //iv.setFitHeight(this.getHeight()*7);
+                //iv.setPreserveRatio(true);
+                //iv.setSmooth(true);
+                //iv.setCache(true);
+
+                // Iterate the Index using the loops
+                rootGP.setRowIndex(iv,y);
+                rootGP.setColumnIndex(iv,x);
+                rootGP.getChildren().add(iv);
             }
         }
 
-        Scene scene = new Scene(root, 500, 500);
-        //Scene scene = new Scene(root, 3200, 1800);
-        primaryStage.setTitle("Map Layout");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        rootGP.setGridLinesVisible(true);
+        this.setGridPane(rootGP);
     }
 
-    public void drawComponents(Stage primaryStage)
+    public void drawComponents()
     {
-        GridPane root = new GridPane();
+        GridPane rootGP = new GridPane();
+
         Image im  = new Image("Grass.png");
 
         for(int y = 0; y < this.getHeight(); y++){
@@ -78,18 +90,16 @@ public class MapGridGUI extends MapGrid {
                 ImageView iv = new ImageView(im);
 
                 // Iterate the Index using the loops
-                root.setRowIndex(iv,y);
-                root.setColumnIndex(iv,x);
+                rootGP.setRowIndex(iv,y);
+                rootGP.setColumnIndex(iv,x);
 
-                root.getChildren().add(iv);
+                rootGP.getChildren().add(iv);
             }
         }
 
-        Scene scene = new Scene(root, 500, 500);
-        primaryStage.setTitle("Map Layout");
-        primaryStage.setScene(scene);
-        primaryStage.setFullScreen(true);
+        rootGP.setGridLinesVisible(true);
 
-        primaryStage.show();
+        this.setGridPane(rootGP);
+
     }
 }
