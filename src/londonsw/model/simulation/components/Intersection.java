@@ -152,6 +152,8 @@ public class Intersection implements Component{
     }
 
     public ArrayList<Road> getRoadOptions(){
+        //turn it to getLaneOptions()
+        //TODO
 
         roadOptions.clear();
 

@@ -25,11 +25,10 @@ public class Road implements Component {
      * @param start the location of one end of the road
      * @param end the location of the other end of the road
      */
-    public Road(Coordinate start, Coordinate end,Intersection intersection ) {
+    public Road(Coordinate start, Coordinate end ) {
         lanes = new ArrayList<Lane>();
         this.start = start;
         this.end = end;
-        this.intersection=intersection;
     }
 
     /**
@@ -79,6 +78,7 @@ public class Road implements Component {
     }
 
     public Intersection getIntersection() {
+        //TODO
         return intersection;
     }
 
