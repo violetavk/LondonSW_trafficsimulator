@@ -1,0 +1,32 @@
+Number,Name,Description,Type,Estimate,Owner,Priority,Status,Created by,Modified by
+20,Ticker,Basic,Story,,violetta.avkhukova,Must,In progress,santiago_anda,jia.liu
+23,Map Serlialization,"<p>Map.add() Intersections, Roads</p>
+
+<p>Call mapGrid class</p>",Story,2,violetta.avkhukova,,In progress,santiago_anda,jia.liu
+26,JavaFX & Scene Builder,,Story,,jia.liu,,In progress,jia.liu,jia.liu
+27,Scene design,"<p>Map simulation</p>
+
+<p>GUI</p>
+
+<p>let users make their own map</p>",Story,,jia.liu,,New,jia.liu,jia.liu
+28,Features,"<p>Vary size of map</p>
+
+<p>Draw intersections</p>
+
+<p>Extend to vehicle turns</p>
+
+<p>Non draggle</p>
+
+<p>Fix bugs</p>
+
+<p> </p>
+
+<p> </p>",Story,,santiago_anda,,New,jia.liu,jia.liu
+29,Features,"<p>change getRoad option to getLane Option </p>
+
+<p>Create road.getIntersection method</p>
+
+<p>vehicle turn</p>
+
+<p> </p>",Story,,rawan.alrahili,,New,jia.liu,jia.liu
+30,GUI design,,Story,,yakubu.aliyu_doma,,New,jia.liu,jia.liu
