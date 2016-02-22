@@ -24,6 +24,7 @@ public abstract class Vehicle implements TickerListener{
 
     public ArrayList<Lane> laneOptions = new ArrayList<Lane>();
     private Random randomDirection;
+    Lane l;
 
 
     // debug only
