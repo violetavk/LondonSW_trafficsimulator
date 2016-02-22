@@ -3,6 +3,9 @@ import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.TickerListener;
 import londonsw.model.simulation.components.*;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 
 /**
  * This is the interface that all vehicles will implement
@@ -18,6 +21,9 @@ public abstract class Vehicle implements TickerListener{
     int vehicleState;
     VehicleBehavior vehicleBehavior;
     public Lane currentLane;
+
+    public ArrayList<Lane> laneOptions = new ArrayList<Lane>();
+    private Random randomDirection;
 
 
     // debug only
@@ -100,12 +106,38 @@ public abstract class Vehicle implements TickerListener{
 
     }
 
-    public void vehicleDirection () {
-        if (this.getCurrentCell() == this.currentLane.getLength() -1){
-            //this.getCurrentLane().getRoad().getIntersection().chooseDirection();
-            //this.setCurrentCell(0,);
-        }
+    public ArrayList<Lane> getLaneOptions(){
+        laneOptions.clear();
+        int i=0;
 
+        if ((this.currentLane.getRoad().getIntersection().getEastRoad()!=null) &&
+                (this.currentLane.getMovingDirection()!=MapDirection.WEST))
+        {laneOptions.addAll(this.currentLane.getRoad().getIntersection().getEastRoad().getLanes());}
+
+        if ((this.currentLane.getRoad().getIntersection().getSouthRoad()!= null) &&
+                (this.currentLane.getMovingDirection()!=MapDirection.NORTH))
+        {laneOptions.addAll(this.currentLane.getRoad().getIntersection().getSouthRoad().getLanes());}
+
+        if ((this.currentLane.getRoad().getIntersection().getNorthRoad()!= null)&&
+                (this.currentLane.getMovingDirection()!=MapDirection.SOUTH))
+        {laneOptions.addAll(this.currentLane.getRoad().getIntersection().getNorthRoad().getLanes());}
+
+        if ((this.currentLane.getRoad().getIntersection().getWestRoad()!= null)&&
+                (this.currentLane.getMovingDirection()!=MapDirection.EAST))
+        {laneOptions.addAll(this.currentLane.getRoad().getIntersection().getWestRoad().getLanes());}
+
+        return laneOptions;
+    }
+
+    public void vehicleTurn () {
+        Lane l;
+        randomDirection = new Random();
+        int size = randomDirection.nextInt(this.getLaneOptions().size());
+        l= this.getLaneOptions().get(size);
+
+        if ((this.getCurrentCell() == this.currentLane.getLength() -1)&& (l.isCellEmpty(l.getLength()-1))){
+            this.setCurrentCell(0,l);
+        }
     }
 
     //1 is moving, 0 is static
