@@ -11,12 +11,12 @@ import static org.junit.Assert.assertEquals;
  */
 public class TrafficLightTest {
 
-    Ticker ticker;
+//    static Ticker ticker;
 
-    @Before
-    public void setUp() {
-        ticker = new Ticker();
-    }
+//    @Before
+//    public void setUp() {
+//        ticker = Ticker.getInstance();
+//    }
 
     @Test
     public void testNextState() throws Exception {
@@ -42,11 +42,11 @@ public class TrafficLightTest {
 
 
     /* Test with Ticker */
-    public static void main(String[] args) throws InterruptedException {
-        Ticker ticker = new Ticker();
+    public static void main(String[] args) throws Exception {
+        Ticker ticker = Ticker.getInstance();
         TrafficLight tl = new TrafficLight();
         ticker.start();
-        Thread.sleep(8000);
+        Thread.sleep(4000);
         ticker.end();
     }
 }

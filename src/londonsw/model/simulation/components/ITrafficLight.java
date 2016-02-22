@@ -12,5 +12,4 @@ public interface ITrafficLight {
     public void change(int no);
     public void setDuration(long duration);
     public long getDuration();
-    public void onTick(long time);
 }

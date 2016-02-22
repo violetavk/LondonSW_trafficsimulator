@@ -7,12 +7,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class ITrafficLightTest {
-    TrafficLight light = new TrafficLight();
-    Ticker ticker;
+
+    static Ticker ticker;
 
 
     @Before
-    public void setUp() throws Exception {ticker = new Ticker();}
+    public void setUp() throws Exception {ticker = Ticker.getInstance();}
 
     @Test
     public void testNextState() throws Exception {
@@ -33,7 +33,7 @@ public class ITrafficLightTest {
 
     }
     public static void main(String[] args) throws InterruptedException {
-        Ticker ticker = new Ticker();
+        ticker = Ticker.getInstance();
         TrafficLight tl = new TrafficLight();
         ticker.start();
         Thread.sleep(8000);

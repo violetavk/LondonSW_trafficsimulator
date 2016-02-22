@@ -21,12 +21,21 @@ public class Ticker {
 
     private static Timer timer;
 
-    public Ticker() {
+    private static Ticker instance;
+
+    protected Ticker() {
         CURRENT_TIME = 0;
         subscribers = new ArrayList<TickerListener>();
-        timer = new Timer();
+        timer = new Timer(true);
         tr = TickerRunnable.getInstance();
-    } // TODO would be nice to have Ticker be a Singleton class
+    }
+
+    public static Ticker getInstance() {
+        if(instance == null) {
+            instance = new Ticker();
+        }
+        return instance;
+    }
 
     public static void subscribe(TickerListener tl) {
         subscribers.add(tl);
@@ -38,12 +47,16 @@ public class Ticker {
         timer.schedule(tr, TICK_INTERVAL, TICK_INTERVAL);
     }
 
-    public void end() { timer.cancel(); }
+    public void end() {
+        tr.cancel();
+        timer.cancel();
+        timer.purge();
+//        System.out.println("Timer cancelled");
+    }
 
 
     private static class TickerRunnable extends TimerTask {
 
-        //maybe a new thread for each, each will wait(TICK_INTERVAL) and then Ticker will notifyAll() or something...
         private static TickerRunnable instance;
 
         public static TickerRunnable getInstance() {
@@ -60,8 +73,6 @@ public class Ticker {
             //basic version
             for(TickerListener tl : subscribers)
                 tl.onTick(CURRENT_TIME);
-
-            //TODO try to send the update to all subscribers at the same time
 
             CURRENT_TIME = CURRENT_TIME + TICK_INTERVAL;
         }

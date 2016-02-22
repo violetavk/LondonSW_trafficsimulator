@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.*;
 import londonsw.view.simulation.CarGUI;
 import londonsw.view.simulation.MapGridGUI;
@@ -14,6 +15,7 @@ public class MapGridGUITestMain extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         MapGridGUI m = new MapGridGUI(8,8);
+        Ticker ticker = Ticker.getInstance();
 
         Road R1 = new Road(new Coordinate(0,5),new Coordinate(7,5));
         Lane L1 = new Lane(new Coordinate(0,5), new Coordinate(7,5), MapDirection.EAST);
