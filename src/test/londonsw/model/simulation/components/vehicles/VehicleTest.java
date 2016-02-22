@@ -59,11 +59,12 @@ public class VehicleTest {
      */
     public static void main(String[] args) throws Exception {
         Ticker ticker = Ticker.getInstance();
+        ticker.start();
         Lane lane = new Lane(new Coordinate(0,0), new Coordinate(5, 0), MapDirection.EAST);
         Vehicle car1 = new Car(0,lane);
+        car1.setVehicleBehavior(VehicleBehavior.AVERAGE);
         printLane(lane);
-        ticker.start();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         printLane(lane);
         Thread.sleep(1000);
         printLane(lane);

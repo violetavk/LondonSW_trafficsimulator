@@ -20,7 +20,8 @@ public abstract class Vehicle implements TickerListener{
     public Lane currentLane;
 
 
-
+    // debug only
+    int timesTicked;
 
     
     //Constructor
@@ -29,6 +30,8 @@ public abstract class Vehicle implements TickerListener{
         this.currentLane = currentLane;
         this.currentLane.setCell(this,currentCell);
         Ticker.subscribe(this);
+
+        timesTicked = 0;
     }
 
     //Getter
@@ -61,7 +64,7 @@ public abstract class Vehicle implements TickerListener{
             curCell= curCell+step;
             this.setCurrentCell(curCell,this.getCurrentLane());
             currentLane.setCell(this,curCell);
-
+            System.out.println("Car moved from " + (curCell-step) + " to " + curCell);
             return true;
 
        }
@@ -115,21 +118,26 @@ public abstract class Vehicle implements TickerListener{
     public void onTick(long time) {
         System.out.println("Car heard tick, time is " + time);
         long startTime = System.currentTimeMillis();
-        VehicleBehavior behavior = this.getVehicleBehavior();
-        if(behavior == VehicleBehavior.AVERAGE) {
+//        VehicleBehavior behavior = this.getVehicleBehavior();
+        if(vehicleBehavior == VehicleBehavior.AVERAGE) {
+            System.out.println("About to move one slot - AVERAGE");
             this.moveVehicle(1);
         }
-        else if(behavior == VehicleBehavior.AGGRESSIVE) {
+        else if(vehicleBehavior == VehicleBehavior.AGGRESSIVE) {
+            System.out.println("About to move two slots - AGGRESSIVE");
             this.moveVehicle(2);
         }
-        else if(behavior == VehicleBehavior.CAUTIOUS) {
+        else if(vehicleBehavior == VehicleBehavior.CAUTIOUS) {
+            System.out.println("About to move one slot - CAUTIOUS");
             this.moveVehicle(1);
             // maybe some other characteristics that make it "cautious"
         }
         else
             this.moveVehicle(1); // default behaviour = Average
         long endtime = System.currentTimeMillis();
-        System.out.println("Moving took " + (endtime-startTime) + " millis\n");
+        System.out.println("Moving took " + (endtime-startTime) + " millis");
+        timesTicked++;
+        System.out.println("Times ticked: " + timesTicked + "\n");
     }
 }
 
