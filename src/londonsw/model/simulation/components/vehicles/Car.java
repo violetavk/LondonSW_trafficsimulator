@@ -19,9 +19,6 @@ public class Car extends Vehicle implements TickerListener {
         this.vehiclePriority = 1;
     }
 
-    public void onTick(long time) {
-        super.onTick(time);
-    }
   }
 
 

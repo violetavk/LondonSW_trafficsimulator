@@ -58,12 +58,14 @@ public class VehicleTest {
      * This is a test for Vehicles moving with the ticker
      */
     public static void main(String[] args) throws Exception {
+        Ticker ticker = Ticker.getInstance();
         Lane lane = new Lane(new Coordinate(0,0), new Coordinate(5, 0), MapDirection.EAST);
         Vehicle car1 = new Car(0,lane);
         printLane(lane);
-        Ticker ticker = Ticker.getInstance();
         ticker.start();
         Thread.sleep(2000);
+        printLane(lane);
+        Thread.sleep(1000);
         printLane(lane);
         ticker.end();
     }

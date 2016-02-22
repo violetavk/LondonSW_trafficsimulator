@@ -1,4 +1,5 @@
 package londonsw.model.simulation.components.vehicles;
+import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.TickerListener;
 import londonsw.model.simulation.components.*;
 
@@ -27,6 +28,7 @@ public abstract class Vehicle implements TickerListener{
         this.currentCell = currentCell;
         this.currentLane = currentLane;
         this.currentLane.setCell(this,currentCell);
+        Ticker.subscribe(this);
     }
 
     //Getter
@@ -112,6 +114,7 @@ public abstract class Vehicle implements TickerListener{
     @Override
     public void onTick(long time) {
         System.out.println("Car heard tick, time is " + time);
+        long startTime = System.currentTimeMillis();
         VehicleBehavior behavior = this.getVehicleBehavior();
         if(behavior == VehicleBehavior.AVERAGE) {
             this.moveVehicle(1);
@@ -125,6 +128,8 @@ public abstract class Vehicle implements TickerListener{
         }
         else
             this.moveVehicle(1); // default behaviour = Average
+        long endtime = System.currentTimeMillis();
+        System.out.println("Moving took " + (endtime-startTime) + " millis\n");
     }
 }
 
