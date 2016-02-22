@@ -38,7 +38,8 @@ public class VehicleTest {
         light.setState(LightColour.GREEN);
         Intersection intersection = new Intersection(new Coordinate(5,5));
         intersection.setSouthTrafficLight(light);
-        Road r =new Road(new Coordinate(1,5), new Coordinate(4,5), intersection );
+        Road r =new Road(new Coordinate(1,5), new Coordinate(4,5));
+        r.setIntersection(intersection);
         Lane l= new Lane(new Coordinate(1,5), new Coordinate(4,5), MapDirection.NORTH);
         Vehicle v= new Vehicle(3,l);
         r.setIntersection(intersection);
@@ -48,6 +49,4 @@ public class VehicleTest {
         assertEquals(v.getVehicleState(),1);
 
     }
-
-
 }
