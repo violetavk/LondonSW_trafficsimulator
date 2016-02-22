@@ -1,4 +1,5 @@
 package londonsw.model.simulation.components.vehicles;
+import londonsw.model.simulation.TickerListener;
 import londonsw.model.simulation.components.*;
 
 
@@ -6,7 +7,8 @@ import londonsw.model.simulation.components.*;
  * This is the interface that all vehicles will implement
  * This allows for scalability because we can add more types of cars (eg. ambulance, bus)
  */
-public  class Vehicle {
+public abstract class Vehicle implements TickerListener{
+    // TODO this is supposed to be abstract!!
 
     int vehicleLength;
     double vehicleSpeed;
@@ -23,7 +25,9 @@ public  class Vehicle {
     //Constructor
     public Vehicle( int currentCell, Lane currentLane) {
         this.currentCell = currentCell;
-        this.currentLane = currentLane;}
+        this.currentLane = currentLane;
+        this.currentLane.setCell(this,currentCell);
+    }
 
     //Getter
     public int getVehicleLength() {return vehicleLength;}
@@ -44,16 +48,20 @@ public  class Vehicle {
     public void setVehicleBehavior(VehicleBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
 
 
-    //Move a vehicle one step forward
+    //Move a vehicle some steps forward
     public boolean moveVehicle(int step) {
        int curCell= this.getCurrentCell();
         if(curCell+step >= this.currentLane.getLength() || (!this.currentLane.isCellEmpty(curCell+step)) ) {
            return false;
         }
        else {
+            currentLane.setCell(null,curCell);
             curCell= curCell+step;
             this.setCurrentCell(curCell,this.getCurrentLane());
+            currentLane.setCell(this,curCell);
+
             return true;
+
        }
     }
 
@@ -96,9 +104,27 @@ public  class Vehicle {
     }
 
     //1 is moving, 0 is static
-    public void stopVehicle(){vehicleState=0;}
+    public void stopVehicle() {
+        vehicleState = 0;
+    }
 
 
-
+    @Override
+    public void onTick(long time) {
+        System.out.println("Car heard tick, time is " + time);
+        VehicleBehavior behavior = this.getVehicleBehavior();
+        if(behavior == VehicleBehavior.AVERAGE) {
+            this.moveVehicle(1);
+        }
+        else if(behavior == VehicleBehavior.AGGRESSIVE) {
+            this.moveVehicle(2);
+        }
+        else if(behavior == VehicleBehavior.CAUTIOUS) {
+            this.moveVehicle(1);
+            // maybe some other characteristics that make it "cautious"
+        }
+        else
+            this.moveVehicle(1); // default behaviour = Average
+    }
 }
 

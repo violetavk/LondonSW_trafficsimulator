@@ -29,6 +29,10 @@ public class Lane {
         lane = new Vehicle[length];
     }
 
+    public Vehicle get(int i) {
+        return lane[i];
+    }
+
     private int getLaneLength() throws NotALaneException {
         int aX = entry.getX();
         int aY = entry.getY();
