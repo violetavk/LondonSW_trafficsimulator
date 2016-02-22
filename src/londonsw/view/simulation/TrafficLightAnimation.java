@@ -2,6 +2,7 @@ package londonsw.view.simulation;
 
 import javafx.animation.FillTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -15,8 +16,7 @@ import londonsw.model.simulation.components.TrafficLight;
 
 public class TrafficLightAnimation extends Application {
 
-    static FillTransition ft;
-    static ITrafficLight I = new TrafficLight();
+    private static Circle circle;
 
     public static void main(String[] args) {
         launch(args);
@@ -24,31 +24,43 @@ public class TrafficLightAnimation extends Application {
 
     public static void setGUIColour(LightColour colour) {
 
-        Circle circle = new Circle();
-        circle.setCenterX(175.0f);
-        circle.setCenterY(120.0f);
-        circle.setRadius(25.0f);
+//        Circle circle = new Circle();
+//        circle.setCenterX(175.0f);
+//        circle.setCenterY(120.0f);
+//        circle.setRadius(25.0f);
 
-        FillTransition ft = new FillTransition();
-        ft.setDuration(Duration.millis(I.getDuration()));
-        System.out.print(I.getDuration());
-        ft.setShape(circle);
-        ft.setRate(5);
 
-        switch (colour){
+        // probably not the best solution but it seems to work for now...
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                switch (colour){
+                    case RED:
+                        System.out.println("Changing colour to red");
+                        circle.setFill(Color.RED);
+                        break;
 
-            case RED:
+                    case GREEN:
+                        System.out.println("Changing colour to green");
+                        circle.setFill(Color.GREEN);
+                        break;
+                }
+            }
+        });
 
-                ft.setFromValue(Color.GREEN);
-                ft.setToValue(Color.RED);
-                break;
+//        switch (colour){
+//            case RED:
+//                System.out.println("Changing colour to red");
+//                circle.setFill(Color.RED);
+//                break;
+//
+//            case GREEN:
+//                System.out.println("Changing colour to green");
+//                circle.setFill(Color.GREEN);
+//                break;
+//        }
+//        ft.play();
 
-            case GREEN:
-                ft.setFromValue(Color.RED);
-                ft.setToValue(Color.GREEN);
-                break;
-        }
-        ft.play();
 
     }
 
@@ -58,40 +70,39 @@ public class TrafficLightAnimation extends Application {
         LightColour state = LightColour.GREEN;
         ITrafficLight I = new TrafficLight();
         ticker.start();
-        // I.setDuration(10000);
-
 
 
         primaryStage.setTitle("TrafficLight Animation");
         Group root = new Group();
         Scene scene = new Scene(root, 350, 250, null);
 
-        Circle circle = new Circle();
+        circle = new Circle();
         circle.setCenterX(175.0f);
         circle.setCenterY(120.0f);
         circle.setRadius(25.0f);
+        circle.setFill(Color.RED);
 
-        FillTransition ft = new FillTransition();
-        ft.setDuration(Duration.millis(I.getDuration()));
-        System.out.print(I.getDuration());
-        ft.setShape(circle);
-        ft.setRate(5);
-
-        switch (state){
-
-            case GREEN:
-
-                ft.setFromValue(Color.GREEN);
-                ft.setToValue(Color.RED);
-                break;
-
-            case RED:
-                ft.setFromValue(Color.RED);
-                ft.setToValue(Color.GREEN);
-                break;
-        }
-
-        ft.play();
+//        FillTransition ft = new FillTransition();
+//        ft.setDuration(Duration.millis(I.getDuration()));
+//        System.out.print(I.getDuration());
+//        ft.setShape(circle);
+//        ft.setRate(5);
+//
+//        switch (state){
+//
+//            case GREEN:
+//
+//                ft.setFromValue(Color.GREEN);
+//                ft.setToValue(Color.RED);
+//                break;
+//
+//            case RED:
+//                ft.setFromValue(Color.RED);
+//                ft.setToValue(Color.GREEN);
+//                break;
+//        }
+//
+//        ft.play();
         root.getChildren().add(circle);
         primaryStage.setScene(scene);
         primaryStage.show();
