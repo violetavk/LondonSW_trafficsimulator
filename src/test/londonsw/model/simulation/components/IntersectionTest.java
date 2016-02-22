@@ -21,7 +21,7 @@ public class IntersectionTest {
         i = new Intersection(new Coordinate(0,0));
     }
 
-  /* @Test
+ /*  @Test
     public void testGetNorthTrafficLight() throws Exception {
 
         TrafficLight t = new TrafficLight(Color.GREEN,new TickerInterval());

@@ -1,6 +1,7 @@
 package londonsw.model.simulation.components;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * This class is our "node" in our directed graph
@@ -30,6 +31,7 @@ public class Intersection implements Component{
     private TrafficLight westTrafficLight;
 
     private Coordinate location;
+    private Random randomDirection;
 
     /* constructor */
     public Intersection(Coordinate location){
@@ -150,6 +152,8 @@ public class Intersection implements Component{
     }
 
     public ArrayList<Road> getRoadOptions(){
+        //turn it to getLaneOptions()
+        //TODO
 
         roadOptions.clear();
 
@@ -167,6 +171,13 @@ public class Intersection implements Component{
         }
         return roadOptions;
     }
+
+    public Road chooseDirection (){
+        randomDirection = new Random();
+        int size = randomDirection.nextInt(this.getRoadOptions().size());
+        return this.getRoadOptions().get(size);
+    }
+
 }
 
 class IntersectionSetupException extends Exception {

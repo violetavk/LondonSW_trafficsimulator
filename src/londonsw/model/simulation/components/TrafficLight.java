@@ -4,9 +4,14 @@ import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.TickerListener;
 
 public class TrafficLight extends Ticker implements ITrafficLight, TickerListener {
+
+
     LightColour state = LightColour.RED;
     private long duration = 2000;
     private long currentTime;
+
+    public LightColour getState() {return state;}
+    public void setState(LightColour state) {this.state = state;}
 
     @Override
     public void nextState() {

@@ -13,6 +13,7 @@ public class Road implements Component {
     private Coordinate start;
     private Coordinate end;
     private ArrayList<Lane> lanes;
+    private Intersection intersection;
 
     /**
      * Creates an instance of a new Road. It has no lanes yet. (Note: a road without lanes
@@ -24,7 +25,7 @@ public class Road implements Component {
      * @param start the location of one end of the road
      * @param end the location of the other end of the road
      */
-    public Road(Coordinate start, Coordinate end) {
+    public Road(Coordinate start, Coordinate end ) {
         lanes = new ArrayList<Lane>();
         this.start = start;
         this.end = end;
@@ -74,6 +75,20 @@ public class Road implements Component {
      */
     public int getNumberLanes() {
         return lanes.size();
+    }
+
+    public Intersection getIntersection() {
+        //TODO
+        return intersection;
+    }
+
+    public void setIntersection(Intersection intersection) {
+        this.intersection = intersection;
+    }
+
+    public void roadChoose (){
+        this.intersection.chooseDirection();
+
     }
 
     /**
