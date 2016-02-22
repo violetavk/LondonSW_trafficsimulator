@@ -1,5 +1,6 @@
 package londonsw.model.simulation.components;
 
+import londonsw.controller.TrafficLightController;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.TickerListener;
 
@@ -63,8 +64,13 @@ public class TrafficLight extends Ticker implements ITrafficLight, TickerListene
             currentTime += time;
         }
         else {
+
             currentTime = 0;
             nextState();
+            TrafficLightController.colourChanged(state);
+//            System.out.println("Color changing to " + state);
+
+            // notify the controller that the color just changed!
         }
         System.out.println("time: " + time + "  color: " + state); // debug only
     }
