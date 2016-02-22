@@ -1,8 +1,6 @@
 package londonsw.model.simulation.components.vehicles;
 
-import londonsw.model.simulation.components.Coordinate;
-import londonsw.model.simulation.components.Lane;
-import londonsw.model.simulation.components.MapDirection;
+import londonsw.model.simulation.components.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,10 +11,12 @@ import static org.junit.Assert.*;
  */
 public class VehicleTest {
 
-   /* Vehicle v;
+ /*  Vehicle v ;
+    Lane l;
     @Before
     public void setUpForeTesting(){
-        v= new Vehicle(new Coordinate(1,2),2);
+        l = new Lane(new Coordinate(1,5) , new Coordinate(4,5),MapDirection.EAST);
+        v= new Vehicle(1,l);
     }*/
 
 
@@ -33,7 +33,21 @@ public class VehicleTest {
     }
 
     @Test
-    public void testVehicleDirection() throws Exception {
+    public void testReadTrafficLight() throws Exception {
+        TrafficLight light = new TrafficLight();
+        light.setState(LightColour.GREEN);
+        Intersection intersection = new Intersection(new Coordinate(5,5));
+        intersection.setSouthTrafficLight(light);
+        Road r =new Road(new Coordinate(1,5), new Coordinate(4,5), intersection );
+        Lane l= new Lane(new Coordinate(1,5), new Coordinate(4,5), MapDirection.NORTH);
+        Vehicle v= new Vehicle(3,l);
+        r.setIntersection(intersection);
+        l.setRoad(r);
+        v.setCurrentLane(l);
+        v.readTrafficLight();
+        assertEquals(v.getVehicleState(),1);
 
     }
+
+
 }
