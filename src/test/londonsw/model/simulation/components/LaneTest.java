@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * JUnit test class for Lane
@@ -70,6 +71,15 @@ public class LaneTest {
         boolean empty = x.isCellEmpty(2);
         assertFalse(empty);
     }
+    @Test
+    public void testSetIntersection() throws Exception {
+        Intersection intersection= new Intersection(new Coordinate(5,5));
+        Lane northLane= new Lane(new Coordinate(6,5), new Coordinate(10,5),MapDirection.WEST);
+        northLane.setIntersection(intersection);
+        Intersection testIntersection =northLane.getIntersection();
+        assertEquals(intersection,testIntersection);
+    }
+
 
     @Test
     public void testGetRoad() throws Exception {
