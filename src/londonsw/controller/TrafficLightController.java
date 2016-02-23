@@ -1,7 +1,7 @@
 package londonsw.controller;
 
 import londonsw.model.simulation.components.LightColour;
-import londonsw.view.simulation.TrafficLightAnimation;
+import londonsw.view.simulation.TrafficLightGUI;
 
 public class TrafficLightController {
 
@@ -9,6 +9,7 @@ public class TrafficLightController {
 
         // tell the view to be the color "colour"
         System.out.println("Color wants to be changed to " + colour);
-        TrafficLightAnimation.setGUIColour(colour);
+        //TrafficLightAnimation.setGUIColour(colour);
+        TrafficLightGUI.setGUIColour(colour);
     }
 }
