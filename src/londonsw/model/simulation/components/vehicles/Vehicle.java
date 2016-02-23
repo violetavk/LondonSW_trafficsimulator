@@ -3,6 +3,7 @@ import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.TickerListener;
 import londonsw.model.simulation.components.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,8 +12,7 @@ import java.util.Random;
  * This is the interface that all vehicles will implement
  * This allows for scalability because we can add more types of cars (eg. ambulance, bus)
  */
-public abstract class Vehicle implements TickerListener{
-    // TODO this is supposed to be abstract!!
+public abstract class Vehicle implements TickerListener, Serializable{
 
     int vehicleLength;
     double vehicleSpeed;

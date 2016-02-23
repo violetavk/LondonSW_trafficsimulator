@@ -2,6 +2,7 @@ package londonsw.model.simulation;
 
 import londonsw.model.simulation.components.*;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Created by felix on 19/02/2016.
@@ -12,7 +13,16 @@ public class MapTest {
     public void testSaveMap() throws Exception {
         Map map = drawTestMap();
         printMapGrid(map);
+        System.out.println(System.getProperty("user.dir"));
+        map.saveMap("FixedMap.map");
+    }
 
+    @Test
+    public void testLoadMap() throws Exception {
+        System.out.println("Opening map...");
+        Map loaded = Map.loadMap("FixedMap.map");
+        assertNotNull(loaded);
+        printMapGrid(loaded);
     }
 
     public Map drawTestMap() throws Exception {
@@ -35,24 +45,19 @@ public class MapTest {
         map.addRoad(r2);
         map.addRoad(r3);
         map.addRoad(r4);
-        System.out.println("All roads created and added");
 
         Intersection i1 = new Intersection(new Coordinate(1,1));
         i1.setEastRoad(r1);
         i1.setSouthRoad(r2);
-        System.out.println("Created i1");
         Intersection i2 = new Intersection(new Coordinate(5,1));
         i2.setWestRoad(r1);
         i2.setSouthRoad(r3);
-        System.out.println("Created i2");
         Intersection i3 = new Intersection(new Coordinate(1,4));
         i3.setNorthRoad(r2);
         i3.setEastRoad(r4);
-        System.out.println("Created i3");
         Intersection i4 = new Intersection(new Coordinate(5,4));
         i4.setNorthRoad(r3);
         i4.setWestRoad(r4);
-        System.out.println("Created i4");
 
         map.addIntersection(i1);
         map.addIntersection(i2);

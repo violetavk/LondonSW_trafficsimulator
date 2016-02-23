@@ -1,5 +1,6 @@
 package londonsw.model.simulation.components;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * These are like the edges in our directed graph
  * Each has a start-location and an end-location
  */
-public class Road implements Component {
+public class Road implements Component, Serializable {
 
     private Coordinate start;
     private Coordinate end;

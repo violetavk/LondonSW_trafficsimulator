@@ -4,6 +4,8 @@ import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.VehicleBehavior;
 
+import java.io.Serializable;
+
 /**
  * An implementation of a vehicle
  * This moves in a lane
@@ -11,7 +13,7 @@ import londonsw.model.simulation.components.VehicleBehavior;
  */
 
 
-public class Car extends Vehicle implements TickerListener {
+public class Car extends Vehicle implements TickerListener, Serializable {
 
     private static int idCounter = 0;
     private int id;
