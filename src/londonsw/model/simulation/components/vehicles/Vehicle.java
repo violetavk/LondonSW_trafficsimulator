@@ -107,6 +107,7 @@ public abstract class Vehicle implements TickerListener{
 
     }
 
+    //some validation TODO
     public ArrayList<Lane> getLaneOptions(){
         laneOptions.clear();
         int i=0;
