@@ -60,26 +60,35 @@ public class VehicleTest {
     public static void main(String[] args) throws Exception {
         Ticker ticker = Ticker.getInstance();
         ticker.start();
-        Lane lane = new Lane(new Coordinate(0,0), new Coordinate(5, 0), MapDirection.EAST);
-        Vehicle car1 = new Car(0,lane);
-        car1.setVehicleBehavior(VehicleBehavior.AVERAGE);
-        printLane(lane);
+        Lane lane1 = new Lane(new Coordinate(0,0), new Coordinate(5, 0), MapDirection.EAST);
+        Lane lane2 = new Lane(new Coordinate(0,0), new Coordinate(10, 0), MapDirection.EAST);
+        Vehicle car1 = new Car(0,lane1);
+        Vehicle car2 = new Car(1,lane2);
+        Vehicle car4 = new Car(5, lane2);
+        Vehicle car3 = new Car(6,lane2);
+
+        printLane(lane1);
+        printLane(lane2);
         Thread.sleep(1000);
-        printLane(lane);
+        printLane(lane1);
+        printLane(lane2);
         Thread.sleep(1000);
-        printLane(lane);
+        printLane(lane1);
+        printLane(lane2);
+        Vehicle car5 = new Car(0,lane1);
+        Thread.sleep(1000);
+        printLane(lane1);
+        printLane(lane2);
         ticker.end();
     }
 
     private static void printLane(Lane lane) {
         for(int i = 0; i < lane.getLength(); i++) {
-            if(lane.get(i) != null) {
-                System.out.print("C ");
-
+            if(lane.get(i) instanceof Car) {
+                System.out.print("C" + ((Car) lane.get(i)).getCarId() + " ");
             }
             else {
-                System.out.print("␣ ");
-
+                System.out.print("␣  ");
             }
         }
         System.out.println();
