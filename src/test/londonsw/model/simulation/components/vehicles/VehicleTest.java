@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by rawanmoh on 16/02/2016.
@@ -50,7 +51,6 @@ public class VehicleTest {
         v.setCurrentLane(l);
         v.readTrafficLight();
         assertEquals(v.getVehicleState(),1);
-
     }
 
 
@@ -93,4 +93,52 @@ public class VehicleTest {
         }
         System.out.println();
     }
- }
+
+    @Test
+    public void testGetLaneOptions() throws Exception {
+        Intersection intersection= new Intersection(new Coordinate(5,5));
+
+        Road northRoad = new Road(new Coordinate(5,1),new Coordinate(5,4));
+        Lane northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH);
+        Lane northLane2= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.SOUTH);
+        northRoad.addLane(northLane1);
+        northRoad.addLane(northLane2);
+
+        Road southRoad = new Road(new Coordinate(5,6),new Coordinate(5,10));
+        Lane southLane1= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.NORTH);
+        Lane southLane2= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.SOUTH);
+        southRoad.addLane(southLane1);
+        southRoad.addLane(southLane2);
+
+        Road eastRoad = new Road(new Coordinate(6,5),new Coordinate(9,5));
+        Lane eastLane1= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.EAST);
+        Lane eastLane2= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.WEST);
+        eastRoad.addLane(eastLane1);
+        eastRoad.addLane(eastLane2);
+
+        Road westRoad = new Road(new Coordinate(1,5),new Coordinate(4,5));
+        Lane westLane1= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.EAST);
+        Lane westLane2= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.WEST);
+        westRoad.addLane(westLane1);
+        westRoad.addLane(westLane2);
+
+        intersection.setEastRoad(eastRoad);
+        intersection.setNorthRoad(northRoad);
+        intersection.setSouthRoad(southRoad);
+        intersection.setWestRoad(westRoad);
+
+
+
+        //Vehicle car =new Car(southLane1.getLength()-1,southLane1);
+        //car.getLaneOptions();
+
+       // assertEquals(car.getLaneOptions().size(),3);
+
+
+    }
+
+    @Test
+    public void testVehicleTurn() throws Exception {
+
+    }
+}
