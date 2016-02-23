@@ -86,11 +86,6 @@ public class Road implements Component {
         this.intersection = intersection;
     }
 
-    public void roadChoose (){
-        this.intersection.chooseDirection();
-
-    }
-
     /**
      * Uses the coordinates to determine how long the road is
      * A road has a minimum length of 1
