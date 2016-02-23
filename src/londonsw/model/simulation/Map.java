@@ -103,13 +103,12 @@ public class Map implements Serializable {
     {
         try
         {
-            FileOutputStream fileOut =
-                    new FileOutputStream("/tmp/Fixed.map");
+            FileOutputStream fileOut = new FileOutputStream("/maps/FixedMap.map");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this);
             out.close();
             fileOut.close();
-            System.out.printf("Serialized data is saved in /tmp/Fixed.map");
+            System.out.printf("Serialized data is saved in /maps/FixedMap.map");
         }catch(IOException i)
         {
             i.printStackTrace();

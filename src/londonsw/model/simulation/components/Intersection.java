@@ -1,5 +1,6 @@
 package londonsw.model.simulation.components;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,7 +17,7 @@ import java.util.Random;
  */
 
 
-public class Intersection implements Component{
+public class Intersection implements Component, Serializable {
 
     private Road northRoad;
     private Road southRoad;
@@ -115,9 +116,9 @@ public class Intersection implements Component{
     }
 
     public void setEastRoad(Road eastRoad) throws Exception {
-        if ((this.location.getY() == eastRoad.getEndLocation().getY()
-                && (this.location.getX() + 1  == eastRoad.getEndLocation().getY()
-                || this.location.getX() + 1 == eastRoad.getStartLocation().getY()))) {
+        if (this.location.getY() == eastRoad.getEndLocation().getY()
+                && (this.location.getX() + 1  == eastRoad.getEndLocation().getX()
+                || this.location.getX() + 1 == eastRoad.getStartLocation().getX())) {
             this.eastRoad = eastRoad;
         } else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
