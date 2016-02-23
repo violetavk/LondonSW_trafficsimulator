@@ -45,7 +45,7 @@ public class IntersectionTest {
         i.setSouthRoad(sRoad);
         i.setWestRoad(wRoad);
 
-        ArrayList<Road> test = i.getRoadOptions();
+        ArrayList<Lane> test = i.getLaneOptions();
 
         assertEquals(2,test.size());
     }
@@ -60,7 +60,7 @@ public class IntersectionTest {
         i.setNorthRoad(nRoad);
         i.setEastRoad(eRoad);
 
-        ArrayList<Road> test = i.getRoadOptions();
+        ArrayList<Lane> test = i.getLaneOptions();
 
         assertEquals(2,test.size());
     }

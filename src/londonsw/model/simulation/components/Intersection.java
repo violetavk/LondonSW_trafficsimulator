@@ -1,6 +1,7 @@
 package londonsw.model.simulation.components;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -14,7 +15,6 @@ import java.util.ArrayList;
  * in each intersection, a car can choose(maybe randomly) Which road he can enter based on the array IntersectionRoad
  */
 
-//TODO I think we don't need a location
 
 public class Intersection implements Component{
 
@@ -23,8 +23,7 @@ public class Intersection implements Component{
     private Road eastRoad;
     private Road westRoad;
 
-    public ArrayList<Road> roadOptions = new ArrayList<Road>();
-
+    public ArrayList<Lane> laneOptions = new ArrayList<Lane>();
 
     private TrafficLight northTrafficLight;
     private TrafficLight southTrafficLight;
@@ -134,32 +133,48 @@ public class Intersection implements Component{
     }
 
 
+    // TODO this doesn't really belong here
+    // TODO decide which version to keep (probably Vehicle's)
+    public ArrayList<Lane> getLaneOptions(){
 
-
-
-
-    public ArrayList<Road> getRoadOptions(){
-        //turn it to getLaneOptions()
-        //TODO
-
-        roadOptions.clear();
+        laneOptions.clear();
 
         if(this.getEastRoad()!= null){
-            roadOptions.add(this.getEastRoad());
+            for(int i=0; i<this.getEastRoad().getNumberLanes();i++){
+                if(this.getEastRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.EAST){
+                    laneOptions.add(this.getEastRoad().getLaneAtIndex(i));
+                }
+            }
         }
         if(this.getSouthRoad()!= null){
-            roadOptions.add(this.getSouthRoad());
+            for(int i=0; i<this.getSouthRoad().getNumberLanes();i++){
+                if(this.getSouthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.SOUTH){
+                    laneOptions.add(this.getSouthRoad().getLaneAtIndex(i));
+                }
+            }
         }
         if(this.getWestRoad()!= null){
-           roadOptions.add(this.getWestRoad());
+            for(int i=0; i<this.getWestRoad().getNumberLanes();i++){
+                if(this.getWestRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.WEST){
+                    laneOptions.add(this.getWestRoad().getLaneAtIndex(i));
+                }
+            }
         }
         if(this.getNorthRoad()!= null){
-            roadOptions.add(this.getNorthRoad());
+            for(int i=0; i<this.getNorthRoad().getNumberLanes();i++){
+                if(this.getNorthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.NORTH){
+                    laneOptions.add(this.getNorthRoad().getLaneAtIndex(i));
+                }
+            }
         }
-        return roadOptions;
+        return laneOptions;
     }
 
-
+//    public Lane chooseDirection (){
+//        Random randomDirection = new Random();
+//        int size = randomDirection.nextInt(this.getLaneOptions().size());
+//        return this.getLaneOptions().get(size);
+//    }
 
 }
 
