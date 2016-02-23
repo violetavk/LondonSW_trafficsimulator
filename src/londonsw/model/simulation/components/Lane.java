@@ -29,6 +29,7 @@ public class Lane implements Serializable {
         this.movingDirection = movingDirection;
         length = this.getLaneLength();
         lane = new Vehicle[length];
+       // this.road=
     }
 
     public Vehicle get(int i) {
@@ -71,7 +72,9 @@ public class Lane implements Serializable {
     public Coordinate getExit() {
         return exit;
     }
-    public Road getRoad() { return road; }
+
+    public Road getRoad() { // TODO , it just works if we use Lane.setRoad(), not Road.addLine()
+        return road; }
 
     public void setRoad(Road road) { this.road = road; }
 

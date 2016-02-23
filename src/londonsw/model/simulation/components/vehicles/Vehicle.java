@@ -102,6 +102,7 @@ public abstract class Vehicle implements TickerListener, Serializable{
                 this.setVehicleState(0);
             else
                 this.setVehicleState(1);
+
         }
     }
 

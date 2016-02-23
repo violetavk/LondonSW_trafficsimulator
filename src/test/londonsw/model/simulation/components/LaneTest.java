@@ -70,4 +70,21 @@ public class LaneTest {
         boolean empty = x.isCellEmpty(2);
         assertFalse(empty);
     }
+
+    @Test
+    public void testGetRoad() throws Exception {
+        Road northRoad = new Road(new Coordinate(5,1),new Coordinate(5,4));
+        Lane northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH);
+
+        /*
+        have to modify lane.getRoad() to use road.addLane()
+        northRoad.addLane(northLane1);
+         */
+
+        northLane1.setRoad(northRoad);
+        Road testRoad;
+        testRoad= northLane1.getRoad();
+        assertEquals(northRoad,testRoad);
+
+    }
 }

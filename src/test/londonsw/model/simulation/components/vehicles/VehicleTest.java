@@ -101,40 +101,47 @@ public class VehicleTest {
         Road northRoad = new Road(new Coordinate(5,1),new Coordinate(5,4));
         Lane northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH);
         Lane northLane2= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.SOUTH);
-        northRoad.addLane(northLane1);
-        northRoad.addLane(northLane2);
+       // northRoad.addLane(northLane1);
+       // northRoad.addLane(northLane2);
+        northLane1.setRoad(northRoad);
+        northLane2.setRoad(northRoad);
 
         Road southRoad = new Road(new Coordinate(5,6),new Coordinate(5,10));
         Lane southLane1= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.NORTH);
         Lane southLane2= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.SOUTH);
-        southRoad.addLane(southLane1);
-        southRoad.addLane(southLane2);
+        //southRoad.addLane(southLane1);
+        //southRoad.addLane(southLane2);
+        southLane1.setRoad(southRoad);
+        southLane2.setRoad(southRoad);
 
         Road eastRoad = new Road(new Coordinate(6,5),new Coordinate(9,5));
         Lane eastLane1= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.EAST);
         Lane eastLane2= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.WEST);
-        eastRoad.addLane(eastLane1);
-        eastRoad.addLane(eastLane2);
+        //eastRoad.addLane(eastLane1);
+        //eastRoad.addLane(eastLane2);
+        eastLane1.setRoad(eastRoad);
+        eastLane2.setRoad(eastRoad);
 
         Road westRoad = new Road(new Coordinate(1,5),new Coordinate(4,5));
         Lane westLane1= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.EAST);
         Lane westLane2= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.WEST);
-        westRoad.addLane(westLane1);
-        westRoad.addLane(westLane2);
+        //westRoad.addLane(westLane1);
+        //westRoad.addLane(westLane2);
+        westLane1.setRoad(westRoad);
+        westLane2.setRoad(westRoad);
 
-        intersection.setEastRoad(eastRoad);
+        /*intersection.setEastRoad(eastRoad);
         intersection.setNorthRoad(northRoad);
         intersection.setSouthRoad(southRoad);
-        intersection.setWestRoad(westRoad);
+        intersection.setWestRoad(westRoad);*/
+        eastRoad.setIntersection(intersection);
+        westRoad.setIntersection(intersection);
+        northRoad.setIntersection(intersection);
+        southRoad.setIntersection(intersection);
 
-
-
-        //Vehicle car =new Car(southLane1.getLength()-1,southLane1);
+       // Vehicle car =new Car(southLane1.getLength()-1,southLane1);
         //car.getLaneOptions();
-
-       // assertEquals(car.getLaneOptions().size(),3);
-
-
+        //assertEquals(car.getLaneOptions().size(),0);// has to be equal 3 TODO
     }
 
     @Test
