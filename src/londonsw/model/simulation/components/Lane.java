@@ -2,6 +2,7 @@ package londonsw.model.simulation.components;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 
 import java.io.Serializable;
+import java.security.PrivateKey;
 
 /**
  * This class is where the vehicles actually move
@@ -17,6 +18,7 @@ public class Lane implements Serializable {
     private Coordinate exit;
     private MapDirection movingDirection;
     private Road road;
+    private Intersection intersection;
 
 
     public MapDirection getMovingDirection() {
@@ -29,7 +31,6 @@ public class Lane implements Serializable {
         this.movingDirection = movingDirection;
         length = this.getLaneLength();
         lane = new Vehicle[length];
-       // this.road=
     }
 
     public Vehicle get(int i) {
@@ -76,12 +77,44 @@ public class Lane implements Serializable {
     public Road getRoad() { // TODO , it just works if we use Lane.setRoad(), not Road.addLine()
         return road; }
 
-    public void setRoad(Road road) { this.road = road; }
+    public void setRoad(Road road) {
+
+        //this.road.setEnd(this.exit);
+       // this.road.setStart(this.entry);
+        this.road = road;
+    }
+
+    public void setIntersection(Intersection intersection) {
+        if((this.getMovingDirection()== MapDirection.WEST) &&
+                (intersection.getLocation().getX()== this.getEntry().getX()-1) &&
+                (intersection.getLocation().getY()== this.getEntry().getY()))
+        {this.intersection = intersection;}
+
+        if((this.getMovingDirection()== MapDirection.EAST) &&
+                (intersection.getLocation().getX()== this.getExit().getX()+1) &&
+                (intersection.getLocation().getY()== this.getExit().getY()))
+        {this.intersection = intersection;}
+
+        if((this.getMovingDirection()== MapDirection.NORTH) &&
+                (intersection.getLocation().getX()== this.getEntry().getX()) &&
+                (intersection.getLocation().getY()== this.getEntry().getY()-1))
+        {this.intersection = intersection;}
+
+        if((this.getMovingDirection()== MapDirection.SOUTH) &&
+                (intersection.getLocation().getX()== this.getExit().getX()) &&
+                (intersection.getLocation().getY()== this.getExit().getY()+1))
+        {this.intersection = intersection;}
+
+    }
+
+    public Intersection getIntersection() {
+        return intersection;
+    }
 
     public boolean setCell(Vehicle v, int cell) {
         if (cell < 0 || cell >= length)
             return false;
-
+        
         lane[cell] = v;
         return true;
     }
