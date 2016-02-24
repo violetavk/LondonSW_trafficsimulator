@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -12,6 +13,8 @@ import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.vehicles.Vehicle;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by felix on 21/02/2016.
@@ -29,6 +32,25 @@ public class CarGUI extends Vehicle {
 
     private double resizeFactorX;
     private double resizeFactorY;
+    private double xSize;
+
+    public double getySize() {
+        return ySize;
+    }
+
+    public void setySize(double ySize) {
+        this.ySize = ySize;
+    }
+
+    public double getxSize() {
+        return xSize;
+    }
+
+    public void setxSize(double xSize) {
+        this.xSize = xSize;
+    }
+
+    private double ySize;
 
     public Rectangle getRectangle() {
         return rectangle;
@@ -58,35 +80,36 @@ public class CarGUI extends Vehicle {
 
         Pane pane = new Pane();
 
-        //GridPane gp = this.getGridPane();
+        GridPane gp = this.getGridPane();
 
-        //Node n = getNodeByRowColumnIndex(start.getY(), start.getX(), this.getGridPane());
+        Node n = getNodeFromGridPane(gp, start.getY(), start.getX());
 
-        //Rectangle r = new Rectangle(n.getLayoutBounds().getMinX(), n.getLayoutBounds().getMinY(), 50*resizeFactorX, 25*resizeFactorY);
+        StackPane spn = (StackPane) n;
 
-        Rectangle r = new Rectangle(45, 45, 50*resizeFactorX, 25*resizeFactorY);
+        double x =spn.getChildren().get(0).getLayoutBounds().getMaxX();
+        double y =spn.getChildren().get(0).getLayoutBounds().getMaxX();
+
+        this.setxSize(x);
+        this.setySize(y);
+
+        Rectangle r = new Rectangle(x*start.getX(),  y*start.getY(), 50*resizeFactorX, 25*resizeFactorY);
 
         r.setFill(Color.RED);
 
         pane.getChildren().add(r);
-
-        //this.getGridPane().add(pane,start.getX(),start.getY());
 
         this.setRectangle(r);
 
         return pane;
     }
 
-    public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
-        Node result = null;
-        ObservableList<Node> childrens = gridPane.getChildren();
-        for(Node node : childrens) {
-            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-                result = node;
-                break;
+    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                return node;
             }
         }
-        return result;
+        return null;
     }
 
 
@@ -100,7 +123,7 @@ public class CarGUI extends Vehicle {
         //set delay to show starting point
         timeline.setDelay(Duration.millis(2000));
 
-        final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), 100*step);
+        final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), this.getxSize()*step);
         final KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
 
         timeline.getKeyFrames().add(kf);
