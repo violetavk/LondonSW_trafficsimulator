@@ -2,6 +2,9 @@ package londonsw.model.simulation.components.vehicles;
 import londonsw.model.simulation.TickerListener;
 import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
+import londonsw.model.simulation.components.VehicleBehavior;
+
+import java.io.Serializable;
 
 /**
  * An implementation of a vehicle
@@ -10,14 +13,22 @@ import londonsw.model.simulation.components.Lane;
  */
 
 
-public class Car extends Vehicle implements TickerListener {
+public class Car extends Vehicle implements TickerListener, Serializable {
 
-    public Car(int vehicleId,Lane currentLane) {
-        super( vehicleId,currentLane);
+    private static int idCounter = 0;
+    private int id;
+
+    public Car(int currentCell,Lane currentLane) {
+        super(currentCell,currentLane);
         this.vehicleLength=1;
         this.vehicleSpeed=1.0;
         this.vehiclePriority = 1;
+        this.vehicleBehavior = VehicleBehavior.AVERAGE; // default
+
+        id = idCounter++;
     }
+
+    public int getCarId() { return id; }
 
   }
 

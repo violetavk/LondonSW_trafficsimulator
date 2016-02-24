@@ -4,7 +4,9 @@ import londonsw.controller.TrafficLightController;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.TickerListener;
 
-public class TrafficLight extends Ticker implements ITrafficLight, TickerListener {
+import java.io.Serializable;
+
+public class TrafficLight extends Ticker implements ITrafficLight, TickerListener, Serializable {
 
 
     LightColour state = LightColour.RED;

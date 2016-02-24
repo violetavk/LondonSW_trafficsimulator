@@ -68,7 +68,7 @@ public class Ticker {
 
         @Override
         public void run() {
-//            System.out.println("Timer is working... Current time: " + CURRENT_TIME); // DEBUG ONLY
+//            System.out.println("\nTimer is working... Current time: " + CURRENT_TIME); // DEBUG ONLY
 
             //basic version
             for(TickerListener tl : subscribers)

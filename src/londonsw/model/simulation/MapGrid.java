@@ -5,12 +5,14 @@ import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Intersection;
 import londonsw.model.simulation.components.Road;
 
+import java.io.Serializable;
+
 /**
  * This class is the underlying structure of our Map. It is a 2D-array of map Components,
  * each Component being something that you would want to be displayed on the map, such as
  * a Road or Intersection.
  */
-public class MapGrid {
+public class MapGrid implements Serializable {
 
     private int width;
     private int height;
@@ -61,7 +63,7 @@ public class MapGrid {
         if(c instanceof Intersection) {
             Intersection i = (Intersection) c;
             Coordinate coord = i.getLocation();
-            grid[coord.getX()][coord.getY()] = i;
+            grid[coord.getY()][coord.getX()] = i;
             return true;
         }
         else if(c instanceof Road) { // TODO there must be a better way of representing a road cell

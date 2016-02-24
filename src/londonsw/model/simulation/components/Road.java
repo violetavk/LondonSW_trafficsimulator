@@ -1,5 +1,6 @@
 package londonsw.model.simulation.components;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * These are like the edges in our directed graph
  * Each has a start-location and an end-location
  */
-public class Road implements Component {
+public class Road implements Component, Serializable {
 
     private Coordinate start;
     private Coordinate end;
@@ -73,9 +74,7 @@ public class Road implements Component {
      * Gets the number of lanes currently part of the road
      * @return number of lanes in the road of type int
      */
-    public int getNumberLanes() {
-        return lanes.size();
-    }
+    public int getNumberLanes() {return lanes.size();}
 
     public Intersection getIntersection() {
         //TODO
@@ -83,12 +82,8 @@ public class Road implements Component {
     }
 
     public void setIntersection(Intersection intersection) {
+        //TODO
         this.intersection = intersection;
-    }
-
-    public void roadChoose (){
-        this.intersection.chooseDirection();
-
     }
 
     /**

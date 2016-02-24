@@ -1,9 +1,11 @@
 package londonsw.model.simulation.components;
 
+import java.io.Serializable;
+
 /**
  * Created by yakubu on 10/02/2016.
         */
-public class Coordinate {
+public class Coordinate implements Serializable {
 
     public Coordinate(int x, int y) throws NotACoordinateException {
         if(x<0 || y<0)
