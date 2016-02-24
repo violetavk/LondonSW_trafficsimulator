@@ -29,17 +29,17 @@ public class MapTest {
         Map map = new Map(6,5);
 
         Road r1 = new Road(new Coordinate(2,1), new Coordinate(4,1));
-        r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST));
-        r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.WEST));
+        r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST,r1));
+        r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.WEST,r1));
         Road r2 = new Road(new Coordinate(1,2), new Coordinate(1,3));
-        r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.SOUTH));
-        r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.NORTH));
+        r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.SOUTH,r2));
+        r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.NORTH,r2));
         Road r3 = new Road(new Coordinate(5,2), new Coordinate(5,3));
-        r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.NORTH));
-        r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH));
+        r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.NORTH,r3));
+        r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH,r3));
         Road r4 = new Road(new Coordinate(2,4), new Coordinate(4,4));
-        r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.EAST));
-        r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.WEST));
+        r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.EAST,r4));
+        r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.WEST,r4));
 
         map.addRoad(r1);
         map.addRoad(r2);

@@ -3,6 +3,7 @@ package londonsw.view.simulation;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import londonsw.model.simulation.MapGrid;
 import londonsw.model.simulation.components.*;
 
@@ -17,9 +18,17 @@ public class MapGridGUI extends MapGrid {
      * @param width  width of the Map that this will be part of
      * @param height height of the Map that this will be part of
      */
+
+    private double resizeFactorX;
+    private double resizeFactorY;
+
     public MapGridGUI(int width, int height) {
         super(width, height);
+        resizeFactorX = 9.0/width;
+        resizeFactorY = 9.0/height;
     }
+
+
 
     public GridPane getGridPane() {
         return gridPane;
@@ -41,15 +50,6 @@ public class MapGridGUI extends MapGrid {
                 Image im  = new Image("Grass.png");
                 ImageView iv = new ImageView(im);
 
-                //change image size
-
-                //iv.setImage(im);
-                //iv.setFitWidth(this.getWidth()*7);
-                //iv.setFitHeight(this.getHeight()*7);
-                //iv.setPreserveRatio(true);
-                //iv.setSmooth(true);
-                //iv.setCache(true);
-
                 // Iterate the Index using the loops
                 rootGP.setRowIndex(iv,y);
                 rootGP.setColumnIndex(iv,x);
@@ -61,39 +61,54 @@ public class MapGridGUI extends MapGrid {
         this.setGridPane(rootGP);
     }
 
-    public void drawComponents()
+    public void drawComponents() throws Exception
     {
         GridPane rootGP = new GridPane();
-
-        Image im  = new Image("Grass.png");
 
         for(int y = 0; y < this.getHeight(); y++){
             for(int x = 0; x < this.getWidth(); x++){
 
+                Pane roadStackPane = new Pane();
+
                 Component[][] c = this.getGrid();
 
                 Component current = this.getGrid()[y][x];
-                if(current instanceof Road)
-                {
-                    if (((Road) current).runsVertically())
-                        im = new Image("RoadNS.png");
-                    else
-                        im = new Image("RoadEW.png");
+
+                if(current instanceof Road) {
+
+                    LayoutGUI roadGUI = new LayoutGUI((Road) current);
+
+                    roadGUI.setHeight(this.getHeight());
+                    roadGUI.setWidth(this.getWidth());
+                    roadGUI.setResizeFactor(resizeFactorX,resizeFactorY);
+
+                    roadStackPane = roadGUI.drawRoad(((Road) current).runsVertically()?MapDirection.NORTH:MapDirection.EAST);
                 }
                 else if(current instanceof Intersection)
                 {
-                    im = new Image("Line.png"); //TODO change image to a proper intersection image
+                    LayoutGUI intersectionGUI = new LayoutGUI();
+
+                    intersectionGUI.setHeight(this.getHeight());
+                    intersectionGUI.setWidth(this.getWidth());
+                    intersectionGUI.setResizeFactor(resizeFactorX,resizeFactorY);
+
+                    roadStackPane = intersectionGUI.drawIntersection();
                 }
-                else
-                    im = new Image("Grass.png");
+                else {
 
-                ImageView iv = new ImageView(im);
+                    LayoutGUI grassGUI = new LayoutGUI();
 
-                // Iterate the Index using the loops
-                rootGP.setRowIndex(iv,y);
-                rootGP.setColumnIndex(iv,x);
+                    grassGUI.setHeight(this.getHeight());
+                    grassGUI.setWidth(this.getWidth());
+                    grassGUI.setResizeFactor(resizeFactorX,resizeFactorY);
 
-                rootGP.getChildren().add(iv);
+                    roadStackPane = grassGUI.drawGrass();
+                }
+
+                rootGP.setRowIndex(roadStackPane,y);
+                rootGP.setColumnIndex(roadStackPane,x);
+
+                rootGP.getChildren().add(roadStackPane);
             }
         }
 
@@ -102,4 +117,5 @@ public class MapGridGUI extends MapGrid {
         this.setGridPane(rootGP);
 
     }
+
 }

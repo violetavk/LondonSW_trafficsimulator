@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label contentDisplay="RIGHT" layoutX="22.0" layoutY="6.0" lineSpacing="20.0" prefHeight="68.0" prefWidth="567.0" text="LondonSW Traffic Simulator" textAlignment="CENTER">
+         <graphic>
+            <ImageView fitHeight="64.0" fitWidth="105.0" layoutX="100.0" layoutY="50.0" nodeOrientation="RIGHT_TO_LEFT" x="100.0" y="10.0">
+               <image>
+                  <Image url="@../../../../resources/Logo.png" />
+               </image>
+               <viewport>
+                  <Rectangle2D />
+               </viewport>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="PT Sans Caption Bold" size="33.0" />
+         </font>
+      </Label>
+      <Button alignment="CENTER" layoutX="520.0" layoutY="141.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Start" textAlignment="CENTER" textFill="GREEN" underline="true">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Button>
+      <Button alignment="CENTER" layoutX="520.0" layoutY="229.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Reset" textAlignment="CENTER" textFill="GREEN" underline="true">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Button>
+      <Pane layoutX="4.0" layoutY="74.0" prefHeight="322.0" prefWidth="491.0" style="-fx-background-color: white;" />
+   </children>
+</Pane>
