@@ -74,9 +74,7 @@ public class Road implements Component, Serializable {
      * Gets the number of lanes currently part of the road
      * @return number of lanes in the road of type int
      */
-    public int getNumberLanes() {
-        return lanes.size();
-    }
+    public int getNumberLanes() {return lanes.size();}
 
     public Intersection getIntersection() {
         //TODO
@@ -84,6 +82,7 @@ public class Road implements Component, Serializable {
     }
 
     public void setIntersection(Intersection intersection) {
+        //TODO
         this.intersection = intersection;
     }
 

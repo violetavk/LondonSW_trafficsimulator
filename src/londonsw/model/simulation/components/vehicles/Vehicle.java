@@ -79,7 +79,7 @@ public abstract class Vehicle implements TickerListener, Serializable{
 
     public void readTrafficLight(){
         if (this.getCurrentCell() == this.currentLane.getLength() -1) {
-           this.getCurrentLane().getMovingDirection();
+           //this.getCurrentLane().getMovingDirection();
             TrafficLight light= new TrafficLight();
            switch (this.getCurrentLane().getMovingDirection()){
                case NORTH:
@@ -102,6 +102,7 @@ public abstract class Vehicle implements TickerListener, Serializable{
                 this.setVehicleState(0);
             else
                 this.setVehicleState(1);
+
         }
     }
 
@@ -109,32 +110,32 @@ public abstract class Vehicle implements TickerListener, Serializable{
     public ArrayList<Lane> getLaneOptions(){
         laneOptions.clear();
 
-        if ((this.currentLane.getRoad().getIntersection().getEastRoad()!=null) &&
+        if ((this.currentLane.getIntersection().getEastRoad()!=null) &&
                 (this.currentLane.getMovingDirection()!=MapDirection.WEST))
-        {for(int i=0; i<this.currentLane.getRoad().getIntersection().getEastRoad().getNumberLanes();i++)
-             {if(this.currentLane.getRoad().getIntersection().getEastRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.EAST)
-                 {laneOptions.add(this.currentLane.getRoad().getIntersection().getEastRoad().getLaneAtIndex(i));
+        {for(int i=0; i<this.currentLane.getIntersection().getEastRoad().getNumberLanes();i++)
+             {if(this.currentLane.getIntersection().getEastRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.EAST)
+                 {laneOptions.add(this.currentLane.getIntersection().getEastRoad().getLaneAtIndex(i));
                  }}}
 
-        if ((this.currentLane.getRoad().getIntersection().getSouthRoad()!= null) &&
+        if ((this.currentLane.getIntersection().getSouthRoad()!= null) &&
                 (this.currentLane.getMovingDirection()!=MapDirection.NORTH))
-        {for(int i=0; i<this.currentLane.getRoad().getIntersection().getSouthRoad().getNumberLanes();i++)
-             {if(this.currentLane.getRoad().getIntersection().getSouthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.SOUTH)
-                {laneOptions.add(this.currentLane.getRoad().getIntersection().getSouthRoad().getLaneAtIndex(i));
+        {for(int i=0; i<this.currentLane.getIntersection().getSouthRoad().getNumberLanes();i++)
+             {if(this.currentLane.getIntersection().getSouthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.SOUTH)
+                {laneOptions.add(this.currentLane.getIntersection().getSouthRoad().getLaneAtIndex(i));
                 }}}
 
-        if ((this.currentLane.getRoad().getIntersection().getNorthRoad()!= null)&&
+        if ((this.currentLane.getIntersection().getNorthRoad()!= null)&&
                 (this.currentLane.getMovingDirection()!=MapDirection.SOUTH))
-        {for(int i=0; i<this.currentLane.getRoad().getIntersection().getNorthRoad().getNumberLanes();i++)
-            {if(this.currentLane.getRoad().getIntersection().getNorthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.NORTH)
-               {laneOptions.add(this.currentLane.getRoad().getIntersection().getNorthRoad().getLaneAtIndex(i));
+        {for(int i=0; i<this.currentLane.getIntersection().getNorthRoad().getNumberLanes();i++)
+            {if(this.currentLane.getIntersection().getNorthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.NORTH)
+               {laneOptions.add(this.currentLane.getIntersection().getNorthRoad().getLaneAtIndex(i));
                }}}
 
-        if ((this.currentLane.getRoad().getIntersection().getWestRoad()!= null)&&
+        if ((this.currentLane.getIntersection().getWestRoad()!= null)&&
                 (this.currentLane.getMovingDirection()!=MapDirection.EAST))
-        {for(int i=0; i<this.currentLane.getRoad().getIntersection().getWestRoad().getNumberLanes();i++)
-            {if(this.currentLane.getRoad().getIntersection().getWestRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.WEST)
-               {laneOptions.add(this.currentLane.getRoad().getIntersection().getWestRoad().getLaneAtIndex(i));
+        {for(int i=0; i<this.currentLane.getIntersection().getWestRoad().getNumberLanes();i++)
+            {if(this.currentLane.getIntersection().getWestRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.WEST)
+               {laneOptions.add(this.currentLane.getIntersection().getWestRoad().getLaneAtIndex(i));
                }}}
 
         return laneOptions;
@@ -146,9 +147,10 @@ public abstract class Vehicle implements TickerListener, Serializable{
         int size = randomDirection.nextInt(this.getLaneOptions().size());
         l= this.getLaneOptions().get(size);
 
-        if ((this.getCurrentCell() == this.currentLane.getLength() -1)&& (l.isCellEmpty(l.getLength()-1))){
-            this.setCurrentCell(0,l);
-        }
+        if ((this.getCurrentCell() == this.currentLane.getLength() -1)&& (l.isCellEmpty(l.getLength()-1)))
+        {
+            this.setCurrentLane(l);
+            this.setCurrentCell(0,l);}
     }
 
     //1 is moving, 0 is static
