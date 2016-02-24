@@ -16,7 +16,7 @@
          <graphic>
             <ImageView fitHeight="64.0" fitWidth="105.0" layoutX="100.0" layoutY="50.0" nodeOrientation="RIGHT_TO_LEFT" x="100.0" y="10.0">
                <image>
-                  <Image url="@Logo.png" />
+                  <Image url="@../../../../resources/Logo.png" />
                </image>
                <viewport>
                   <Rectangle2D />
