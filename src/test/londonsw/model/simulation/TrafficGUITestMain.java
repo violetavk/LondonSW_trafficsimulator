@@ -5,11 +5,14 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import londonsw.controller.TrafficLightController;
 import londonsw.model.simulation.components.ITrafficLight;
-import londonsw.model.simulation.components.LightColour;
 import londonsw.model.simulation.components.TrafficLight;
 import londonsw.view.simulation.TrafficLightGUI;
 
+/**
+ * Separated GUI Logic from  test functionality.
+ */
 public class TrafficGUITestMain extends Application {
 
     public static void main(String[] args) {
@@ -17,30 +20,37 @@ public class TrafficGUITestMain extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws InterruptedException {
         Ticker ticker = Ticker.getInstance();
-        LightColour state = LightColour.GREEN;
         ITrafficLight I = new TrafficLight();
         ticker.start();
-
 
         primaryStage.setTitle("TrafficLight Animation");
         Group root = new Group();
         Scene scene = new Scene(root, 350, 250, null);
+        /*
+        circle = new Circle();
+        circle.setCenterX(175.0f);
+        circle.setCenterY(120.0f);
+        circle.setRadius(25.0f);
+        circle.setFill(Color.RED);
+        */
+        TrafficLightGUI GUI = new TrafficLightGUI();
+        TrafficLightController con = new TrafficLightController();
+        Circle circle = GUI.DrawLight(175.0f, 120.0f, 25.0f);
+        //created new light but controller isnt able to simultaneously control both.Think it has something to do with threads.
+        //Circle circle1 = GUI.DrawLight(262.50f, 120.0f);
+        con.setCircle(circle);
+        //con.setCircle(circle1);
 
-//        circle = new Circle();
-//        circle.setCenterX(175.0f);
-//        circle.setCenterY(120.0f);
-//        circle.setRadius(25.0f);
-//        circle.setFill(Color.RED);
-        TrafficLightGUI TGUI = new TrafficLightGUI();
-        Circle circle = TGUI.DrawLight();
         root.getChildren().add(circle);
+        //root.getChildren().add(circle1);
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        /* TODO: Figure out how to solve seperation of functionality problem */
-
-
+        /*
+        Thread.sleep(100000);
+        ticker.end();
+        */
+        
     }
 }
