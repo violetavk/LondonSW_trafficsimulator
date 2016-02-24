@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class LaneTest {
 
     Lane x;
+    Road r;
     Coordinate a;
     Coordinate b;
 
@@ -21,7 +22,8 @@ public class LaneTest {
     public void setUpForTests() throws Exception {
         a = new Coordinate(0, 1);
         b = new Coordinate(2, 1);
-        x = new Lane(a, b, MapDirection.EAST);
+        r= new Road(a,b) ;
+        x = new Lane(a, b, MapDirection.EAST,r);
     }
 
     @Test
@@ -32,7 +34,7 @@ public class LaneTest {
 
     @Test(expected = NotALaneException.class)
     public void testGetLaneLengthInvalid() throws Exception {
-        Lane l = new Lane(new Coordinate(2,3),new Coordinate(3,4),MapDirection.ERROR);
+        Lane l = new Lane(new Coordinate(2,3),new Coordinate(3,4),MapDirection.ERROR,r);
     }
 
     @Test
@@ -64,7 +66,7 @@ public class LaneTest {
 
     @Test
     public void testIsCellNotEmpty() throws Exception {
-        Lane l= new Lane (new Coordinate(0,0),new Coordinate(0,5),MapDirection.EAST);
+        Lane l= new Lane (new Coordinate(0,0),new Coordinate(0,5),MapDirection.EAST,r);
         Vehicle v = new Car(5,l);
 
         x.setCell(v,2);
@@ -74,7 +76,7 @@ public class LaneTest {
     @Test
     public void testSetIntersection() throws Exception {
         Intersection intersection= new Intersection(new Coordinate(5,5));
-        Lane northLane= new Lane(new Coordinate(6,5), new Coordinate(10,5),MapDirection.WEST);
+        Lane northLane= new Lane(new Coordinate(6,5), new Coordinate(10,5),MapDirection.WEST,r);
         northLane.setIntersection(intersection);
         Intersection testIntersection =northLane.getIntersection();
         assertEquals(intersection,testIntersection);
@@ -84,14 +86,10 @@ public class LaneTest {
     @Test
     public void testGetRoad() throws Exception {
         Road northRoad = new Road(new Coordinate(5,1),new Coordinate(5,4));
-        Lane northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH);
+        Lane northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH,r);
 
-        /*
-        have to modify lane.getRoad() to use road.addLane()
         northRoad.addLane(northLane1);
-         */
 
-        northLane1.setRoad(northRoad);
         Road testRoad;
         testRoad= northLane1.getRoad();
         assertEquals(northRoad,testRoad);

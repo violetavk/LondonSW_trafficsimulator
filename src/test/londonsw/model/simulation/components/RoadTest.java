@@ -26,10 +26,12 @@ public class RoadTest {
 
     @Test
     public void testGetLaneAtIndex() throws Exception {
-        Lane l = new Lane(new Coordinate(0,0), new Coordinate(0,10), MapDirection.SOUTH);
+        Lane l = new Lane(new Coordinate(0,0), new Coordinate(0,10), MapDirection.SOUTH,verticalRoad);
         verticalRoad.addLane(l);
         assertNotNull(verticalRoad.getLaneAtIndex(0));
         assertEquals(verticalRoad.getLaneAtIndex(0), l);
+
+
     }
 
     @Test
@@ -49,7 +51,7 @@ public class RoadTest {
     @Test
     public void testGetNumberLanes() throws Exception {
         assertEquals(verticalRoad.getNumberLanes(),0);
-        verticalRoad.addLane(new Lane(new Coordinate(0,0), new Coordinate(0,10), MapDirection.SOUTH));
+        verticalRoad.addLane(new Lane(new Coordinate(0,0), new Coordinate(0,10), MapDirection.SOUTH,verticalRoad));
         assertEquals(verticalRoad.getNumberLanes(),1);
     }
 

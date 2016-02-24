@@ -80,4 +80,40 @@ public class IntersectionTest {
             new AssertionError();
         }
     }
+
+    @Test
+    public void testSetSouthRoad() throws Exception {
+        Intersection intersection= new Intersection(new Coordinate(5,5));
+        Road southRoad = new Road(new Coordinate(5,6),new Coordinate(5,10));
+        intersection.setSouthRoad(southRoad);
+        Road testRoad  =intersection.getSouthRoad();
+        assertEquals(testRoad,southRoad);
+    }
+
+    @Test
+    public void testSetNorthRoad() throws Exception {
+        Intersection intersection= new Intersection(new Coordinate(5,5));
+        Road northRoad = new Road(new Coordinate(5,1),new Coordinate(5,4));
+        intersection.setNorthRoad(northRoad);
+        Road testRoad  =intersection.getNorthRoad();
+        assertEquals(testRoad,northRoad);
+    }
+
+    @Test
+    public void testSetWestRoad() throws Exception {
+        Intersection intersection= new Intersection(new Coordinate(5,5));
+        Road westRoad = new Road(new Coordinate(1,5),new Coordinate(4,5));
+        intersection.setWestRoad(westRoad);
+        Road testRoad  =intersection.getWestRoad();
+        assertEquals(testRoad,westRoad);
+    }
+
+    @Test
+    public void testSetEastRoad() throws Exception {
+        Intersection intersection= new Intersection(new Coordinate(5,5));
+        Road eastRoad = new Road(new Coordinate(6,5),new Coordinate(10,5));
+        intersection.setEastRoad(eastRoad);
+        Road testRoad  =intersection.getEastRoad();
+        assertEquals(testRoad,eastRoad);
+    }
 }
