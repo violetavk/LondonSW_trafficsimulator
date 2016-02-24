@@ -1,0 +1,56 @@
+Number,Name,Description,Type,Estimate,Owner,Priority,Status,Created by,Modified by
+23,Map Serlialization,"<p>Map.add() Intersections, Roads</p>
+
+<p>Call mapGrid class</p>",Story,2,violetta.avkhukova,,Complete,santiago_anda,violetta.avkhukova
+20,Ticker,Basic,Story,,violetta.avkhukova,Must,Complete,santiago_anda,violetta.avkhukova
+22,Vehicle,"<p>Vehicle.stop()</p>
+
+<p>Add Behaviour()</p>
+
+<p>Set Priority()</p>
+
+<p>Get Vehicle state()</p>",Story,,rawan.alrahili,,Complete,santiago_anda,rawan.alrahili
+16,Vehicle and Car Class,Attributes and Methods,Story,,rawan.alrahili,Must,Complete,santiago_anda,rawan.alrahili
+7,Agile,learn more about it.,Story,,rawan.alrahili,Must,Complete,rawan.alrahili,violetta.avkhukova
+25,readTrafficLight,,Story,,rawan.alrahili,Must,Complete,rawan.alrahili,jia.liu
+19,Map & Simulation Class,Attributes &amp; Methods,Story,,santiago_anda,Must,Complete,santiago_anda,violetta.avkhukova
+12,Assign stories to TM's,please assign,Story,,santiago_anda,Must,Complete,santiago_anda,jia.liu
+3,MVC research,learn mvc,Story,,jia.liu,Should,Complete,jia.liu,violetta.avkhukova
+6,Create backbone of model in java,,Story,,violetta.avkhukova,Must,Complete,violetta.avkhukova,violetta.avkhukova
+2,Initial Report,Test,Story,,,Must,Complete,santiago_anda,santiago_anda
+15,Road Class,Attributes and methods,Story,,violetta.avkhukova,Must,Complete,santiago_anda,violetta.avkhukova
+14,Lane Class,"Attributes, Methods",Story,,violetta.avkhukova,Must,Complete,santiago_anda,violetta.avkhukova
+10,Build Initial Prototype,Demo version,Story,,,Could,Complete,santiago_anda,santiago_anda
+13,Prepare Group Presentation,,Story,,yakubu.aliyu_doma,Must,Complete,santiago_anda,violetta.avkhukova
+18,Coordinates & Traffic Light,Attributes &amp; Methods,Story,,yakubu.aliyu_doma,Must,Complete,santiago_anda,jia.liu
+17,Intersection and Ticker,Attributes and Methods,Story,,jia.liu,Must,Complete,santiago_anda,jia.liu
+21,Intersection,"<p>Implement Validations</p>
+
+<p>Give options for the car</p>",Story,,jia.liu,,Complete,santiago_anda,jia.liu
+24,The animation of traffic light changing colors,System overall test,Story,8,yakubu.aliyu_doma,,Complete,santiago_anda,jia.liu
+29,Features,"<p>Create road.getIntersection method</p>
+
+<p> </p>
+
+<p> </p>",Story,,rawan.alrahili,,In progress,jia.liu,jia.liu
+26,JavaFX & Scene Builder,,Story,,jia.liu,,In progress,jia.liu,jia.liu
+28,Features,"<p>Draw intersections</p>
+
+<p>Extend to vehicle turns</p>
+
+<p>Fix bugs</p>
+
+<p> </p>
+
+<p> </p>",Story,,santiago_anda,,In progress,jia.liu,jia.liu
+27,Scene design (Map constructor),MapDesignMode ,Story,,jia.liu,,In progress,jia.liu,jia.liu
+30,GUI design,Traffic light,Story,,yakubu.aliyu_doma,,In progress,jia.liu,jia.liu
+31,features,"<p><span style=""color:rgb(0, 0, 0); font-family:helvetica neue,arial,helvetica; font-size:14px; line-height:19.6px"">Non draggle</span></p>
+
+<p><span style=""color:rgb(0, 0, 0); font-family:helvetica neue,arial,helvetica; font-size:14px; line-height:19.6px"">Map dimensions</span></p>",Story,,santiago_anda,,Complete,jia.liu,jia.liu
+32,Scene,SimulationMode,Story,,,,Complete,jia.liu,jia.liu
+33,Features,"<p><span style=""color:rgb(0, 0, 0); font-family:helvetica neue,arial,helvetica; font-size:14px; line-height:19.6px"">change getRoad option to getLane Option </span></p>
+
+<p>vehicle turn</p>",Story,,rawan.alrahili,,Complete,jia.liu,jia.liu
+34,A way of keeping track of all traffic lights,"Traffic light control pattern, etc.",Story,,violetta.avkhukova,,New,jia.liu,jia.liu
+35,"Play around with Car & GUI integration, and other GUI things",,Story,,violetta.avkhukova,,New,jia.liu,jia.liu
