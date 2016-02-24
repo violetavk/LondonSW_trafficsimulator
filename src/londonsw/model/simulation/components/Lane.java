@@ -25,12 +25,13 @@ public class Lane implements Serializable {
         return movingDirection;
     }
 
-    public Lane(Coordinate entry, Coordinate exit, MapDirection movingDirection) throws NotALaneException {
+    public Lane(Coordinate entry, Coordinate exit, MapDirection movingDirection,Road road) throws NotALaneException {
         this.entry = entry;
         this.exit = exit;
         this.movingDirection = movingDirection;
         length = this.getLaneLength();
         lane = new Vehicle[length];
+        this.road=road;
     }
 
     public Vehicle get(int i) {
@@ -74,9 +75,7 @@ public class Lane implements Serializable {
         return exit;
     }
 
-    public Road getRoad() { // TODO , it just works if we use Lane.setRoad(), not Road.addLine()
-        return road; }
-
+    public Road getRoad() {return road; }
     public void setRoad(Road road) {
 
         //this.road.setEnd(this.exit);

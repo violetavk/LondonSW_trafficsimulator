@@ -18,7 +18,7 @@ public class MapGridGUITestMain extends Application {
         Ticker ticker = Ticker.getInstance();
 
         Road R1 = new Road(new Coordinate(0,5),new Coordinate(7,5));
-        Lane L1 = new Lane(new Coordinate(0,5), new Coordinate(7,5), MapDirection.EAST);
+        Lane L1 = new Lane(new Coordinate(0,5), new Coordinate(7,5), MapDirection.EAST,R1);
         CarGUI C1 = new CarGUI(0,L1);
         //Intersection I1 = new Intersection(new Coordinate(0,4));
 

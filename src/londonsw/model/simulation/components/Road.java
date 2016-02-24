@@ -16,6 +16,7 @@ public class Road implements Component, Serializable {
     private ArrayList<Lane> lanes;
     private Intersection intersection;
 
+
     /**
      * Creates an instance of a new Road. It has no lanes yet. (Note: a road without lanes
      * should not exist, so the user must specify lanes right away). A road can have anywhere
@@ -84,6 +85,14 @@ public class Road implements Component, Serializable {
     public void setIntersection(Intersection intersection) {
         //TODO
         this.intersection = intersection;
+    }
+
+    public void setStart(Coordinate start) {
+        this.start = start;
+    }
+
+    public void setEnd(Coordinate end) {
+        this.end = end;
     }
 
     /**
