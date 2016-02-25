@@ -1,5 +1,7 @@
 package londonsw.view.simulation;
 
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -109,6 +111,11 @@ public class MapGridGUI extends MapGrid {
                 rootGP.setColumnIndex(roadStackPane,x);
 
                 rootGP.getChildren().add(roadStackPane);
+
+                double oldMinX = rootGP.getChildren().get(x).getScaleX();
+                double oldMinY = rootGP.getChildren().get(y).getScaleY();
+
+
             }
         }
 
