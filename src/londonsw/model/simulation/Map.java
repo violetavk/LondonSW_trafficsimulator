@@ -18,6 +18,8 @@ public class Map implements Serializable {
     private ArrayList<Intersection> intersections;
     private MapGrid grid;
     private final static String MAP_DIR = "./maps/";
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * Creates an empty map with no roads or intersections
