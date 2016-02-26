@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 
 
-public class Car extends Vehicle implements TickerListener, Serializable {
+public class Car extends Vehicle implements TickerListener, Serializable, ICar {
 
     private static int idCounter = 0;
     private int id;

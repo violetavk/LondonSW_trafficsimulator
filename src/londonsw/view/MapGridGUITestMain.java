@@ -9,13 +9,16 @@ import javafx.stage.Stage;
 import londonsw.model.simulation.Map;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.*;
-import londonsw.view.simulation.CarGUI;
+import londonsw.model.simulation.components.vehicles.Car;
+import londonsw.view.simulation.CarGUIDecorator;
 import londonsw.view.simulation.MapGridGUIDecorator;
 
 public class MapGridGUITestMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        Ticker t = Ticker.getInstance();
 
         Map map = drawTestMap();
 
@@ -28,27 +31,32 @@ public class MapGridGUITestMain extends Application {
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 
-        Lane L1 = map.getRandomLane();
+        //Lane L1 = map.getRandomLane();    //TODO check random method
 
+        Lane L1 = map.getRoads().get(0).getLaneAtIndex(0);
 
-        //CarGUI C1 = new CarGUI(0,L1);
+        Car C1 = new Car(0,L1);
 
-        //C1.setGridPane(rootGP);
-        //C1.setResizeFactor(mapGridGUIDecorator.getResizeFactorX(),mapGridGUIDecorator.getResizeFactorY());
+        CarGUIDecorator CarGUI = new CarGUIDecorator(C1);
 
-        //Pane car = C1.drawCar(L1.getEntry());
+        CarGUI.setGridPane(rootGP);
+        CarGUI.setResizeFactor(mapGridGUIDecorator.getResizeFactorX(),mapGridGUIDecorator.getResizeFactorY());
 
-        //C1.setGridPane(rootGP);
+        Pane car = CarGUI.drawCar(L1.getEntry());
+
+        CarGUI.setGridPane(rootGP);
 
         StackPane sp = new StackPane();
 
         sp.getChildren().add(rootGP);
 
-        //sp.getChildren().add(car);
+        sp.getChildren().add(car);
 
         Scene scene = new Scene(sp);
 
-        //C1.moveCar(6);
+        //CarGUI.moveVehicle(6);
+
+        t.start();
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
@@ -61,7 +69,7 @@ public class MapGridGUITestMain extends Application {
 
     public Map drawTestMap() throws Exception {
 
-        Map map = new Map(20,20);
+        Map map = new Map(10,10);
 
         Road r1 = new Road(new Coordinate(1,0), new Coordinate(8,0));
         Road r2 = new Road(new Coordinate(0,1), new Coordinate(0,8));

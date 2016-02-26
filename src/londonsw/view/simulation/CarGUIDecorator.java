@@ -1,7 +1,8 @@
 package londonsw.view.simulation;
 
-import javafx.animation.*;
-import javafx.collections.ObservableList;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -9,28 +10,30 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
-import londonsw.model.simulation.components.vehicles.Vehicle;
-
-import java.lang.reflect.Method;
+import londonsw.model.simulation.components.vehicles.Car;
 
 /**
- * Created by felix on 21/02/2016.
+ * Created by felix on 26/02/2016.
  */
-public class CarGUI extends Vehicle {
+public class CarGUIDecorator extends CarDecorator {
 
-
-    public void setResizeFactor(double resizeFactorX, double resizeFactorY) {
-        this.resizeFactorX = resizeFactorX;
-        this.resizeFactorY = resizeFactorY;
+    public CarGUIDecorator(Car decoratedCar) {
+        super(decoratedCar);
     }
 
     private double resizeFactorX;
     private double resizeFactorY;
     private double xSize;
     private double ySize;
+    private Rectangle rectangle;
+    private GridPane gridPane;
+
+    public void setResizeFactor(double resizeFactorX, double resizeFactorY) {
+        this.resizeFactorX = resizeFactorX;
+        this.resizeFactorY = resizeFactorY;
+    }
 
     public void setySize(double ySize) {
         this.ySize = ySize;
@@ -44,8 +47,6 @@ public class CarGUI extends Vehicle {
         this.xSize = xSize;
     }
 
-
-
     public Rectangle getRectangle() {
         return rectangle;
     }
@@ -54,20 +55,12 @@ public class CarGUI extends Vehicle {
         this.rectangle = rectangle;
     }
 
-    private Rectangle rectangle;
-
     public GridPane getGridPane() {
         return gridPane;
     }
 
     public void setGridPane(GridPane gridPane) {
         this.gridPane = gridPane;
-    }
-
-    private GridPane gridPane;
-
-    public CarGUI(int currentCell, Lane currentLane) {
-        super(currentCell, currentLane);
     }
 
     public Pane drawCar(Coordinate start) {
@@ -106,18 +99,15 @@ public class CarGUI extends Vehicle {
         return null;
     }
 
-
-    public void moveCar(int step)
+    public void moveVehicle(int step)
     {
-        this.moveVehicle(step);
-
         final Timeline timeline = new Timeline();
         timeline.setAutoReverse(true);
 
         //set delay to show starting point
-        timeline.setDelay(Duration.millis(2000));
+        timeline.setDelay(Duration.millis(1000));
 
-        final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), this.getxSize()*step);
+        final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), (this.getxSize())*(step+1));
         final KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
 
         timeline.getKeyFrames().add(kf);

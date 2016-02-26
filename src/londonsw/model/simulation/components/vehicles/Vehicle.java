@@ -1,4 +1,5 @@
 package londonsw.model.simulation.components.vehicles;
+import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.TickerListener;
 import londonsw.model.simulation.components.*;
@@ -71,6 +72,7 @@ public abstract class Vehicle implements TickerListener, Serializable{
             curCell= curCell+step;
             this.setCurrentCell(curCell,this.getCurrentLane());
             currentLane.setCell(this,curCell);
+
 //            System.out.println("Car moved from " + (curCell-step) + " to " + curCell);
             return true;
 
@@ -166,7 +168,10 @@ public abstract class Vehicle implements TickerListener, Serializable{
 //        VehicleBehavior behavior = this.getVehicleBehavior();
         if(vehicleBehavior == VehicleBehavior.AVERAGE) {
 //            System.out.println("About to move one slot - AVERAGE");
+
+            VehicleController.moveVehicle(this,1);
             this.moveVehicle(1);
+
         }
         else if(vehicleBehavior == VehicleBehavior.AGGRESSIVE) {
 //            System.out.println("About to move two slots - AGGRESSIVE");

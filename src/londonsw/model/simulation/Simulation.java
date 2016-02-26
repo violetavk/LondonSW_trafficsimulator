@@ -11,7 +11,7 @@ public class Simulation {
     private Ticker ticker;
 
     public Simulation() {
-        map = new Map(10,10);
+        map = Map.loadMap("FixedMap.map");
         // TODO map might need to be loaded from somewhere, not set to a default value!
         ticker = new Ticker();
     }
