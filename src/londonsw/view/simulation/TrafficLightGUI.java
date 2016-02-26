@@ -36,5 +36,4 @@ public class TrafficLightGUI {
         circle.setFill(Color.RED);
         return circle;
     }
-
 }
