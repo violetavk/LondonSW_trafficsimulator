@@ -10,14 +10,29 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="708.0" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <Button alignment="CENTER" layoutX="577.0" layoutY="93.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="15.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Reset" textAlignment="CENTER" textFill="GREEN" underline="true">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Button>
+      <Button alignment="CENTER" layoutX="505.0" layoutY="93.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Start" textAlignment="CENTER" textFill="GREEN" underline="true">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Button>
       <Label contentDisplay="RIGHT" layoutX="22.0" layoutY="6.0" lineSpacing="20.0" prefHeight="68.0" prefWidth="567.0" text="LondonSW Traffic Simulator" textAlignment="CENTER">
          <graphic>
-            <ImageView fitHeight="64.0" fitWidth="105.0" layoutX="100.0" layoutY="50.0" nodeOrientation="RIGHT_TO_LEFT" x="100.0" y="10.0">
-               <image>
+            <ImageView fitHeight="64.0" fitWidth="95.0" layoutX="100.0" layoutY="50.0" nodeOrientation="RIGHT_TO_LEFT" x="100.0" y="10.0">**
+
+                <image>
                   <Image url="@../../../../resources/Logo.png" />
-               </image>
+                </image>
+
                <viewport>
                   <Rectangle2D />
                </viewport>
@@ -27,19 +42,43 @@
             <Font name="PT Sans Caption Bold" size="33.0" />
          </font>
       </Label>
-      <Button alignment="CENTER" layoutX="520.0" layoutY="141.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Start" textAlignment="CENTER" textFill="GREEN" underline="true">
-         <cursor>
-            <Cursor fx:constant="DEFAULT" />
-         </cursor>
+      <Pane layoutX="16.0" layoutY="74.0" prefHeight="322.0" prefWidth="479.0" style="-fx-background-color: white;" />
+      <Label layoutX="507.0" layoutY="230.0" prefHeight="19.0" prefWidth="35.0" text="Car">
          <font>
-            <Font name="System Bold Italic" size="13.0" />
+            <Font name="System Bold Italic" size="11.0" />
          </font>
-      </Button>
-      <Button alignment="CENTER" layoutX="520.0" layoutY="229.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Reset" textAlignment="CENTER" textFill="GREEN" underline="true">
+      </Label>
+      <Label layoutX="507.0" layoutY="263.0" prefHeight="16.0" prefWidth="35.0" text="Speed">
          <font>
-            <Font name="System Bold Italic" size="13.0" />
+            <Font name="System Bold Italic" size="11.0" />
          </font>
-      </Button>
-      <Pane layoutX="4.0" layoutY="74.0" prefHeight="322.0" prefWidth="491.0" style="-fx-background-color: white;" />
+      </Label>
+      <Slider layoutX="578.0" layoutY="263.0" prefHeight="16.0" prefWidth="76.0" />
+      <Slider layoutX="575.0" layoutY="235.0" prefHeight="16.0" prefWidth="82.0" />
+      <Label layoutX="504.0" layoutY="295.0" prefHeight="19.0" prefWidth="60.0" text="Dimension">
+         <font>
+            <Font name="System Bold Italic" size="11.0" />
+         </font>
+      </Label>
+      <Slider layoutX="578.0" layoutY="297.0" prefHeight="15.0" prefWidth="76.0" />
+      <VBox layoutX="514.0" layoutY="139.0">
+         <children>
+            <Label layoutX="514.0" layoutY="139.0" prefHeight="19.0" prefWidth="149.0" text="20 cars">
+               <font>
+                  <Font name="System Bold Italic" size="11.0" />
+               </font>
+            </Label>
+            <Label layoutX="514.0" layoutY="170.0" text="2 setp/second">
+               <font>
+                  <Font name="System Bold Italic" size="11.0" />
+               </font>
+            </Label>
+            <Label layoutX="514.0" layoutY="200.0" text="Map dimension: 20X30">
+               <font>
+                  <Font name="System Bold Italic" size="11.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
    </children>
 </Pane>
