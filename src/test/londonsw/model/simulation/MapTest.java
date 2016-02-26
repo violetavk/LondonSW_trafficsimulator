@@ -21,6 +21,9 @@ public class MapTest {
     public void testLoadMap() throws Exception {
         System.out.println("Opening map...");
         Map loaded = Map.loadMap("FixedMap.map");
+
+
+
         assertNotNull(loaded);
         printMapGrid(loaded);
     }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * These are like the edges in our directed graph
  * Each has a start-location and an end-location
  */
-public class Road implements Component, Serializable {
+public class Road implements Component, Serializable, IRoad {
 
     private Coordinate start;
     private Coordinate end;

@@ -1,9 +1,6 @@
 package londonsw.model.simulation;
 
-import londonsw.model.simulation.components.Component;
-import londonsw.model.simulation.components.Coordinate;
-import londonsw.model.simulation.components.Intersection;
-import londonsw.model.simulation.components.Road;
+import londonsw.model.simulation.components.*;
 
 import java.io.Serializable;
 
@@ -12,7 +9,7 @@ import java.io.Serializable;
  * each Component being something that you would want to be displayed on the map, such as
  * a Road or Intersection.
  */
-public class MapGrid implements Serializable {
+public class MapGrid implements Serializable, IMapGrid {
 
     private int width;
     private int height;
