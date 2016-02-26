@@ -1,10 +1,12 @@
 package londonsw.model.simulation;
 
 import londonsw.model.simulation.components.Intersection;
+import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.Road;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * This is the graph structure that our map holds (Roads and Intersections)
@@ -33,6 +35,32 @@ public class Map implements Serializable {
      */
     public ArrayList<Road> getRoads() {
         return roads;
+    }
+
+    public Road getRandomRoad()
+    {
+        ArrayList<Road> roads = getRoads();
+
+        Random randomRoad = new Random();
+
+        int roadSize = randomRoad.nextInt(this.getRoads().size());
+
+        Road road = roads.get(roadSize);
+
+        return road;
+    }
+
+    public Lane getRandomLane()
+    {
+        Road road = getRandomRoad();
+
+        Random randomLane = new Random();
+
+        int laneSize = randomLane.nextInt(road.getLanes().size());
+
+        Lane lane = road.getLanes().get(laneSize);
+
+        return lane;
     }
 
     /**
