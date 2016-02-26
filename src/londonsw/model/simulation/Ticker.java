@@ -43,6 +43,8 @@ public class Ticker {
 
     public static long getTickInterval() { return TICK_INTERVAL; }
 
+    public static void setTickInterval(long interval) { TICK_INTERVAL = interval; }
+
     public void start() {
         timer.schedule(tr, TICK_INTERVAL, TICK_INTERVAL);
     }

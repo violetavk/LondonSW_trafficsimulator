@@ -6,6 +6,8 @@ import londonsw.model.simulation.components.Intersection;
 import londonsw.model.simulation.components.Road;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * This class is the underlying structure of our Map. It is a 2D-array of map Components,
@@ -17,6 +19,7 @@ public class MapGrid implements Serializable {
     private int width;
     private int height;
     private Component[][] grid;
+    private ArrayList<Component> allComponents;
 
     /**
      * Creates a brand new MapGrid instance to be part of a Map
@@ -27,6 +30,7 @@ public class MapGrid implements Serializable {
         this.width = width;
         this.height = height;
         grid = new Component[height][width];
+        allComponents = new ArrayList<Component>();
     }
 
     /**
@@ -53,6 +57,12 @@ public class MapGrid implements Serializable {
         return height;
     }
 
+    public ArrayList<Component> getAllComponents() { return allComponents; }
+
+    public Component get(int x, int y) {
+        return grid[y][x];
+    }
+
     /**
      * Adds a Component to the map grid structure
      * @param c the Component to be added
@@ -64,6 +74,7 @@ public class MapGrid implements Serializable {
             Intersection i = (Intersection) c;
             Coordinate coord = i.getLocation();
             grid[coord.getY()][coord.getX()] = i;
+            allComponents.add(i);
             return true;
         }
         else if(c instanceof Road) { // TODO there must be a better way of representing a road cell
@@ -80,12 +91,14 @@ public class MapGrid implements Serializable {
                     for(int i = startY; i <= endY; i++) {
                         grid[i][startX] = road;
                     }
+                    allComponents.add(road);
                     return true;
                 }
                 else { // start coordinate is south of end coordinate
                     for(int i = endY; i <= startY; i++) {
                         grid[i][startX] = road;
                     }
+                    allComponents.add(road);
                     return true;
                 }
             }
@@ -94,12 +107,14 @@ public class MapGrid implements Serializable {
                     for(int i = startX; i <= endX; i++) {
                         grid[startY][i] = road;
                     }
+                    allComponents.add(road);
                     return true;
                 }
                 else {
                     for(int i = endX; i <= startX; i++) { // start coordinate is east of end coordinate
                         grid[startY][i] = road;
                     }
+                    allComponents.add(road);
                     return true;
                 }
             }

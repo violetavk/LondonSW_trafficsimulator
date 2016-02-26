@@ -1,5 +1,7 @@
 package londonsw.model.simulation;
 
+import londonsw.model.simulation.components.Component;
+import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Intersection;
 import londonsw.model.simulation.components.Road;
 
@@ -25,6 +27,24 @@ public class Map implements Serializable {
         roads = new ArrayList<Road>();
         intersections = new ArrayList<Intersection>();
         grid = new MapGrid(width,height);
+    }
+
+    /**
+     * Gets the width of the map
+     *
+     * @return integer representing width of the map
+     */
+    public int getWidth() {
+        return grid.getWidth();
+    }
+
+    /**
+     * Gets the height of the map
+     *
+     * @return integer representing the height of the map
+     */
+    public int getHeight() {
+        return grid.getHeight();
     }
 
     /**
@@ -86,6 +106,12 @@ public class Map implements Serializable {
     public void addRoad(Road r) {
         roads.add(r);
         grid.addComponent(r);
+    }
+
+    public Component getAtLocation(Coordinate c) {
+        int x = c.getX();
+        int y = c.getY();
+        return grid.get(x,y);
     }
 
     /**
