@@ -21,22 +21,16 @@ import java.lang.reflect.Method;
  */
 public class CarGUI extends Vehicle {
 
-    public double getResizeFactor() {
-        return resizeFactorX;
-    }
 
-    public void setResizeFactor(int resizeFactorX, int resizeFactorY) {
-        this.resizeFactorX = 9.0/resizeFactorX;
-        this.resizeFactorY = 9.0/resizeFactorY;
+    public void setResizeFactor(double resizeFactorX, double resizeFactorY) {
+        this.resizeFactorX = resizeFactorX;
+        this.resizeFactorY = resizeFactorY;
     }
 
     private double resizeFactorX;
     private double resizeFactorY;
     private double xSize;
-
-    public double getySize() {
-        return ySize;
-    }
+    private double ySize;
 
     public void setySize(double ySize) {
         this.ySize = ySize;
@@ -50,7 +44,7 @@ public class CarGUI extends Vehicle {
         this.xSize = xSize;
     }
 
-    private double ySize;
+
 
     public Rectangle getRectangle() {
         return rectangle;
@@ -84,15 +78,15 @@ public class CarGUI extends Vehicle {
 
         Node n = getNodeFromGridPane(gp, start.getY(), start.getX());
 
-        StackPane spn = (StackPane) n;
+        StackPane sp = (StackPane) n;
 
-        double x =spn.getChildren().get(0).getLayoutBounds().getMaxX();
-        double y =spn.getChildren().get(0).getLayoutBounds().getMaxX();
+        double x =sp.getChildren().get(0).getLayoutBounds().getMaxX();
+        double y =sp.getChildren().get(0).getLayoutBounds().getMaxX();
 
         this.setxSize(x);
         this.setySize(y);
 
-        Rectangle r = new Rectangle(x*start.getX(),  y*start.getY(), 50*resizeFactorX, 25*resizeFactorY);
+        Rectangle r = new Rectangle(x*start.getX(),  y*start.getY(), 50*resizeFactorX, 25*resizeFactorY);   //TODO hardcode
 
         r.setFill(Color.RED);
 
