@@ -15,20 +15,15 @@ public class MapGridGUIDecorator extends MapGridDecorator {
         super(decoratedMapGrid);
     }
 
-    private double resizeFactorX;
-    private double resizeFactorY;
+    private ResizeFactor resizeFactor;
 
-    public double getResizeFactorY() {
-        return resizeFactorY;
+
+    public ResizeFactor getResizeFactor() {
+        return resizeFactor;
     }
 
-    public void setResizeFactor(double resizeFactorX , double resizeFactorY) {
-        this.resizeFactorX = resizeFactorX;
-        this.resizeFactorY = resizeFactorY;
-    }
-
-    public double getResizeFactorX() {
-        return resizeFactorX;
+    public void setResizeFactor(ResizeFactor resizeFactor) {
+        this.resizeFactor = resizeFactor;
     }
 
     public GridPane drawComponents() throws Exception {
@@ -44,7 +39,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                     RoadGUIDecorator roadGUIDecorator = new RoadGUIDecorator((Road) current);
 
-                    roadGUIDecorator.setResizeFactor(this.getResizeFactorX(), this.getResizeFactorY());
+                    roadGUIDecorator.setResizeFactor(this.getResizeFactor().getResizeX(),this.getResizeFactor().getResizeY());
 
                     roadStackPane = roadGUIDecorator.drawRoad(roadGUIDecorator.runsVertically() ? MapDirection.NORTH : MapDirection.EAST);  //TODO change logic
 
@@ -53,7 +48,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                     intersectionGUI.setHeight(this.getHeight());
                     intersectionGUI.setWidth(this.getWidth());
-                    intersectionGUI.setResizeFactor(this.getResizeFactorX(), this.getResizeFactorY());
+                    intersectionGUI.setResizeFactor(this.getResizeFactor().getResizeX(),this.getResizeFactor().getResizeY());
 
                     roadStackPane = intersectionGUI.drawIntersection();
                 } else {
@@ -62,7 +57,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                     grassGUI.setHeight(this.getHeight());
                     grassGUI.setWidth(this.getWidth());
-                    grassGUI.setResizeFactor(this.getResizeFactorX(), this.getResizeFactorY());
+                    grassGUI.setResizeFactor(this.getResizeFactor().getResizeX(),this.getResizeFactor().getResizeY());
 
                     roadStackPane = grassGUI.drawGrass();
                 }
