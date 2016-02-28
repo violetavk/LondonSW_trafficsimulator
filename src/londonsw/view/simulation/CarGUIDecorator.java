@@ -3,6 +3,8 @@ package londonsw.view.simulation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -10,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.vehicles.Car;
@@ -23,28 +26,17 @@ public class CarGUIDecorator extends CarDecorator {
         super(decoratedCar);
     }
 
-    private double resizeFactorX;
-    private double resizeFactorY;
-    private double xSize;
-    private double ySize;
     private Rectangle rectangle;
     private GridPane gridPane;
+    private ResizeFactor resizeFactor;
 
-    public void setResizeFactor(double resizeFactorX, double resizeFactorY) {
-        this.resizeFactorX = resizeFactorX;
-        this.resizeFactorY = resizeFactorY;
+    public void setResizeFactor(ResizeFactor resizeFactor) {
+        this.resizeFactor = resizeFactor;
     }
 
-    public void setySize(double ySize) {
-        this.ySize = ySize;
-    }
-
-    public double getxSize() {
-        return xSize;
-    }
-
-    public void setxSize(double xSize) {
-        this.xSize = xSize;
+    public ResizeFactor getResizeFactor()
+    {
+        return  resizeFactor;
     }
 
     public Rectangle getRectangle() {
@@ -63,23 +55,30 @@ public class CarGUIDecorator extends CarDecorator {
         this.gridPane = gridPane;
     }
 
-    public Pane drawCar(Coordinate start) {
+    public Pane drawCar() {
 
         Pane pane = new Pane();
 
         GridPane gp = this.getGridPane();
 
-        Node n = getNodeFromGridPane(gp, start.getY(), start.getX());
+        //TODO: Change for different moving directions
+
+        Lane lane = decoratedCar.getCurrentLane();
+
+        //TODO: get Coordinates of current location
+
+        Node n = getNodeFromGridPane(gp, lane.getEntry().getY(), decoratedCar.getCurrentCell());
 
         StackPane sp = (StackPane) n;
 
         double x =sp.getChildren().get(0).getLayoutBounds().getMaxX();
         double y =sp.getChildren().get(0).getLayoutBounds().getMaxX();
 
-        this.setxSize(x);
-        this.setySize(y);
-
-        Rectangle r = new Rectangle(x*start.getX(),  y*start.getY(), 50*resizeFactorX, 25*resizeFactorY);   //TODO hardcode
+        Rectangle r = new Rectangle(
+                x*decoratedCar.getCurrentCell(),
+                y*decoratedCar.getCurrentLane().getEntry().getY(),
+                50* this.getResizeFactor().getResizeX(),    //TODO: hardcode
+                25*this.getResizeFactor().getResizeY());    //TODO: hardcode
 
         r.setFill(Color.RED);
 
@@ -105,12 +104,23 @@ public class CarGUIDecorator extends CarDecorator {
         timeline.setAutoReverse(true);
 
         //set delay to show starting point
-        timeline.setDelay(Duration.millis(1000));
+        timeline.setDelay(Duration.millis(Ticker.getTickInterval()));
 
-        final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), (this.getxSize())*(step+1));
-        final KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
+        /*
+        Platform.runLater(() -> {
+            final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), (this.getResizeFactor().getResizeX()) * (step + 1));
+            final KeyFrame kf = new KeyFrame(Duration.millis(Ticker.getTickInterval()), kv);
 
-        timeline.getKeyFrames().add(kf);
-        timeline.play();
+            timeline.getKeyFrames().add(kf);
+            timeline.play();
+        });*/
+            //final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), (this.getResizeFactor().getResizeX()) * (step + 1));
+
+        final KeyValue kv = new KeyValue(this.getRectangle().xProperty(),100 * (step +1));
+
+            final KeyFrame kf = new KeyFrame(Duration.millis(Ticker.getTickInterval()), kv);
+
+            timeline.getKeyFrames().add(kf);
+            timeline.play();
+        }
     }
-}

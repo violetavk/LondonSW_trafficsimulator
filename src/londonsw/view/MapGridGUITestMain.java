@@ -12,6 +12,7 @@ import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.view.simulation.CarGUIDecorator;
 import londonsw.view.simulation.MapGridGUIDecorator;
+import londonsw.view.simulation.ResizeFactor;
 
 public class MapGridGUITestMain extends Application {
 
@@ -27,7 +28,7 @@ public class MapGridGUITestMain extends Application {
         double width = mapGridGUIDecorator.getWidth();
         double height = mapGridGUIDecorator.getHeight();
 
-        mapGridGUIDecorator.setResizeFactor(9/ width,9/height);    //TODO HARDCODE
+        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(9/ width,9/height));    //TODO HARDCODE
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 
@@ -35,28 +36,27 @@ public class MapGridGUITestMain extends Application {
 
         Lane L1 = map.getRoads().get(0).getLaneAtIndex(0);
 
-        Car C1 = new Car(0,L1);
+        Car C1 = new Car(2,L1);
 
         CarGUIDecorator CarGUI = new CarGUIDecorator(C1);
 
         CarGUI.setGridPane(rootGP);
-        CarGUI.setResizeFactor(mapGridGUIDecorator.getResizeFactorX(),mapGridGUIDecorator.getResizeFactorY());
 
-        Pane car = CarGUI.drawCar(L1.getEntry());
+        CarGUI.setResizeFactor(new ResizeFactor(mapGridGUIDecorator.getResizeFactor().getResizeX(),mapGridGUIDecorator.getResizeFactor().getResizeY()));
 
-        CarGUI.setGridPane(rootGP);
+        Pane carPane = CarGUI.drawCar();
 
         StackPane sp = new StackPane();
 
         sp.getChildren().add(rootGP);
 
-        sp.getChildren().add(car);
+        sp.getChildren().add(carPane);
 
         Scene scene = new Scene(sp);
 
-        //CarGUI.moveVehicle(6);
+        CarGUI.moveVehicle(1);
 
-        t.start();
+        //t.start();
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);

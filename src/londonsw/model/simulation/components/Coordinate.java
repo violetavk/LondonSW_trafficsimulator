@@ -7,6 +7,20 @@ import java.io.Serializable;
         */
 public class Coordinate implements Serializable {
 
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public Coordinate() {
+
+        this.x = 0;
+        this.y = 0;
+    }
+
     public Coordinate(int x, int y) throws NotACoordinateException {
         if(x<0 || y<0)
         {
