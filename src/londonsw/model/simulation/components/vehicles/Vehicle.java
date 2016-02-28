@@ -50,10 +50,11 @@ public abstract class Vehicle implements TickerListener, Serializable{
     public int getCurrentCell(){return currentCell;}
     public int getVehicleState(){return  vehicleState;}
     public VehicleBehavior getVehicleBehavior(){return VehicleBehavior.randomLetter(); }
-    public Coordinate getCurrentCoordinate(Vehicle vehicle)
+    /* getting the current coordinate of the car */
+    public Coordinate getCurrentCoordinate()
     {
-        int currentCell = vehicle.getCurrentCell();
-        Lane currentLane = vehicle.getCurrentLane();
+        int currentCell = this.getCurrentCell();
+        Lane currentLane = this.getCurrentLane();
         Coordinate coordinate = new Coordinate();
 
         MapDirection mapDirection = currentLane.getMovingDirection();
@@ -62,19 +63,23 @@ public abstract class Vehicle implements TickerListener, Serializable{
         switch (mapDirection)
         {
             case NORTH:
-
                 coordinate.setX(currentLane.getEntry().getX());
-                coordinate.setY(currentLane.getEntry().getY() + currentCell);
-
-                break;
-
-            case EAST:
+                coordinate.setY(currentLane.getEntry().getY() - currentCell);
                 break;
 
             case SOUTH:
+                coordinate.setX(currentLane.getEntry().getX());
+                coordinate.setY(currentLane.getEntry().getY() + currentCell);
+                break;
+
+            case EAST:
+                coordinate.setX(currentLane.getEntry().getX()+currentCell);
+                coordinate.setY(currentLane.getEntry().getY());
                 break;
 
             case WEST:
+                coordinate.setX(currentLane.getEntry().getX()-currentCell);
+                coordinate.setY(currentLane.getEntry().getY());
                 break;
         }
 
