@@ -50,10 +50,10 @@ public abstract class Vehicle implements TickerListener, Serializable{
     public int getCurrentCell(){return currentCell;}
     public int getVehicleState(){return  vehicleState;}
     public VehicleBehavior getVehicleBehavior(){return VehicleBehavior.randomLetter(); }
-    public Coordinate getCurrentCoordinate(Vehicle vehicle)
+    public Coordinate getCurrentCoordinate()
     {
-        int currentCell = vehicle.getCurrentCell();
-        Lane currentLane = vehicle.getCurrentLane();
+        int currentCell = this.getCurrentCell();
+        Lane currentLane = this.getCurrentLane();
         Coordinate coordinate = new Coordinate();
 
         MapDirection mapDirection = currentLane.getMovingDirection();
