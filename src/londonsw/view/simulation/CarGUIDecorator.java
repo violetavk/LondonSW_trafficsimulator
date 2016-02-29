@@ -13,8 +13,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import londonsw.model.simulation.Ticker;
-import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
+import londonsw.model.simulation.components.MapDirection;
+import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Car;
 
 /**
@@ -34,9 +35,8 @@ public class CarGUIDecorator extends CarDecorator {
         this.resizeFactor = resizeFactor;
     }
 
-    public ResizeFactor getResizeFactor()
-    {
-        return  resizeFactor;
+    public ResizeFactor getResizeFactor() {
+        return resizeFactor;
     }
 
     public Rectangle getRectangle() {
@@ -61,26 +61,31 @@ public class CarGUIDecorator extends CarDecorator {
 
         GridPane gp = this.getGridPane();
 
-        //TODO: Change for different moving directions
-
         Lane lane = decoratedCar.getCurrentLane();
-
-        //TODO: get Coordinates of current location
 
         Node n = getNodeFromGridPane(gp, lane.getEntry().getY(), decoratedCar.getCurrentCell());
 
         StackPane sp = (StackPane) n;
 
-        double x =sp.getChildren().get(0).getLayoutBounds().getMaxX();
-        double y =sp.getChildren().get(0).getLayoutBounds().getMaxX();
+        double x = sp.getChildren().get(0).getLayoutBounds().getMaxX();
+        double y = sp.getChildren().get(0).getLayoutBounds().getMaxX();
 
         Rectangle r = new Rectangle(
-                x*decoratedCar.getCurrentCell(),
-                y*decoratedCar.getCurrentLane().getEntry().getY(),
-                50* this.getResizeFactor().getResizeX(),    //TODO: hardcode
-                25*this.getResizeFactor().getResizeY());    //TODO: hardcode
+                x * decoratedCar.getCurrentCoordinate().getX(),
+                y * decoratedCar.getCurrentCoordinate().getY(),
+                50 * this.getResizeFactor().getResizeX(),    //TODO: hardcode
+                25 * this.getResizeFactor().getResizeY());    //TODO: hardcode
 
         r.setFill(Color.RED);
+
+        //check map direction for rotation
+
+        if (decoratedCar.getCurrentLane().getMovingDirection() == MapDirection.NORTH || decoratedCar.getCurrentLane().getMovingDirection() == MapDirection.SOUTH) {
+            //rotate
+            int angle = 90;
+
+            r.setRotate(angle);
+        }
 
         pane.getChildren().add(r);
 
@@ -98,29 +103,49 @@ public class CarGUIDecorator extends CarDecorator {
         return null;
     }
 
-    public void moveVehicle(int step)
-    {
+    public void moveVehicle(int step) {
         final Timeline timeline = new Timeline();
         timeline.setAutoReverse(true);
 
         //set delay to show starting point
         timeline.setDelay(Duration.millis(Ticker.getTickInterval()));
 
-        /*
-        Platform.runLater(() -> {
-            final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), (this.getResizeFactor().getResizeX()) * (step + 1));
-            final KeyFrame kf = new KeyFrame(Duration.millis(Ticker.getTickInterval()), kv);
+        //move according to moving direction
 
-            timeline.getKeyFrames().add(kf);
-            timeline.play();
-        });*/
-            //final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), (this.getResizeFactor().getResizeX()) * (step + 1));
+        DoubleProperty doubleProperty = null;
+        double distance = 0;
+        double imageDimension = 100 * this.getResizeFactor().getResizeX();  //TODO: hardcode
 
-        final KeyValue kv = new KeyValue(this.getRectangle().xProperty(),100 * (step +1));
+        switch (decoratedCar.getCurrentLane().getMovingDirection()) {
 
-            final KeyFrame kf = new KeyFrame(Duration.millis(Ticker.getTickInterval()), kv);
+            case NORTH:
+                doubleProperty = this.getRectangle().yProperty();
+                distance = doubleProperty.getValue() - (imageDimension) * step;
 
-            timeline.getKeyFrames().add(kf);
-            timeline.play();
+                break;
+            case SOUTH:
+                doubleProperty = this.getRectangle().yProperty();
+                distance = doubleProperty.getValue() + (imageDimension) * step;
+
+                break;
+            case EAST:
+                doubleProperty = this.getRectangle().xProperty();
+                distance = doubleProperty.getValue() + (imageDimension) * step;
+
+                break;
+            case WEST:
+                doubleProperty = this.getRectangle().yProperty();
+                distance = doubleProperty.getValue() - (imageDimension) * step;
+
+                break;
+
         }
+
+        final KeyValue kv = new KeyValue(doubleProperty,
+                distance);
+        final KeyFrame kf = new KeyFrame(Duration.millis(Ticker.getTickInterval()), kv);
+
+        timeline.getKeyFrames().add(kf);
+        timeline.play();
     }
+}
