@@ -9,9 +9,7 @@ import javafx.scene.paint.Material;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
-import londonsw.model.simulation.components.Lane;
-import londonsw.model.simulation.components.MapDirection;
-import londonsw.model.simulation.components.Road;
+import londonsw.model.simulation.components.*;
 
 import java.util.ArrayList;
 
@@ -23,20 +21,14 @@ public class RoadGUIDecorator extends RoadDecorator {
         super(decoratedRoad);
     }
 
-    private double resizeFactorX;
-    private double resizeFactorY;
+    private ResizeFactor resizeFactor;
 
-    public double getResizeFactorX() {
-        return resizeFactorX;
+    public ResizeFactor getResizeFactor() {
+        return resizeFactor;
     }
 
-    public double getResizeFactorY() {
-        return resizeFactorY;
-    }
-
-    public void setResizeFactor(double resizeFactorX, double resizeFactorY) {
-        this.resizeFactorX = resizeFactorX;
-        this.resizeFactorY = resizeFactorY;
+    public void setResizeFactor(ResizeFactor resizeFactor) {
+        this.resizeFactor = resizeFactor;
     }
 
     public StackPane drawRoad(MapDirection mapDirection) {
@@ -44,7 +36,7 @@ public class RoadGUIDecorator extends RoadDecorator {
 
         Image image = new Image(roadBackgroundPath);
 
-        Image im = new Image(roadBackgroundPath, image.getHeight() * getResizeFactorX(), image.getWidth() * getResizeFactorY(), false, false);
+        Image im = new Image(roadBackgroundPath, image.getHeight() * getResizeFactor().getResizeX(), image.getWidth() * getResizeFactor().getResizeY(), false, false);
 
         ImageView iv = new ImageView(im);
 
@@ -78,7 +70,7 @@ public class RoadGUIDecorator extends RoadDecorator {
                     double lineEndY = division * (i + 1);
 
                     roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY);
-                    roadLine.setStrokeWidth(2 * this.getResizeFactorY()); //TODO avoid hardcode
+                    roadLine.setStrokeWidth(2 * this.getResizeFactor().getResizeY()); //TODO avoid hardcode
                     roadLine.setStroke(Color.WHITE);
                     lines.getChildren().add(roadLine);
 
@@ -124,7 +116,7 @@ public class RoadGUIDecorator extends RoadDecorator {
                     double lineEndY = im.getHeight() - 15;
 
                     roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY); //TODO avoid hardcode
-                    roadLine.setStrokeWidth(2 * this.getResizeFactorY()); //TODO avoid hardcode
+                    roadLine.setStrokeWidth(2 * this.getResizeFactor().getResizeY()); //TODO avoid hardcode
                     roadLine.setStroke(Color.WHITE);
 
                     lines.getChildren().add(roadLine);

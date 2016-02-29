@@ -11,12 +11,11 @@ import londonsw.model.simulation.components.*;
 public class MapGridGUIDecorator extends MapGridDecorator {
 
 
+    private ResizeFactor resizeFactor;
+
     public MapGridGUIDecorator(MapGrid decoratedMapGrid) {
         super(decoratedMapGrid);
     }
-
-    private ResizeFactor resizeFactor;
-
 
     public ResizeFactor getResizeFactor() {
         return resizeFactor;
@@ -39,7 +38,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                     RoadGUIDecorator roadGUIDecorator = new RoadGUIDecorator((Road) current);
 
-                    roadGUIDecorator.setResizeFactor(this.getResizeFactor().getResizeX(),this.getResizeFactor().getResizeY());
+                    roadGUIDecorator.setResizeFactor(this.getResizeFactor());
 
                     roadStackPane = roadGUIDecorator.drawRoad(roadGUIDecorator.runsVertically() ? MapDirection.NORTH : MapDirection.EAST);  //TODO change logic
 
@@ -48,7 +47,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                     intersectionGUI.setHeight(this.getHeight());
                     intersectionGUI.setWidth(this.getWidth());
-                    intersectionGUI.setResizeFactor(this.getResizeFactor().getResizeX(),this.getResizeFactor().getResizeY());
+                    intersectionGUI.setResizeFactor(this.getResizeFactor());
 
                     roadStackPane = intersectionGUI.drawIntersection();
                 } else {
@@ -57,7 +56,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                     grassGUI.setHeight(this.getHeight());
                     grassGUI.setWidth(this.getWidth());
-                    grassGUI.setResizeFactor(this.getResizeFactor().getResizeX(),this.getResizeFactor().getResizeY());
+                    grassGUI.setResizeFactor(this.getResizeFactor());
 
                     roadStackPane = grassGUI.drawGrass();
                 }
