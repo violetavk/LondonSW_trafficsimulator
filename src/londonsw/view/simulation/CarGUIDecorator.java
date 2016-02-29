@@ -134,7 +134,7 @@ public class CarGUIDecorator extends CarDecorator {
 
                 break;
             case WEST:
-                doubleProperty = this.getRectangle().yProperty();
+                doubleProperty = this.getRectangle().xProperty();
                 distance = doubleProperty.getValue() - (imageDimension) * step;
 
                 break;
