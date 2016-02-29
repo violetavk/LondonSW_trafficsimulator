@@ -12,7 +12,6 @@ import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.view.simulation.CarGUIDecorator;
 import londonsw.view.simulation.MapGridGUIDecorator;
-import londonsw.view.simulation.ResizeFactor;
 
 public class MapGridGUITestMain extends Application {
 
@@ -32,17 +31,17 @@ public class MapGridGUITestMain extends Application {
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 
-        //Lane L1 = map.getRandomLane();    //TODO check random method
+        Lane L1 = map.getRandomLane();    //TODO check random method
 
-        Lane L1 = map.getRoads().get(0).getLaneAtIndex(0);
+        //Lane L1 = map.getRoads().get(0).getLaneAtIndex(0);
 
-        Car C1 = new Car(2,L1);
+        Car C1 = new Car(0,L1);
 
         CarGUIDecorator CarGUI = new CarGUIDecorator(C1);
 
         CarGUI.setGridPane(rootGP);
 
-        CarGUI.setResizeFactor(new ResizeFactor(mapGridGUIDecorator.getResizeFactor().getResizeX(),mapGridGUIDecorator.getResizeFactor().getResizeY()));
+        CarGUI.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
 
         Pane carPane = CarGUI.drawCar();
 
@@ -54,7 +53,7 @@ public class MapGridGUITestMain extends Application {
 
         Scene scene = new Scene(sp);
 
-        CarGUI.moveVehicle(1);
+        CarGUI.moveVehicle(5);
 
         //t.start();
 
