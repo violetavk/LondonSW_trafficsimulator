@@ -164,4 +164,25 @@ public class VehicleTest {
         Lane testLane =car.getCurrentLane();
         assertNotEquals(testLane,southLane1);
     }
+
+    @Test
+    public void testGetCurrentCoordinateWest() throws Exception {
+        Ticker t = Ticker.getInstance();
+        Road nroad = new Road(new Coordinate(10,0), new Coordinate(2,0 ));
+        Lane nlane = new Lane(nroad.getStartLocation(), nroad.getEndLocation(),MapDirection.WEST,nroad);
+        Vehicle v = new Car(4, nlane);
+        Coordinate coordinate = new Coordinate(6,0);
+        assertEquals(coordinate,v.getCurrentCoordinate());
+    }
+
+    @Test
+    public void testGetCurrentCoordinateSouth() throws Exception {
+        Ticker t = Ticker.getInstance();
+        Road nroad = new Road(new Coordinate(0, 0), new Coordinate(0, 7));
+        Lane nlane = new Lane(nroad.getStartLocation(), nroad.getEndLocation(), MapDirection.SOUTH, nroad);
+        Vehicle v = new Car(2, nlane);
+        Coordinate coordinate = new Coordinate(0, 2);
+        assertEquals(coordinate, v.getCurrentCoordinate());
+    }
+
 }
