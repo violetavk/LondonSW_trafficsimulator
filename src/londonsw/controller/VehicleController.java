@@ -17,10 +17,23 @@ public class VehicleController {
 
     public static void moveVehicle(Vehicle car, CarGUIDecorator carGUI, int step)
     {
-        System.out.println("Vehicle wants to move " + step + " step");
 
         System.out.println(car.getCurrentCoordinate().getX() + "," + car.getCurrentCoordinate().getY() );
+        carGUI.moveVehicleGUI(step,car.getVehicleState());
+        car.setVehicleState(1); //TODO change to enum
+
+        if(car.getCurrentCoordinate().equals(car.getCurrentLane().getExit()))
+        {
+            car.setVehicleState(0); //TODO change to enum
+        }
+
         car.moveVehicle(step);
-        carGUI.moveVehicleGUI(step);
+
+    }
+
+    public static void moveVehicle(Vehicle car, int step)
+    {
+        System.out.println("Vehicle wants to move " + step + " step");
+        car.moveVehicle(step);
     }
 }
