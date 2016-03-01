@@ -171,11 +171,11 @@ public class Intersection implements Component, Serializable {
         return laneOptions;
     }
 
-//    public Lane chooseDirection (){
-//        Random randomDirection = new Random();
-//        int size = randomDirection.nextInt(this.getLaneOptions().size());
-//        return this.getLaneOptions().get(size);
-//    }
+    public Lane chooseDirection (){
+        Random randomDirection = new Random();
+        int size = randomDirection.nextInt(this.getLaneOptions().size());
+        return this.getLaneOptions().get(size);
+    }
 
 }
 

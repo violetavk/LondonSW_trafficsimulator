@@ -1,4 +1,5 @@
 package londonsw.model.simulation.components;
+import londonsw.model.simulation.Map;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ public class Lane implements Serializable {
     private MapDirection movingDirection;
     private Road road;
     private Intersection intersection;
-
+    private Intersection laneIntersection;
 
     public MapDirection getMovingDirection() {
         return movingDirection;
@@ -76,14 +77,10 @@ public class Lane implements Serializable {
     }
 
     public Road getRoad() {return road; }
-    public void setRoad(Road road) {
 
-        //this.road.setEnd(this.exit);
-       // this.road.setStart(this.entry);
-        this.road = road;
-    }
+    public void setRoad(Road road) {this.road = road;}
 
-    public void setIntersection(Intersection intersection) {
+   /* public void setIntersection(Intersection intersection) {
         if((this.getMovingDirection()== MapDirection.WEST) &&
                 (intersection.getLocation().getX()== this.getEntry().getX()-1) &&
                 (intersection.getLocation().getY()== this.getEntry().getY()))
@@ -108,7 +105,7 @@ public class Lane implements Serializable {
 
     public Intersection getIntersection() {
         return intersection;
-    }
+    }*/
 
     public boolean setCell(Vehicle v, int cell) {
         if (cell < 0 || cell >= length)
@@ -118,6 +115,88 @@ public class Lane implements Serializable {
         return true;
     }
 
+
+     public Intersection getLaneIntersection() throws NotACoordinateException {
+      /*   Map map = new Map(30,30);
+
+        Road r = this.getRoad();
+        MapDirection m= this.movingDirection;
+        Coordinate c ;
+        Component someThing;
+
+      if(m==MapDirection.EAST) {
+            c = r.getEndLocation();
+            someThing = map.getAtLocation(new Coordinate(c.getX() + 1, c.getY()));
+            if (someThing instanceof Intersection) {
+                this.laneIntersection = (Intersection) someThing;
+            } else if (someThing instanceof Road) {
+                // use start
+                }
+                else {//error
+            }
+        }
+
+           if (m== MapDirection.WEST)
+           {
+               c = r.getStartLocation();
+               someThing = map.getAtLocation(new Coordinate(c.getX() - 1, c.getY()));
+
+               if (someThing instanceof Intersection) {
+                   this.laneIntersection = (Intersection) someThing;
+               } else if (someThing instanceof Road) {
+                   // use start
+               }
+               else {//error
+               }
+           }
+
+        if (m== MapDirection.NORTH)
+        {
+            c = r.getStartLocation();
+            someThing = map.getAtLocation(new Coordinate(c.getX(), c.getY()-1));
+
+            if (someThing instanceof Intersection) {
+                this.laneIntersection = (Intersection) someThing;
+            } else if (someThing instanceof Road) {
+                // use start
+            }
+            else {//error
+            }
+        }
+        if(m==MapDirection.SOUTH) {
+            c = r.getEndLocation();
+            someThing = map.getAtLocation(new Coordinate(c.getX(), c.getY()+1));
+            if (someThing instanceof Intersection) {
+                this.laneIntersection = (Intersection) someThing;
+            } else if (someThing instanceof Road) {
+                // use start
+            }
+            else {//error
+            }
+        }*/
+
+        return laneIntersection;}
+
+
+    public Coordinate getIntersectionCoordinate()throws NotACoordinateException {
+        Coordinate laneCoordinate= null;
+        Road r = this.getRoad();
+        Coordinate c ;
+        if (this.getMovingDirection()==MapDirection.NORTH)
+        { c = r.getStartLocation();
+            laneCoordinate =new Coordinate(c.getX(), c.getY()-1);}
+        else if (this.getMovingDirection()==MapDirection.SOUTH) {
+            c = r.getEndLocation();
+            laneCoordinate =new Coordinate(c.getX(), c.getY()+1);}
+        else if(this.getMovingDirection()==MapDirection.EAST) {
+            c = r.getEndLocation();
+            laneCoordinate= new Coordinate(c.getX() + 1, c.getY());}
+        else if (this.getMovingDirection()== MapDirection.WEST) {
+            c = r.getStartLocation();
+            laneCoordinate=new Coordinate(c.getX() - 1, c.getY());}
+
+            return laneCoordinate;
+    }
 }
 
 class NotALaneException extends Exception {
