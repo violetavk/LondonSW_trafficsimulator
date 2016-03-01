@@ -130,7 +130,7 @@ public class Lane implements Serializable {
             if (someThing instanceof Intersection) {
                 this.laneIntersection = (Intersection) someThing;
             } else if (someThing instanceof Road) {
-                // use start
+                // error
                 }
                 else {//error
             }
@@ -144,7 +144,7 @@ public class Lane implements Serializable {
                if (someThing instanceof Intersection) {
                    this.laneIntersection = (Intersection) someThing;
                } else if (someThing instanceof Road) {
-                   // use start
+                   // error
                }
                else {//error
                }
@@ -158,7 +158,7 @@ public class Lane implements Serializable {
             if (someThing instanceof Intersection) {
                 this.laneIntersection = (Intersection) someThing;
             } else if (someThing instanceof Road) {
-                // use start
+                // error
             }
             else {//error
             }
@@ -169,7 +169,7 @@ public class Lane implements Serializable {
             if (someThing instanceof Intersection) {
                 this.laneIntersection = (Intersection) someThing;
             } else if (someThing instanceof Road) {
-                // use start
+                // error
             }
             else {//error
             }
