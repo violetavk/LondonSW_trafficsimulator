@@ -8,20 +8,6 @@ import java.io.Serializable;
 public class Coordinate implements Serializable {
 
     private int x, y;
-    private double doubleX,doubleY;
-
-    public double getDoubleX() {
-        return doubleX;
-    }
-
-    public double getDoubleY() {
-        return doubleY;
-    }
-
-    public Coordinate(double doubleX, double doubleY) {
-        this.doubleX = doubleX;
-        this.doubleY = doubleY;
-    }
 
     public void setY(int y) {
         this.y = y;

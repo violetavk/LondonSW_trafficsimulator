@@ -82,6 +82,8 @@ public class Map implements Serializable {
 
         Lane lane = road.getLanes().get(laneSize);
 
+        lane.setRoadIndex(laneSize);
+
         return lane;
     }
 

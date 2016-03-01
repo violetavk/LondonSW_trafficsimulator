@@ -1,11 +1,6 @@
 package londonsw.controller;
 
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import londonsw.model.simulation.components.Lane;
-import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 import londonsw.view.simulation.CarGUIDecorator;
 
@@ -25,6 +20,27 @@ public class VehicleController {
         if(car.getCurrentCoordinate().equals(car.getCurrentLane().getExit()))
         {
             car.setVehicleState(0); //TODO change to enum
+
+            //car.getCurrentLane()
+
+            Lane l = car.getCurrentLane();
+
+            //Coordinate intersectionCo =  l.getIntersectionCoordinates();
+
+            //Intersection i = CheckIntersection(Coordinate);
+
+//            i.getLaneOption();
+//
+//            i.getOptions();
+
+//            car.setCurrentLane();
+
+            //get intersection coordinates
+            //get Intersection
+            //Intersection.getLaneOptions
+
+            //randomly choose where to go next
+
         }
 
         car.moveVehicle(step);

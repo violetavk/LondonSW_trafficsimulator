@@ -44,8 +44,6 @@ public class LayoutGUI {
     {
         Image image = new Image(path);
 
-
-
         Image im  = new Image(path,image.getWidth()*this.getResizeFactor().getResizeX(),image.getHeight()*this.getResizeFactor().getResizeY(),false,false);
 
         ImageView iv = new ImageView(im);

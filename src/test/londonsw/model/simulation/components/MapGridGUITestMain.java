@@ -1,4 +1,4 @@
-package londonsw.view;
+package londonsw.model.simulation.components;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,6 +17,7 @@ import londonsw.view.simulation.MapGridGUIDecorator;
 import org.reactfx.EventStreams;
 
 import java.time.Duration;
+import java.util.ArrayList;
 
 public class MapGridGUITestMain extends Application {
 
@@ -36,7 +37,9 @@ public class MapGridGUITestMain extends Application {
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 
-        Lane L1 = map.getRandomLane();    //TODO check random method
+        Lane L1 = map.getRandomLane();
+
+        //Lane L1 = map.getRoads().get(0).getLanes().get(roadIndex);
 
         Car C1 = new Car(0,L1);
 
@@ -46,7 +49,11 @@ public class MapGridGUITestMain extends Application {
 
         CarGUI.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
 
-        Pane carPane = CarGUI.drawCar();
+        Pane carPane = new Pane();
+
+        CarGUI.drawCar();
+
+        carPane.getChildren().add(CarGUI.getRectangle());
 
         StackPane sp = new StackPane();
 
@@ -56,9 +63,17 @@ public class MapGridGUITestMain extends Application {
 
         Scene scene = new Scene(sp);
 
+        //t.start();
+
         EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval()*2))   //needs to be greater than Ticker.getTickInterval
                 .subscribe(
-                        tick -> VehicleController.moveVehicle(C1, CarGUI,1));
+                        tick -> {
+                            try {
+                                VehicleController.moveVehicle(C1, CarGUI, 1);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
@@ -80,6 +95,7 @@ public class MapGridGUITestMain extends Application {
 
         r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST,r1));
         r1.addLane(new Lane(r1.getEndLocation() ,r1.getStartLocation(), MapDirection.WEST,r1));
+        r1.addLane(new Lane(r1.getEndLocation(),r1.getStartLocation(),MapDirection.EAST.WEST,r1));
 
         r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.SOUTH,r2));
         r2.addLane(new Lane(r2.getEndLocation(),r2.getStartLocation(), MapDirection.NORTH,r2));
