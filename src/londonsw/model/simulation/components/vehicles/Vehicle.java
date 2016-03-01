@@ -1,5 +1,4 @@
 package londonsw.model.simulation.components.vehicles;
-import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.TickerListener;
 import londonsw.model.simulation.components.*;
