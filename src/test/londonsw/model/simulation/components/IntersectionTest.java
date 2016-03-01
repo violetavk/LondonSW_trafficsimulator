@@ -34,7 +34,7 @@ public class IntersectionTest {
 
     }*/
 
-
+/*
     @Test   //Test with south and west roads
     public void testGetRoadOptions() throws Exception {
 
@@ -64,6 +64,7 @@ public class IntersectionTest {
 
         assertEquals(2,test.size());
     }
+*/
 
     @Test
     public void testGetRoadOptionsFalse() throws Exception {

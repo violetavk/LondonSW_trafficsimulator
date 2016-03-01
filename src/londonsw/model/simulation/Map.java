@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Map implements Serializable {
     private ArrayList<Road> roads;
     private ArrayList<Intersection> intersections;
-    private MapGrid grid;
+    private static MapGrid grid;
     private final static String MAP_DIR = "./maps/";
 
     /**
@@ -108,7 +108,7 @@ public class Map implements Serializable {
         grid.addComponent(r);
     }
 
-    public Component getAtLocation(Coordinate c) {
+    public static Component getAtLocation(Coordinate c) {
         int x = c.getX();
         int y = c.getY();
         return grid.get(x,y);

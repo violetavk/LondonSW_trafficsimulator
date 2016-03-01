@@ -117,7 +117,7 @@ public class Lane implements Serializable {
 
 
      public Intersection getLaneIntersection() throws NotACoordinateException {
-      /*   Map map = new Map(30,30);
+        // Map map = new Map(30,30);
 
         Road r = this.getRoad();
         MapDirection m= this.movingDirection;
@@ -126,7 +126,7 @@ public class Lane implements Serializable {
 
       if(m==MapDirection.EAST) {
             c = r.getEndLocation();
-            someThing = map.getAtLocation(new Coordinate(c.getX() + 1, c.getY()));
+            someThing = Map.getAtLocation(new Coordinate(c.getX() + 1, c.getY()));
             if (someThing instanceof Intersection) {
                 this.laneIntersection = (Intersection) someThing;
             } else if (someThing instanceof Road) {
@@ -139,7 +139,7 @@ public class Lane implements Serializable {
            if (m== MapDirection.WEST)
            {
                c = r.getStartLocation();
-               someThing = map.getAtLocation(new Coordinate(c.getX() - 1, c.getY()));
+               someThing = Map.getAtLocation(new Coordinate(c.getX() - 1, c.getY()));
 
                if (someThing instanceof Intersection) {
                    this.laneIntersection = (Intersection) someThing;
@@ -153,7 +153,7 @@ public class Lane implements Serializable {
         if (m== MapDirection.NORTH)
         {
             c = r.getStartLocation();
-            someThing = map.getAtLocation(new Coordinate(c.getX(), c.getY()-1));
+            someThing = Map.getAtLocation(new Coordinate(c.getX(), c.getY()-1));
 
             if (someThing instanceof Intersection) {
                 this.laneIntersection = (Intersection) someThing;
@@ -165,7 +165,7 @@ public class Lane implements Serializable {
         }
         if(m==MapDirection.SOUTH) {
             c = r.getEndLocation();
-            someThing = map.getAtLocation(new Coordinate(c.getX(), c.getY()+1));
+            someThing = Map.getAtLocation(new Coordinate(c.getX(), c.getY()+1));
             if (someThing instanceof Intersection) {
                 this.laneIntersection = (Intersection) someThing;
             } else if (someThing instanceof Road) {
@@ -173,14 +173,14 @@ public class Lane implements Serializable {
             }
             else {//error
             }
-        }*/
+        }
 
         return laneIntersection;}
 
 
-    public Coordinate getIntersectionCoordinate()throws NotACoordinateException {
+     /*public Coordinate getIntersectionCoordinate()throws NotACoordinateException {
         Coordinate laneCoordinate= null;
-        Road r = this.getRoad();
+       Road r = this.getRoad();
         Coordinate c ;
         if (this.getMovingDirection()==MapDirection.NORTH)
         { c = r.getStartLocation();
@@ -196,7 +196,7 @@ public class Lane implements Serializable {
             laneCoordinate=new Coordinate(c.getX() - 1, c.getY());}
 
             return laneCoordinate;
-    }
+    }*/
 }
 
 class NotALaneException extends Exception {

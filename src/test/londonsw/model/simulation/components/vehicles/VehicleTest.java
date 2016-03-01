@@ -1,5 +1,6 @@
 package londonsw.model.simulation.components.vehicles;
 
+import londonsw.model.simulation.Map;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.*;
 import org.junit.Before;
@@ -14,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class VehicleTest {
 
 
+    Map map = new Map(30,30);
     Intersection intersection;
     Road northRoad,southRoad, eastRoad, westRoad;
     Lane northLane1,northLane2,southLane1,southLane2,eastLane1,eastLane2,westLane1,westLane2;
@@ -38,28 +40,34 @@ public class VehicleTest {
 
         northRoad.addLane(northLane1);
         northRoad.addLane(northLane2);
-        northLane1.setIntersection(intersection);
-        northLane2.setIntersection(intersection);
+        //northLane1.setIntersection(intersection);
+        //northLane2.setIntersection(intersection);
 
         southRoad.addLane(southLane1);
         southRoad.addLane(southLane2);
-        southLane1.setIntersection(intersection);
-        southLane2.setIntersection(intersection);
+      //  southLane1.setIntersection(intersection);
+       // southLane2.setIntersection(intersection);
 
         eastRoad.addLane(eastLane1);
         eastRoad.addLane(eastLane2);
-        eastLane1.setIntersection(intersection);
-        eastLane2.setIntersection(intersection);
+        //eastLane1.setIntersection(intersection);
+        //eastLane2.setIntersection(intersection);
 
         westRoad.addLane(westLane1);
         westRoad.addLane(westLane2);
-        westLane1.setIntersection(intersection);
-        westLane2.setIntersection(intersection);
+        //westLane1.setIntersection(intersection);
+        //westLane2.setIntersection(intersection);
 
         intersection.setEastRoad(eastRoad);
         intersection.setNorthRoad(northRoad);
         intersection.setSouthRoad(southRoad);
         intersection.setWestRoad(westRoad);
+
+        map.addIntersection(intersection);
+        map.addRoad(northRoad);
+        map.addRoad(southRoad);
+        map.addRoad(eastRoad);
+        map.addRoad(westRoad);
 
     }
 
@@ -155,6 +163,7 @@ public class VehicleTest {
          assertEquals(car.getLaneOptions().size(),3);
     }
 
+
     @Test
     public void testVehicleTurn() throws Exception {
         Ticker t = Ticker.getInstance();
@@ -163,5 +172,6 @@ public class VehicleTest {
         car.vehicleTurn();
         Lane testLane =car.getCurrentLane();
         assertNotEquals(testLane,southLane1);
+        assertNotEquals(testLane,southLane2);
     }
 }

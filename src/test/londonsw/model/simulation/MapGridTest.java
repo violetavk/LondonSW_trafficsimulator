@@ -52,7 +52,7 @@ public class MapGridTest {
         Intersection i1 = new Intersection(new Coordinate(3,3));
         mapGrid.addComponent(i1);
         printMapGrid();
-        Intersection i2 = new Intersection(new Coordinate(2,7));
+        Intersection i2 = new Intersection(new Coordinate(7,2));
         mapGrid.addComponent(i2);
         printMapGrid();
         Road r1 = new Road(new Coordinate(0,0),new Coordinate(5,0));
@@ -62,4 +62,5 @@ public class MapGridTest {
         mapGrid.addComponent(r2);
         printMapGrid();
     }
+
 }
