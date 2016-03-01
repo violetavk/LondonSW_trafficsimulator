@@ -14,26 +14,13 @@ import londonsw.view.simulation.CarGUIDecorator;
  */
 public class VehicleController {
 
-    public static void moveVehicle(Vehicle car, int step) {
 
-        // tell the view to move the vehicle one step
+    public static void moveVehicle(Vehicle car, CarGUIDecorator carGUI, int step)
+    {
         System.out.println("Vehicle wants to move " + step + " step");
 
-        CarGUIDecorator carGUI = new CarGUIDecorator( (Car) car);
-        Lane lane = car.getCurrentLane();
-        //Call methods to draw a vehicle
-
-        //Call methods to move vehicle
-
-        //I need the GridPane
-
-        //I need the Pane
-
-
-
-        //Scene scene = new Scene(sp);
-
-        carGUI.moveVehicle(1);
-
+        System.out.println(car.getCurrentCoordinate().getX() + "," + car.getCurrentCoordinate().getY() );
+        car.moveVehicle(step);
+        carGUI.moveVehicleGUI(step);
     }
 }

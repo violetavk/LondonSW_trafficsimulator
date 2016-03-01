@@ -63,7 +63,7 @@ public class CarGUIDecorator extends CarDecorator {
 
         Lane lane = decoratedCar.getCurrentLane();
 
-        Node n = getNodeFromGridPane(gp, lane.getEntry().getY(), decoratedCar.getCurrentCell());
+        Node n = getNodeFromGridPane(gp, decoratedCar.getCurrentCoordinate().getY(),decoratedCar.getCurrentCoordinate().getX());
 
         StackPane sp = (StackPane) n;
 
@@ -103,7 +103,7 @@ public class CarGUIDecorator extends CarDecorator {
         return null;
     }
 
-    public void moveVehicle(int step) {
+    public void moveVehicleGUI(int step) {
         final Timeline timeline = new Timeline();
         timeline.setAutoReverse(true);
 

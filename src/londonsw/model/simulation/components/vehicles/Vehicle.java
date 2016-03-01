@@ -205,7 +205,7 @@ public abstract class Vehicle implements TickerListener, Serializable{
         if(vehicleBehavior == VehicleBehavior.AVERAGE) {
 //            System.out.println("About to move one slot - AVERAGE");
 
-            VehicleController.moveVehicle(this,1);
+            //VehicleController.moveVehicle(this,1);
             this.moveVehicle(1);
 
         }

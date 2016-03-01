@@ -6,12 +6,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Map;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Car;
+import londonsw.model.simulation.components.vehicles.Vehicle;
 import londonsw.view.simulation.CarGUIDecorator;
 import londonsw.view.simulation.MapGridGUIDecorator;
+import org.reactfx.EventStreams;
+
+import java.time.Duration;
 
 public class MapGridGUITestMain extends Application {
 
@@ -33,8 +38,6 @@ public class MapGridGUITestMain extends Application {
 
         Lane L1 = map.getRandomLane();    //TODO check random method
 
-        //Lane L1 = map.getRoads().get(0).getLaneAtIndex(0);
-
         Car C1 = new Car(0,L1);
 
         CarGUIDecorator CarGUI = new CarGUIDecorator(C1);
@@ -53,9 +56,9 @@ public class MapGridGUITestMain extends Application {
 
         Scene scene = new Scene(sp);
 
-        CarGUI.moveVehicle(5);
-
-        //t.start();
+        EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval()*2))   //needs to be greater than Ticker.getTickInterval
+                .subscribe(
+                        tick -> VehicleController.moveVehicle(C1, CarGUI,1));
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
@@ -112,7 +115,6 @@ public class MapGridGUITestMain extends Application {
 
         return map;
     }
-
 
     public static void main(String[] args) {
         launch(args);
