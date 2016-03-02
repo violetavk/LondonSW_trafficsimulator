@@ -3,19 +3,18 @@ package londonsw.view.simulation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import londonsw.model.simulation.Ticker;
-import londonsw.model.simulation.components.Coordinate;
-import londonsw.model.simulation.components.Lane;
+import londonsw.model.simulation.components.MapDirection;
+import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Car;
+
+import java.util.ArrayList;
 
 /**
  * Created by felix on 26/02/2016.
@@ -34,9 +33,8 @@ public class CarGUIDecorator extends CarDecorator {
         this.resizeFactor = resizeFactor;
     }
 
-    public ResizeFactor getResizeFactor()
-    {
-        return  resizeFactor;
+    public ResizeFactor getResizeFactor() {
+        return resizeFactor;
     }
 
     public Rectangle getRectangle() {
@@ -55,38 +53,46 @@ public class CarGUIDecorator extends CarDecorator {
         this.gridPane = gridPane;
     }
 
-    public Pane drawCar() {
+    public void drawCar() {
 
-        Pane pane = new Pane();
+        double x = 100 * this.getResizeFactor().getResizeX();
+        double y = 100 * this.getResizeFactor().getResizeY();
 
-        GridPane gp = this.getGridPane();
+        int numberLanes = this.decoratedCar.currentLane.getRoad().getNumberLanes();
 
-        //TODO: Change for different moving directions
+        double division =   100 * this.getResizeFactor().getResizeX();
+        //TODO I know it's 100 because the image background of the row is 100px plz try to put somewhere
 
-        Lane lane = decoratedCar.getCurrentLane();
+        division = division / (numberLanes);
 
-        //TODO: get Coordinates of current location
+        double startPointX =
+                x
+                * decoratedCar.getCurrentCoordinate().getX()
+                + (this.decoratedCar.getCurrentLane().getRoadIndex() * division);
 
-        Node n = getNodeFromGridPane(gp, lane.getEntry().getY(), decoratedCar.getCurrentCell());
-
-        StackPane sp = (StackPane) n;
-
-        double x =sp.getChildren().get(0).getLayoutBounds().getMaxX();
-        double y =sp.getChildren().get(0).getLayoutBounds().getMaxX();
+        double startPointY = y
+                * decoratedCar.getCurrentCoordinate().getY()
+                + (this.decoratedCar.getCurrentLane().getRoadIndex() * division);
 
         Rectangle r = new Rectangle(
-                x*decoratedCar.getCurrentCell(),
-                y*decoratedCar.getCurrentLane().getEntry().getY(),
-                50* this.getResizeFactor().getResizeX(),    //TODO: hardcode
-                25*this.getResizeFactor().getResizeY());    //TODO: hardcode
+                startPointX,
+                startPointY,
+                50 * this.getResizeFactor().getResizeX(),    //TODO: hardcode
+                25 * this.getResizeFactor().getResizeY());    //TODO: hardcode
 
         r.setFill(Color.RED);
 
-        pane.getChildren().add(r);
+        //check map direction for rotation
+
+        if (decoratedCar.getCurrentLane().getMovingDirection() == MapDirection.NORTH || decoratedCar.getCurrentLane().getMovingDirection() == MapDirection.SOUTH) {
+            //rotate
+            int angle = 90;
+
+            r.setRotate(angle);
+        }
+
 
         this.setRectangle(r);
-
-        return pane;
     }
 
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
@@ -98,29 +104,51 @@ public class CarGUIDecorator extends CarDecorator {
         return null;
     }
 
-    public void moveVehicle(int step)
-    {
+    public void moveVehicleGUI(int step, int state) {
         final Timeline timeline = new Timeline();
         timeline.setAutoReverse(true);
 
         //set delay to show starting point
-        timeline.setDelay(Duration.millis(Ticker.getTickInterval()));
+        //move according to moving direction
 
-        /*
-        Platform.runLater(() -> {
-            final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), (this.getResizeFactor().getResizeX()) * (step + 1));
-            final KeyFrame kf = new KeyFrame(Duration.millis(Ticker.getTickInterval()), kv);
+        if(state==0)
+            timeline.stop();
+        else {
+            DoubleProperty doubleProperty = null;
+            double distance = 0;
+            double imageDimension = 100 * this.getResizeFactor().getResizeX();  //TODO: hardcode
 
-            timeline.getKeyFrames().add(kf);
-            timeline.play();
-        });*/
-            //final KeyValue kv = new KeyValue(this.getRectangle().xProperty(), (this.getResizeFactor().getResizeX()) * (step + 1));
+            switch (decoratedCar.getCurrentLane().getMovingDirection()) {
 
-        final KeyValue kv = new KeyValue(this.getRectangle().xProperty(),100 * (step +1));
+                case NORTH:
+                    doubleProperty = this.getRectangle().yProperty();
+                    distance = doubleProperty.getValue() - (imageDimension) * step;
 
+                    break;
+                case SOUTH:
+                    doubleProperty = this.getRectangle().yProperty();
+                    distance = doubleProperty.getValue() + (imageDimension) * step;
+
+                    break;
+                case EAST:
+                    doubleProperty = this.getRectangle().xProperty();
+                    distance = doubleProperty.getValue() + (imageDimension) * step;
+
+                    break;
+                case WEST:
+                    doubleProperty = this.getRectangle().xProperty();
+                    distance = doubleProperty.getValue() - (imageDimension) * step;
+
+                    break;
+
+            }
+
+            final KeyValue kv = new KeyValue(doubleProperty,
+                    distance);
             final KeyFrame kf = new KeyFrame(Duration.millis(Ticker.getTickInterval()), kv);
 
             timeline.getKeyFrames().add(kf);
             timeline.play();
         }
     }
+}

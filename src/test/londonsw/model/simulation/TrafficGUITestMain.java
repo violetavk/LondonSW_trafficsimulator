@@ -22,7 +22,7 @@ public class TrafficGUITestMain extends Application {
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         Ticker ticker = Ticker.getInstance();
-        ITrafficLight I = new TrafficLight();
+        //ITrafficLight I = new TrafficLight();
         ticker.start();
 
         primaryStage.setTitle("TrafficLight Animation");

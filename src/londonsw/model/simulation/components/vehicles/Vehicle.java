@@ -22,11 +22,10 @@ public abstract class Vehicle implements TickerListener, Serializable{
     int vehicleState;
     VehicleBehavior vehicleBehavior;
     public Lane currentLane;
-
     public ArrayList<Lane> laneOptions = new ArrayList<Lane>();
     private Random randomDirection;
     Lane l;
-
+    Coordinate currentCoordinate;
 
     // debug only
     int timesTicked;
@@ -40,6 +39,10 @@ public abstract class Vehicle implements TickerListener, Serializable{
         Ticker.subscribe(this);
 
         timesTicked = 0;
+    }
+
+    public void setCurrentCoordinate(Coordinate currentCoordinate) {
+        this.currentCoordinate = currentCoordinate;
     }
 
     //Getter
@@ -110,6 +113,9 @@ public abstract class Vehicle implements TickerListener, Serializable{
             currentLane.setCell(this,curCell);
 
 //            System.out.println("Car moved from " + (curCell-step) + " to " + curCell);
+
+            this.setCurrentCoordinate(this.getCurrentCoordinate());
+
             return true;
 
        }

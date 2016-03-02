@@ -21,6 +21,19 @@ public class Lane implements Serializable {
     private Road road;
     private Intersection intersection;
     private Intersection laneIntersection;
+    private int RoadIndex;
+
+
+    public int getRoadIndex() {
+        return RoadIndex;
+    }
+
+    public void setRoadIndex(int roadIndex) {
+        RoadIndex = roadIndex;
+    }
+
+
+
 
     public MapDirection getMovingDirection() {
         return movingDirection;
