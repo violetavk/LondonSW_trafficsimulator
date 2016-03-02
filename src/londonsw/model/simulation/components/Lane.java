@@ -130,9 +130,12 @@ public class Lane implements Serializable {
             if (someThing instanceof Intersection) {
                 this.laneIntersection = (Intersection) someThing;
             } else if (someThing instanceof Road) {
-                // error
+                c = r.getStartLocation();
+                someThing = Map.getAtLocation(new Coordinate(c.getX() + 1, c.getY()));
+                if (someThing instanceof Intersection) {
+                    this.laneIntersection = (Intersection) someThing;}
                 }
-                else {//error
+                else {System.out.print("Error request ");
             }
         }
 
@@ -140,13 +143,15 @@ public class Lane implements Serializable {
            {
                c = r.getStartLocation();
                someThing = Map.getAtLocation(new Coordinate(c.getX() - 1, c.getY()));
-
                if (someThing instanceof Intersection) {
                    this.laneIntersection = (Intersection) someThing;
                } else if (someThing instanceof Road) {
-                   // error
+                   c = r.getEndLocation();
+                   someThing = Map.getAtLocation(new Coordinate(c.getX() - 1, c.getY()));
+                   if (someThing instanceof Intersection) {
+                       this.laneIntersection = (Intersection) someThing;}
                }
-               else {//error
+               else {System.out.print("Error request ");
                }
            }
 
@@ -158,9 +163,14 @@ public class Lane implements Serializable {
             if (someThing instanceof Intersection) {
                 this.laneIntersection = (Intersection) someThing;
             } else if (someThing instanceof Road) {
-                // error
+                c = r.getEndLocation();
+                someThing = Map.getAtLocation(new Coordinate(c.getX(), c.getY()-1));
+
+                if (someThing instanceof Intersection) {
+                    this.laneIntersection = (Intersection) someThing;
+                }
             }
-            else {//error
+            else {System.out.print("Error request ");
             }
         }
         if(m==MapDirection.SOUTH) {
@@ -169,9 +179,13 @@ public class Lane implements Serializable {
             if (someThing instanceof Intersection) {
                 this.laneIntersection = (Intersection) someThing;
             } else if (someThing instanceof Road) {
-                // error
+                c = r.getStartLocation();
+                someThing = Map.getAtLocation(new Coordinate(c.getX(), c.getY()+1));
+                if (someThing instanceof Intersection) {
+                    this.laneIntersection = (Intersection) someThing;
+                }
             }
-            else {//error
+            else {System.out.print("Error request ");
             }
         }
 

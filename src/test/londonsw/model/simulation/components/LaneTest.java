@@ -64,6 +64,12 @@ public class LaneTest {
         intersection.setSouthRoad(southRoad);
         intersection.setWestRoad(westRoad);
 
+        map.addIntersection(intersection);
+        map.addRoad(northRoad);
+        map.addRoad(southRoad);
+        map.addRoad(eastRoad);
+        map.addRoad(westRoad);
+
 
     }
 
