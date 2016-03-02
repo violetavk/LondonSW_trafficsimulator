@@ -69,6 +69,15 @@ public class VehicleTest {
         map.addRoad(eastRoad);
         map.addRoad(westRoad);
 
+        northLane2.setEndIntersection(intersection);
+       // northLane1.setStartIntersection(intersection);
+        southLane1.setEndIntersection(intersection);
+        //southLane2.setStartIntersection(intersection);
+        eastLane1.setEndIntersection(intersection);
+        //eastLane2.setStartIntersection(intersection);
+        westLane2.setEndIntersection(intersection);
+        //westLane1.setStartIntersection(intersection);
+
     }
 
     @Test
@@ -143,6 +152,7 @@ public class VehicleTest {
         ticker.end();
     }
 
+
     private static void printLane(Lane lane) {
         for(int i = 0; i < lane.getLength(); i++) {
             if(lane.get(i) instanceof Car) {
@@ -154,6 +164,7 @@ public class VehicleTest {
         }
         System.out.println();
     }
+
 
     @Test
     public void testGetLaneOptions() throws Exception {
@@ -174,4 +185,5 @@ public class VehicleTest {
         assertNotEquals(testLane,southLane1);
         assertNotEquals(testLane,southLane2);
     }
+
 }

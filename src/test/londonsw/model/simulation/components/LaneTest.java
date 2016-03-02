@@ -70,6 +70,12 @@ public class LaneTest {
         map.addRoad(eastRoad);
         map.addRoad(westRoad);
 
+        northLane2.setEndIntersection(intersection);
+        southLane1.setEndIntersection(intersection);
+        eastLane2.setEndIntersection(intersection);
+        westLane1.setEndIntersection(intersection);
+
+
 
     }
 
@@ -138,7 +144,7 @@ public class LaneTest {
         assertEquals(northRoad,testRoad);
 
     }
-
+/*
     @Test
     public void testGetLaneIntersection() throws Exception {
 
@@ -146,7 +152,23 @@ public class LaneTest {
         testIntersection =northLane2.getLaneIntersection();
         assertEquals(testIntersection,intersection);
 
+    }*/
+
+    @Test
+    public void testGetEndIntersection()throws Exception {
+        Intersection testIntersection1,testIntersection2,testIntersection3,testIntersection4,testIntersection5;
+        testIntersection1 =northLane2.getEndIntersection();
+        testIntersection2=southLane1.getEndIntersection();
+        testIntersection3=eastLane2.getEndIntersection();
+        testIntersection4=westLane1.getEndIntersection();
+
+        assertEquals(testIntersection1,intersection);
+        assertEquals(testIntersection2,intersection);
+        assertEquals(testIntersection3,intersection);
+        assertEquals(testIntersection4,intersection);
+
     }
+
     @Test
     public void testGetIntersectionCoordinate()throws Exception {
       /*  Coordinate testCoordinate1,testCoordinate2,testCoordinate3 ;
