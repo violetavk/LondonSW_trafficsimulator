@@ -119,7 +119,7 @@ public class Intersection implements Component, Serializable {
     public void setEastRoad(Road eastRoad) throws Exception {
         if (this.location.getY() == eastRoad.getEndLocation().getY()
                 && (this.location.getX() + 1  == eastRoad.getEndLocation().getX()
-                || this.location.getX() + 1 == eastRoad.getStartLocation().getY())) {
+                || this.location.getX() + 1 == eastRoad.getStartLocation().getX())) {
             this.eastRoad = eastRoad;
         } else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
