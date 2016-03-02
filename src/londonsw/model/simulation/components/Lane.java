@@ -125,7 +125,7 @@ public class Lane implements Serializable {
         int x =endIntersection.getLocation().getX();
         int y =endIntersection.getLocation().getY();
 
-        if ((this.getMovingDirection()==MapDirection.NORTH)&&(this.getEntry().getX()==x)&&(this.getEntry().getY()==y+1) )
+        if ((this.getMovingDirection()==MapDirection.NORTH)&&(this.getExit().getX()==x)&&(this.getExit().getY()==y+1) )
         {this.endIntersection = endIntersection;}
 
         else if ((this.getMovingDirection()==MapDirection.SOUTH)&&(this.getExit().getX()==x)&&(this.getExit().getY()==y-1) )
@@ -134,7 +134,7 @@ public class Lane implements Serializable {
         else if((this.getMovingDirection()==MapDirection.EAST)&&(this.getExit().getX()==x-1)&&(this.getExit().getY()==y) )
         {this.endIntersection = endIntersection;}
 
-        else if((this.getMovingDirection()==MapDirection.WEST)&&(this.getEntry().getX()==x+1)&&(this.getEntry().getY()==y) )
+        else if((this.getMovingDirection()==MapDirection.WEST)&&(this.getExit().getX()==x+1)&&(this.getExit().getY()==y) )
         {this.endIntersection = endIntersection;}
 
     }

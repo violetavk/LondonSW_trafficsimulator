@@ -38,14 +38,14 @@ public class LaneTest {
         southRoad = new Road(new Coordinate(5,6),new Coordinate(5,10));
         eastRoad = new Road(new Coordinate(6,5),new Coordinate(9,5));
         westRoad = new Road(new Coordinate(1,5),new Coordinate(4,5));
-        northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH);
+        northLane1= new Lane(new Coordinate(5,4), new Coordinate(5,1),MapDirection.NORTH);
         northLane2= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.SOUTH);
-        southLane1= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.NORTH);
+        southLane1= new Lane(new Coordinate(5,10), new Coordinate(5,6),MapDirection.NORTH);
         southLane2= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.SOUTH);
         eastLane1= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.EAST);
-        eastLane2= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.WEST);
+        eastLane2= new Lane(new Coordinate(9,5), new Coordinate(6,5),MapDirection.WEST);
         westLane1= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.EAST);
-        westLane2= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.WEST);
+        westLane2= new Lane(new Coordinate(4,5), new Coordinate(1,5),MapDirection.WEST);
 
         northRoad.addLane(northLane1);
         northRoad.addLane(northLane2);
