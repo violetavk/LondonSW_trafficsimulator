@@ -36,5 +36,10 @@ public class TrafficGUITestMain extends Application {
         root1.getChildren().add(circle);
         primaryStage.setScene(scene);
         primaryStage.show();
+        /*
+        Thread.sleep(100000);
+        ticker.end();
+        */
+        
     }
 }

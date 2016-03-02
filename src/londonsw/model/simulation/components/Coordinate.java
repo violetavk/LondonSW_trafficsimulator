@@ -7,6 +7,8 @@ import java.io.Serializable;
         */
 public class Coordinate implements Serializable {
 
+    private int x, y;
+
     public void setY(int y) {
         this.y = y;
     }
@@ -30,8 +32,6 @@ public class Coordinate implements Serializable {
         this.x=x;
         this.y=y;
     }
-
-    private int x, y;
 
     public int getX() {
         return x;

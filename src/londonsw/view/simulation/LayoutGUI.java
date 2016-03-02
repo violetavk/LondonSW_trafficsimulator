@@ -2,12 +2,8 @@ package londonsw.view.simulation;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import londonsw.model.simulation.components.MapDirection;
-import londonsw.model.simulation.components.Road;
+import londonsw.model.simulation.components.ResizeFactor;
 
 /**
  * Created by felix on 23/02/2016.
@@ -16,20 +12,14 @@ public class LayoutGUI {
 
     private int height;
     private int width;
-    private double resizeFactorX;
-    private double resizeFactorY;
+    private ResizeFactor resizeFactor;
 
-    public double getResizeFactorX() {
-        return resizeFactorX;
+    public ResizeFactor getResizeFactor() {
+        return resizeFactor;
     }
 
-    public double getResizeFactorY() {
-        return resizeFactorY;
-    }
-
-    public void setResizeFactor(double resizeFactorX, double resizeFactorY) {
-        this.resizeFactorX = resizeFactorX;
-        this.resizeFactorY = resizeFactorY;
+    public void setResizeFactor(ResizeFactor resizeFactor) {
+        this.resizeFactor = resizeFactor;
     }
 
     public void setWidth(int width) {
@@ -54,7 +44,8 @@ public class LayoutGUI {
     {
         Image image = new Image(path);
 
-        Image im  = new Image(path,image.getWidth()*this.getResizeFactorX(),image.getHeight()*this.getResizeFactorY(),false,false);
+        Image im  = new Image(path,image.getWidth()*this.getResizeFactor().getResizeX(),image.getHeight()*this.getResizeFactor().getResizeY(),false,false);
+
         ImageView iv = new ImageView(im);
 
         StackPane stackPane = new StackPane();

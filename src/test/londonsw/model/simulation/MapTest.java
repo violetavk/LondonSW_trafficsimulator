@@ -3,6 +3,8 @@ package londonsw.model.simulation;
 import londonsw.model.simulation.components.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by felix on 19/02/2016.
@@ -27,6 +29,16 @@ public class MapTest {
         assertNotNull(loaded);
         printMapGrid(loaded);
     }
+
+    @Test
+    public void testGetAtLocation() throws Exception {
+        Map map = drawTestMap();
+        Coordinate x= new Coordinate(2,1);
+        Component c =map.getAtLocation(new Coordinate(2,1));
+        assertTrue(c instanceof Road);
+    }
+
+
 
     public Map drawTestMap() throws Exception {
         Map map = new Map(6,5);
@@ -88,4 +100,6 @@ public class MapTest {
         }
         System.out.println();
     }
+
+
 }

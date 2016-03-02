@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="reactfx-2.0-M4u1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/reactfx-2.0-M4u1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

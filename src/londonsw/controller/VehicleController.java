@@ -1,11 +1,6 @@
 package londonsw.controller;
 
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import londonsw.model.simulation.components.Lane;
-import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 import londonsw.view.simulation.CarGUIDecorator;
 
@@ -14,26 +9,47 @@ import londonsw.view.simulation.CarGUIDecorator;
  */
 public class VehicleController {
 
-    public static void moveVehicle(Vehicle car, int step) {
 
-        // tell the view to move the vehicle one step
+    public static void moveVehicle(Vehicle car, CarGUIDecorator carGUI, int step)
+    {
+
+        System.out.println(car.getCurrentCoordinate().getX() + "," + car.getCurrentCoordinate().getY() );
+        carGUI.moveVehicleGUI(step,car.getVehicleState());
+        car.setVehicleState(1); //TODO change to enum
+
+        if(car.getCurrentCoordinate().equals(car.getCurrentLane().getExit()))
+        {
+            car.setVehicleState(0); //TODO change to enum
+
+            //car.getCurrentLane()
+
+            Lane l = car.getCurrentLane();
+
+            //Coordinate intersectionCo =  l.getIntersectionCoordinates();
+
+            //Intersection i = CheckIntersection(Coordinate);
+
+//            i.getLaneOption();
+//
+//            i.getOptions();
+
+//            car.setCurrentLane();
+
+            //get intersection coordinates
+            //get Intersection
+            //Intersection.getLaneOptions
+
+            //randomly choose where to go next
+
+        }
+
+        car.moveVehicle(step);
+
+    }
+
+    public static void moveVehicle(Vehicle car, int step)
+    {
         System.out.println("Vehicle wants to move " + step + " step");
-
-        CarGUIDecorator carGUI = new CarGUIDecorator( (Car) car);
-        Lane lane = car.getCurrentLane();
-        //Call methods to draw a vehicle
-
-        //Call methods to move vehicle
-
-        //I need the GridPane
-
-        //I need the Pane
-
-
-
-        //Scene scene = new Scene(sp);
-
-        carGUI.moveVehicle(1);
-
+        car.moveVehicle(step);
     }
 }
