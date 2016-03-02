@@ -22,8 +22,16 @@ public class Lane implements Serializable {
     // private Intersection intersection;
     //private Intersection laneIntersection;
     private Intersection endIntersection;
+    private int RoadIndex;
 
 
+    public int getRoadIndex() {
+        return RoadIndex;
+    }
+
+    public void setRoadIndex(int roadIndex) {
+        RoadIndex = roadIndex;
+    }
 
     public Lane(Coordinate entry, Coordinate exit, MapDirection movingDirection,Road road) throws NotALaneException {
         this.entry = entry;
