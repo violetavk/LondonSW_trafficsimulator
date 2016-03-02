@@ -19,7 +19,7 @@ public class LaneTest {
     Coordinate a;
     Coordinate b;
 
-    Map map = new Map(30,30);
+
     Intersection intersection;
     Road northRoad,southRoad, eastRoad, westRoad;
     Lane northLane1,northLane2,southLane1,southLane2,eastLane1,eastLane2,westLane1,westLane2;
@@ -64,11 +64,7 @@ public class LaneTest {
         intersection.setSouthRoad(southRoad);
         intersection.setWestRoad(westRoad);
 
-        map.addIntersection(intersection);
-        map.addRoad(northRoad);
-        map.addRoad(southRoad);
-        map.addRoad(eastRoad);
-        map.addRoad(westRoad);
+
 
         northLane2.setEndIntersection(intersection);
         southLane1.setEndIntersection(intersection);
