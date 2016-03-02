@@ -1,13 +1,11 @@
 package londonsw.model.simulation.components;
 
-import londonsw.model.simulation.Map;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * JUnit test class for Lane
@@ -177,4 +175,15 @@ public class LaneTest {
         assertEquals(testCoordinate3,new Coordinate(5,5));*/
 
     }
+    @Test
+    public void  testRotate() throws Exception{
+        Lane lane1 = new Lane(new Coordinate(0,0),new Coordinate(0,10), MapDirection.EAST);
+        Lane lane2 = new Lane(new Coordinate(0,0),new Coordinate(0,15), MapDirection.EAST);
+        Lane lane3 = new Lane(new Coordinate(0,0),new Coordinate(10,0), MapDirection.WEST);
+
+        assertEquals(false,Lane.Rotate(lane1,lane2));
+        assertEquals(true,Lane.Rotate(lane1,lane3));
+
+    }
+
 }
