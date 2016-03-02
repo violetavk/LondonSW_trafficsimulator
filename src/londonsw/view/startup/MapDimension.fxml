@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane fx:controller="londonsw.controller.StartUpController"
+        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="511.0" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="82.0" layoutY="55.0" text="Map Dimension">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <TextField layoutX="111.0" layoutY="200.0" prefHeight="26.0" prefWidth="102.0" />
+      <TextField layoutX="297.0" layoutY="200.0" prefHeight="26.0" prefWidth="94.0" />
+      <Label layoutX="111.0" layoutY="170.0" text="Width (6&lt;w&lt;60)" />
+      <Label layoutX="290.0" layoutY="170.0" text="Height (0&lt;h&lt;60)" />
+      <Button onAction="#goToMapCreationScreen"
+              layoutX="227.0" layoutY="297.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="63.0" style="-fx-background-color: gold;" text="Save">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
