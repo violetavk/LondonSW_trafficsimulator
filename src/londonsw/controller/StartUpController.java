@@ -8,8 +8,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -42,8 +43,20 @@ public class StartUpController extends Application{
 
     public void goToSimulationMode(ActionEvent actionEvent) throws IOException {
         // TODO This is just dummy code to take place of the next screens for now
+        //Parent simulationModeScreen = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode.fxml"));
         Parent simulationModeScreen = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode.fxml"));
+
+        Node node = simulationModeScreen.lookup("#Scene");
+
+        Pane p = (Pane) node;
+        Circle c = new Circle(10,100,10);
+
+        p.getChildren().add(c);
+
+
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+
         stage.setScene(new Scene(simulationModeScreen));
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         /**
