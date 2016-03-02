@@ -26,16 +26,18 @@
          </font>
       </Button>
       <Label contentDisplay="RIGHT" layoutX="22.0" layoutY="6.0" lineSpacing="20.0" prefHeight="68.0" prefWidth="567.0" text="LondonSW Traffic Simulator" textAlignment="CENTER">
+         <!--
          <graphic>
             <ImageView fitHeight="64.0" fitWidth="95.0" layoutX="100.0" layoutY="50.0" nodeOrientation="RIGHT_TO_LEFT" x="100.0" y="10.0">
                <image>
-                  <Image url="@Screen%20Shot%202016-02-23%20at%203.25.14%20PM.png" />
+                  <Image url="@../../../../../../Logo.png" />
                </image>
                <viewport>
                   <Rectangle2D />
                </viewport>
             </ImageView>
          </graphic>
+         -->
          <font>
             <Font name="PT Sans Caption Bold" size="33.0" />
          </font>

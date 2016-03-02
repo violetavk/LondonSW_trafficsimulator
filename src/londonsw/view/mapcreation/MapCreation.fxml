@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="600.0" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -24,13 +24,25 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
-      <Label layoutX="489.0" layoutY="202.0" prefHeight="54.0" prefWidth="72.0" text="Lane" />
-      <Label layoutX="492.0" layoutY="124.0" prefHeight="54.0" prefWidth="65.0" text="grass" />
-      <Label layoutX="486.0" layoutY="50.0" prefHeight="54.0" prefWidth="99.0" text="Intersection" />
-      <Button layoutX="496.0" layoutY="311.0" mnemonicParsing="false" style="-fx-background-color: gold;" text="Undo" textFill="GREEN">
+      <Button layoutX="501.0" layoutY="346.0" mnemonicParsing="false" style="-fx-background-color: gold;" text="Undo" textFill="GREEN">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Button>
+      <ImageView fitHeight="100.0" fitWidth="96.0" layoutX="479.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../resources/Grass.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="85.0" fitWidth="105.0" layoutX="484.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../resources/Line.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="489.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../resources/RoadBackground.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>

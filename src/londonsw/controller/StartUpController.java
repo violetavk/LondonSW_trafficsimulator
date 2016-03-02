@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class StartUpController extends Application{
@@ -43,22 +44,21 @@ public class StartUpController extends Application{
 
     public void goToSimulationMode(ActionEvent actionEvent) throws IOException {
         // TODO This is just dummy code to take place of the next screens for now
-        //Parent simulationModeScreen = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode.fxml"));
+
         Parent simulationModeScreen = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode.fxml"));
 
         Node node = simulationModeScreen.lookup("#Scene");
-
         Pane p = (Pane) node;
+
+        //get Grid Pane
         Circle c = new Circle(10,100,10);
-
         p.getChildren().add(c);
-
 
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-
         stage.setScene(new Scene(simulationModeScreen));
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
         /**
         alert.setTitle("Simulation Mode");
         alert.setHeaderText(null);
@@ -67,8 +67,23 @@ public class StartUpController extends Application{
          **/
     }
 
-    public void goToMapBuilderMode(ActionEvent actionEvent) {
+    public void goToMapBuilderMode(ActionEvent actionEvent) throws IOException {
+
+        Parent setMapDimension = FXMLLoader.load(getClass().getResource("../view/startup/MapDimension" + ".fxml"));
+
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        stage.setScene(new Scene(setMapDimension));
 
 
+    }
+
+    public void goToMapCreationScreen(ActionEvent actionEvent) throws IOException{
+
+        Parent mapCreation = FXMLLoader.load(getClass().getResource("../view/mapcreation/MapCreation" + ".fxml"));
+
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        stage.setScene(new Scene(mapCreation));
     }
 }
