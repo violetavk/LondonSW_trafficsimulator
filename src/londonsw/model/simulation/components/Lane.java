@@ -13,6 +13,7 @@ import java.security.PrivateKey;
  */
 public class Lane implements Serializable {
 
+    private static final long serialVersionUID = 7899381124564682583L;
     private Vehicle[] lane;
     private int length;
     private Coordinate entry;

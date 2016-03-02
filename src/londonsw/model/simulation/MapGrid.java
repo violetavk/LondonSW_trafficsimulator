@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class MapGrid implements Serializable, IMapGrid {
 
+    private static final long serialVersionUID = -8256761045077358688L;
     private int width;
     private int height;
     private Component[][] grid;

@@ -14,11 +14,11 @@ import java.util.Random;
  * This is the graph structure that our map holds (Roads and Intersections)
  */
 public class Map implements Serializable {
+    private static final long serialVersionUID = -1932129809569954013L;
     private ArrayList<Road> roads;
     private ArrayList<Intersection> intersections;
     private static MapGrid grid;
     private final static String MAP_DIR = "./maps/";
-    private static final long serialVersionUID = 1L;
 
 
     /**

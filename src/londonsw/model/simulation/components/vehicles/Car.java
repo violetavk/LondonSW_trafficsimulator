@@ -15,6 +15,7 @@ import java.io.Serializable;
 
 public class Car extends Vehicle implements TickerListener, Serializable, ICar {
 
+    private static final long serialVersionUID = -3555254273903868035L;
     private static int idCounter = 0;
     private int id;
 

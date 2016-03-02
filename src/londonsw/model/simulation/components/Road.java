@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 public class Road implements Component, Serializable, IRoad {
 
+    private static final long serialVersionUID = 6679898165504556586L;
     private Coordinate start;
     private Coordinate end;
     private ArrayList<Lane> lanes;

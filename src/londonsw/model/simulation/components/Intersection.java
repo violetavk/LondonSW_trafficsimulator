@@ -19,6 +19,7 @@ import java.util.Random;
 
 public class Intersection implements Component, Serializable {
 
+    private static final long serialVersionUID = -2621352799268337492L;
     private Road northRoad;
     private Road southRoad;
     private Road eastRoad;

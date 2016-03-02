@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class TrafficLight extends Ticker implements TickerListener, Serializable {
 
 
+    private static final long serialVersionUID = 1299747948664926447L;
     LightColour state = LightColour.RED;
     private long duration = 3000;
     private long currentTime;

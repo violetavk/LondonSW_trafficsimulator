@@ -15,6 +15,7 @@ import java.util.Random;
  */
 public abstract class Vehicle implements TickerListener, Serializable{
 
+    private static final long serialVersionUID = -4552832373570448039L;
     int vehicleLength;
     double vehicleSpeed;
     int currentCell;
