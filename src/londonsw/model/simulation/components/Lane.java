@@ -19,25 +19,11 @@ public class Lane implements Serializable {
     private Coordinate exit;
     private MapDirection movingDirection;
     private Road road;
-    private Intersection intersection;
-    private Intersection laneIntersection;
-    private int RoadIndex;
+    // private Intersection intersection;
+    //private Intersection laneIntersection;
+    private Intersection endIntersection;
 
 
-    public int getRoadIndex() {
-        return RoadIndex;
-    }
-
-    public void setRoadIndex(int roadIndex) {
-        RoadIndex = roadIndex;
-    }
-
-
-
-
-    public MapDirection getMovingDirection() {
-        return movingDirection;
-    }
 
     public Lane(Coordinate entry, Coordinate exit, MapDirection movingDirection,Road road) throws NotALaneException {
         this.entry = entry;
@@ -88,7 +74,9 @@ public class Lane implements Serializable {
     public Coordinate getExit() {
         return exit;
     }
-
+    public MapDirection getMovingDirection() {
+        return movingDirection;
+    }
     public Road getRoad() {return road; }
 
     public void setRoad(Road road) {this.road = road;}
@@ -120,6 +108,29 @@ public class Lane implements Serializable {
         return intersection;
     }*/
 
+
+    public Intersection getEndIntersection() {
+        return endIntersection;
+    }
+
+    public void setEndIntersection(Intersection endIntersection) {
+        int x =endIntersection.getLocation().getX();
+        int y =endIntersection.getLocation().getY();
+
+        if ((this.getMovingDirection()==MapDirection.NORTH)&&(this.getEntry().getX()==x)&&(this.getEntry().getY()==y+1) )
+        {this.endIntersection = endIntersection;}
+
+        else if ((this.getMovingDirection()==MapDirection.SOUTH)&&(this.getExit().getX()==x)&&(this.getExit().getY()==y-1) )
+        {this.endIntersection = endIntersection;}
+
+        else if((this.getMovingDirection()==MapDirection.EAST)&&(this.getExit().getX()==x-1)&&(this.getExit().getY()==y) )
+        {this.endIntersection = endIntersection;}
+
+        else if((this.getMovingDirection()==MapDirection.WEST)&&(this.getEntry().getX()==x+1)&&(this.getEntry().getY()==y) )
+        {this.endIntersection = endIntersection;}
+
+    }
+
     public boolean setCell(Vehicle v, int cell) {
         if (cell < 0 || cell >= length)
             return false;
@@ -128,7 +139,7 @@ public class Lane implements Serializable {
         return true;
     }
 
-
+/*
      public Intersection getLaneIntersection() throws NotACoordinateException {
         // Map map = new Map(30,30);
 
@@ -204,7 +215,7 @@ public class Lane implements Serializable {
 
         return laneIntersection;}
 
-
+*/
      /*public Coordinate getIntersectionCoordinate()throws NotACoordinateException {
         Coordinate laneCoordinate= null;
        Road r = this.getRoad();

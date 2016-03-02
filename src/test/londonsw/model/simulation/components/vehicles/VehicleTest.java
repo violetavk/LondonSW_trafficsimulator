@@ -69,6 +69,15 @@ public class VehicleTest {
         map.addRoad(eastRoad);
         map.addRoad(westRoad);
 
+        northLane2.setEndIntersection(intersection);
+       // northLane1.setStartIntersection(intersection);
+        southLane1.setEndIntersection(intersection);
+        //southLane2.setStartIntersection(intersection);
+        eastLane1.setEndIntersection(intersection);
+        //eastLane2.setStartIntersection(intersection);
+        westLane2.setEndIntersection(intersection);
+        //westLane1.setStartIntersection(intersection);
+
     }
 
     @Test
@@ -143,6 +152,7 @@ public class VehicleTest {
         ticker.end();
     }
 
+
     private static void printLane(Lane lane) {
         for(int i = 0; i < lane.getLength(); i++) {
             if(lane.get(i) instanceof Car) {
@@ -154,6 +164,7 @@ public class VehicleTest {
         }
         System.out.println();
     }
+
 
     @Test
     public void testGetLaneOptions() throws Exception {
@@ -173,26 +184,6 @@ public class VehicleTest {
         Lane testLane =car.getCurrentLane();
         assertNotEquals(testLane,southLane1);
         assertNotEquals(testLane,southLane2);
-    }
-
-    @Test
-    public void testGetCurrentCoordinateWest() throws Exception {
-        Ticker t = Ticker.getInstance();
-        Road nroad = new Road(new Coordinate(10,0), new Coordinate(2,0 ));
-        Lane nlane = new Lane(nroad.getStartLocation(), nroad.getEndLocation(),MapDirection.WEST,nroad);
-        Vehicle v = new Car(4, nlane);
-        Coordinate coordinate = new Coordinate(6,0);
-        assertEquals(coordinate,v.getCurrentCoordinate());
-    }
-
-    @Test
-    public void testGetCurrentCoordinateSouth() throws Exception {
-        Ticker t = Ticker.getInstance();
-        Road nroad = new Road(new Coordinate(0, 0), new Coordinate(0, 7));
-        Lane nlane = new Lane(nroad.getStartLocation(), nroad.getEndLocation(), MapDirection.SOUTH, nroad);
-        Vehicle v = new Car(2, nlane);
-        Coordinate coordinate = new Coordinate(0, 2);
-        assertEquals(coordinate, v.getCurrentCoordinate());
     }
 
 }

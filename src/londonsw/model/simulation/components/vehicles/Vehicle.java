@@ -121,22 +121,25 @@ public abstract class Vehicle implements TickerListener, Serializable{
        }
     }
 
+
+
+
     public void readTrafficLight()throws Exception {
         if (this.getCurrentCell() == this.currentLane.getLength() -1) {
            //this.getCurrentLane().getMovingDirection();
             TrafficLight light= new TrafficLight();
            switch (this.getCurrentLane().getMovingDirection()){
                case NORTH:
-                   light= this.currentLane.getLaneIntersection().getSouthTrafficLight();
+                   light= this.getCurrentLane().getEndIntersection().getSouthTrafficLight();
                    break;
                case SOUTH:
-                   light= this.getCurrentLane().getLaneIntersection().getNorthTrafficLight();
+                   light= this.getCurrentLane().getEndIntersection().getNorthTrafficLight();
                    break;
                case EAST:
-                   light= this.getCurrentLane().getLaneIntersection().getWestTrafficLight();
+                   light= this.getCurrentLane().getEndIntersection().getWestTrafficLight();
                    break;
                case WEST:
-                   light= this.getCurrentLane().getLaneIntersection().getEastTrafficLight();
+                   light= this.getCurrentLane().getEndIntersection().getEastTrafficLight();
                    break;
                case ERROR:
                    System.out.println("Error Direction !");
@@ -154,32 +157,32 @@ public abstract class Vehicle implements TickerListener, Serializable{
     public ArrayList<Lane> getLaneOptions() throws Exception {
         laneOptions.clear();
 
-        if ((this.currentLane.getLaneIntersection().getEastRoad()!=null) &&
+        if ((this.currentLane.getEndIntersection().getEastRoad()!=null) &&
                 (this.currentLane.getMovingDirection()!=MapDirection.WEST))
-        {for(int i=0; i<this.currentLane.getLaneIntersection().getEastRoad().getNumberLanes();i++)
-             {if(this.currentLane.getLaneIntersection().getEastRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.EAST)
-                 {laneOptions.add(this.currentLane.getLaneIntersection().getEastRoad().getLaneAtIndex(i));
+        {for(int i=0; i<this.currentLane.getEndIntersection().getEastRoad().getNumberLanes();i++)
+             {if(this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.EAST)
+                 {laneOptions.add(this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i));
                  }}}
 
-        if ((this.currentLane.getLaneIntersection().getSouthRoad()!= null) &&
+        if ((this.currentLane.getEndIntersection().getSouthRoad()!= null) &&
                 (this.currentLane.getMovingDirection()!=MapDirection.NORTH))
-        {for(int i=0; i<this.currentLane.getLaneIntersection().getSouthRoad().getNumberLanes();i++)
-             {if(this.currentLane.getLaneIntersection().getSouthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.SOUTH)
-                {laneOptions.add(this.currentLane.getLaneIntersection().getSouthRoad().getLaneAtIndex(i));
+        {for(int i=0; i<this.currentLane.getEndIntersection().getSouthRoad().getNumberLanes();i++)
+             {if(this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.SOUTH)
+                {laneOptions.add(this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i));
                 }}}
 
-        if ((this.currentLane.getLaneIntersection().getNorthRoad()!= null)&&
+        if ((this.currentLane.getEndIntersection().getNorthRoad()!= null)&&
                 (this.currentLane.getMovingDirection()!=MapDirection.SOUTH))
-        {for(int i=0; i<this.currentLane.getLaneIntersection().getNorthRoad().getNumberLanes();i++)
-            {if(this.currentLane.getLaneIntersection().getNorthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.NORTH)
-               {laneOptions.add(this.currentLane.getLaneIntersection().getNorthRoad().getLaneAtIndex(i));
+        {for(int i=0; i<this.currentLane.getEndIntersection().getNorthRoad().getNumberLanes();i++)
+            {if(this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.NORTH)
+               {laneOptions.add(this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i));
                }}}
 
-        if ((this.currentLane.getLaneIntersection().getWestRoad()!= null)&&
+        if ((this.currentLane.getEndIntersection().getWestRoad()!= null)&&
                 (this.currentLane.getMovingDirection()!=MapDirection.EAST))
-        {for(int i=0; i<this.currentLane.getLaneIntersection().getWestRoad().getNumberLanes();i++)
-            {if(this.currentLane.getLaneIntersection().getWestRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.WEST)
-               {laneOptions.add(this.currentLane.getLaneIntersection().getWestRoad().getLaneAtIndex(i));
+        {for(int i=0; i<this.currentLane.getEndIntersection().getWestRoad().getNumberLanes();i++)
+            {if(this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.WEST)
+               {laneOptions.add(this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i));
                }}}
 
         return laneOptions;
