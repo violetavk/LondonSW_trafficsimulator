@@ -10,12 +10,12 @@ import londonsw.model.simulation.components.TrafficLight;
 /**
  * Traffic Light GUI Logic
  */
-public class TrafficLightGUI {
+public class TrafficLightDecorator {
 
     private TrafficLight thisLight;
     private static Circle circle;
 
-    public TrafficLightGUI(TrafficLight thisLight) {
+    public TrafficLightDecorator(TrafficLight thisLight) {
         this.thisLight = thisLight;
         circle = new Circle();
         TrafficLightController.addKeyValuePair(thisLight, this);
@@ -36,6 +36,21 @@ public class TrafficLightGUI {
                     break;
             }
         });
+
+
+
+//       EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval()*1))   //needs to be greater than Ticker.getTickInterval
+//                .subscribe(
+//                        tick -> {
+//                            try {
+//
+//
+//                                VehicleController.moveVehicle(C1, CarGUI, 1);
+//                                VehicleController.moveVehicle(C2, CarGUI2, 1);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        });
     }
 
     public Circle drawLight(double x, double y, double r){

@@ -1,4 +1,4 @@
-package londonsw.model.simulation;
+package londonsw.view.simulation;
 
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -6,13 +6,14 @@ import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import londonsw.controller.TrafficLightController;
+import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.TrafficLight;
-import londonsw.view.simulation.TrafficLightGUI;
+import londonsw.view.simulation.TrafficLightDecorator;
 
 /**
  * Separated GUI Logic from  test functionality.
  */
-public class TrafficGUITestMain extends Application {
+public class TrafficLightDecoratorTest extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -25,7 +26,7 @@ public class TrafficGUITestMain extends Application {
 
         TrafficLight t1 = new TrafficLight();
 
-        TrafficLightGUI gui1 = TrafficLightController.createNewTrafficLightGUI(t1);
+        TrafficLightDecorator gui1 = TrafficLightController.createNewTrafficLightGUI(t1);
 
         ticker.start();
 
