@@ -1,8 +1,12 @@
 package londonsw.controller;
 
+import londonsw.model.simulation.components.Coordinate;
+import londonsw.model.simulation.components.Intersection;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 import londonsw.view.simulation.CarGUIDecorator;
+
+import java.util.ArrayList;
 
 /**
  * Created by felix on 26/02/2016.
@@ -10,30 +14,27 @@ import londonsw.view.simulation.CarGUIDecorator;
 public class VehicleController {
 
 
-    public static void moveVehicle(Vehicle car, CarGUIDecorator carGUI, int step)
+    public static void moveVehicle(Vehicle car, CarGUIDecorator carGUI, int step) throws Exception
     {
 
         System.out.println(car.getCurrentCoordinate().getX() + "," + car.getCurrentCoordinate().getY() );
-        carGUI.moveVehicleGUI(step,car.getVehicleState());
+
         car.setVehicleState(1); //TODO change to enum
 
         if(car.getCurrentCoordinate().equals(car.getCurrentLane().getExit()))
         {
-            car.setVehicleState(0); //TODO change to enum
+            //car.setVehicleState(0); //TODO change to enum
 
-            //car.getCurrentLane()
 
-            Lane l = car.getCurrentLane();
+            //TODO Change controller maybe
 
-            //Coordinate intersectionCo =  l.getIntersectionCoordinates();
+            ArrayList<Lane> lanes = car.getLaneOptions();
 
-            //Intersection i = CheckIntersection(Coordinate);
+            //carGUI.moveVehicleGUI(step,car.getVehicleState());
 
-//            i.getLaneOption();
-//
-//            i.getOptions();
+            car.vehicleTurn();
 
-//            car.setCurrentLane();
+            //car.setCurrentCoordinate(new Coordinate(0,0));
 
             //get intersection coordinates
             //get Intersection
@@ -43,6 +44,7 @@ public class VehicleController {
 
         }
 
+        carGUI.moveVehicleGUI(step,car.getVehicleState());
         car.moveVehicle(step);
 
     }
