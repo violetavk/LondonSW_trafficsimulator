@@ -2,17 +2,17 @@ package londonsw.controller;
 
 
 import londonsw.model.simulation.components.Intersection;
-import londonsw.view.simulation.IntersectionGUI;
+import londonsw.view.simulation.IntersectionDecorator;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class IntersectionController {
-    private static Map<Intersection,IntersectionGUI> intersections;
+    private static Map<Intersection,IntersectionDecorator> intersections;
     private static IntersectionController instance;
 
     protected IntersectionController() {
-        intersections = new HashMap<Intersection,IntersectionGUI>();
+        intersections = new HashMap<Intersection,IntersectionDecorator>();
     }
 
     public static IntersectionController getInstance() {
@@ -22,11 +22,11 @@ public class IntersectionController {
         return instance;
     }
 
-    public static void addKeyValuePair(Intersection i, IntersectionGUI gui) {
+    public static void addKeyValuePair(Intersection i, IntersectionDecorator gui) {
         intersections.put(i,gui);
     }
 
-    public static IntersectionGUI getIntersectionGui(Intersection i) {
+    public static IntersectionDecorator getIntersectionGui(Intersection i) {
         return intersections.get(i);
     }
 
