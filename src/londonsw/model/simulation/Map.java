@@ -17,7 +17,7 @@ public class Map implements Serializable {
     private static final long serialVersionUID = -1932129809569954013L;
     private ArrayList<Road> roads;
     private ArrayList<Intersection> intersections;
-    private static MapGrid grid;
+    private MapGrid grid;
     private final static String MAP_DIR = "./maps/";
 
 
@@ -140,7 +140,7 @@ public class Map implements Serializable {
         grid.addComponent(r);
     }
 
-    public static Component getAtLocation(Coordinate c) {
+    public Component getAtLocation(Coordinate c) {
         int x = c.getX();
         int y = c.getY();
         return grid.get(x,y);
