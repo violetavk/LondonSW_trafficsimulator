@@ -136,7 +136,7 @@ public class Intersection implements Component, Serializable {
 
     // TODO this doesn't really belong here
     // TODO decide which version to keep (probably Vehicle's)
-    public ArrayList<Lane> getLaneOptions(){
+ /*   public ArrayList<Lane> getLaneOptions(){
 
         laneOptions.clear();
 
@@ -171,11 +171,11 @@ public class Intersection implements Component, Serializable {
         return laneOptions;
     }
 
-//    public Lane chooseDirection (){
-//        Random randomDirection = new Random();
-//        int size = randomDirection.nextInt(this.getLaneOptions().size());
-//        return this.getLaneOptions().get(size);
-//    }
+    public Lane chooseDirection (){
+        Random randomDirection = new Random();
+        int size = randomDirection.nextInt(this.getLaneOptions().size());
+        return this.getLaneOptions().get(size);
+    }*/
 
 }
 
