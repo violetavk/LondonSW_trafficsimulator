@@ -8,12 +8,13 @@ package londonsw.model.simulation;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Ticker {
 
     private static TickerRunnable tr;
 
-    private static ArrayList<TickerListener> subscribers;
+    private static ArrayList<TickerListener> subscribers = new ArrayList<>();
 
     private static long TICK_INTERVAL = 1000;
 
@@ -25,7 +26,6 @@ public class Ticker {
 
     protected Ticker() {
         CURRENT_TIME = 0;
-        subscribers = new ArrayList<TickerListener>();
         timer = new Timer(true);
         tr = TickerRunnable.getInstance();
     }

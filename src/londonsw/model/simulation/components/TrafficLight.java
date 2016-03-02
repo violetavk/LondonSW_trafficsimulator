@@ -6,17 +6,23 @@ import londonsw.model.simulation.TickerListener;
 
 import java.io.Serializable;
 
-public class TrafficLight extends Ticker implements ITrafficLight, TickerListener, Serializable {
+public class TrafficLight extends Ticker implements TickerListener, Serializable {
 
 
     LightColour state = LightColour.RED;
-    private long duration = 2000;
+    private long duration = 3000;
     private long currentTime;
 
+    public TrafficLight() {
+        this.currentTime = 0;
+        Ticker.subscribe(this);
+    }
+
     public LightColour getState() {return state;}
+
     public void setState(LightColour state) {this.state = state;}
 
-    @Override
+
     public void nextState() {
         switch (state) {
             case RED:
@@ -35,7 +41,6 @@ public class TrafficLight extends Ticker implements ITrafficLight, TickerListene
 
     }
 
-    @Override
     public void change(int no) {
         for (int i = 0; i < no; i++) {
             nextState();
@@ -43,19 +48,11 @@ public class TrafficLight extends Ticker implements ITrafficLight, TickerListene
 
     }
 
-    public TrafficLight() {
-        this.currentTime = 0;
-        Ticker.subscribe(this);
-
-    }
-
-    @Override
     public void setDuration(long duration) {
         this.duration = duration;
 
     }
 
-    @Override
     public long getDuration() {
         return duration;
     }
@@ -63,16 +60,13 @@ public class TrafficLight extends Ticker implements ITrafficLight, TickerListene
     @Override
     public void onTick(long time) {
         if(currentTime < (duration - Ticker.getTickInterval())) {
-            currentTime += time;
+            currentTime += Ticker.getTickInterval();
         }
         else {
 
             currentTime = 0;
             nextState();
-            TrafficLightController.colourChanged(state);
-//            System.out.println("Color changing to " + state);
-
-            // notify the controller that the color just changed!
+            TrafficLightController.colourChanged(state, this);
         }
         System.out.println("time: " + time + "  color: " + state); // debug only
     }

@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import londonsw.controller.TrafficLightController;
-import londonsw.model.simulation.components.ITrafficLight;
 import londonsw.model.simulation.components.TrafficLight;
 import londonsw.view.simulation.TrafficLightGUI;
 
@@ -21,36 +20,21 @@ public class TrafficGUITestMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
+        TrafficLightController controller = TrafficLightController.getInstance();
         Ticker ticker = Ticker.getInstance();
-        ITrafficLight I = new TrafficLight();
+
+        TrafficLight t1 = new TrafficLight();
+
+        TrafficLightGUI gui1 = TrafficLightController.createNewTrafficLightGUI(t1);
+
         ticker.start();
 
         primaryStage.setTitle("TrafficLight Animation");
-        Group root = new Group();
-        Scene scene = new Scene(root, 350, 250, null);
-        /*
-        circle = new Circle();
-        circle.setCenterX(175.0f);
-        circle.setCenterY(120.0f);
-        circle.setRadius(25.0f);
-        circle.setFill(Color.RED);
-        */
-        TrafficLightGUI GUI = new TrafficLightGUI();
-        TrafficLightController con = new TrafficLightController();
-        Circle circle = GUI.DrawLight(175.0f, 120.0f, 25.0f);
-        //created new light but controller isnt able to simultaneously control both.Think it has something to do with threads.
-        //Circle circle1 = GUI.DrawLight(262.50f, 120.0f);
-        con.setCircle(circle);
-        //con.setCircle(circle1);
-
-        root.getChildren().add(circle);
-        //root.getChildren().add(circle1);
+        Group root1 = new Group();
+        Scene scene = new Scene(root1, 350, 250, null);
+        Circle circle = gui1.drawLight(175.0f, 120.0f, 25.0f);
+        root1.getChildren().add(circle);
         primaryStage.setScene(scene);
         primaryStage.show();
-        /*
-        Thread.sleep(100000);
-        ticker.end();
-        */
-        
     }
 }
