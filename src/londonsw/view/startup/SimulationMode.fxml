@@ -27,12 +27,10 @@
       </Button>
       <Label contentDisplay="RIGHT" layoutX="22.0" layoutY="6.0" lineSpacing="20.0" prefHeight="68.0" prefWidth="567.0" text="LondonSW Traffic Simulator" textAlignment="CENTER">
          <graphic>
-            <ImageView fitHeight="64.0" fitWidth="95.0" layoutX="100.0" layoutY="50.0" nodeOrientation="RIGHT_TO_LEFT" x="100.0" y="10.0">**
-
-                <image>
-                  <Image url="@../../../../resources/Logo.png" />
-                </image>
-
+            <ImageView fitHeight="64.0" fitWidth="95.0" layoutX="100.0" layoutY="50.0" nodeOrientation="RIGHT_TO_LEFT" x="100.0" y="10.0">
+               <image>
+                  <Image url="@Screen%20Shot%202016-02-23%20at%203.25.14%20PM.png" />
+               </image>
                <viewport>
                   <Rectangle2D />
                </viewport>
@@ -42,7 +40,7 @@
             <Font name="PT Sans Caption Bold" size="33.0" />
          </font>
       </Label>
-      <Pane layoutX="16.0" layoutY="74.0" prefHeight="322.0" prefWidth="479.0" style="-fx-background-color: white;" />
+      <Pane id="Scene" layoutX="16.0" layoutY="74.0" prefHeight="322.0" prefWidth="479.0" style="-fx-background-color: white;" />
       <Label layoutX="507.0" layoutY="230.0" prefHeight="19.0" prefWidth="35.0" text="Car">
          <font>
             <Font name="System Bold Italic" size="11.0" />
@@ -54,7 +52,7 @@
          </font>
       </Label>
       <Slider layoutX="578.0" layoutY="263.0" prefHeight="16.0" prefWidth="76.0" />
-      <Slider layoutX="575.0" layoutY="235.0" prefHeight="16.0" prefWidth="82.0" />
+      <Slider layoutX="575.0" layoutY="232.0" prefHeight="16.0" prefWidth="82.0" />
       <Label layoutX="504.0" layoutY="295.0" prefHeight="19.0" prefWidth="60.0" text="Dimension">
          <font>
             <Font name="System Bold Italic" size="11.0" />
