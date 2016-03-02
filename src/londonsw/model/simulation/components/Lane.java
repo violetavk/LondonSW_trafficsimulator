@@ -1,9 +1,7 @@
 package londonsw.model.simulation.components;
-import londonsw.model.simulation.Map;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 
 import java.io.Serializable;
-import java.security.PrivateKey;
 
 /**
  * This class is where the vehicles actually move
@@ -144,6 +142,12 @@ public class Lane implements Serializable {
             return false;
         
         lane[cell] = v;
+        return true;
+    }
+    public static boolean Rotate(Lane lane1, Lane lane2){
+        if (lane1.getMovingDirection()==lane2.getMovingDirection()){
+            return false;
+        }
         return true;
     }
 

@@ -55,42 +55,48 @@ public class CarGUIDecorator extends CarDecorator {
 
     public void drawCar() {
 
-        double x = 100 * this.getResizeFactor().getResizeX();
-        double y = 100 * this.getResizeFactor().getResizeY();
+        double cellDimension = 100;
+        double x = cellDimension * this.getResizeFactor().getResizeX();
+        double y = cellDimension * this.getResizeFactor().getResizeY();
 
         int numberLanes = this.decoratedCar.currentLane.getRoad().getNumberLanes();
+        double division =   cellDimension * this.getResizeFactor().getResizeX();
 
-        double division =   100 * this.getResizeFactor().getResizeX();
-        //TODO I know it's 100 because the image background of the row is 100px plz try to put somewhere
+        //division = division / (numberLanes*2);
 
-        division = division / (numberLanes);
+        division = division / numberLanes;
+
+        double carDimensionX = cellDimension;
+        double carDimensionY = cellDimension;
 
         double startPointX =
                 x
-                * decoratedCar.getCurrentCoordinate().getX()
-                + (this.decoratedCar.getCurrentLane().getRoadIndex() * division);
+                * decoratedCar.getCurrentCoordinate().getX();
 
-        double startPointY = y
-                * decoratedCar.getCurrentCoordinate().getY()
-                + (this.decoratedCar.getCurrentLane().getRoadIndex() * division);
+               if(decoratedCar.getCurrentLane().getRoad().runsVertically())
+               {
+                   startPointX+=(this.decoratedCar.getCurrentLane().getRoadIndex() * division);
+                   carDimensionX = cellDimension/numberLanes;
+               }
+
+        double startPointY =
+                y
+                * decoratedCar.getCurrentCoordinate().getY();
+
+        //car runs Horizontally
+        if(!decoratedCar.getCurrentLane().getRoad().runsVertically())
+        {
+            startPointY+=(this.decoratedCar.getCurrentLane().getRoadIndex() * division);
+            carDimensionY = cellDimension/numberLanes;
+        }
 
         Rectangle r = new Rectangle(
                 startPointX,
                 startPointY,
-                50 * this.getResizeFactor().getResizeX(),    //TODO: hardcode
-                25 * this.getResizeFactor().getResizeY());    //TODO: hardcode
+                carDimensionX * this.getResizeFactor().getResizeX(),    //TODO: hardcode
+                carDimensionY * this.getResizeFactor().getResizeY());    //TODO: hardcode
 
         r.setFill(Color.RED);
-
-        //check map direction for rotation
-
-        if (decoratedCar.getCurrentLane().getMovingDirection() == MapDirection.NORTH || decoratedCar.getCurrentLane().getMovingDirection() == MapDirection.SOUTH) {
-            //rotate
-            int angle = 90;
-
-            r.setRotate(angle);
-        }
-
 
         this.setRectangle(r);
     }
@@ -121,11 +127,15 @@ public class CarGUIDecorator extends CarDecorator {
             switch (decoratedCar.getCurrentLane().getMovingDirection()) {
 
                 case NORTH:
+                     //this.getRectangle().setRotate(90);
+
                     doubleProperty = this.getRectangle().yProperty();
                     distance = doubleProperty.getValue() - (imageDimension) * step;
 
                     break;
                 case SOUTH:
+                    //this.getRectangle().setRotate(90);
+
                     doubleProperty = this.getRectangle().yProperty();
                     distance = doubleProperty.getValue() + (imageDimension) * step;
 

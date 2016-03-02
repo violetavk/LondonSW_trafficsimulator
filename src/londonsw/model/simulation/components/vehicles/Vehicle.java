@@ -200,7 +200,9 @@ public abstract class Vehicle implements TickerListener, Serializable{
         if ((this.getCurrentCell() == this.currentLane.getLength() -1)&& (l.isCellEmpty(l.getLength()-1)))
         {
             this.setCurrentLane(l);
-            this.setCurrentCell(0,l);}
+            this.setCurrentCell(0,l);
+            this.setCurrentCoordinate(l.getEntry());
+        }
     }
 
 /*

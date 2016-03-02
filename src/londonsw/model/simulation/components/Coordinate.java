@@ -46,6 +46,27 @@ public class Coordinate implements Serializable {
         Coordinate other = (Coordinate)obj;
         return (x == other.getX()) && (y == other.getY());
     }
+
+    public static Coordinate add(Coordinate a, Coordinate b)
+    {
+        Coordinate sum = new Coordinate();
+
+        sum.setX(a.getX()+ b.getX());
+        sum.setY(a.getY()+ b.getY());
+
+        return sum;
+    }
+
+    public static Coordinate rest(Coordinate a, Coordinate b)
+    {
+        Coordinate rest = new Coordinate();
+
+        rest.setX(a.getX()- b.getX());
+        rest.setY(a.getY()- b.getY());
+
+        return rest;
+    }
+
 }
 
 class NotACoordinateException extends Exception {
