@@ -109,8 +109,6 @@ public class CarGUIDecorator extends CarDecorator {
         timeline.setAutoReverse(true);
 
         //set delay to show starting point
-        timeline.setDelay(Duration.millis(Ticker.getTickInterval()));
-
         //move according to moving direction
 
         if(state==0)

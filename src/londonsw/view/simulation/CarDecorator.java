@@ -14,6 +14,7 @@ public abstract class CarDecorator implements ICar {
         this.decoratedCar = decoratedCar;
     }
 
+
     @Override
     public int getCarId() {
         return this.decoratedCar.getCarId();
