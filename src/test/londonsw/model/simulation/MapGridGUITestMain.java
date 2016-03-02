@@ -119,18 +119,18 @@ public class MapGridGUITestMain extends Application {
         Road r3 = new Road(new Coordinate(9,1), new Coordinate(9,8));
         Road r4 = new Road(new Coordinate(1,9), new Coordinate(8,9));
 
-        r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST,r1));
-        r1.addLane(new Lane(r1.getEndLocation() ,r1.getStartLocation(), MapDirection.WEST,r1));
-        r1.addLane(new Lane(r1.getEndLocation(),r1.getStartLocation(),MapDirection.EAST.WEST,r1));
+        r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST));
+        r1.addLane(new Lane(r1.getEndLocation() ,r1.getStartLocation(), MapDirection.WEST));
+        r1.addLane(new Lane(r1.getEndLocation(),r1.getStartLocation(),MapDirection.EAST.WEST));
 
-        r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.SOUTH,r2));
-        r2.addLane(new Lane(r2.getEndLocation(),r2.getStartLocation(), MapDirection.NORTH,r2));
+        r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.SOUTH));
+        r2.addLane(new Lane(r2.getEndLocation(),r2.getStartLocation(), MapDirection.NORTH));
 
-        r3.addLane(new Lane(r3.getEndLocation(),r3.getStartLocation(), MapDirection.NORTH,r3));
-        r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH,r3));
+        r3.addLane(new Lane(r3.getEndLocation(),r3.getStartLocation(), MapDirection.NORTH));
+        r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH));
 
-        r4.addLane(new Lane(r4.getEndLocation(),r4.getStartLocation(), MapDirection.WEST,r4));
-        r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.EAST,r4));
+        r4.addLane(new Lane(r4.getEndLocation(),r4.getStartLocation(), MapDirection.WEST));
+        r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.EAST));
 
         map.addRoad(r1);
         map.addRoad(r2);

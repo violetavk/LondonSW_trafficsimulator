@@ -34,13 +34,12 @@ public class Lane implements Serializable {
         RoadIndex = roadIndex;
     }
 
-    public Lane(Coordinate entry, Coordinate exit, MapDirection movingDirection,Road road) throws NotALaneException {
+    public Lane(Coordinate entry, Coordinate exit, MapDirection movingDirection) throws NotALaneException {
         this.entry = entry;
         this.exit = exit;
         this.movingDirection = movingDirection;
         length = this.getLaneLength();
         lane = new Vehicle[length];
-        this.road=road;
     }
 
     public Vehicle get(int i) {

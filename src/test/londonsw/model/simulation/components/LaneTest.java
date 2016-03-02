@@ -30,7 +30,7 @@ public class LaneTest {
         a = new Coordinate(0, 1);
         b = new Coordinate(2, 1);
         r= new Road(a,b) ;
-        x = new Lane(a, b, MapDirection.EAST,r);
+        x = new Lane(a, b, MapDirection.EAST);
 
         // Create an intersection with four roads, each road has two lanes with different direction
         intersection= new Intersection(new Coordinate(5,5));
@@ -38,14 +38,14 @@ public class LaneTest {
         southRoad = new Road(new Coordinate(5,6),new Coordinate(5,10));
         eastRoad = new Road(new Coordinate(6,5),new Coordinate(9,5));
         westRoad = new Road(new Coordinate(1,5),new Coordinate(4,5));
-        northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH,northRoad);
-        northLane2= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.SOUTH,northRoad);
-        southLane1= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.NORTH,southRoad);
-        southLane2= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.SOUTH,southRoad);
-        eastLane1= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.EAST,eastRoad);
-        eastLane2= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.WEST,eastRoad);
-        westLane1= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.EAST,westRoad);
-        westLane2= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.WEST,westRoad);
+        northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH);
+        northLane2= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.SOUTH);
+        southLane1= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.NORTH);
+        southLane2= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.SOUTH);
+        eastLane1= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.EAST);
+        eastLane2= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.WEST);
+        westLane1= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.EAST);
+        westLane2= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.WEST);
 
         northRoad.addLane(northLane1);
         northRoad.addLane(northLane2);
@@ -87,7 +87,7 @@ public class LaneTest {
 
     @Test(expected = NotALaneException.class)
     public void testGetLaneLengthInvalid() throws Exception {
-        Lane l = new Lane(new Coordinate(2,3),new Coordinate(3,4),MapDirection.ERROR,r);
+        Lane l = new Lane(new Coordinate(2,3),new Coordinate(3,4),MapDirection.ERROR);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class LaneTest {
 
     @Test
     public void testIsCellNotEmpty() throws Exception {
-        Lane l= new Lane (new Coordinate(0,0),new Coordinate(0,5),MapDirection.EAST,r);
+        Lane l= new Lane (new Coordinate(0,0),new Coordinate(0,5),MapDirection.EAST);
         Vehicle v = new Car(5,l);
 
         x.setCell(v,2);

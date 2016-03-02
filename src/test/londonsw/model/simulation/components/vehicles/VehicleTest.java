@@ -29,14 +29,14 @@ public class VehicleTest {
         southRoad = new Road(new Coordinate(5,6),new Coordinate(5,10));
         eastRoad = new Road(new Coordinate(6,5),new Coordinate(9,5));
         westRoad = new Road(new Coordinate(1,5),new Coordinate(4,5));
-        northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH,northRoad);
-        northLane2= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.SOUTH,northRoad);
-        southLane1= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.NORTH,southRoad);
-        southLane2= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.SOUTH,southRoad);
-        eastLane1= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.EAST,eastRoad);
-        eastLane2= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.WEST,eastRoad);
-        westLane1= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.EAST,westRoad);
-        westLane2= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.WEST,westRoad);
+        northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH);
+        northLane2= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.SOUTH);
+        southLane1= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.NORTH);
+        southLane2= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.SOUTH);
+        eastLane1= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.EAST);
+        eastLane2= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.WEST);
+        westLane1= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.EAST);
+        westLane2= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.WEST);
 
         northRoad.addLane(northLane1);
         northRoad.addLane(northLane2);
@@ -84,7 +84,7 @@ public class VehicleTest {
     public void testMoveVehicle() throws Exception {
         Ticker ticker = Ticker.getInstance();
         Road r= new Road(new Coordinate(1,5),new Coordinate(4,5));
-        Lane l= new Lane(new Coordinate(1,5), new Coordinate(4,5), MapDirection.EAST,r);
+        Lane l= new Lane(new Coordinate(1,5), new Coordinate(4,5), MapDirection.EAST);
         Vehicle v= new Car(1,l);
         printLane(l);
         int curCell =v.getCurrentCell();
@@ -130,8 +130,8 @@ public class VehicleTest {
         ticker.start();
         Road road1= new Road(new Coordinate(0,0), new Coordinate(5, 0));
         Road road2 =new Road (new Coordinate(0,0), new Coordinate(10, 0));
-        Lane lane1 = new Lane(new Coordinate(0,0), new Coordinate(5, 0), MapDirection.EAST,road1);
-        Lane lane2 = new Lane(new Coordinate(0,0), new Coordinate(10, 0), MapDirection.EAST,road2);
+        Lane lane1 = new Lane(new Coordinate(0,0), new Coordinate(5, 0), MapDirection.EAST);
+        Lane lane2 = new Lane(new Coordinate(0,0), new Coordinate(10, 0), MapDirection.EAST);
         Vehicle car1 = new Car(0,lane1);
         Vehicle car2 = new Car(1,lane2);
         Vehicle car4 = new Car(5, lane2);
