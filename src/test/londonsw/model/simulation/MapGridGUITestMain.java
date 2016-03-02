@@ -1,4 +1,4 @@
-package londonsw.model.simulation.components;
+package londonsw.model.simulation;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -7,17 +7,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import londonsw.controller.VehicleController;
-import londonsw.model.simulation.Map;
-import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Car;
-import londonsw.model.simulation.components.vehicles.Vehicle;
 import londonsw.view.simulation.CarGUIDecorator;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import org.reactfx.EventStreams;
-
 import java.time.Duration;
-import java.util.ArrayList;
 
 public class MapGridGUITestMain extends Application {
 
@@ -38,42 +33,73 @@ public class MapGridGUITestMain extends Application {
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 
         Lane L1 = map.getRandomLane();
+        Lane L2 = map.getRandomLane();
 
         //Lane L1 = map.getRoads().get(0).getLanes().get(roadIndex);
 
         Car C1 = new Car(0,L1);
+        Car C2 = new Car(1,L2);
 
         CarGUIDecorator CarGUI = new CarGUIDecorator(C1);
+        CarGUIDecorator CarGUI2 = new CarGUIDecorator(C2);
 
         CarGUI.setGridPane(rootGP);
+        CarGUI2.setGridPane(rootGP);
 
         CarGUI.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+        CarGUI2.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
 
         Pane carPane = new Pane();
+        Pane carPane2 = new Pane();
 
+        CarGUI2.drawCar();
         CarGUI.drawCar();
 
         carPane.getChildren().add(CarGUI.getRectangle());
+        carPane.getChildren().add(CarGUI2.getRectangle());
 
         StackPane sp = new StackPane();
 
         sp.getChildren().add(rootGP);
 
         sp.getChildren().add(carPane);
+        sp.getChildren().add(carPane2);
 
         Scene scene = new Scene(sp);
 
         //t.start();
 
-        EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval()*2))   //needs to be greater than Ticker.getTickInterval
+        EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval()*1))   //needs to be greater than Ticker.getTickInterval
                 .subscribe(
                         tick -> {
                             try {
+
+
                                 VehicleController.moveVehicle(C1, CarGUI, 1);
+                                VehicleController.moveVehicle(C2, CarGUI2, 1);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         });
+
+
+       /* Timeline timeline = new Timeline();
+        for (int i = 0; i < 10; i++) {
+            Random r = new Random();
+            int random = r.nextInt(200) + 25;
+            KeyFrame f = new KeyFrame(Duration.millis((i + 1) * 1000),
+                    new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent ae) {
+                            pane.getChildren().add(new Circle(
+                                    random, random, 10, Color.RED));
+                        }
+                    });
+            timeline.getKeyFrames().add(f);
+        }
+        timeline.setCycleCount(1);
+        timeline.play();
+        */
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
@@ -123,6 +149,8 @@ public class MapGridGUITestMain extends Application {
         Intersection i4 = new Intersection(new Coordinate(9,9));
         i4.setNorthRoad(r3);
         i4.setWestRoad(r4);
+
+
 
         map.addIntersection(i1);
         map.addIntersection(i2);
