@@ -34,7 +34,9 @@ public class VehicleController {
 
             car.vehicleTurn();
 
-            //car.setCurrentCoordinate(new Coordinate(0,0));
+            //TODO: make vehicle turn with curve in intersection!
+
+            //carGUI.drawCar();
 
             //get intersection coordinates
             //get Intersection
