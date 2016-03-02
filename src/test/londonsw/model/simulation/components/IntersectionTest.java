@@ -95,9 +95,17 @@ public class IntersectionTest {
     public void testSetNorthRoad() throws Exception {
         Intersection intersection= new Intersection(new Coordinate(5,5));
         Road northRoad = new Road(new Coordinate(5,1),new Coordinate(5,4));
+        Lane northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH);
+        Lane northLane2= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.SOUTH);
+        northRoad.addLane(northLane1);
+        northRoad.addLane(northLane2);
+
         intersection.setNorthRoad(northRoad);
         Road testRoad  =intersection.getNorthRoad();
+        Intersection testIntersection= northLane2.getEndIntersection();
         assertEquals(testRoad,northRoad);
+        assertEquals(intersection,testIntersection);
+
     }
 
     @Test

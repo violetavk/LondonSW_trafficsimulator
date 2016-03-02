@@ -100,6 +100,15 @@ public class Intersection implements Component, Serializable {
                 ||  this.location.getY() - 1 == northRoad.getStartLocation().getY())))
         {
             this.northRoad = northRoad;
+            for(int i=0; i<this.northRoad.getNumberLanes();i++){
+                if(this.northRoad.getLaneAtIndex(i).getMovingDirection()==MapDirection.SOUTH)
+                {
+                    this.northRoad.getLaneAtIndex(i).setEndIntersection(this);
+                }
+            }
+
+
+
         }
         else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
@@ -111,6 +120,13 @@ public class Intersection implements Component, Serializable {
                 || this.location.getY() + 1 == southRoad.getStartLocation().getY())))
         {
             this.southRoad = southRoad;
+            for(int i=0; i<this.southRoad.getNumberLanes();i++){
+                if(this.southRoad.getLaneAtIndex(i).getMovingDirection()==MapDirection.NORTH)
+                {
+                    this.southRoad.getLaneAtIndex(i).setEndIntersection(this);
+                }
+            }
+
         }
         else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
@@ -121,6 +137,13 @@ public class Intersection implements Component, Serializable {
                 && (this.location.getX() + 1  == eastRoad.getEndLocation().getX()
                 || this.location.getX() + 1 == eastRoad.getStartLocation().getX())) {
             this.eastRoad = eastRoad;
+            for(int i=0; i<this.eastRoad.getNumberLanes();i++){
+                if(this.eastRoad.getLaneAtIndex(i).getMovingDirection()==MapDirection.WEST)
+                {
+                    this.eastRoad.getLaneAtIndex(i).setEndIntersection(this);
+                }
+            }
+
         } else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
@@ -130,6 +153,13 @@ public class Intersection implements Component, Serializable {
                 && (this.location.getX() - 1 == westRoad.getEndLocation().getX()
                 || this.location.getX() -1 == westRoad.getStartLocation().getX()))) {
             this.westRoad = westRoad;
+            for(int i=0; i<this.westRoad.getNumberLanes();i++){
+                if(this.westRoad.getLaneAtIndex(i).getMovingDirection()==MapDirection.EAST)
+                {
+                    this.westRoad.getLaneAtIndex(i).setEndIntersection(this);
+                }
+            }
+
         } else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
