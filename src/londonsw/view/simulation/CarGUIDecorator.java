@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import londonsw.model.simulation.Ticker;
+import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.MapDirection;
 import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Car;
@@ -61,8 +62,6 @@ public class CarGUIDecorator extends CarDecorator {
 
         int numberLanes = this.decoratedCar.currentLane.getRoad().getNumberLanes();
         double division =   cellDimension * this.getResizeFactor().getResizeX();
-
-        //division = division / (numberLanes*2);
 
         division = division / numberLanes;
 
@@ -124,10 +123,20 @@ public class CarGUIDecorator extends CarDecorator {
             double distance = 0;
             double imageDimension = 100 * this.getResizeFactor().getResizeX();  //TODO: hardcode
 
+
+//            if(this.decoratedCar.getPreviousLane()!=null) {
+//                Lane previousLane = this.decoratedCar.getPreviousLane();
+//
+//                if (Lane.Rotate(previousLane, this.decoratedCar.currentLane)) {
+//                     this.getRectangle().setRotate(90);
+//                    this.setRectangle(this.getRectangle());
+//                }
+//            }
+
+
             switch (decoratedCar.getCurrentLane().getMovingDirection()) {
 
                 case NORTH:
-                     //this.getRectangle().setRotate(90);
 
                     doubleProperty = this.getRectangle().yProperty();
                     distance = doubleProperty.getValue() - (imageDimension) * step;
@@ -146,6 +155,7 @@ public class CarGUIDecorator extends CarDecorator {
 
                     break;
                 case WEST:
+                    //this.getRectangle().setRotate(180);
                     doubleProperty = this.getRectangle().xProperty();
                     distance = doubleProperty.getValue() - (imageDimension) * step;
 

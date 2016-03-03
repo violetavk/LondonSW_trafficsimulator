@@ -21,7 +21,9 @@ public class MapGridGUITestMain extends Application {
 
         Ticker t = Ticker.getInstance();
 
-        Map map = drawTestMap();
+        //Map map = drawTestMap();
+
+        Map map = drawTestMapBig();
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
@@ -86,35 +88,32 @@ public class MapGridGUITestMain extends Application {
                             }
                         });
 
-       /* Timeline timeline = new Timeline();
-        for (int i = 0; i < 10; i++) {
-            Random r = new Random();
-            int random = r.nextInt(200) + 25;
-            KeyFrame f = new KeyFrame(Duration.millis((i + 1) * 1000),
-                    new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent ae) {
-                            pane.getChildren().add(new Circle(
-                                    random, random, 10, Color.RED));
-                        }
-                    });
-            timeline.getKeyFrames().add(f);
-        }
-        timeline.setCycleCount(1);
-        timeline.play();
+
+
+
+        /*
+        //Create map
+        Map map = new Map(20,20);
+        //Decorate map to extend to GUI functionality
+        MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
+        //Always apply resize
+        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
+        //Instantiate GridPane that will contain empty map with grass
+        GridPane root = mapGridGUIDecorator.drawComponents();
+        //Set GridPane to Scene
+        Scene scene = new Scene(root);
         */
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
-        //primaryStage.setFullScreen(true);
-
 
         primaryStage.show();
         primaryStage.setResizable(false);
 
+
     }
 
-    public Map drawTestMap() throws Exception {
+    public Map drawTestMapSimple() throws Exception {
 
         Map map = new Map(10,10);
 
@@ -123,17 +122,19 @@ public class MapGridGUITestMain extends Application {
         Road r3 = new Road(new Coordinate(9,2), new Coordinate(9,8));
         Road r4 = new Road(new Coordinate(2,9), new Coordinate(8,9));
 
+
+
         r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST));
         r1.addLane(new Lane(r1.getEndLocation() ,r1.getStartLocation(), MapDirection.WEST));
 
+        r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.NORTH));
         r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.SOUTH));
-        r2.addLane(new Lane(r2.getEndLocation(),r2.getStartLocation(), MapDirection.NORTH));
 
-        r3.addLane(new Lane(r3.getEndLocation(),r3.getStartLocation(), MapDirection.NORTH));
+        r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.NORTH));
         r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH));
 
-        r4.addLane(new Lane(r4.getEndLocation(),r4.getStartLocation(), MapDirection.WEST));
         r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.EAST));
+        r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.WEST));
 
         map.addRoad(r1);
         map.addRoad(r2);
@@ -158,6 +159,82 @@ public class MapGridGUITestMain extends Application {
         map.addIntersection(i2);
         map.addIntersection(i3);
         map.addIntersection(i4);
+
+        return map;
+    }
+
+    public Map drawTestMapBig() throws Exception {
+
+        Map map = new Map(20,20);
+
+        Road r1 = new Road(new Coordinate(2,1), new Coordinate(8,1));
+        Road r2 = new Road(new Coordinate(1,2), new Coordinate(1,8));
+        Road r3 = new Road(new Coordinate(9,2), new Coordinate(9,8));
+        Road r4 = new Road(new Coordinate(2,9), new Coordinate(8,9));
+
+        Road r5 = new Road(new Coordinate(10,1), new Coordinate(16,1));
+        Road r6 = new Road(new Coordinate(17,2), new Coordinate(17,8));
+        Road r7 = new Road(new Coordinate(10,9), new Coordinate(16,9));
+
+        r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST));
+        r1.addLane(new Lane(r1.getEndLocation() ,r1.getStartLocation(), MapDirection.WEST));
+
+        r2.addLane(new Lane(r2.getEndLocation(),r2.getStartLocation(), MapDirection.NORTH));
+        r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.SOUTH));
+
+        r3.addLane(new Lane(r3.getEndLocation(),r3.getStartLocation(), MapDirection.NORTH));
+        r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH));
+
+        r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.EAST));
+        r4.addLane(new Lane(r4.getEndLocation(),r4.getStartLocation(), MapDirection.WEST));
+
+        r5.addLane(new Lane(r5.getStartLocation(),r5.getEndLocation(), MapDirection.EAST));
+        r5.addLane(new Lane(r5.getEndLocation(),r5.getStartLocation(), MapDirection.WEST));
+
+        r6.addLane(new Lane(r6.getEndLocation(),r6.getStartLocation(), MapDirection.NORTH));
+        r6.addLane(new Lane(r6.getStartLocation(),r6.getEndLocation(), MapDirection.SOUTH));
+
+        r7.addLane(new Lane(r7.getStartLocation(),r7.getEndLocation(), MapDirection.EAST));
+        r7.addLane(new Lane(r7.getEndLocation(),r7.getStartLocation(), MapDirection.WEST));
+
+        map.addRoad(r1);
+        map.addRoad(r2);
+        map.addRoad(r3);
+        map.addRoad(r4);
+        map.addRoad(r5);
+        map.addRoad(r6);
+        map.addRoad(r7);
+
+        Intersection i1 = new Intersection(new Coordinate(1,1));
+        i1.setEastRoad(r1);
+        i1.setSouthRoad(r2);
+
+        Intersection i2 = new Intersection(new Coordinate(9,1));
+        i2.setWestRoad(r1);
+        i2.setSouthRoad(r3);
+
+        Intersection i3 = new Intersection(new Coordinate(1,9));
+        i3.setNorthRoad(r2);
+        i3.setEastRoad(r4);
+
+        Intersection i4 = new Intersection(new Coordinate(9,9));
+        i4.setNorthRoad(r3);
+        i4.setWestRoad(r4);
+
+        Intersection i5 = new Intersection(new Coordinate(17,1));
+        i5.setWestRoad(r5);
+        i5.setSouthRoad(r6);
+
+        Intersection i6 = new Intersection(new Coordinate(17,9));
+        i6.setNorthRoad(r6);
+        i6.setWestRoad(r7);
+
+        map.addIntersection(i1);
+        map.addIntersection(i2);
+        map.addIntersection(i3);
+        map.addIntersection(i4);
+        map.addIntersection(i5);
+        map.addIntersection(i6);
 
         return map;
     }
