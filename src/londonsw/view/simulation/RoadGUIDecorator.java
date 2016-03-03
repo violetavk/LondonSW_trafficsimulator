@@ -81,6 +81,8 @@ public class RoadGUIDecorator extends RoadDecorator {
                             -5.0, -5.0,
                             5.0, -5.0});
 
+                    arrow.autosize();
+
                     arrow.setFill(Color.WHITE);
 
                     double angle = 0.0;

@@ -28,6 +28,16 @@ public abstract class Vehicle implements TickerListener, Serializable{
     Lane l;
     Coordinate currentCoordinate;
 
+    public Lane getPreviousLane() {
+        return previousLane;
+    }
+
+    public void setPreviousLane(Lane previousLane) {
+        this.previousLane = previousLane;
+    }
+
+    private Lane previousLane;
+
     // debug only
     int timesTicked;
 
