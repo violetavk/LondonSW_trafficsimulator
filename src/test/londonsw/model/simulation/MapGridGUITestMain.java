@@ -176,6 +176,11 @@ public class MapGridGUITestMain extends Application {
         Road r6 = new Road(new Coordinate(17,2), new Coordinate(17,8));
         Road r7 = new Road(new Coordinate(10,9), new Coordinate(16,9));
 
+        Lane disabledLane = new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH);
+
+        //disable lane
+        disabledLane.setState(0);
+
         r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST));
         r1.addLane(new Lane(r1.getEndLocation() ,r1.getStartLocation(), MapDirection.WEST));
 
@@ -183,7 +188,7 @@ public class MapGridGUITestMain extends Application {
         r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.SOUTH));
 
         r3.addLane(new Lane(r3.getEndLocation(),r3.getStartLocation(), MapDirection.NORTH));
-        r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH));
+        r3.addLane(disabledLane);
 
         r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.EAST));
         r4.addLane(new Lane(r4.getEndLocation(),r4.getStartLocation(), MapDirection.WEST));

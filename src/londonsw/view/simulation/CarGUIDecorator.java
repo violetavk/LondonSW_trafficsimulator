@@ -95,7 +95,7 @@ public class CarGUIDecorator extends CarDecorator {
                 carDimensionX * this.getResizeFactor().getResizeX(),    //TODO: hardcode
                 carDimensionY * this.getResizeFactor().getResizeY());    //TODO: hardcode
 
-        r.setFill(Color.RED);
+        r.setFill(Color.BLUE);
 
         this.setRectangle(r);
     }
