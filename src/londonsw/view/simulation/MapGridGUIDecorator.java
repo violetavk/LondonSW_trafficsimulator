@@ -73,5 +73,4 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
         return rootGP;
     }
-
 }

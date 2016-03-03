@@ -2,12 +2,13 @@ package londonsw.view.simulation;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import javafx.util.Duration;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.Lane;
@@ -113,11 +114,68 @@ public class CarGUIDecorator extends CarDecorator {
         final Timeline timeline = new Timeline();
         timeline.setAutoReverse(true);
 
-        //set delay to show starting point
         //move according to moving direction
 
         if(state==0)
             timeline.stop();
+        else
+            if(state==2)
+        {
+            double cellDimension = 100;
+            double x = cellDimension * this.getResizeFactor().getResizeX();
+            double y = cellDimension * this.getResizeFactor().getResizeY();
+
+
+            Path path = new Path();
+            PathTransition pathTransition = new PathTransition();
+            pathTransition.setPath(path);
+            pathTransition.setNode(this.getRectangle());
+
+            path.getElements().add (new MoveTo(
+                    this.decoratedCar.getPreviousLane().getExit().getX(),
+                    this.decoratedCar.getPreviousLane().getExit().getY()));
+
+            //path.getElements().add (new MoveTo(
+            //        25,25));
+
+
+//            path.getElements().add (new CubicCurveTo(40f, 10f, 390f, 240f, 1904, 50f));
+
+
+            path.getElements().add (new ArcTo(
+                    this.decoratedCar.getCurrentLane().getEntry().getX(),
+                    this.decoratedCar.getCurrentLane().getEntry().getY(),1,1,1,false,false)
+            );
+//
+//
+
+//            ArcTo arcTo = new ArcTo();
+//            arcTo.setX(x*this.decoratedCar.getCurrentLane().getEntry().getX());
+//            arcTo.setY(y*this.decoratedCar.getCurrentLane().getEntry().getY());
+//
+//            arcTo.setRadiusX(50);
+//            arcTo.setRadiusY(50);
+
+            //arcTo.setX(100);
+            //arcTo.setY(100);
+
+            //arcTo.setRadiusX(100);
+            //arcTo.setRadiusY(100);
+
+
+
+            pathTransition.setDuration(Duration.millis(5000));
+
+            pathTransition.play();
+            //pathTransition.setNode(rect);
+
+            //pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+            //pathTransition.setCycleCount(4f);
+            //pathTransition.setAutoReverse(true);
+
+
+
+        }
         else {
             DoubleProperty doubleProperty = null;
             double distance = 0;

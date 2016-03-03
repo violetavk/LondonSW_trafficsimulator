@@ -21,9 +21,9 @@ public class MapGridGUITestMain extends Application {
 
         Ticker t = Ticker.getInstance();
 
-        //Map map = drawTestMap();
+        Map map = drawTestMapSimple();
 
-        Map map = drawTestMapBig();
+        //Map map = drawTestMapBig();
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
@@ -74,14 +74,14 @@ public class MapGridGUITestMain extends Application {
 
         //t.start();
 
-
+        System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY() );
         EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval()*1))   //needs to be greater than Ticker.getTickInterval
                 .subscribe(
                         tick -> {
                             try {
 
-
                                 VehicleController.moveVehicle(C1, CarGUI, 1);
+                                System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY() );
                                 //VehicleController.moveVehicle(C2, CarGUI2, 1);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -110,6 +110,7 @@ public class MapGridGUITestMain extends Application {
         primaryStage.show();
         primaryStage.setResizable(false);
 
+        //primaryStage.setFullScreen(true);
 
     }
 
@@ -127,14 +128,14 @@ public class MapGridGUITestMain extends Application {
         r1.addLane(new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST));
         r1.addLane(new Lane(r1.getEndLocation() ,r1.getStartLocation(), MapDirection.WEST));
 
-        r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.NORTH));
+        r2.addLane(new Lane(r2.getEndLocation(),r2.getStartLocation(), MapDirection.NORTH));
         r2.addLane(new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.SOUTH));
 
-        r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.NORTH));
+        r3.addLane(new Lane(r3.getEndLocation(),r3.getStartLocation(), MapDirection.NORTH));
         r3.addLane(new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH));
 
         r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.EAST));
-        r4.addLane(new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.WEST));
+        r4.addLane(new Lane(r4.getEndLocation(),r4.getStartLocation(), MapDirection.WEST));
 
         map.addRoad(r1);
         map.addRoad(r2);
@@ -165,7 +166,7 @@ public class MapGridGUITestMain extends Application {
 
     public Map drawTestMapBig() throws Exception {
 
-        Map map = new Map(20,20);
+        Map map = new Map(18,18);
 
         Road r1 = new Road(new Coordinate(2,1), new Coordinate(8,1));
         Road r2 = new Road(new Coordinate(1,2), new Coordinate(1,8));
@@ -217,6 +218,7 @@ public class MapGridGUITestMain extends Application {
         Intersection i2 = new Intersection(new Coordinate(9,1));
         i2.setWestRoad(r1);
         i2.setSouthRoad(r3);
+        i2.setEastRoad(r5);
 
         Intersection i3 = new Intersection(new Coordinate(1,9));
         i3.setNorthRoad(r2);
@@ -225,6 +227,7 @@ public class MapGridGUITestMain extends Application {
         Intersection i4 = new Intersection(new Coordinate(9,9));
         i4.setNorthRoad(r3);
         i4.setWestRoad(r4);
+        i4.setEastRoad(r7);
 
         Intersection i5 = new Intersection(new Coordinate(17,1));
         i5.setWestRoad(r5);

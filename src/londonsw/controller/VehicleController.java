@@ -17,8 +17,6 @@ public class VehicleController {
     public static void moveVehicle(Vehicle car, CarGUIDecorator carGUI, int step) throws Exception
     {
 
-        System.out.println(car.getCurrentCoordinate().getX() + "," + car.getCurrentCoordinate().getY() );
-
         car.setVehicleState(1); //TODO change to enum
 
         if(car.getCurrentCoordinate().equals(car.getCurrentLane().getExit()))
@@ -34,9 +32,13 @@ public class VehicleController {
 
             car.setPreviousLane(car.currentLane);
 
+            carGUI.moveVehicleGUI(step,car.getVehicleState());
             car.vehicleTurn();
 
+
             //TODO: make vehicle turn with curve in intersection!
+
+//            car.setVehicleState(2);//in intersection turning
 
             //carGUI.drawCar();
 
@@ -47,9 +49,12 @@ public class VehicleController {
             //randomly choose where to go next
 
         }
+        else
+        {
+            car.moveVehicle(step);
+        }
 
         carGUI.moveVehicleGUI(step,car.getVehicleState());
-        car.moveVehicle(step);
 
     }
 

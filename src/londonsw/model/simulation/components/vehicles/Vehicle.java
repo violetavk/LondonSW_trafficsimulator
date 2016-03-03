@@ -207,7 +207,8 @@ public abstract class Vehicle implements TickerListener, Serializable{
         int size = randomDirection.nextInt(this.getLaneOptions().size());
         l= this.getLaneOptions().get(size);
 
-        if ((this.getCurrentCell() == this.currentLane.getLength() -1)&& (l.isCellEmpty(l.getLength()-1)))
+        //validate if its end of lane
+        if ((this.getCurrentCell() == this.currentLane.getLength() -1)&& (l.isCellEmpty(0)))
         {
             this.setCurrentLane(l);
             this.setCurrentCell(0,l);
