@@ -75,15 +75,6 @@ public class StartUpController extends Application{
 
         stage.setScene(new Scene(setMapDimension));
 
-
     }
 
-    public void goToMapCreationScreen(ActionEvent actionEvent) throws IOException{
-
-        Parent mapCreation = FXMLLoader.load(getClass().getResource("../view/mapcreation/MapCreation" + ".fxml"));
-
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        stage.setScene(new Scene(mapCreation));
-    }
 }
