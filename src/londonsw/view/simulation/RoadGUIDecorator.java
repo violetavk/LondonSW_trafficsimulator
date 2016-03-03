@@ -81,9 +81,15 @@ public class RoadGUIDecorator extends RoadDecorator {
                             -5.0, -5.0,
                             5.0, -5.0});
 
-                    arrow.autosize();
 
-                    arrow.setFill(Color.WHITE);
+                    if(l.getState()==1) {
+                        arrow.setFill(Color.WHITE);
+                    }
+                    else
+                    {
+                        //lane not enabled
+                        arrow.setFill(Color.RED);
+                    }
 
                     double angle = 0.0;
 
@@ -130,7 +136,14 @@ public class RoadGUIDecorator extends RoadDecorator {
                             -5.0, -5.0,
                             5.0, -5.0});
 
-                    arrow.setFill(Color.WHITE);
+                    if(l.getState()==1) {
+                        arrow.setFill(Color.WHITE);
+                    }
+                    else
+                    {
+                        //lane not enabled
+                        arrow.setFill(Color.RED);
+                    }
 
                     double angle = 0.0;
 
