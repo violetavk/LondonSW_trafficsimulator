@@ -2,9 +2,9 @@ package londonsw.model.simulation;
 
 import londonsw.model.simulation.components.*;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by felix on 19/02/2016.
@@ -102,4 +102,11 @@ public class MapTest {
     }
 
 
+    @Test
+    public void testGetRandomCell() throws Exception {
+       Map map = Map.loadMap("testmap.map");
+       int check= map.getRandomCell();
+        System.out.print(check);
+        assertTrue(0 <= check && check<= map.getRandomLane().getLength());
+    }
 }

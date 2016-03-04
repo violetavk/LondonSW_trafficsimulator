@@ -9,11 +9,10 @@ import javafx.stage.Stage;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Car;
-import londonsw.model.simulation.components.vehicles.Vehicle;
-import londonsw.view.simulation.CarGUIDecorator;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
 import org.reactfx.EventStreams;
+
 import java.time.Duration;
 
 public class MapGridGUITestMain extends Application {
@@ -26,6 +25,7 @@ public class MapGridGUITestMain extends Application {
         //Map map = drawTestMapSimple();
 
         Map map = drawTestMapSingleLine();
+        map.saveMap("testmap.map");
 
         //Map map = drawTestMapBig();
 

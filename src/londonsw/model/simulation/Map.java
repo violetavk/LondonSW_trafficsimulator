@@ -86,6 +86,14 @@ public class Map implements Serializable {
 
         return lane;
     }
+    public int getRandomCell(){
+
+        Random randomCell = new Random();
+
+        Lane randomLane = getRandomLane();
+
+        return randomCell.nextInt(randomLane.getLength());
+    }
 
     /**
      * If you have a list of roads already, set the roads to the map
