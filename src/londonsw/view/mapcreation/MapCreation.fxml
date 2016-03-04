@@ -31,17 +31,17 @@
       </Button>
       <ImageView fitHeight="100.0" fitWidth="96.0" layoutX="479.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../resources/Grass.png" />
+            <Image url="@Grass.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="85.0" fitWidth="105.0" layoutX="484.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../resources/Line.png" />
+            <Image url="@Line.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="489.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../resources/RoadBackground.png" />
+            <Image url="@RoadBackground.png" />
          </image>
       </ImageView>
    </children>
