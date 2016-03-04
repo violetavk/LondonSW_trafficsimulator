@@ -60,7 +60,9 @@ public class VehicleController {
         car.moveVehicle(step);
     }
 
-    public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws  Exception {
+    public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws Exception {
+
+
         vehicleGUIDecorator.setVehicleState(1); //TODO change to enum
 
         if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
@@ -77,7 +79,7 @@ public class VehicleController {
             //vehicleGUIDecorator.setVehicleState(3);
 
             vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
-            vehicleGUIDecorator.moveVehicleGUI(step, vehicleGUIDecorator.getVehicleState());
+            vehicleGUIDecorator.moveVehicleGUI(1, vehicleGUIDecorator.getVehicleState());
             vehicleGUIDecorator.vehicleTurn();
 
 
