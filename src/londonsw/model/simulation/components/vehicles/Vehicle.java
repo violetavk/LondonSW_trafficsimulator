@@ -110,7 +110,6 @@ public abstract class Vehicle implements TickerListener, Serializable{
     public void setVehicleState(int vehicleState){this.vehicleState=vehicleState;}
     public void setVehicleBehavior(VehicleBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
 
-
     //Move a vehicle some steps forward
     public boolean moveVehicle(int step) {
        int curCell= this.getCurrentCell();
@@ -206,6 +205,7 @@ public abstract class Vehicle implements TickerListener, Serializable{
 
 
     public void vehicleTurn () throws Exception {
+        Lane oldLane = this.currentLane;
         Lane l;
         randomDirection = new Random();
         int size = randomDirection.nextInt(this.getLaneOptions().size());
@@ -214,6 +214,7 @@ public abstract class Vehicle implements TickerListener, Serializable{
         //validate if its end of lane
         if ((this.getCurrentCell() == this.currentLane.getLength() -1)&& (l.isCellEmpty(0)))
         {
+            oldLane.setCell(null,oldLane.getLength()-1);
             this.setCurrentLane(l);
             this.setCurrentCell(0,l);
             this.setCurrentCoordinate(l.getEntry());
