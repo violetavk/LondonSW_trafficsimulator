@@ -171,28 +171,32 @@ public abstract class Vehicle implements TickerListener, Serializable{
         if ((this.currentLane.getEndIntersection().getEastRoad()!=null) &&
                 (this.currentLane.getMovingDirection()!=MapDirection.WEST))
         {for(int i=0; i<this.currentLane.getEndIntersection().getEastRoad().getNumberLanes();i++)
-             {if(this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.EAST)
+             {if((this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.EAST)
+                 && (this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getState()==1))
                  {laneOptions.add(this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i));
                  }}}
 
         if ((this.currentLane.getEndIntersection().getSouthRoad()!= null) &&
                 (this.currentLane.getMovingDirection()!=MapDirection.NORTH))
         {for(int i=0; i<this.currentLane.getEndIntersection().getSouthRoad().getNumberLanes();i++)
-             {if(this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.SOUTH)
+             {if((this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.SOUTH)
+                 && (this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getState()==1))
                 {laneOptions.add(this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i));
                 }}}
 
         if ((this.currentLane.getEndIntersection().getNorthRoad()!= null)&&
                 (this.currentLane.getMovingDirection()!=MapDirection.SOUTH))
         {for(int i=0; i<this.currentLane.getEndIntersection().getNorthRoad().getNumberLanes();i++)
-            {if(this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.NORTH)
+            {if((this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.NORTH)
+                    && (this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getState()==1))
                {laneOptions.add(this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i));
                }}}
 
         if ((this.currentLane.getEndIntersection().getWestRoad()!= null)&&
                 (this.currentLane.getMovingDirection()!=MapDirection.EAST))
         {for(int i=0; i<this.currentLane.getEndIntersection().getWestRoad().getNumberLanes();i++)
-            {if(this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.WEST)
+            {if((this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.WEST)
+                    && (this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getState()==1))
                {laneOptions.add(this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i));
                }}}
 
