@@ -42,12 +42,12 @@ public class MapGridGUITestMain extends Application {
 
         //Lane L1 = map.getRandomLane();
 
-        //Lane L1 = map.getRoads().get(0).getLanes().get(0);
+        Lane L1 = map.getRoads().get(0).getLanes().get(0);
 
 
         //Lane L1 = map.getRoads().get(0).getLanes().get(roadIndex);
 
-        Lane L1 = map.getRandomLane();
+        //Lane L1 = map.getRandomLane();
 
         Car C1 = new Car(0, L1);
 
@@ -174,10 +174,10 @@ public class MapGridGUITestMain extends Application {
         Road r6 = new Road(new Coordinate(17, 2), new Coordinate(17, 8));
         Road r7 = new Road(new Coordinate(10, 9), new Coordinate(16, 9));
 
-        //Lane disabledLane = new Lane(r3.getStartLocation(), r3.getEndLocation(), MapDirection.SOUTH);
+        Lane disabledLane = new Lane(r5.getStartLocation(), r5.getEndLocation(), MapDirection.EAST);
 
         //disable lane
-        //disabledLane.setState(0);
+        disabledLane.setState(0);
 
         r1.addLane(new Lane(r1.getStartLocation(), r1.getEndLocation(), MapDirection.EAST));
 
@@ -187,7 +187,9 @@ public class MapGridGUITestMain extends Application {
 
         r4.addLane(new Lane(r4.getEndLocation(), r4.getStartLocation(), MapDirection.WEST));
 
-        r5.addLane(new Lane(r5.getStartLocation(), r5.getEndLocation(), MapDirection.EAST));
+        //r5.addLane(new Lane(r5.getStartLocation(), r5.getEndLocation(), MapDirection.EAST));
+        r5.addLane(disabledLane);
+
 
         r6.addLane(new Lane(r6.getStartLocation(), r6.getEndLocation(), MapDirection.SOUTH));
 

@@ -74,9 +74,12 @@ public class VehicleController {
 
             vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
 
-            //vehicleGUIDecorator.setVehicleState(3);//in intersection turning
-            //vehicleGUIDecorator.moveVehicleGUI(step, car.getVehicleState());
             vehicleGUIDecorator.vehicleTurn();
+
+
+            //vehicleGUIDecorator.setVehicleState(3);//in intersection turning
+            vehicleGUIDecorator.moveVehicleGUI(step, vehicleGUIDecorator.getVehicleState());
+
 
 
             //TODO: make vehicle turn with curve in intersection!
