@@ -24,19 +24,20 @@ public class VehicleTest {
     @Before
     public void setUpForTests() throws Exception {
         // Create an intersection with four roads, each road has two lanes with different direction
+
         intersection= new Intersection(new Coordinate(5,5));
         northRoad = new Road(new Coordinate(5,1),new Coordinate(5,4));
         southRoad = new Road(new Coordinate(5,6),new Coordinate(5,10));
         eastRoad = new Road(new Coordinate(6,5),new Coordinate(9,5));
         westRoad = new Road(new Coordinate(1,5),new Coordinate(4,5));
-        northLane1= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.NORTH);
+        northLane1= new Lane(new Coordinate(5,4), new Coordinate(5,1),MapDirection.NORTH);
         northLane2= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.SOUTH);
-        southLane1= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.NORTH);
+        southLane1= new Lane(new Coordinate(5,10), new Coordinate(5,6),MapDirection.NORTH);
         southLane2= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.SOUTH);
         eastLane1= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.EAST);
-        eastLane2= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.WEST);
+        eastLane2= new Lane(new Coordinate(9,5), new Coordinate(6,5),MapDirection.WEST);
         westLane1= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.EAST);
-        westLane2= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.WEST);
+        westLane2= new Lane(new Coordinate(4,5), new Coordinate(1,5),MapDirection.WEST);
 
         northRoad.addLane(northLane1);
         northRoad.addLane(northLane2);
@@ -64,13 +65,13 @@ public class VehicleTest {
         intersection.setWestRoad(westRoad);
 
 
-        northLane2.setEndIntersection(intersection);
+        //northLane2.setEndIntersection(intersection);
        // northLane1.setStartIntersection(intersection);
-        southLane1.setEndIntersection(intersection);
+        //southLane1.setEndIntersection(intersection);
         //southLane2.setStartIntersection(intersection);
-        eastLane1.setEndIntersection(intersection);
+       // eastLane1.setEndIntersection(intersection);
         //eastLane2.setStartIntersection(intersection);
-        westLane2.setEndIntersection(intersection);
+       // westLane2.setEndIntersection(intersection);
         //westLane1.setStartIntersection(intersection);
 
     }
@@ -169,9 +170,21 @@ public class VehicleTest {
          assertEquals(car.getLaneOptions().size(),3);
     }
 
+    @Test
+    public void testGetLaneOptionsWithState() throws Exception {
+        Ticker t = Ticker.getInstance();
+        Vehicle car =new Car(southLane1.getLength()-1,southLane1);
+        eastLane1.setState(0);
+
+        car.getLaneOptions();
+        assertEquals(car.getLaneOptions().size(),2);
+    }
+
 
     @Test
     public void testVehicleTurn() throws Exception {
+      
+
         Ticker t = Ticker.getInstance();
         Vehicle car =new Car(southLane1.getLength()-1,southLane1);
         car.getLaneOptions();
@@ -179,6 +192,73 @@ public class VehicleTest {
         Lane testLane =car.getCurrentLane();
         assertNotEquals(testLane,southLane1);
         assertNotEquals(testLane,southLane2);
+
+
     }
+
+    public Map drawTestMap() throws Exception {
+        Map map = new Map(6,5);
+
+        intersection= new Intersection(new Coordinate(5,5));
+        northRoad = new Road(new Coordinate(5,1),new Coordinate(5,4));
+        southRoad = new Road(new Coordinate(5,6),new Coordinate(5,10));
+        eastRoad = new Road(new Coordinate(6,5),new Coordinate(9,5));
+        westRoad = new Road(new Coordinate(1,5),new Coordinate(4,5));
+        northLane1= new Lane(new Coordinate(5,4), new Coordinate(5,1),MapDirection.NORTH);
+        northLane2= new Lane(new Coordinate(5,1), new Coordinate(5,4),MapDirection.SOUTH);
+        southLane1= new Lane(new Coordinate(5,10), new Coordinate(5,6),MapDirection.NORTH);
+        southLane2= new Lane(new Coordinate(5,6), new Coordinate(5,10),MapDirection.SOUTH);
+        eastLane1= new Lane(new Coordinate(6,5), new Coordinate(9,5),MapDirection.EAST);
+        eastLane2= new Lane(new Coordinate(9,5), new Coordinate(6,5),MapDirection.WEST);
+        westLane1= new Lane(new Coordinate(1,5), new Coordinate(4,5),MapDirection.EAST);
+        westLane2= new Lane(new Coordinate(4,5), new Coordinate(1,5),MapDirection.WEST);
+
+        northRoad.addLane(northLane1);
+        northRoad.addLane(northLane2);
+
+        southRoad.addLane(southLane1);
+        southRoad.addLane(southLane2);
+
+        eastRoad.addLane(eastLane1);
+        eastRoad.addLane(eastLane2);
+
+        westRoad.addLane(westLane1);
+        westRoad.addLane(westLane2);
+
+        intersection.setEastRoad(eastRoad);
+        intersection.setNorthRoad(northRoad);
+        intersection.setSouthRoad(southRoad);
+        intersection.setWestRoad(westRoad);
+
+
+        map.addRoad(northRoad);
+        map.addRoad(eastRoad);
+        map.addRoad(westRoad);
+        map.addRoad(southRoad);
+
+        map.addIntersection(intersection);
+
+        return map;
+    }
+
+    public void printMapGrid(Map map) {
+        Component[][] grid = map.getGrid().getGrid();
+        int width = map.getGrid().getWidth();
+        int height = map.getGrid().getHeight();
+        for(int i = 0; i < height; i++) {
+            for(int j = 0; j < width; j++) {
+                Component current = grid[i][j];
+                if(current instanceof Road)
+                    System.out.print("R ");
+                else if(current instanceof Intersection)
+                    System.out.print("I ");
+                else
+                    System.out.print("- ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
 
 }
