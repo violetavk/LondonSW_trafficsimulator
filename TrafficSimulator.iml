@@ -46,6 +46,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="reactfx-2.0-M4u1" level="project" />
+    <orderEntry type="library" name="libraries" level="project" />
   </component>
 </module>
