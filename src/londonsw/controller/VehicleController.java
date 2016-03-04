@@ -64,7 +64,7 @@ public class VehicleController {
         vehicleGUIDecorator.setVehicleState(1); //TODO change to enum
 
         if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
-            //car.setVehicleState(0); //TODO change to enum
+            //vehicleGUIDecorator.setVehicleState(0); //TODO change to enum
 
             //TODO Change controller maybe
 
@@ -72,14 +72,13 @@ public class VehicleController {
 
             //carGUI.moveVehicleGUI(step,car.getVehicleState());
 
+            //move to coordinate
+
+            //vehicleGUIDecorator.setVehicleState(3);
+
             vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
-
-            vehicleGUIDecorator.vehicleTurn();
-
-
-            //vehicleGUIDecorator.setVehicleState(3);//in intersection turning
             vehicleGUIDecorator.moveVehicleGUI(step, vehicleGUIDecorator.getVehicleState());
-
+            vehicleGUIDecorator.vehicleTurn();
 
 
             //TODO: make vehicle turn with curve in intersection!

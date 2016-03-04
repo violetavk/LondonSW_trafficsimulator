@@ -4,10 +4,7 @@ import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import javafx.util.Duration;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.ResizeFactor;
@@ -121,8 +118,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
             MoveTo moveTo = new MoveTo();
 
-
-
             //moveTo.setY(y*this.decoratedCar.getPreviousLane().getExit().getY());
             //moveTo.setX(x*this.decoratedCar.getPreviousLane().getExit().getX());
 
@@ -162,6 +157,29 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         }
         else if(state==3)
         {
+//move to next coordinates
+
+            double cellDimension = 100;
+            double x = cellDimension * this.getResizeFactor().getResizeX();
+            double y = cellDimension * this.getResizeFactor().getResizeY();
+
+
+            Path path = new Path();
+            PathTransition pathTransition = new PathTransition();
+
+            MoveTo moveTo = new MoveTo(x*this.getPreviousLane().getExit().getX(),y*this.getPreviousLane().getExit().getY());
+            path.getElements().add(moveTo);
+            path.getElements().add(new LineTo(x*this.getCurrentLane().getEntry().getX(),y*this.getCurrentLane().getEntry().getY()));
+
+            pathTransition.setPath(path);
+            pathTransition.setNode(this.getRectangle());
+            pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+            pathTransition.setInterpolator(Interpolator.LINEAR);
+
+            pathTransition.setDuration(    Duration.millis(Ticker.getTickInterval()));
+
+            pathTransition.play();
+
 
         }
         else {
