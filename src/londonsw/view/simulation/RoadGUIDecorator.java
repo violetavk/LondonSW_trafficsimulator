@@ -32,6 +32,7 @@ public class RoadGUIDecorator extends RoadDecorator {
     }
 
     public StackPane drawRoad(MapDirection mapDirection) {
+
         String roadBackgroundPath = "RoadBackground.png";   //TODO avoid hardcode
 
         Image image = new Image(roadBackgroundPath);
