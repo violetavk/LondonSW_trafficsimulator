@@ -2,26 +2,24 @@ package londonsw.view.simulation;
 
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
-import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import londonsw.model.simulation.Ticker;
-import londonsw.model.simulation.components.Lane;
-import londonsw.model.simulation.components.MapDirection;
 import londonsw.model.simulation.components.ResizeFactor;
-import londonsw.model.simulation.components.vehicles.Car;
-
-import java.util.ArrayList;
+import londonsw.model.simulation.components.vehicles.Vehicle;
 
 /**
- * Created by felix on 26/02/2016.
+ * Created by felix on 04/03/2016.
  */
-public class CarGUIDecorator extends CarDecorator {
+public class VehicleGUIDecorator extends VehicleDecorator {
 
-    public CarGUIDecorator(Car decoratedCar) {
-        super(decoratedCar);
+    public VehicleGUIDecorator(Vehicle decoratedVehicle) {
+        super(decoratedVehicle);
     }
 
     private Rectangle rectangle;
@@ -58,7 +56,7 @@ public class CarGUIDecorator extends CarDecorator {
         double x = cellDimension * this.getResizeFactor().getResizeX();
         double y = cellDimension * this.getResizeFactor().getResizeY();
 
-        int numberLanes = this.decoratedCar.currentLane.getRoad().getNumberLanes();
+        int numberLanes = this.getCurrentLane().getRoad().getNumberLanes();
         double division =   cellDimension * this.getResizeFactor().getResizeX();
 
         division = division / numberLanes;
@@ -68,22 +66,22 @@ public class CarGUIDecorator extends CarDecorator {
 
         double startPointX =
                 x
-                * decoratedCar.getCurrentCoordinate().getX();
+                        * this.getCurrentCoordinate().getX();
 
-               if(decoratedCar.getCurrentLane().getRoad().runsVertically())
-               {
-                   startPointX+=(this.decoratedCar.getCurrentLane().getRoadIndex() * division);
-                   carDimensionX = cellDimension/numberLanes;
-               }
+        if(this.getCurrentLane().getRoad().runsVertically())
+        {
+            startPointX+=(this.getCurrentLane().getRoadIndex() * division);
+            carDimensionX = cellDimension/numberLanes;
+        }
 
         double startPointY =
                 y
-                * decoratedCar.getCurrentCoordinate().getY();
+                        * this.getCurrentCoordinate().getY();
 
         //car runs Horizontally
-        if(!decoratedCar.getCurrentLane().getRoad().runsVertically())
+        if(!this.getCurrentLane().getRoad().runsVertically())
         {
-            startPointY+=(this.decoratedCar.getCurrentLane().getRoadIndex() * division);
+            startPointY+=(this.getCurrentLane().getRoadIndex() * division);
             carDimensionY = cellDimension/numberLanes;
         }
 
@@ -98,15 +96,6 @@ public class CarGUIDecorator extends CarDecorator {
         this.setRectangle(r);
     }
 
-    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                return node;
-            }
-        }
-        return null;
-    }
-
     public void moveVehicleGUI(int step, int state) {
         final Timeline timeline = new Timeline();
         timeline.setAutoReverse(true);
@@ -116,7 +105,7 @@ public class CarGUIDecorator extends CarDecorator {
         if(state==0)
             timeline.stop();
         else
-            if(state==2)
+        if(state==2)
         {
             double cellDimension = 100;
             double x = cellDimension * this.getResizeFactor().getResizeX();
@@ -149,8 +138,8 @@ public class CarGUIDecorator extends CarDecorator {
                     50,
                     50,
                     0,
-                    x*this.decoratedCar.getCurrentLane().getEntry().getX(),
-                    y*this.decoratedCar.getCurrentLane().getEntry().getY(),
+                    x*this.getCurrentLane().getEntry().getX(),
+                    y*this.getCurrentLane().getEntry().getY(),
                     false,true)
             );
 
@@ -171,10 +160,10 @@ public class CarGUIDecorator extends CarDecorator {
 
 
         }
-            else if(state==3)
-            {
+        else if(state==3)
+        {
 
-            }
+        }
         else {
             DoubleProperty doubleProperty = null;
             double distance = 0;
@@ -191,7 +180,7 @@ public class CarGUIDecorator extends CarDecorator {
 //            }
 
 
-            switch (decoratedCar.getCurrentLane().getMovingDirection()) {
+            switch (this.getCurrentLane().getMovingDirection()) {
 
                 case NORTH:
 

@@ -5,6 +5,7 @@ import londonsw.model.simulation.components.Intersection;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 import londonsw.view.simulation.CarGUIDecorator;
+import londonsw.view.simulation.VehicleGUIDecorator;
 
 import java.util.ArrayList;
 
@@ -14,13 +15,11 @@ import java.util.ArrayList;
 public class VehicleController {
 
 
-    public static void moveVehicle(Vehicle car, CarGUIDecorator carGUI, int step) throws Exception
-    {
+    public static void moveVehicle(Vehicle car, CarGUIDecorator carGUI, int step) throws Exception {
 
         car.setVehicleState(1); //TODO change to enum
 
-        if(car.getCurrentCoordinate().equals(car.getCurrentLane().getExit()))
-        {
+        if (car.getCurrentCoordinate().equals(car.getCurrentLane().getExit())) {
             //car.setVehicleState(0); //TODO change to enum
 
 
@@ -32,13 +31,13 @@ public class VehicleController {
 
             car.setPreviousLane(car.currentLane);
 
-            carGUI.moveVehicleGUI(step,car.getVehicleState());
+            car.setVehicleState(3);//in intersection turning
+            carGUI.moveVehicleGUI(step, car.getVehicleState());
             car.vehicleTurn();
 
 
             //TODO: make vehicle turn with curve in intersection!
 
-//            car.setVehicleState(2);//in intersection turning
 
             //carGUI.drawCar();
 
@@ -48,19 +47,46 @@ public class VehicleController {
 
             //randomly choose where to go next
 
-        }
-        else
-        {
+        } else {
             car.moveVehicle(step);
         }
 
-        carGUI.moveVehicleGUI(step,car.getVehicleState());
+        carGUI.moveVehicleGUI(step, car.getVehicleState());
 
     }
 
-    public static void moveVehicle(Vehicle car, int step)
-    {
+    public static void moveVehicle(Vehicle car, int step) {
         System.out.println("Vehicle wants to move " + step + " step");
         car.moveVehicle(step);
+    }
+
+    public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws  Exception {
+        vehicleGUIDecorator.setVehicleState(1); //TODO change to enum
+
+        if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
+            //car.setVehicleState(0); //TODO change to enum
+
+            //TODO Change controller maybe
+
+            ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
+
+            //carGUI.moveVehicleGUI(step,car.getVehicleState());
+
+            vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
+
+            //vehicleGUIDecorator.setVehicleState(3);//in intersection turning
+            //vehicleGUIDecorator.moveVehicleGUI(step, car.getVehicleState());
+            vehicleGUIDecorator.vehicleTurn();
+
+
+            //TODO: make vehicle turn with curve in intersection!
+
+
+        } else {
+            vehicleGUIDecorator.moveVehicle(step);
+        }
+
+        vehicleGUIDecorator.moveVehicleGUI(step, vehicleGUIDecorator.getVehicleState());
+
     }
 }
