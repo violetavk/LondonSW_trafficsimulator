@@ -6,7 +6,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
-import londonsw.System;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.MapDirection;
 import londonsw.model.simulation.components.ResizeFactor;
@@ -104,59 +103,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         if(state==0)
             timeline.stop();
         else
-        if(state==2)
-        {
-            double cellDimension = 100;
-            double x = cellDimension * this.getResizeFactor().getResizeX();
-            double y = cellDimension * this.getResizeFactor().getResizeY();
-
-            Path path = new Path();
-            PathTransition pathTransition = new PathTransition();
-
-//                path.getElements().add (new MoveTo(
-//                    y* (this.decoratedCar.getPreviousLane().getExit().getY())));
-//                    x* (this.decoratedCar.getPreviousLane().getExit().getX()),
-
-            MoveTo moveTo = new MoveTo();
-
-            //moveTo.setY(y*this.decoratedCar.getPreviousLane().getExit().getY());
-            //moveTo.setX(x*this.decoratedCar.getPreviousLane().getExit().getX());
-
-            moveTo.setX(this.getRectangle().getX());
-            moveTo.setY(this.getRectangle().getY());
-
-            path.getElements().add(moveTo);
-
-            //path.getElements().add (new MoveTo(
-            //        25,25));
-
-            path.getElements().add (new ArcTo(
-                    50,
-                    50,
-                    0,
-                    x*this.getCurrentLane().getEntry().getX(),
-                    y*this.getCurrentLane().getEntry().getY(),
-                    false,true)
-            );
-
-            pathTransition.setPath(path);
-            pathTransition.setNode(this.getRectangle());
-            pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-            pathTransition.setInterpolator(Interpolator.LINEAR);
-
-            pathTransition.setDuration(    Duration.millis(Ticker.getTickInterval()));
-
-            pathTransition.play();
-            //pathTransition.setNode(rect);
-
-            //pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-            //pathTransition.setCycleCount(4f);
-            //pathTransition.setAutoReverse(true);
-
-
-
-        }
-        else if(state==3)
+        if(state==2)    //car in intersection
         {
             int imageDimension = 100;
             double x = imageDimension * this.getResizeFactor().getResizeX();
@@ -208,8 +155,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
             tt.play();
 
-
-            this.setVehicleState(1);
+            this.setVehicleState(1);    //move car again
 
 
         }
