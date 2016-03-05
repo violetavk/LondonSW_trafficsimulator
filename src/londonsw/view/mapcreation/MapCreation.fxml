@@ -6,9 +6,10 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="600.0" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="londonsw.view.mapcreation.RoadElementController"
+        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="600.0" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane layoutX="21.0" layoutY="19.0" prefHeight="353.0" prefWidth="435.0" style="-fx-background-color: grey;">
+      <GridPane id="mapView" layoutX="21.0" layoutY="19.0" prefHeight="353.0" prefWidth="435.0" style="-fx-background-color: grey;">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="199.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="200.0" />
@@ -31,7 +32,7 @@
       </Button>
       <ImageView fitHeight="100.0" fitWidth="96.0" layoutX="479.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Grass.png" />
+            <Image fx:id="grass" url="@Grass.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="85.0" fitWidth="105.0" layoutX="484.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">

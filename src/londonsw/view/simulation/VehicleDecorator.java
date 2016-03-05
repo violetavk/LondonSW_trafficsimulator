@@ -130,16 +130,4 @@ public abstract class VehicleDecorator implements IVehicle {
     public void vehicleTurn() throws Exception {
         decoratedVehicle.vehicleTurn();
     }
-
-    @Override
-    public void onTick(long time) {
-
-        decoratedVehicle.onTick(time);
-
-    }
-
-    @Override
-    public boolean atIntersection() {
-        return decoratedVehicle.atIntersection();
-    }
 }

@@ -164,50 +164,6 @@ public class Intersection implements Component, Serializable {
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
     }
 
-
-    // TODO this doesn't really belong here
-    // TODO decide which version to keep (probably Vehicle's)
- /*   public ArrayList<Lane> getLaneOptions(){
-
-        laneOptions.clear();
-
-        if(this.getEastRoad()!= null){
-            for(int i=0; i<this.getEastRoad().getNumberLanes();i++){
-                if(this.getEastRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.EAST){
-                    laneOptions.add(this.getEastRoad().getLaneAtIndex(i));
-                }
-            }
-        }
-        if(this.getSouthRoad()!= null){
-            for(int i=0; i<this.getSouthRoad().getNumberLanes();i++){
-                if(this.getSouthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.SOUTH){
-                    laneOptions.add(this.getSouthRoad().getLaneAtIndex(i));
-                }
-            }
-        }
-        if(this.getWestRoad()!= null){
-            for(int i=0; i<this.getWestRoad().getNumberLanes();i++){
-                if(this.getWestRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.WEST){
-                    laneOptions.add(this.getWestRoad().getLaneAtIndex(i));
-                }
-            }
-        }
-        if(this.getNorthRoad()!= null){
-            for(int i=0; i<this.getNorthRoad().getNumberLanes();i++){
-                if(this.getNorthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.NORTH){
-                    laneOptions.add(this.getNorthRoad().getLaneAtIndex(i));
-                }
-            }
-        }
-        return laneOptions;
-    }
-
-    public Lane chooseDirection (){
-        Random randomDirection = new Random();
-        int size = randomDirection.nextInt(this.getLaneOptions().size());
-        return this.getLaneOptions().get(size);
-    }*/
-
 }
 
 class IntersectionSetupException extends Exception {

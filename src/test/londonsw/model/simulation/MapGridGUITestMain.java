@@ -1,21 +1,15 @@
 package londonsw.model.simulation;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import londonsw.controller.VehicleController;
 import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Car;
-import londonsw.model.simulation.components.vehicles.Vehicle;
-import londonsw.view.simulation.CarGUIDecorator;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
-import org.reactfx.EventStreams;
-import java.time.Duration;
 
 public class MapGridGUITestMain extends Application {
 
@@ -67,34 +61,11 @@ public class MapGridGUITestMain extends Application {
 
         sp.getChildren().add(carPane);
 
-
         Scene scene = new Scene(sp);
-
-        //t.start();
-
-        //VehicleGUIDecorator V =  new VehicleGUIDecorator(C1);
 
         vehicleGUIDecorator.setVehicleState(1);
 
         System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
-        EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval() * 1))   //needs to be greater than Ticker.getTickInterval
-                .subscribe(
-                        tick -> {
-                            try {
-
-                                /*I want to create a drawing/*
-
-                                Each time
-                                 */
-
-                                VehicleController.moveVehicle(vehicleGUIDecorator, 1);
-
-
-                                System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
