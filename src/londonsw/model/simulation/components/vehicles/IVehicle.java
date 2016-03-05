@@ -33,10 +33,4 @@ public interface IVehicle {
     void readTrafficLight() throws Exception;
     ArrayList<Lane> getLaneOptions() throws Exception;
     void vehicleTurn () throws Exception;
-    void onTick(long time);
-
-
-
-
-
 }
