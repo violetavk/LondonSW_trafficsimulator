@@ -173,6 +173,7 @@ public class CarGUIDecorator extends CarDecorator {
         }
             else if(state==3)
             {
+                //Move from point to point
 
             }
         else {

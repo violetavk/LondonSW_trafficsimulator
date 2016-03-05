@@ -34,6 +34,7 @@ public interface IVehicle {
     ArrayList<Lane> getLaneOptions() throws Exception;
     void vehicleTurn () throws Exception;
     void onTick(long time);
+    boolean atIntersection();
 
 
 

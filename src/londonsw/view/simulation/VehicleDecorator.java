@@ -137,4 +137,9 @@ public abstract class VehicleDecorator implements IVehicle {
         decoratedVehicle.onTick(time);
 
     }
+
+    @Override
+    public boolean atIntersection() {
+        return decoratedVehicle.atIntersection();
+    }
 }

@@ -1,6 +1,7 @@
 package londonsw.model.simulation;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -48,8 +49,6 @@ public class MapGridGUITestMain extends Application {
 
         //Lane L1 = map.getRandomLane();
 
-
-
         Car C1 = new Car(0, L1);
 
         VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
@@ -68,11 +67,14 @@ public class MapGridGUITestMain extends Application {
 
         sp.getChildren().add(carPane);
 
+
         Scene scene = new Scene(sp);
 
         //t.start();
 
         //VehicleGUIDecorator V =  new VehicleGUIDecorator(C1);
+
+        vehicleGUIDecorator.setVehicleState(1);
 
         System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
         EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval() * 1))   //needs to be greater than Ticker.getTickInterval
@@ -84,9 +86,6 @@ public class MapGridGUITestMain extends Application {
 
                                 Each time
                                  */
-
-
-
 
                                 VehicleController.moveVehicle(vehicleGUIDecorator, 1);
 

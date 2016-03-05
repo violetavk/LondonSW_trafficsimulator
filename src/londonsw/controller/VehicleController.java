@@ -8,6 +8,7 @@ import londonsw.view.simulation.CarGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
 
 import java.util.ArrayList;
+import java.util.Currency;
 
 /**
  * Created by felix on 26/02/2016.
@@ -63,9 +64,9 @@ public class VehicleController {
     public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws Exception {
 
 
-        vehicleGUIDecorator.setVehicleState(1); //TODO change to enum
-
         if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
+
+
             //vehicleGUIDecorator.setVehicleState(0); //TODO change to enum
 
             //TODO Change controller maybe
@@ -76,18 +77,30 @@ public class VehicleController {
 
             //move to coordinate
 
-            //vehicleGUIDecorator.setVehicleState(3);
+            vehicleGUIDecorator.setVehicleState(3);
 
             vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
-            vehicleGUIDecorator.moveVehicleGUI(1, vehicleGUIDecorator.getVehicleState());
-            vehicleGUIDecorator.vehicleTurn();
 
+            //move to intersection
+
+
+
+            //vehicleGUIDecorator.moveVehicleGUI(1, vehicleGUIDecorator.getVehicleState());
+
+            //vehicleGUIDecorator.setVehicleState(3); //stop
+
+
+            vehicleGUIDecorator.vehicleTurn();
 
             //TODO: make vehicle turn with curve in intersection!
 
 
-        } else {
-            vehicleGUIDecorator.moveVehicle(step);
+        }
+        else {
+
+            if (vehicleGUIDecorator.getVehicleState() != 0) {
+                vehicleGUIDecorator.moveVehicle(step);
+            }
         }
 
         vehicleGUIDecorator.moveVehicleGUI(step, vehicleGUIDecorator.getVehicleState());

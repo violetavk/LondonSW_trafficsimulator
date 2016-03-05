@@ -13,7 +13,7 @@ import java.util.Random;
  * This is the interface that all vehicles will implement
  * This allows for scalability because we can add more types of cars (eg. ambulance, bus)
  */
-public abstract class Vehicle implements TickerListener, Serializable{
+public abstract class Vehicle implements TickerListener, Serializable, IVehicle{
 
     private static final long serialVersionUID = -4552832373570448039L;
     int vehicleLength;
@@ -131,8 +131,10 @@ public abstract class Vehicle implements TickerListener, Serializable{
        }
     }
 
-
-
+    @Override
+    public boolean atIntersection() {
+        return true;
+    }
 
     public void readTrafficLight()throws Exception {
         if (this.getCurrentCell() == this.currentLane.getLength() -1) {
