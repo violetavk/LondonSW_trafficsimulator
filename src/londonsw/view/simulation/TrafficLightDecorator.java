@@ -1,6 +1,5 @@
 package londonsw.view.simulation;
 
-import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import londonsw.controller.TrafficLightController;
@@ -8,56 +7,62 @@ import londonsw.model.simulation.components.LightColour;
 import londonsw.model.simulation.components.TrafficLight;
 
 /**
- * Traffic Light GUI Logic
+ * Traffic Light GUI Logic is implemented here. One instance of this class is associated with exactly one instance
+ * of a TrafficLight.
  */
 public class TrafficLightDecorator {
 
     private TrafficLight thisLight;
-    private static Circle circle;
+    private Circle circle;
 
+    /**
+     * Creates a new instance of the TrafficLightDecorator for the GUI.
+     * @param thisLight the instance of a TrafficLight that this decorator is for
+     */
     public TrafficLightDecorator(TrafficLight thisLight) {
         this.thisLight = thisLight;
         circle = new Circle();
-        TrafficLightController.addKeyValuePair(thisLight, this);
+        TrafficLightController.addTrafficLightAndDecoratorPair(thisLight, this);
     }
 
+    /**
+     * This gets called by the controller to set the color of the circle of the traffic light gui
+     * @param colour
+     */
     public void setGUIColour(LightColour colour) {
-        // probably not the best solution but it seems to work for now...
-        Platform.runLater(() -> {
-            switch (colour) {
-                case RED:
-                    System.out.println("Changing colour to red for " + thisLight);
-                    circle.setFill(Color.RED);
-                    break;
+        switch (colour) {
+            case RED:
+//                System.out.println("Changing colour to red for " + thisLight);
+                circle.setFill(Color.RED);
+                break;
 
-                case GREEN:
-                    System.out.println("Changing colour to green for " + thisLight);
-                    circle.setFill(Color.GREEN);
-                    break;
-            }
-        });
-
-
-
-//       EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval()*1))   //needs to be greater than Ticker.getTickInterval
-//                .subscribe(
-//                        tick -> {
-//                            try {
-//
-//
-//                                VehicleController.moveVehicle(C1, CarGUI, 1);
-//                                VehicleController.moveVehicle(C2, CarGUI2, 1);
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                        });
+            case GREEN:
+//                System.out.println("Changing colour to green for " + thisLight);
+                circle.setFill(Color.GREEN);
+                break;
+        }
     }
 
+    /**
+     * Returns the circle associated with this decorator
+     * @return circle for this traffic light
+     */
+    public Circle getCircle() {
+        return circle;
+    }
+
+    /**
+     * Draws the circle for the GUI
+     * @param x the x-position in its pane
+     * @param y the y-position in its pane
+     * @param r the radius of the circle
+     * @return a new Circle with those properties
+     */
     public Circle drawLight(double x, double y, double r){
         circle.setCenterX(x);
         circle.setCenterY(y);
         circle.setRadius(r);
-        circle.setFill(Color.RED);
+        circle.setFill(thisLight.getState() == LightColour.RED? Color.RED : Color.GREEN);
         return circle;
     }
 

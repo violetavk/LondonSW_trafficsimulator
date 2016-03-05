@@ -25,7 +25,6 @@ public class MapGridGUITestMain extends Application {
         //Map map = drawTestMapSimple();
 
         Map map = drawTestMapSingleLine();
-        map.saveMap("testmap.map");
 
         //Map map = drawTestMapBig();
 
@@ -69,33 +68,6 @@ public class MapGridGUITestMain extends Application {
         sp.getChildren().add(carPane);
 
         Scene scene = new Scene(sp);
-
-        //t.start();
-
-        //VehicleGUIDecorator V =  new VehicleGUIDecorator(C1);
-
-        System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
-        EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval() * 1))   //needs to be greater than Ticker.getTickInterval
-                .subscribe(
-                        tick -> {
-                            try {
-
-                                /*I want to create a drawing/*
-
-                                Each time
-                                 */
-
-
-
-
-                                VehicleController.moveVehicle(vehicleGUIDecorator, 1);
-
-
-                                System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);

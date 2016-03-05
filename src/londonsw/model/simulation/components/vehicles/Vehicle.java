@@ -1,8 +1,8 @@
 package londonsw.model.simulation.components.vehicles;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Ticker;
-import londonsw.model.simulation.TickerListener;
 import londonsw.model.simulation.components.*;
+import rx.Subscriber;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,10 +10,13 @@ import java.util.Random;
 
 
 /**
- * This is the interface that all vehicles will implement
+ * This is the abstract class that all vehicles will implement
  * This allows for scalability because we can add more types of cars (eg. ambulance, bus)
+ *
+ * This uses RxJava's Subscriber class to subscribe to the Ticker (that has as Observable). On each tick,
+ * the onNext(..) method runs.
  */
-public abstract class Vehicle implements TickerListener, Serializable{
+public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
     private static final long serialVersionUID = -4552832373570448039L;
     int vehicleLength;
@@ -131,9 +134,6 @@ public abstract class Vehicle implements TickerListener, Serializable{
        }
     }
 
-
-
-
     public void readTrafficLight()throws Exception {
         if (this.getCurrentCell() == this.currentLane.getLength() -1) {
            //this.getCurrentLane().getMovingDirection();
@@ -162,7 +162,6 @@ public abstract class Vehicle implements TickerListener, Serializable{
 
         }
     }
-
 
     public ArrayList<Lane> getLaneOptions() throws Exception {
         laneOptions.clear();
@@ -202,9 +201,7 @@ public abstract class Vehicle implements TickerListener, Serializable{
         return laneOptions;
     }
 
-
-
-    public void vehicleTurn () throws Exception {
+    public void vehicleTurn() throws Exception {
         Lane oldLane = this.currentLane;
         Lane l;
         randomDirection = new Random();
@@ -227,35 +224,42 @@ public abstract class Vehicle implements TickerListener, Serializable{
         vehicleState = 0;
     } */
 
-
+    /**
+     * This is the method that gets called when the ticker terminates (i.e. the stop() method was called
+     * on the ticker). Left not implemented on purpose
+     */
     @Override
-    public void onTick(long time) {
-//        System.out.println("Car heard tick, time is " + time);
-//        long startTime = System.currentTimeMillis();
-//        VehicleBehavior behavior = this.getVehicleBehavior();
-        if(vehicleBehavior == VehicleBehavior.AVERAGE) {
-//            System.out.println("About to move one slot - AVERAGE");
+    public void onCompleted() {    }
 
-            VehicleController.moveVehicle(this,1);
-            this.moveVehicle(1);
+    /**
+     * If there's some error with the ticker and this subscriber, this method would call.
+     * Left not implemented on purpose
+     * @param throwable
+     */
+    @Override
+    public void onError(Throwable throwable) {    }
 
+    /**
+     * This is like the onTick method. This is what cars would do when the ticker ticks.
+     * @param aLong this gives the current time in the system to the car (although it is probably not required)
+     */
+    @Override
+    public void onNext(Long aLong) {
+        System.out.print("Tick! " + aLong + "     ");
+        System.out.println("Location: " + this.getCurrentCoordinate().getX() + "," + this.getCurrentCoordinate().getY());
+        try {
+            if (vehicleBehavior == VehicleBehavior.AVERAGE) {
+                VehicleController.moveOnTick(this,1);
+            } else if (vehicleBehavior == VehicleBehavior.AGGRESSIVE) {
+                VehicleController.moveOnTick(this,2);
+            } else if (vehicleBehavior == VehicleBehavior.CAUTIOUS) {
+                VehicleController.moveOnTick(this,1);
+            } else {
+                VehicleController.moveOnTick(this,1); // default behaviour
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
         }
-        else if(vehicleBehavior == VehicleBehavior.AGGRESSIVE) {
-//            System.out.println("About to move two slots - AGGRESSIVE");
-            this.moveVehicle(2);
-        }
-        else if(vehicleBehavior == VehicleBehavior.CAUTIOUS) {
-//            System.out.println("About to move one slot - CAUTIOUS");
-            this.moveVehicle(1);
-            // maybe some other characteristics that make it "cautious"
-        }
-        else
-            this.moveVehicle(1); // default behaviour = Average
-//        long endtime = System.currentTimeMillis();
-//        System.out.println("Moving took " + (endtime-startTime) + " millis");
-//        timesTicked++;
-//        System.out.println("Times ticked: " + timesTicked + "\n");
-        System.out.println();
     }
 }
 

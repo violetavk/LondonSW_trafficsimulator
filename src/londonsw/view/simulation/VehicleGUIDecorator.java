@@ -6,6 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
+import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Vehicle;
@@ -17,6 +18,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
     public VehicleGUIDecorator(Vehicle decoratedVehicle) {
         super(decoratedVehicle);
+        VehicleController.addVehicleAndDecoratorPair(decoratedVehicle,this);
     }
 
     private Rectangle rectangle;
