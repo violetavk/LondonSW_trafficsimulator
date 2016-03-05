@@ -6,14 +6,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import londonsw.controller.VehicleController;
 import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
-import org.reactfx.EventStreams;
-
-import java.time.Duration;
 
 public class MapGridGUITestMain extends Application {
 
@@ -47,8 +43,6 @@ public class MapGridGUITestMain extends Application {
 
         //Lane L1 = map.getRandomLane();
 
-
-
         Car C1 = new Car(0, L1);
 
         VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
@@ -68,6 +62,10 @@ public class MapGridGUITestMain extends Application {
         sp.getChildren().add(carPane);
 
         Scene scene = new Scene(sp);
+
+        vehicleGUIDecorator.setVehicleState(1);
+
+        System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);

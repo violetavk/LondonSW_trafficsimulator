@@ -8,6 +8,7 @@ import javafx.scene.shape.*;
 import javafx.util.Duration;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Ticker;
+import londonsw.model.simulation.components.MapDirection;
 import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 
@@ -104,83 +105,59 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         if(state==0)
             timeline.stop();
         else
-        if(state==2)
+        if(state==2)    //car in intersection
         {
-            double cellDimension = 100;
-            double x = cellDimension * this.getResizeFactor().getResizeX();
-            double y = cellDimension * this.getResizeFactor().getResizeY();
+            int imageDimension = 100;
+            double x = imageDimension * this.getResizeFactor().getResizeX();
+            double y = imageDimension * this.getResizeFactor().getResizeY();
 
+            TranslateTransition tt = new TranslateTransition(Duration.millis(1000), this.getRectangle());
 
-            Path path = new Path();
-            PathTransition pathTransition = new PathTransition();
+            if(this.getPreviousLane().getMovingDirection()==this.getCurrentLane().getMovingDirection()) {
+                switch (this.getPreviousLane().getMovingDirection())
+                {
+                    case NORTH:
+                            tt.setByY(-y * 2);
+                        break;
+                    case SOUTH:
+                        tt.setByY(y * 2);
+                        break;
+                    case EAST:
+                        tt.setByX(x * 2);
+                        break;
+                    case WEST:
+                        tt.setByX(-x * 2);
+                        break;
+                }
+            }
+            else
+            if(this.getPreviousLane().getMovingDirection()== MapDirection.EAST && this.getCurrentLane().getMovingDirection()==MapDirection.SOUTH)
+            {
+                tt.setByX(x);
+                tt.setByY(y);
+            }
+            else
+            if(this.getPreviousLane().getMovingDirection()== MapDirection.SOUTH && this.getCurrentLane().getMovingDirection()==MapDirection.WEST)
+            {
+                tt.setByX(-x);
+                tt.setByY(y);
+            }
+            else
+            if(this.getPreviousLane().getMovingDirection()==MapDirection.WEST && this.getCurrentLane().getMovingDirection()==MapDirection.NORTH)
+            {
+                tt.setByX(-x);
+                tt.setByY(-y);
+            }
+            else
+            if(this.getPreviousLane().getMovingDirection()==MapDirection.NORTH && this.getCurrentLane().getMovingDirection()==MapDirection.EAST)
+            {
+                tt.setByX(x);
+                tt.setByY(-y);
+            }
 
-//                path.getElements().add (new MoveTo(
-//                    y* (this.decoratedCar.getPreviousLane().getExit().getY())));
-//                    x* (this.decoratedCar.getPreviousLane().getExit().getX()),
+            tt.play();
 
-            MoveTo moveTo = new MoveTo();
-
-            //moveTo.setY(y*this.decoratedCar.getPreviousLane().getExit().getY());
-            //moveTo.setX(x*this.decoratedCar.getPreviousLane().getExit().getX());
-
-            moveTo.setX(this.getRectangle().getX());
-            moveTo.setY(this.getRectangle().getY());
-
-            path.getElements().add(moveTo);
-
-            //path.getElements().add (new MoveTo(
-            //        25,25));
-
-            path.getElements().add (new ArcTo(
-                    50,
-                    50,
-                    0,
-                    x*this.getCurrentLane().getEntry().getX(),
-                    y*this.getCurrentLane().getEntry().getY(),
-                    false,true)
-            );
-
-            pathTransition.setPath(path);
-            pathTransition.setNode(this.getRectangle());
-            pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-            pathTransition.setInterpolator(Interpolator.LINEAR);
-
-            pathTransition.setDuration(    Duration.millis(Ticker.getTickInterval()));
-
-            pathTransition.play();
-            //pathTransition.setNode(rect);
-
-            //pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-            //pathTransition.setCycleCount(4f);
-            //pathTransition.setAutoReverse(true);
-
-
-
-        }
-        else if(state==3)
-        {
-//move to next coordinates
-
-            double cellDimension = 100;
-            double x = cellDimension * this.getResizeFactor().getResizeX();
-            double y = cellDimension * this.getResizeFactor().getResizeY();
-
-
-            Path path = new Path();
-            PathTransition pathTransition = new PathTransition();
-
-            MoveTo moveTo = new MoveTo(x*this.getPreviousLane().getExit().getX(),y*this.getPreviousLane().getExit().getY());
-            path.getElements().add(moveTo);
-            path.getElements().add(new LineTo(x*this.getCurrentLane().getEntry().getX(),y*this.getCurrentLane().getEntry().getY()));
-
-            pathTransition.setPath(path);
-            pathTransition.setNode(this.getRectangle());
-            pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-            pathTransition.setInterpolator(Interpolator.LINEAR);
-
-            pathTransition.setDuration(    Duration.millis(Ticker.getTickInterval()));
-
-            pathTransition.play();
+            this.setVehicleState(1);    //move car again
 
 
         }
@@ -188,17 +165,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             DoubleProperty doubleProperty = null;
             double distance = 0;
             double imageDimension = 100 * this.getResizeFactor().getResizeX();  //TODO: hardcode
-
-
-//            if(this.decoratedCar.getPreviousLane()!=null) {
-//                Lane previousLane = this.decoratedCar.getPreviousLane();
-//
-//                if (Lane.Rotate(previousLane, this.decoratedCar.currentLane)) {
-//                     this.getRectangle().setRotate(90);
-//                    this.setRectangle(this.getRectangle());
-//                }
-//            }
-
 
             switch (this.getCurrentLane().getMovingDirection()) {
 
@@ -228,6 +194,8 @@ public class VehicleGUIDecorator extends VehicleDecorator {
                     break;
 
             }
+
+            java.lang.System.out.println(doubleProperty.getValue());
 
             final KeyValue kv = new KeyValue(doubleProperty,
                     distance);
