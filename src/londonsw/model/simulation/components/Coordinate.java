@@ -47,14 +47,39 @@ public class Coordinate implements Serializable {
         return (x == other.getX()) && (y == other.getY());
     }
 
-    public static Coordinate add(Coordinate a, Coordinate b)
+    public Coordinate addStep(MapDirection mapDirection)
     {
         Coordinate sum = new Coordinate();
 
-        sum.setX(a.getX()+ b.getX());
-        sum.setY(a.getY()+ b.getY());
+        switch (mapDirection) {
+            case NORTH:
+
+                sum.setY(this.getY() - 1);
+                sum.setX(this.getX());
+
+                break;
+            case SOUTH:
+
+                sum.setY(this.getY() + 1);
+                sum.setX(this.getX());
+
+                break;
+            case EAST:
+
+                sum.setX(this.getX() + 1);
+                sum.setY(this.getY());
+
+                break;
+            case WEST:
+
+                sum.setX(this.getX() - 1);
+                sum.setY(this.getY());
+
+                break;
+        }
 
         return sum;
+
     }
 
     public static Coordinate rest(Coordinate a, Coordinate b)

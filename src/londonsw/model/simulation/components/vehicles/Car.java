@@ -1,6 +1,4 @@
 package londonsw.model.simulation.components.vehicles;
-import londonsw.model.simulation.TickerListener;
-import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.VehicleBehavior;
 
@@ -13,7 +11,7 @@ import java.io.Serializable;
  */
 
 
-public class Car extends Vehicle implements TickerListener, Serializable, ICar {
+public class Car extends Vehicle implements Serializable, ICar {
 
     private static final long serialVersionUID = -3555254273903868035L;
     private static int idCounter = 0;

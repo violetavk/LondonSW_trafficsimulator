@@ -6,15 +6,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import londonsw.controller.VehicleController;
 import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Car;
-import londonsw.model.simulation.components.vehicles.Vehicle;
-import londonsw.view.simulation.CarGUIDecorator;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
-import org.reactfx.EventStreams;
-import java.time.Duration;
 
 public class MapGridGUITestMain extends Application {
 
@@ -45,7 +40,6 @@ public class MapGridGUITestMain extends Application {
 
         Lane L1 = map.getRoads().get(0).getLanes().get(0);
 
-
         //Lane L1 = map.getRoads().get(0).getLanes().get(roadIndex);
 
         //Lane L1 = map.getRandomLane();
@@ -54,8 +48,6 @@ public class MapGridGUITestMain extends Application {
 
         VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
 
-        //CarGUI.setGridPane(rootGP);
-
         vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
 
         vehicleGUIDecorator.drawCar();
@@ -63,50 +55,18 @@ public class MapGridGUITestMain extends Application {
         Pane carPane = new Pane();
 
         carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
-        //carPane.getChildren().add(CarGUI2.getRectangle());
 
         StackPane sp = new StackPane();
 
         sp.getChildren().add(rootGP);
 
         sp.getChildren().add(carPane);
-        //sp.getChildren().add(carPane2);
 
         Scene scene = new Scene(sp);
 
-        //t.start();
-
-        //VehicleGUIDecorator V =  new VehicleGUIDecorator(C1);
+        vehicleGUIDecorator.setVehicleState(1);
 
         System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
-        EventStreams.ticks(Duration.ofMillis(Ticker.getTickInterval() * 1))   //needs to be greater than Ticker.getTickInterval
-                .subscribe(
-                        tick -> {
-                            try {
-
-                                VehicleController.moveVehicle(vehicleGUIDecorator, 1);
-
-                                System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
-
-
-
-
-        /*
-        //Create map
-        Map map = new Map(20,20);
-        //Decorate map to extend to GUI functionality
-        MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
-        //Always apply resize
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
-        //Instantiate GridPane that will contain empty map with grass
-        GridPane root = mapGridGUIDecorator.drawComponents();
-        //Set GridPane to Scene
-        Scene scene = new Scene(root);
-        */
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
@@ -164,7 +124,7 @@ public class MapGridGUITestMain extends Application {
 
     public Map drawTestMapSingleLine() throws Exception {
 
-        Map map = new Map(18, 18);
+        Map map = new Map(25, 25);
 
         Road r1 = new Road(new Coordinate(2, 1), new Coordinate(8, 1));
         Road r2 = new Road(new Coordinate(1, 2), new Coordinate(1, 8));
@@ -175,7 +135,7 @@ public class MapGridGUITestMain extends Application {
         Road r6 = new Road(new Coordinate(17, 2), new Coordinate(17, 8));
         Road r7 = new Road(new Coordinate(10, 9), new Coordinate(16, 9));
 
-        Lane disabledLane = new Lane(r5.getStartLocation(), r5.getEndLocation(), MapDirection.EAST);
+        Lane disabledLane = new Lane(r3.getStartLocation(), r3.getEndLocation(), MapDirection.SOUTH);
 
         //disable lane
         disabledLane.setState(0);
@@ -184,13 +144,11 @@ public class MapGridGUITestMain extends Application {
 
         r2.addLane(new Lane(r2.getEndLocation(), r2.getStartLocation(), MapDirection.NORTH));
 
-        r3.addLane(new Lane(r3.getStartLocation(), r3.getEndLocation(), MapDirection.SOUTH));
+        r3.addLane(disabledLane);
 
         r4.addLane(new Lane(r4.getEndLocation(), r4.getStartLocation(), MapDirection.WEST));
 
-        //r5.addLane(new Lane(r5.getStartLocation(), r5.getEndLocation(), MapDirection.EAST));
-        r5.addLane(disabledLane);
-
+        r5.addLane(new Lane(r5.getStartLocation(), r5.getEndLocation(), MapDirection.EAST));
 
         r6.addLane(new Lane(r6.getStartLocation(), r6.getEndLocation(), MapDirection.SOUTH));
 

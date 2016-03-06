@@ -21,14 +21,11 @@ public class TrafficLightDecoratorTest extends Application {
 
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
-        TrafficLightController controller = TrafficLightController.getInstance();
         Ticker ticker = Ticker.getInstance();
 
         TrafficLight t1 = new TrafficLight();
 
-        TrafficLightDecorator gui1 = TrafficLightController.createNewTrafficLightGUI(t1);
-
-        ticker.start();
+        TrafficLightDecorator gui1 = new TrafficLightDecorator(t1);
 
         primaryStage.setTitle("TrafficLight Animation");
         Group root1 = new Group();
@@ -37,10 +34,5 @@ public class TrafficLightDecoratorTest extends Application {
         root1.getChildren().add(circle);
         primaryStage.setScene(scene);
         primaryStage.show();
-        /*
-        Thread.sleep(100000);
-        ticker.end();
-        */
-        
     }
 }

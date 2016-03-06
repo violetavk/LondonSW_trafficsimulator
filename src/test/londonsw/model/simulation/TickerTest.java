@@ -1,31 +1,42 @@
 package londonsw.model.simulation;
 
-public class TickerTest {
+import javafx.application.Application;
+import javafx.stage.Stage;
+import rx.Subscriber;
+
+public class TickerTest extends Application {
 
     public static void main(String[] args) throws InterruptedException {
-        runTickerTest();
+        launch(args);
     }
 
-    public static void runTickerTest() throws InterruptedException {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         Ticker ticker = new Ticker();
-        TestListener tl1 = new TestListener(1);
-        ticker.start();
-        Thread.sleep(3000);
-        TestListener tl2 = new TestListener(2);
+        TestListener tl1 = new TestListener('A');
     }
-
 }
 
-class TestListener implements TickerListener {
-    private int id;
+class TestListener extends Subscriber<Long> {
+    private char id;
 
-    public TestListener(int id) {
+    public TestListener(char id) {
         Ticker.subscribe(this);
         this.id = id;
     }
 
     @Override
-    public void onTick(long time) {
-        System.out.println("ID " + id + " heard the tick, time is " + time);
+    public void onCompleted() {
+
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onNext(Long aLong) {
+        System.out.println("Id " + id + ": " + aLong);
     }
 }
