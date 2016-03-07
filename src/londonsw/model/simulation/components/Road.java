@@ -49,7 +49,9 @@ public class Road implements Component, Serializable, IRoad {
      */
     public void addLane(Lane l) {
         l.setRoad(this);
-        lanes.add(l); }
+        l.setRoadIndex(lanes.size());
+        lanes.add(l);
+    }
 
     /**
      * Gets the lane at the index specified

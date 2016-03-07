@@ -8,12 +8,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
 import londonsw.model.simulation.Ticker;
-import londonsw.model.simulation.components.Lane;
-import londonsw.model.simulation.components.MapDirection;
 import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Car;
 
-import java.util.ArrayList;
 
 /**
  * Created by felix on 26/02/2016.
