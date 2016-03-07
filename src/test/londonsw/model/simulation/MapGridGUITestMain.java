@@ -386,24 +386,16 @@ public class MapGridGUITestMain extends Application {
         Road r24 = new Road(new Coordinate(20,16), new Coordinate(20,19));
 
         // one Lane
-
-        Lane disabledLane = new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST);
-
-        //disabledLane.setState(0);
-
         r01.addLane(new Lane(r01.getStartLocation(),r01.getEndLocation(),MapDirection.EAST));
         r02.addLane(new Lane (r02.getEndLocation(),r02.getStartLocation(),MapDirection.NORTH));
         r03.addLane(new Lane(r03.getEndLocation(),r03.getStartLocation(),MapDirection.NORTH));
         r04.addLane(new Lane(r04.getEndLocation(),r04.getStartLocation(),MapDirection.NORTH));
-//        Lane l5 = new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST);
+        Lane l5 = new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST);
         //l5.setState(0);
-//        r05.addLane(l5);
-//        Lane l6 = new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST);
-//        r06.addLane(l6);
+        r05.addLane(l5);
+        Lane l6 = new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST);
+        r06.addLane(l6);
         //l6.setState(0);
-        //r05.addLane(new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST));
-        r05.addLane(disabledLane);
-        r06.addLane(new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST));
         r07.addLane(new Lane(r07.getStartLocation(),r07.getEndLocation(),MapDirection.SOUTH));
         r08.addLane(new Lane(r08.getStartLocation(),r08.getEndLocation(),MapDirection.SOUTH));
         r09.addLane(new Lane(r09.getEndLocation(),r09.getStartLocation(),MapDirection.WEST));
