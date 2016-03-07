@@ -1,0 +1,122 @@
+Number,Name,Description,Type,Estimate,Owner,Priority,Status,Created by,Modified by
+39,Integrate Vehicle with ticker,Make car move with ticker,Story,4,santiago_anda,Must,Complete,jia.liu,jia.liu
+36,Fix Serialization UUID issue,,Story,2,violetta.avkhukova,,Complete,jia.liu,violetta.avkhukova
+23,Map Serlialization,"<p>Map.add() Intersections, Roads</p>
+
+<p>Call mapGrid class</p>",Story,2,violetta.avkhukova,,Complete,santiago_anda,violetta.avkhukova
+48,Implement pre-made map saving function,,Story,4,jia.liu,Must,Complete,jia.liu,jia.liu
+46,Set Grid Pane,"<p>get Grid Pane from Santiago</p>
+
+<p>set it into simulation-mode Scene</p>",Story,2,jia.liu,Must,Complete,jia.liu,jia.liu
+61,More ticker integration,,Story,4,violetta.avkhukova,Must,Complete,violetta.avkhukova,jia.liu
+49,Make colors of traffic lights in Intersection change,,Story,8,violetta.avkhukova,Must,Complete,jia.liu,violetta.avkhukova
+54,Set map-dimension dialogue,,Story,4,jia.liu,Must,Complete,jia.liu,jia.liu
+20,Ticker,Basic,Story,,violetta.avkhukova,Must,Complete,santiago_anda,violetta.avkhukova
+22,Vehicle,"<p>Vehicle.stop()</p>
+
+<p>Add Behaviour()</p>
+
+<p>Set Priority()</p>
+
+<p>Get Vehicle state()</p>",Story,,rawan.alrahili,,Complete,santiago_anda,rawan.alrahili
+16,Vehicle and Car Class,Attributes and Methods,Story,,rawan.alrahili,Must,Complete,santiago_anda,rawan.alrahili
+7,Agile,learn more about it.,Story,,rawan.alrahili,Must,Complete,rawan.alrahili,violetta.avkhukova
+25,readTrafficLight,,Story,,rawan.alrahili,Must,Complete,rawan.alrahili,jia.liu
+19,Map & Simulation Class,Attributes &amp; Methods,Story,,santiago_anda,Must,Complete,santiago_anda,violetta.avkhukova
+12,Assign stories to TM's,please assign,Story,,santiago_anda,Must,Complete,santiago_anda,jia.liu
+3,MVC research,learn mvc,Story,,jia.liu,Should,Complete,jia.liu,violetta.avkhukova
+6,Create backbone of model in java,,Story,,violetta.avkhukova,Must,Complete,violetta.avkhukova,violetta.avkhukova
+2,Initial Report,Test,Story,,,Must,Complete,santiago_anda,santiago_anda
+15,Road Class,Attributes and methods,Story,,violetta.avkhukova,Must,Complete,santiago_anda,violetta.avkhukova
+14,Lane Class,"Attributes, Methods",Story,,violetta.avkhukova,Must,Complete,santiago_anda,violetta.avkhukova
+10,Build Initial Prototype,Demo version,Story,,,Could,Complete,santiago_anda,santiago_anda
+13,Prepare Group Presentation,,Story,,yakubu.aliyu_doma,Must,Complete,santiago_anda,violetta.avkhukova
+18,Coordinates & Traffic Light,Attributes &amp; Methods,Story,,yakubu.aliyu_doma,Must,Complete,santiago_anda,jia.liu
+17,Intersection and Ticker,Attributes and Methods,Story,,jia.liu,Must,Complete,santiago_anda,jia.liu
+21,Intersection,"<p>Implement Validations</p>
+
+<p>Give options for the car</p>",Story,,jia.liu,,Complete,santiago_anda,jia.liu
+24,The animation of traffic light changing colors,System overall test,Story,8,yakubu.aliyu_doma,,Complete,santiago_anda,jia.liu
+34,A way of keeping track of all traffic lights,"Traffic light control pattern, etc.",Story,,violetta.avkhukova,,Complete,jia.liu,jia.liu
+29,Features,"<p>Create road.getIntersection method</p>
+
+<p> </p>
+
+<p> </p>",Story,,rawan.alrahili,,Complete,jia.liu,jia.liu
+32,Scene,SimulationMode,Story,,,,Complete,jia.liu,jia.liu
+26,JavaFX & Scene Builder,,Story,,jia.liu,,Complete,jia.liu,jia.liu
+33,Features,"<p><span style=""color:rgb(0, 0, 0); font-family:helvetica neue,arial,helvetica; font-size:14px; line-height:19.6px"">change getRoad option to getLane Option </span></p>
+
+<p>vehicle turn</p>",Story,,rawan.alrahili,,Complete,jia.liu,jia.liu
+37,Non resizable,Do not allow grid resize,Story,2,santiago_anda,Must,Complete,jia.liu,jia.liu
+38,Map dimensions,Implement properly map dimensions,Story,4,santiago_anda,Must,Complete,jia.liu,jia.liu
+40,Arrows for lanes,Arrows that show map direction on GUI,Story,4,santiago_anda,Must,Complete,jia.liu,jia.liu
+51,Grid pane,Give a GP to JIA,Story,2,santiago_anda,Must,Complete,jia.liu,santiago_anda
+42,SimulationMode Scene,"add new features (speed, map dimension, cars controller)",Story,,,,Complete,jia.liu,jia.liu
+43,MapCreationMode,build MapCreationMode scene,Story,,,,Complete,jia.liu,jia.liu
+44,Draw intersections,,Story,,santiago_anda,,Complete,jia.liu,jia.liu
+45,Extend to vehicle turns,,Story,,santiago_anda,,In progress,jia.liu,jia.liu
+52,Bigger Map,Create a bigger map with different intersections,Story,4,santiago_anda,,In progress,jia.liu,santiago_anda
+47,Drag-and-drop function for Map Creation,,Story,1,jia.liu,Must,In progress,jia.liu,jia.liu
+50,Change Lane constructor,fix bugs,Story,1,rawan.alrahili,Must,In progress,jia.liu,jia.liu
+53,Curve animation,Make vehicle turn,Story,4,santiago_anda,Should,New,jia.liu,jia.liu
+55,Integration test,,Story,6,yakubu.aliyu_doma,Must,In progress,jia.liu,yakubu.aliyu_doma
+62,Traffic light integration in Map,,Story,6,violetta.avkhukova,Must,In progress,jia.liu,jia.liu
+56,cars turn randomly,"<p>Cars turning</p>
+
+<p>GUI</p>",Story,4,yakubu.aliyu_doma,,New,yakubu.aliyu_doma,santiago_anda
+57,"Lane Decorator and getAngle(PreviousLane, Current Lane)","<p>We need to decorate the lane so we can extend a GUI functionality that returns the angle which a car must turn depending on the previous lane and current lane.</p>
+
+<p>For example if <em>previouslane</em> moving direction is EAST and <em>currentlane</em> is SOUTH then the method should return 90</p>
+
+<p>if previouslane is SOUTH and current is WEST, it should return 180.</p>
+
+<p>And so on for all cases.</p>
+
+<p> </p>
+
+<p>Lane l = new Lane(……...)</p>
+
+<p>decoratedLane dl = new decorateLane(l)</p>
+
+<p>dl.getAngle(previouslane,current) should return integer<br />
+ </p>",Story,4,yakubu.aliyu_doma,Could,New,santiago_anda,santiago_anda
+58,Turn Method,"<p>Integrate a method from JavaFX which will make a car turn in an arc path. the starting point is the end of the lane and the end point is the start of the next lane.</p>
+
+<p>Pleas integrate it with the moveVehicleGUI function and you can ask the car if it’s state is “turning” which we can assign for now an integer of value 3</p>
+
+<p>For example</p>
+
+<p> </p>
+
+<p>if(state==3)</p>
+
+<p>&#123;</p>
+
+<p>//write your arc path moving logic</p>
+
+<p>&#125;</p>",Story,8,yakubu.aliyu_doma,Should,New,santiago_anda,santiago_anda
+59,Add state to lane and be able to draw a disabled road,"<p>This functionality will allow us to disable a road (Road Closed)</p>
+
+<p>It should show up in the map and the car should’nt turn there….</p>
+
+<p> </p>
+
+<p>It’s part of road management capabilites</p>
+
+<p>Use Gimp the source file is attached</p>",Story,4,yakubu.aliyu_doma,Should,New,santiago_anda,santiago_anda
+60,pre-made map loading,,Story,,jia.liu,,Complete,jia.liu,jia.liu
+63,Trying to fix cars going into lanes,,Story,6,violetta.avkhukova,Should,In progress,jia.liu,jia.liu
+64,features,"<p>fix vehicleTurn bug</p>
+
+<p>test more than car</p>
+
+<p>fix arrow size</p>",Story,,rawan.alrahili,,,jia.liu,jia.liu
+65,Simulation start trigger,,Story,2,jia.liu,Must,New,jia.liu,jia.liu
+66,Fix Vehicle Turn bug,"<p style=""line-height: 19.6px; color: rgb(0, 0, 0); font-family: 'Helvetica Neue', Arial, Helvetica; font-size: 14px;""> </p>",Story,,rawan.alrahili,Must,New,jia.liu,jia.liu
+67,Test more than car,,Story,,rawan.alrahili,Must,New,jia.liu,jia.liu
+68,Fix arrow size,,Story,,rawan.alrahili,Could,New,jia.liu,jia.liu
+69,Integration test,"<p>when a road is closed, vehicle should stop.</p>
+
+<p> </p>",Story,,jia.liu,Could,New,jia.liu,jia.liu
+70,Add javaDoc,,Story,,jia.liu,Must,New,jia.liu,jia.liu
