@@ -63,7 +63,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
         double carDimensionX = cellDimension;
         double carDimensionY = cellDimension;
-
+        double angle = 0.0;
         double startPointX =
                 x
                         * this.getCurrentCoordinate().getX();
@@ -72,6 +72,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         {
             startPointX+=(this.getCurrentLane().getRoadIndex() * division);
             carDimensionX = cellDimension/numberLanes;
+            //angle = 90;
         }
 
         double startPointY =
@@ -83,6 +84,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         {
             startPointY+=(this.getCurrentLane().getRoadIndex() * division);
             carDimensionY = cellDimension/numberLanes;
+            //angle = 0;
         }
 
         Rectangle r = new Rectangle(
@@ -93,12 +95,16 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
         r.setFill(Color.BLUE);
 
+        r.setRotate(angle);
+
         this.setRectangle(r);
     }
 
     public void moveVehicleGUI(int step, int state) {
         final Timeline timeline = new Timeline();
         timeline.setAutoReverse(true);
+
+        int numberLanes = this.getCurrentLane().getRoad().getNumberLanes();
 
         //move according to moving direction
 
@@ -107,9 +113,12 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         else
         if(state==2)    //car in intersection
         {
-            int imageDimension = 100;
+            double imageDimension = 100.0;
             double x = imageDimension * this.getResizeFactor().getResizeX();
             double y = imageDimension * this.getResizeFactor().getResizeY();
+            double division =   x;
+
+            division = division / numberLanes;
 
             TranslateTransition tt = new TranslateTransition(Duration.millis(1000), this.getRectangle());
 
@@ -133,35 +142,99 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             else
             if(this.getPreviousLane().getMovingDirection()== MapDirection.EAST && this.getCurrentLane().getMovingDirection()==MapDirection.SOUTH)
             {
+
+                //x+= this.getRectangle().getHeight()*this.getCurrentLane().getRoadIndex();
+
                 tt.setByX(x);
                 tt.setByY(y);
+
+                //rotate certain degrees
+
+                this.getRectangle().setRotate(this.getRectangle().getRotate()+90);
+
             }
             else
             if(this.getPreviousLane().getMovingDirection()== MapDirection.SOUTH && this.getCurrentLane().getMovingDirection()==MapDirection.WEST)
             {
+
+                //y+=(this.getCurrentLane().getRoadIndex() * division);
+
+                //y+=(this.getRectangle().getWidth()* this.getCurrentLane().getRoadIndex());
+
                 tt.setByX(-x);
                 tt.setByY(y);
+
+                this.getRectangle().setRotate(this.getRectangle().getRotate()+90);
             }
             else
             if(this.getPreviousLane().getMovingDirection()==MapDirection.WEST && this.getCurrentLane().getMovingDirection()==MapDirection.NORTH)
             {
+                //x+=(this.getCurrentLane().getRoadIndex() * division);
+
                 tt.setByX(-x);
                 tt.setByY(-y);
+
+                this.getRectangle().setRotate(this.getRectangle().getRotate()+90);
             }
             else
             if(this.getPreviousLane().getMovingDirection()==MapDirection.NORTH && this.getCurrentLane().getMovingDirection()==MapDirection.EAST)
             {
+                //y+=(this.getCurrentLane().getRoadIndex() * division);
+
                 tt.setByX(x);
                 tt.setByY(-y);
+
+                this.getRectangle().setRotate(this.getRectangle().getRotate()+90);
+            }
+            else
+            if(this.getPreviousLane().getMovingDirection()==MapDirection.WEST && this.getCurrentLane().getMovingDirection()==MapDirection.SOUTH)
+            {
+                //x+=(this.getCurrentLane().getRoadIndex() * division);
+
+                tt.setByX(-x);
+                tt.setByY(y);
+
+                this.getRectangle().setRotate(this.getRectangle().getRotate()+90);
+            }
+            if(this.getPreviousLane().getMovingDirection()==MapDirection.EAST && this.getCurrentLane().getMovingDirection()==MapDirection.NORTH)
+            {
+                //x+=(this.getCurrentLane().getRoadIndex() * division);
+
+                tt.setByX(x);
+                tt.setByY(-y);
+
+                this.getRectangle().setRotate(this.getRectangle().getRotate()+90);
+            }
+            else
+            if(this.getPreviousLane().getMovingDirection()==MapDirection.NORTH && this.getCurrentLane().getMovingDirection()==MapDirection.WEST)
+            {
+                //y+=(this.getCurrentLane().getRoadIndex() * division);
+
+                tt.setByX(-x);
+                tt.setByY(-y);
+
+                this.getRectangle().setRotate(this.getRectangle().getRotate()+90);
+            }
+            else
+            if(this.getPreviousLane().getMovingDirection()==MapDirection.SOUTH && this.getCurrentLane().getMovingDirection()==MapDirection.EAST)
+            {
+                //y+= division * this.getCurrentLane().getRoadIndex();
+
+                //y+= this.getRectangle().getWidth()*this.getCurrentLane().getRoadIndex();
+
+                tt.setByX(x);
+                tt.setByY(y);
+
+                this.getRectangle().setRotate(this.getRectangle().getRotate()+90);
             }
 
             tt.play();
 
             this.setVehicleState(1);    //move car again
 
-
         }
-        else {
+        else
+        {
             DoubleProperty doubleProperty = null;
             double distance = 0;
             double imageDimension = 100 * this.getResizeFactor().getResizeX();  //TODO: hardcode

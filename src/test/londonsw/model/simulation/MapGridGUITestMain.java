@@ -16,12 +16,10 @@ public class MapGridGUITestMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Ticker t = Ticker.getInstance();
-
         //Map map = drawTestMapSimple();
         Map map=drawTestMapExample();
 
-       // Map map = drawTestMapSingleLine();
+       //Map map = drawTestMapSingleLine();
 
         //Map map = drawTestMapBig();
 
@@ -32,7 +30,9 @@ public class MapGridGUITestMain extends Application {
         double width = mapGridGUIDecorator.getWidth();
         double height = mapGridGUIDecorator.getHeight();
 
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5 / width, 5 / height));    //TODO HARDCODE
+        mapGridGUIDecorator.setResizeFactor(new ResizeFactor((map.getWidth()/5) / width, (map.getHeight()/5) / height));    //TODO HARDCODE
+
+        //mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5 / width, 5 / height));    //TODO HARDCODE
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 
@@ -386,16 +386,24 @@ public class MapGridGUITestMain extends Application {
         Road r24 = new Road(new Coordinate(20,16), new Coordinate(20,19));
 
         // one Lane
+
+        Lane disabledLane = new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST);
+
+        //disabledLane.setState(0);
+
         r01.addLane(new Lane(r01.getStartLocation(),r01.getEndLocation(),MapDirection.EAST));
         r02.addLane(new Lane (r02.getEndLocation(),r02.getStartLocation(),MapDirection.NORTH));
         r03.addLane(new Lane(r03.getEndLocation(),r03.getStartLocation(),MapDirection.NORTH));
         r04.addLane(new Lane(r04.getEndLocation(),r04.getStartLocation(),MapDirection.NORTH));
-        Lane l5 = new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST);
+//        Lane l5 = new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST);
         //l5.setState(0);
-        r05.addLane(l5);
-        Lane l6 = new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST);
-        r06.addLane(l6);
+//        r05.addLane(l5);
+//        Lane l6 = new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST);
+//        r06.addLane(l6);
         //l6.setState(0);
+        //r05.addLane(new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST));
+        r05.addLane(disabledLane);
+        r06.addLane(new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST));
         r07.addLane(new Lane(r07.getStartLocation(),r07.getEndLocation(),MapDirection.SOUTH));
         r08.addLane(new Lane(r08.getStartLocation(),r08.getEndLocation(),MapDirection.SOUTH));
         r09.addLane(new Lane(r09.getEndLocation(),r09.getStartLocation(),MapDirection.WEST));
@@ -416,7 +424,9 @@ public class MapGridGUITestMain extends Application {
         r24.addLane(new Lane(r24.getStartLocation(),r24.getEndLocation(),MapDirection.SOUTH));
 
         //two Lanes
-     /*   r01.addLane(new Lane(r01.getEndLocation(),r01.getStartLocation(),MapDirection.WEST));
+     /*
+        r01.addLane(new Lane(r01.getEndLocation(),r01.getStartLocation(),MapDirection.WEST));
+        r01.addLane(new Lane(r01.getEndLocation(),r01.getStartLocation(),MapDirection.WEST));
         r02.addLane(new Lane (r02.getStartLocation(),r02.getEndLocation(),MapDirection.SOUTH));
         r03.addLane(new Lane(r03.getStartLocation(),r03.getEndLocation(),MapDirection.SOUTH));
         r04.addLane(new Lane(r04.getStartLocation(),r04.getEndLocation(),MapDirection.SOUTH));
@@ -440,8 +450,7 @@ public class MapGridGUITestMain extends Application {
         r22.addLane(new Lane(r22.getStartLocation(),r22.getEndLocation(),MapDirection.EAST));
         r23.addLane(new Lane(r23.getStartLocation(),r23.getEndLocation(),MapDirection.EAST));
         r24.addLane(new Lane(r24.getEndLocation(),r24.getStartLocation(),MapDirection.NORTH));
-
-*/
+    */
 
         Intersection i01 = new Intersection(new Coordinate(1,1));
         i01.setEastRoad(r01);

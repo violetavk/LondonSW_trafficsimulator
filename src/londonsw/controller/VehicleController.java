@@ -52,7 +52,6 @@ public class VehicleController {
 
     public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws Exception {
 
-
         if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
 
             ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
