@@ -39,32 +39,54 @@ public class MapGridGUITestMain extends Application {
         //Lane L1 = map.getRandomLane();
 
         Lane L1 = map.getRoads().get(0).getLanes().get(0);
+       // Lane L2 = map.getRoads().get(5).getLanes().get(0);
+        //Lane L3 = map.getRoads().get(11).getLanes().get(0);
 
         //Lane L1 = map.getRoads().get(0).getLanes().get(roadIndex);
 
         //Lane L1 = map.getRandomLane();
 
         Car C1 = new Car(0, L1);
+        //Car C2 = new Car(0, L2);
+        //Car C3 = new Car(0,L3);
 
         VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
+       // VehicleGUIDecorator vehicleGUIDecorator2 = new VehicleGUIDecorator(C2);
+       // VehicleGUIDecorator vehicleGUIDecorator3 = new VehicleGUIDecorator(C3);
 
         vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+        //vehicleGUIDecorator2.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+       // vehicleGUIDecorator3.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
 
         vehicleGUIDecorator.drawCar();
+        //vehicleGUIDecorator2.drawCar();
+       // vehicleGUIDecorator3.drawCar();
 
         Pane carPane = new Pane();
+       // Pane carPane2 = new Pane();
+       // Pane carPane3 = new Pane();
 
         carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
+        //carPane2.getChildren().add(vehicleGUIDecorator2.getRectangle());
+       // carPane3.getChildren().add(vehicleGUIDecorator3.getRectangle());
 
         StackPane sp = new StackPane();
 
+
         sp.getChildren().add(rootGP);
 
+
         sp.getChildren().add(carPane);
+        //sp.getChildren().add(carPane2);
+       // sp.getChildren().add(carPane3);
+
 
         Scene scene = new Scene(sp);
 
+
         vehicleGUIDecorator.setVehicleState(1);
+        //vehicleGUIDecorator2.setVehicleState(1);
+        //vehicleGUIDecorator3.setVehicleState(1);
 
         System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
 
@@ -336,7 +358,7 @@ public class MapGridGUITestMain extends Application {
     //Added new Map with two lanes
     public Map drawTestMapExample() throws Exception {
 
-        Map map = new Map(22,22);
+        Map map = new Map(25,25);
 
         Road r01 = new Road(new Coordinate(2,1), new Coordinate(4,1));
         Road r02 = new Road(new Coordinate(1,2), new Coordinate(1,4));
@@ -368,8 +390,12 @@ public class MapGridGUITestMain extends Application {
         r02.addLane(new Lane (r02.getEndLocation(),r02.getStartLocation(),MapDirection.NORTH));
         r03.addLane(new Lane(r03.getEndLocation(),r03.getStartLocation(),MapDirection.NORTH));
         r04.addLane(new Lane(r04.getEndLocation(),r04.getStartLocation(),MapDirection.NORTH));
-        r05.addLane(new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST));
-        r06.addLane(new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST));
+        Lane l5 = new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST);
+        //l5.setState(0);
+        r05.addLane(l5);
+        Lane l6 = new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST);
+        r06.addLane(l6);
+        //l6.setState(0);
         r07.addLane(new Lane(r07.getStartLocation(),r07.getEndLocation(),MapDirection.SOUTH));
         r08.addLane(new Lane(r08.getStartLocation(),r08.getEndLocation(),MapDirection.SOUTH));
         r09.addLane(new Lane(r09.getEndLocation(),r09.getStartLocation(),MapDirection.WEST));
@@ -390,7 +416,7 @@ public class MapGridGUITestMain extends Application {
         r24.addLane(new Lane(r24.getStartLocation(),r24.getEndLocation(),MapDirection.SOUTH));
 
         //two Lanes
-        r01.addLane(new Lane(r01.getEndLocation(),r01.getStartLocation(),MapDirection.WEST));
+     /*   r01.addLane(new Lane(r01.getEndLocation(),r01.getStartLocation(),MapDirection.WEST));
         r02.addLane(new Lane (r02.getStartLocation(),r02.getEndLocation(),MapDirection.SOUTH));
         r03.addLane(new Lane(r03.getStartLocation(),r03.getEndLocation(),MapDirection.SOUTH));
         r04.addLane(new Lane(r04.getStartLocation(),r04.getEndLocation(),MapDirection.SOUTH));
@@ -415,7 +441,7 @@ public class MapGridGUITestMain extends Application {
         r23.addLane(new Lane(r23.getStartLocation(),r23.getEndLocation(),MapDirection.EAST));
         r24.addLane(new Lane(r24.getEndLocation(),r24.getStartLocation(),MapDirection.NORTH));
 
-
+*/
 
         Intersection i01 = new Intersection(new Coordinate(1,1));
         i01.setEastRoad(r01);

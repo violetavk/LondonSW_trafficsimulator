@@ -204,19 +204,24 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     public void vehicleTurn() throws Exception {
         Lane oldLane = this.currentLane;
         Lane l;
+        int num = this.getLaneOptions().size();
+
+        if (num > 0) {
         randomDirection = new Random();
         int size = randomDirection.nextInt(this.getLaneOptions().size());
         l= this.getLaneOptions().get(size);
 
-        //validate if its end of lane
-        if ((this.getCurrentCell() == this.currentLane.getLength() -1)&& (l.isCellEmpty(0)))
-        {
-            oldLane.setCell(null,oldLane.getLength()-1);
-            this.setCurrentLane(l);
-            this.setCurrentCell(0,l);
-            this.setCurrentCoordinate(l.getEntry());
-        }
+            //validate if its end of lane
+            if ((this.getCurrentCell() == this.currentLane.getLength() - 1) && (l.isCellEmpty(0)))
+                {
+                    oldLane.setCell(null, oldLane.getLength() - 1);
+                    this.setCurrentLane(l);
+                    this.setCurrentCell(0, l);
+                    this.setCurrentCoordinate(l.getEntry());
+                }
+            }else {this.setVehicleState(0);}
     }
+
 
 /*
     //1 is moving, 0 is static
