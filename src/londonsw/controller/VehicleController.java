@@ -53,14 +53,20 @@ public class VehicleController {
     public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws Exception {
 
         if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
+           vehicleGUIDecorator.readTrafficLight();
 
-            ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
+            if (vehicleGUIDecorator.getVehicleState()==1)
+            {
+                ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
 
-            vehicleGUIDecorator.setVehicleState(2); //move vehicle to intersection
+                vehicleGUIDecorator.setVehicleState(2); //move vehicle to intersection
 
-            vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
+                vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
 
-            vehicleGUIDecorator.vehicleTurn();
+                vehicleGUIDecorator.vehicleTurn();
+
+            }
+
         }
         else {
 
