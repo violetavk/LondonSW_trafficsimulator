@@ -31,6 +31,71 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     Lane l;
     Coordinate currentCoordinate;
 
+    private Lane previousLane;
+
+    // debug only
+    int timesTicked;
+
+
+    /**
+     * Create a vehicle and set its position by specify a cell in a lane
+     * @param currentCell the cell to set vehicle in, in the lane
+     * @param currentLane  the lane to set vehicle in
+     */
+    public Vehicle( int currentCell, Lane currentLane) {
+        this.currentCell = currentCell;
+        this.currentLane = currentLane;
+        this.currentLane.setCell(this,currentCell);
+        Ticker.subscribe(this);
+        timesTicked = 0;
+    }
+
+
+    /**
+     * Gets the length of a vehicle
+     * @return the length of a vehicle in type of integer
+     * each type of vehicle has its own length
+     */
+    public int getVehicleLength() {return vehicleLength;}
+
+    /**
+     * Gets the speed of a vehicle
+     * @return the speed of a vehicle in type of double
+     * each vehicle's speed depends on its behavior
+     */
+    public double getVehicleSpeed() {return vehicleSpeed;}
+
+
+    public int getVehiclePriority(){return  vehiclePriority;}
+
+    /**
+     * Gets the lane which is vehicle in
+     * @return the lane which is vehicle in on the current time in type of lane
+     */
+    public Lane getCurrentLane(){return currentLane;}
+
+    /**
+     * Gets the current cell in lane which is vehicle in
+     * @return cell from lane which is vehicle in on the current time , in type of integer
+     */
+    public int getCurrentCell(){return currentCell;}
+
+    /**
+     * Gets the state of vehicle which are 0 refers to still or 1 refers to moving
+     * @return the state of vehicle in type if integer
+     */
+    public int getVehicleState(){return  vehicleState;}
+
+    /**
+     * Gets the behavior of a vehicle from three behaviors AVERAGE, AGGRESSIVE, and CAUTIOUS
+     * @return the behavior of a vehicle in type of enum VehicleBehavior
+     */
+    public VehicleBehavior getVehicleBehavior(){return VehicleBehavior.randomLetter(); }
+
+    /**
+     * Gets the previous lane which vehicle was in
+     * @return the previous lane in type of Lane
+     */
     public Lane getPreviousLane() {
         return previousLane;
     }
@@ -39,34 +104,6 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         this.previousLane = previousLane;
     }
 
-    private Lane previousLane;
-
-    // debug only
-    int timesTicked;
-
-    
-    //Constructor
-    public Vehicle( int currentCell, Lane currentLane) {
-        this.currentCell = currentCell;
-        this.currentLane = currentLane;
-        this.currentLane.setCell(this,currentCell);
-        Ticker.subscribe(this);
-
-        timesTicked = 0;
-    }
-
-    public void setCurrentCoordinate(Coordinate currentCoordinate) {
-        this.currentCoordinate = currentCoordinate;
-    }
-
-    //Getter
-    public int getVehicleLength() {return vehicleLength;}
-    public double getVehicleSpeed() {return vehicleSpeed;}
-    public int getVehiclePriority(){return  vehiclePriority;}
-    public Lane getCurrentLane(){return currentLane;}
-    public int getCurrentCell(){return currentCell;}
-    public int getVehicleState(){return  vehicleState;}
-    public VehicleBehavior getVehicleBehavior(){return VehicleBehavior.randomLetter(); }
     /* getting the current coordinate of the car */
     public Coordinate getCurrentCoordinate()
     {
@@ -112,6 +149,9 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     public void setCurrentCell(int curCell,Lane currentLane){this.currentCell=curCell;}
     public void setVehicleState(int vehicleState){this.vehicleState=vehicleState;}
     public void setVehicleBehavior(VehicleBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
+    public void setCurrentCoordinate(Coordinate currentCoordinate) {
+        this.currentCoordinate = currentCoordinate;
+    }
 
     //Move a vehicle some steps forward
     public boolean moveVehicle(int step) {
@@ -134,9 +174,17 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
        }
     }
 
+    /**
+     * to make a vehicle reads a traffic light
+     * use intersection to read the traffic light, each intersection has up to four traffic light
+     * depends on the direction of a lane which vehicle is in, a vehicle can reads the corresponding traffic light
+     * if the traffic light is green the vehicle state set to moving
+     * if the traffic light is red the vehicle state set to still
+     * @throws Exception
+     */
     public void readTrafficLight()throws Exception {
         if (this.getCurrentCell() == this.currentLane.getLength() -1) {
-           //this.getCurrentLane().getMovingDirection();
+
             TrafficLight light= new TrafficLight();
            switch (this.getCurrentLane().getMovingDirection()){
                case NORTH:
@@ -163,6 +211,16 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         }
     }
 
+    /**
+     * in each intersection this method gives vehicles options of available lanes that vehicles can move to
+     * this method checks three conditions
+     * 1. if the lane is exist
+     * 2. if there is a space for a new vehicle
+     * 3. if the direction of a lane is legal for the vehicle
+     * if  a lane obtains these conditions, then it is added to laneOptions Array List
+     * @return  the options of lanes that vehicle can move to in type of Array List of lanes
+     * @throws Exception
+     */
     public ArrayList<Lane> getLaneOptions() throws Exception {
         laneOptions.clear();
 
@@ -201,6 +259,12 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         return laneOptions;
     }
 
+    /**
+     * Chooses lane randomly from lanes options
+     * vehicle turn to new chosen lane
+     * if there is no lane to move to, vehicle stops
+     * @throws Exception
+     */
     public void vehicleTurn() throws Exception {
         Lane oldLane = this.currentLane;
         Lane l;
