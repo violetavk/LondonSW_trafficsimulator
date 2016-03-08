@@ -17,12 +17,9 @@ public class MapGridGUITestMain extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //Map map = drawTestMapSimple();
-        Map map=drawTestMapExample();
-
-       //Map map = drawTestMapSingleLine();
-
+        Map map = drawTestMapExample();
+        //Map map = drawTestMapSingleLine();
         //Map map = drawTestMapBig();
-
         //Map map = drawTestMapBasic();
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
@@ -31,19 +28,15 @@ public class MapGridGUITestMain extends Application {
         double height = mapGridGUIDecorator.getHeight();
 
         mapGridGUIDecorator.setResizeFactor(new ResizeFactor((map.getWidth()/5) / width, (map.getHeight()/5) / height));    //TODO HARDCODE
-
         //mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5 / width, 5 / height));    //TODO HARDCODE
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 
         //Lane L1 = map.getRandomLane();
-
         Lane L1 = map.getRoads().get(0).getLanes().get(0);
-       // Lane L2 = map.getRoads().get(5).getLanes().get(0);
+        //Lane L2 = map.getRoads().get(5).getLanes().get(0);
         //Lane L3 = map.getRoads().get(11).getLanes().get(0);
-
         //Lane L1 = map.getRoads().get(0).getLanes().get(roadIndex);
-
         //Lane L1 = map.getRandomLane();
 
         Car C1 = new Car(0, L1);
@@ -51,35 +44,30 @@ public class MapGridGUITestMain extends Application {
         //Car C3 = new Car(0,L3);
 
         VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
-       // VehicleGUIDecorator vehicleGUIDecorator2 = new VehicleGUIDecorator(C2);
-       // VehicleGUIDecorator vehicleGUIDecorator3 = new VehicleGUIDecorator(C3);
+        //VehicleGUIDecorator vehicleGUIDecorator2 = new VehicleGUIDecorator(C2);
+        //VehicleGUIDecorator vehicleGUIDecorator3 = new VehicleGUIDecorator(C3);
 
         vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         //vehicleGUIDecorator2.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
-       // vehicleGUIDecorator3.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+        //vehicleGUIDecorator3.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
 
         vehicleGUIDecorator.drawCar();
         //vehicleGUIDecorator2.drawCar();
-       // vehicleGUIDecorator3.drawCar();
+        //vehicleGUIDecorator3.drawCar();
 
         Pane carPane = new Pane();
-       // Pane carPane2 = new Pane();
-       // Pane carPane3 = new Pane();
+        //Pane carPane2 = new Pane();
+        //Pane carPane3 = new Pane();
 
         carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
         //carPane2.getChildren().add(vehicleGUIDecorator2.getRectangle());
-       // carPane3.getChildren().add(vehicleGUIDecorator3.getRectangle());
+        //carPane3.getChildren().add(vehicleGUIDecorator3.getRectangle());
 
         StackPane sp = new StackPane();
-
-
         sp.getChildren().add(rootGP);
-
-
         sp.getChildren().add(carPane);
         //sp.getChildren().add(carPane2);
        // sp.getChildren().add(carPane3);
-
 
         Scene scene = new Scene(sp);
 
@@ -447,86 +435,101 @@ public class MapGridGUITestMain extends Application {
         Intersection i01 = new Intersection(new Coordinate(1,1));
         i01.setEastRoad(r01);
         i01.setSouthRoad(r02);
+        i01.setDefaultTrafficLightsForRoads();
 
         Intersection i02 = new Intersection(new Coordinate(1,5));
         i02.setNorthRoad(r02);
         i02.setSouthRoad(r03);
         i02.setEastRoad(r12);
+        i02.setDefaultTrafficLightsForRoads();
 
         Intersection i03 = new Intersection(new Coordinate(1,10));
         i03.setNorthRoad(r03);
         i03.setSouthRoad(r04);
         i03.setEastRoad(r13);
+        i03.setDefaultTrafficLightsForRoads();
 
         Intersection i04 = new Intersection(new Coordinate(1,15));
         i04.setNorthRoad(r04);
         i04.setEastRoad(r10);
         i04.setSouthRoad(r20);
+        i04.setDefaultTrafficLightsForRoads();
 
         Intersection i05 = new Intersection(new Coordinate(5,1));
         i05.setWestRoad(r01);
         i05.setEastRoad(r05);
         i05.setSouthRoad(r11);
+        i05.setDefaultTrafficLightsForRoads();
 
         Intersection i06 = new Intersection(new Coordinate(13,1));
         i06.setWestRoad(r05);
         i06.setEastRoad(r06);
         i06.setSouthRoad(r17);
+        i06.setDefaultTrafficLightsForRoads();
 
         Intersection i07 = new Intersection(new Coordinate(20,1));
         i07.setWestRoad(r06);
         i07.setSouthRoad(r07);
+        i07.setDefaultTrafficLightsForRoads();
 
         Intersection i08 = new Intersection(new Coordinate(20,10));
         i08.setNorthRoad(r07);
         i08.setSouthRoad(r08);
         i08.setWestRoad(r15);
+        i08.setDefaultTrafficLightsForRoads();
 
         Intersection i09 = new Intersection(new Coordinate(20,15));
         i09.setNorthRoad(r08);
         i09.setWestRoad(r09);
         i09.setSouthRoad(r24);
+        i09.setDefaultTrafficLightsForRoads();
 
         Intersection i10 = new Intersection(new Coordinate(8,15));
         i10.setEastRoad(r09);
         i10.setWestRoad(r10);
         i10.setNorthRoad(r16);
         i10.setSouthRoad(r21);
+        i10.setDefaultTrafficLightsForRoads();
 
         Intersection i11 = new Intersection(new Coordinate(5,5));
         i11.setWestRoad(r12);
         i11.setNorthRoad(r11);
         i11.setEastRoad(r19);
+        i11.setDefaultTrafficLightsForRoads();
 
         Intersection i12 = new Intersection(new Coordinate(8,10));
         i12.setWestRoad(r13);
         i12.setEastRoad(r14);
         i12.setSouthRoad(r16);
+        i12.setDefaultTrafficLightsForRoads();
 
         Intersection i13 = new Intersection(new Coordinate(13,10));
         i13.setWestRoad(r14);
         i13.setEastRoad(r15);
         i13.setNorthRoad(r18);
+        i13.setDefaultTrafficLightsForRoads();
 
         Intersection i14 =new Intersection((new Coordinate(13,5)));
         i14.setNorthRoad(r17);
         i14.setSouthRoad(r18);
         i14.setWestRoad(r19);
+        i14.setDefaultTrafficLightsForRoads();
 
         Intersection i15 =new Intersection(new Coordinate(1,20));
         i15.setNorthRoad(r20);
         i15.setEastRoad(r22);
+        i15.setDefaultTrafficLightsForRoads();
 
         Intersection i16 =new Intersection(new Coordinate(8,20));
         i16.setWestRoad(r22);
         i16.setNorthRoad(r21);
         i16.setEastRoad(r23);
+        i16.setDefaultTrafficLightsForRoads();
 
         Intersection i17= new Intersection (new Coordinate(20,20));
         i17.setWestRoad(r23);
         i17.setNorthRoad(r24);
-
-
+        i17.setDefaultTrafficLightsForRoads();
 
         map.addRoad(r01);
         map.addRoad(r02);

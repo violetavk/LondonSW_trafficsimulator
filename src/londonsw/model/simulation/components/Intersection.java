@@ -25,8 +25,6 @@ public class Intersection implements Component, Serializable {
     private Road eastRoad;
     private Road westRoad;
 
-    public ArrayList<Lane> laneOptions = new ArrayList<Lane>();
-
     private TrafficLight northTrafficLight;
     private TrafficLight southTrafficLight;
     private TrafficLight eastTrafficLight;
@@ -47,7 +45,7 @@ public class Intersection implements Component, Serializable {
         this.westTrafficLight = null;
     }
 
-    //getter
+    /* getters */
     public TrafficLight getNorthTrafficLight() {
         return northTrafficLight;
     }
@@ -75,11 +73,8 @@ public class Intersection implements Component, Serializable {
     public Coordinate getLocation() {
         return location;
     }
-    public void getIntersectionLocation(Road[] road){
-        //TODO
-    }
 
-    //setter
+    /* setters */
     public void setNorthTrafficLight(TrafficLight northTrafficLight) {
         this.northTrafficLight = northTrafficLight;
     }
@@ -92,7 +87,9 @@ public class Intersection implements Component, Serializable {
     public void setWestTrafficLight(TrafficLight westTrafficLight) {
         this.westTrafficLight = westTrafficLight;
     }
-    public void setLocation(Coordinate location) throws IntersectionSetupException {this.location = location;}
+    public void setLocation(Coordinate location) throws IntersectionSetupException {
+        this.location = location;
+    }
 
     public void setNorthRoad(Road northRoad) throws Exception {
         if((this.location.getX() == northRoad.getEndLocation().getX()
@@ -106,9 +103,6 @@ public class Intersection implements Component, Serializable {
                     this.northRoad.getLaneAtIndex(i).setEndIntersection(this);
                 }
             }
-
-
-
         }
         else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
@@ -162,6 +156,66 @@ public class Intersection implements Component, Serializable {
 
         } else
             throw new IntersectionSetupException("Road end location coordinates must match with Intersection");
+    }
+
+    public void setDefaultTrafficLightsForRoads() {
+        if(northRoad != null) {
+            ArrayList<Lane> lanes = northRoad.getLanes();
+            boolean hasSouthLane = false;
+            for(Lane l : lanes) {
+                if(l.getMovingDirection() == MapDirection.SOUTH) {
+                    hasSouthLane = true;
+                    break;
+                }
+            }
+            if(hasSouthLane)
+                northTrafficLight = new TrafficLight();
+        }
+
+        if(southRoad != null) {
+            ArrayList<Lane> lanes = southRoad.getLanes();
+            boolean hasNorthLane = false;
+            for(Lane l : lanes) {
+                if(l.getMovingDirection() == MapDirection.NORTH) {
+                    hasNorthLane = true;
+                    break;
+                }
+            }
+            if(hasNorthLane)
+                southTrafficLight = new TrafficLight();
+        }
+        if(eastRoad != null) {
+            ArrayList<Lane> lanes = eastRoad.getLanes();
+            boolean hasWestLane = false;
+            for(Lane l : lanes) {
+                if(l.getMovingDirection() == MapDirection.WEST) {
+                    hasWestLane = true;
+                    break;
+                }
+            }
+            if(hasWestLane) {
+                if (northRoad != null || southRoad != null) {
+                    eastTrafficLight = new TrafficLight(LightColour.GREEN);
+                } else
+                    eastTrafficLight = new TrafficLight();
+            }
+        }
+        if(westRoad != null) {
+            ArrayList<Lane> lanes = westRoad.getLanes();
+            boolean hasEastLane = false;
+            for(Lane l : lanes) {
+                if(l.getMovingDirection() == MapDirection.EAST) {
+                    hasEastLane = true;
+                    break;
+                }
+            }
+            if(hasEastLane) {
+                if (northRoad != null || southRoad != null)
+                    westTrafficLight = new TrafficLight(LightColour.GREEN);
+                else
+                    westTrafficLight = new TrafficLight();
+            }
+        }
     }
 
 }

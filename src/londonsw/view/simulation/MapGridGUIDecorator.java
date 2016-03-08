@@ -43,15 +43,10 @@ public class MapGridGUIDecorator extends MapGridDecorator {
                     roadStackPane = roadGUIDecorator.drawRoad(roadGUIDecorator.runsVertically() ? MapDirection.NORTH : MapDirection.EAST);  //TODO change logic
 
                 } else if (current instanceof Intersection) {
-                    LayoutGUI intersectionGUI = new LayoutGUI();
-
-                    intersectionGUI.setHeight(this.getHeight());
-                    intersectionGUI.setWidth(this.getWidth());
-                    intersectionGUI.setResizeFactor(this.getResizeFactor());
-
-                    roadStackPane = intersectionGUI.drawIntersection();
+                    IntersectionDecorator intersectionDecorator = new IntersectionDecorator((Intersection) current);
+                    intersectionDecorator.setResizeFactor(this.getResizeFactor());
+                    roadStackPane = intersectionDecorator.drawIntersection();
                 } else {
-
                     LayoutGUI grassGUI = new LayoutGUI();
 
                     grassGUI.setHeight(this.getHeight());
