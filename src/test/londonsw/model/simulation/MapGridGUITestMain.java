@@ -10,6 +10,9 @@ import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 public class MapGridGUITestMain extends Application {
 
@@ -21,6 +24,7 @@ public class MapGridGUITestMain extends Application {
         //Map map = drawTestMapSingleLine();
         //Map map = drawTestMapBig();
         //Map map = drawTestMapBasic();
+
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
