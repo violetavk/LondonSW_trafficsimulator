@@ -56,10 +56,11 @@ public class MapGridGUIDecorator extends MapGridDecorator {
                     roadStackPane = grassGUI.drawGrass();
                 }
 
-                rootGP.setRowIndex(roadStackPane, y);
-                rootGP.setColumnIndex(roadStackPane, x);
+//                rootGP.setRowIndex(roadStackPane, y);
+//                rootGP.setColumnIndex(roadStackPane, x);
+//                rootGP.getChildren().add(roadStackPane);
 
-                rootGP.getChildren().add(roadStackPane);
+                rootGP.add(roadStackPane,x,y);
 
             }
         }

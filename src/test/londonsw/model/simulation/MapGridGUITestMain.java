@@ -27,8 +27,8 @@ public class MapGridGUITestMain extends Application {
         double width = mapGridGUIDecorator.getWidth();
         double height = mapGridGUIDecorator.getHeight();
 
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor((map.getWidth()/5) / width, (map.getHeight()/5) / height));    //TODO HARDCODE
-        //mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5 / width, 5 / height));    //TODO HARDCODE
+//        mapGridGUIDecorator.setResizeFactor(new ResizeFactor((map.getWidth()/5) / width, (map.getHeight()/5) / height));    //TODO HARDCODE
+        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(.25,.25));
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 
@@ -346,7 +346,7 @@ public class MapGridGUITestMain extends Application {
     //Added new Map with two lanes
     public Map drawTestMapExample() throws Exception {
 
-        Map map = new Map(25,25);
+        Map map = new Map(22,22);
 
         Road r01 = new Road(new Coordinate(2,1), new Coordinate(4,1));
         Road r02 = new Road(new Coordinate(1,2), new Coordinate(1,4));

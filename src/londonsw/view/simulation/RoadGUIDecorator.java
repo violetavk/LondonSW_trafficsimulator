@@ -67,7 +67,7 @@ public class RoadGUIDecorator extends RoadDecorator {
                     double lineStartX = 5;
                     double lineStartY = division * (i + 1);
 
-                    double lineEndX = im.getWidth() - 15;
+                    double lineEndX = im.getWidth() - 10;
                     double lineEndY = division * (i + 1);
 
                     roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY);
@@ -75,13 +75,7 @@ public class RoadGUIDecorator extends RoadDecorator {
                     roadLine.setStroke(Color.WHITE);
                     lines.getChildren().add(roadLine);
 
-                    Polygon arrow = new Polygon();
-
-                    arrow.getPoints().addAll(new Double[]{
-                            0.0, 5.0,
-                            -5.0, -5.0,
-                            5.0, -5.0});
-
+                    Polygon arrow = drawArrow();
 
                     if(l.getState()==1) {
                         arrow.setFill(Color.WHITE);
@@ -122,7 +116,7 @@ public class RoadGUIDecorator extends RoadDecorator {
                     double lineStartX = division * (i + 1);
                     double lineStartY = 5;
                     double lineEndX = division * (i + 1);
-                    double lineEndY = im.getHeight() - 15;
+                    double lineEndY = im.getHeight() - 10;
 
                     roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY); //TODO avoid hardcode
                     roadLine.setStrokeWidth(2 * this.getResizeFactor().getResizeY()); //TODO avoid hardcode
@@ -130,12 +124,7 @@ public class RoadGUIDecorator extends RoadDecorator {
 
                     lines.getChildren().add(roadLine);
 
-                    Polygon arrow = new Polygon();
-
-                    arrow.getPoints().addAll(new Double[]{
-                            0.0, 5.0,
-                            -5.0, -5.0,
-                            5.0, -5.0});
+                    Polygon arrow = drawArrow();
 
                     if(l.getState()==1) {
                         arrow.setFill(Color.WHITE);
@@ -173,5 +162,18 @@ public class RoadGUIDecorator extends RoadDecorator {
         stackPane.getChildren().add(lines);
 
         return stackPane;
+    }
+
+    public Polygon drawArrow() {
+        Polygon arrow = new Polygon();
+
+        double arrowResizeFactor = resizeFactor.getResizeX() * 1.75;
+        arrow.getPoints().addAll(new Double[]{
+                0.0 * arrowResizeFactor, 5.0 * arrowResizeFactor,
+                -5.0 * arrowResizeFactor, -5.0 * arrowResizeFactor,
+                5.0 * arrowResizeFactor, -5.0 * arrowResizeFactor
+        });
+
+        return arrow;
     }
 }
