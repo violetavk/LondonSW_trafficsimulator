@@ -10,6 +10,9 @@ import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 public class MapGridGUITestMain extends Application {
 
@@ -17,13 +20,14 @@ public class MapGridGUITestMain extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //Map map = drawTestMapSimple();
-        Map map=drawTestMapExample();
+        //Map map=drawTestMapExample();
 
-       //Map map = drawTestMapSingleLine();
+       Map map = drawTestMapSingleLine();
 
         //Map map = drawTestMapBig();
 
         //Map map = drawTestMapBasic();
+
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
@@ -335,6 +339,7 @@ public class MapGridGUITestMain extends Application {
 
     //Added new Map with two lanes
     public Map drawTestMapExample() throws Exception {
+
 
         Map map = new Map(25,25);
 
