@@ -2,7 +2,6 @@ package londonsw.controller;
 
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.vehicles.Vehicle;
-import londonsw.view.simulation.CarGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
 
 import java.util.ArrayList;

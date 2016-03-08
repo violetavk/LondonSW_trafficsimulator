@@ -184,31 +184,33 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
      */
     public void readTrafficLight()throws Exception {
         if (this.getCurrentCell() == this.currentLane.getLength() -1) {
+            TrafficLight light;
+            switch (this.getCurrentLane().getMovingDirection()){
+                case NORTH:
+                    light= this.getCurrentLane().getEndIntersection().getSouthTrafficLight();
+                    break;
+                case SOUTH:
+                    light= this.getCurrentLane().getEndIntersection().getNorthTrafficLight();
+                    break;
+                case EAST:
+                    light= this.getCurrentLane().getEndIntersection().getWestTrafficLight();
+                    break;
+                case WEST:
+                    light= this.getCurrentLane().getEndIntersection().getEastTrafficLight();
+                    break;
+                default: // ERROR case
+                    light = null;
+                    System.out.println("Error Direction !");
+                    break;
+            }
 
-            TrafficLight light= new TrafficLight();
-           switch (this.getCurrentLane().getMovingDirection()){
-               case NORTH:
-                   light= this.getCurrentLane().getEndIntersection().getSouthTrafficLight();
-                   break;
-               case SOUTH:
-                   light= this.getCurrentLane().getEndIntersection().getNorthTrafficLight();
-                   break;
-               case EAST:
-                   light= this.getCurrentLane().getEndIntersection().getWestTrafficLight();
-                   break;
-               case WEST:
-                   light= this.getCurrentLane().getEndIntersection().getEastTrafficLight();
-                   break;
-               case ERROR:
-                   System.out.println("Error Direction !");
-                   break;
-           }
-            if (light.getState()==LightColour.RED)
-                this.setVehicleState(0);
+            if(light.getState() == LightColour.RED)
+                this.vehicleState = 0;
             else
-                this.setVehicleState(1);
-
+                this.vehicleState = 1;
         }
+        else
+            throw new Exception("Reading traffic light when not at end of lane");
     }
 
     /**

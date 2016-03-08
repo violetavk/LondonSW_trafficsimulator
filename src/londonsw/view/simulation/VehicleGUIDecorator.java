@@ -64,9 +64,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         double carDimensionX = cellDimension;
         double carDimensionY = cellDimension;
         double angle = 0.0;
-        double startPointX =
-                x
-                        * this.getCurrentCoordinate().getX();
+        double startPointX = x * this.getCurrentCoordinate().getX();
 
         if(this.getCurrentLane().getRoad().runsVertically())
         {
@@ -75,9 +73,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             //angle = 90;
         }
 
-        double startPointY =
-                y
-                        * this.getCurrentCoordinate().getY();
+        double startPointY = y * this.getCurrentCoordinate().getY();
 
         //car runs Horizontally
         if(!this.getCurrentLane().getRoad().runsVertically())
@@ -106,12 +102,12 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
         int numberLanes = this.getCurrentLane().getRoad().getNumberLanes();
 
-        //move according to moving direction
+        /* move the car according to moving direction, below */
 
-        if(state==0)
+        if(state == 0) { // car must stop because red light, or something in the way
             timeline.stop();
-        else
-        if(state==2)    //car in intersection
+        }
+        else if(state == 2)  //car is at intersection
         {
             double imageDimension = 100.0;
             double x = imageDimension * this.getResizeFactor().getResizeX();
@@ -233,7 +229,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             this.setVehicleState(1);    //move car again
 
         }
-        else
+        else // car driving straight down road
         {
             DoubleProperty doubleProperty = null;
             double distance = 0;
