@@ -1,14 +1,12 @@
 package londonsw.view.simulation;
 
 import javafx.application.Application;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import londonsw.controller.IntersectionController;
 import londonsw.controller.TrafficLightController;
 import londonsw.model.simulation.Ticker;
-import londonsw.model.simulation.components.Coordinate;
-import londonsw.model.simulation.components.Intersection;
-import londonsw.model.simulation.components.LightColour;
-import londonsw.model.simulation.components.TrafficLight;
+import londonsw.model.simulation.components.*;
 
 
 public class IntersectionDecoratorTest extends Application {
@@ -33,6 +31,9 @@ public class IntersectionDecoratorTest extends Application {
         intersection.setEastTrafficLight(t4);
 
         IntersectionDecorator gui = new IntersectionDecorator(intersection);
-        gui.showIntersection(primaryStage);
+        gui.setResizeFactor(new ResizeFactor(.5,.5));
+
+        StackPane stackPane = gui.drawIntersection();
+        gui.showIntersection(primaryStage,stackPane);
     }
 }
