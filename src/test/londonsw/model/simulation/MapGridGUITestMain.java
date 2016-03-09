@@ -5,14 +5,13 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import londonsw.model.simulation.components.*;
+import londonsw.model.simulation.components.vehicles.Ambulance;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
-import javafx.stage.FileChooser;
-
-import java.io.File;
 
 public class MapGridGUITestMain extends Application {
 
@@ -79,6 +78,20 @@ public class MapGridGUITestMain extends Application {
         carPane3.getChildren().add(vehicleGUIDecorator3.getRectangle());
         sp.getChildren().add(carPane3);
         vehicleGUIDecorator3.setVehicleState(1);
+
+        /**
+         *  Ambulance inherits from vehicle
+         */
+        Lane al = map.getRandomLane();
+        Ambulance a = new Ambulance(0,al);
+        VehicleGUIDecorator AmbulanceGUIDecorator = new VehicleGUIDecorator(a);
+        AmbulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+        AmbulanceGUIDecorator.setColor(Color.RED);
+        AmbulanceGUIDecorator.drawCar();
+        Pane alPane = new Pane();
+        alPane.getChildren().add(AmbulanceGUIDecorator.getRectangle());
+        sp.getChildren().add(alPane);
+        AmbulanceGUIDecorator.setVehicleState(1);
 
 
 
