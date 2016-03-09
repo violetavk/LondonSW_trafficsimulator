@@ -37,48 +37,50 @@ public class MapGridGUITestMain extends Application {
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 
         //Lane L1 = map.getRandomLane();
-        Lane L1 = map.getRoads().get(0).getLanes().get(0);
-        //Lane L2 = map.getRoads().get(5).getLanes().get(0);
-        //Lane L3 = map.getRoads().get(11).getLanes().get(0);
+
+
         //Lane L1 = map.getRoads().get(0).getLanes().get(roadIndex);
         //Lane L1 = map.getRandomLane();
 
+
+
+        //=========== FIRST CAR
+        Lane L1 = map.getRoads().get(0).getLanes().get(0);
         Car C1 = new Car(0, L1);
-        //Car C2 = new Car(0, L2);
-        //Car C3 = new Car(0,L3);
-
         VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
-        //VehicleGUIDecorator vehicleGUIDecorator2 = new VehicleGUIDecorator(C2);
-        //VehicleGUIDecorator vehicleGUIDecorator3 = new VehicleGUIDecorator(C3);
-
         vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
-        //vehicleGUIDecorator2.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
-        //vehicleGUIDecorator3.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
-
         vehicleGUIDecorator.drawCar();
-        //vehicleGUIDecorator2.drawCar();
-        //vehicleGUIDecorator3.drawCar();
-
         Pane carPane = new Pane();
-        //Pane carPane2 = new Pane();
-        //Pane carPane3 = new Pane();
-
         carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
-        //carPane2.getChildren().add(vehicleGUIDecorator2.getRectangle());
-        //carPane3.getChildren().add(vehicleGUIDecorator3.getRectangle());
-
         StackPane sp = new StackPane();
         sp.getChildren().add(rootGP);
         sp.getChildren().add(carPane);
-        //sp.getChildren().add(carPane2);
-       // sp.getChildren().add(carPane3);
-
         Scene scene = new Scene(sp);
-
-
         vehicleGUIDecorator.setVehicleState(1);
-        //vehicleGUIDecorator2.setVehicleState(1);
-        //vehicleGUIDecorator3.setVehicleState(1);
+
+        //=======     SECOND CAR
+        Lane L2 = map.getRoads().get(5).getLanes().get(0);
+        Car C2 = new Car(0, L2);
+        VehicleGUIDecorator vehicleGUIDecorator2 = new VehicleGUIDecorator(C2);
+        vehicleGUIDecorator2.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+        vehicleGUIDecorator2.drawCar();
+        Pane carPane2 = new Pane();
+        carPane2.getChildren().add(vehicleGUIDecorator2.getRectangle());
+        sp.getChildren().add(carPane2);
+        vehicleGUIDecorator2.setVehicleState(1);
+
+        //========== THIRD CAR
+        Lane L3 = map.getRoads().get(11).getLanes().get(0);
+        Car C3 = new Car(0,L3);
+        VehicleGUIDecorator vehicleGUIDecorator3 = new VehicleGUIDecorator(C3);
+        vehicleGUIDecorator3.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+        vehicleGUIDecorator3.drawCar();
+        Pane carPane3 = new Pane();
+        carPane3.getChildren().add(vehicleGUIDecorator3.getRectangle());
+        sp.getChildren().add(carPane3);
+        vehicleGUIDecorator3.setVehicleState(1);
+
+
 
         System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
 
@@ -408,8 +410,8 @@ public class MapGridGUITestMain extends Application {
         r24.addLane(new Lane(r24.getStartLocation(),r24.getEndLocation(),MapDirection.SOUTH));
 
         //two Lanes
-     /*
-        r01.addLane(new Lane(r01.getEndLocation(),r01.getStartLocation(),MapDirection.WEST));
+
+        /*
         r01.addLane(new Lane(r01.getEndLocation(),r01.getStartLocation(),MapDirection.WEST));
         r02.addLane(new Lane (r02.getStartLocation(),r02.getEndLocation(),MapDirection.SOUTH));
         r03.addLane(new Lane(r03.getStartLocation(),r03.getEndLocation(),MapDirection.SOUTH));
@@ -434,7 +436,7 @@ public class MapGridGUITestMain extends Application {
         r22.addLane(new Lane(r22.getStartLocation(),r22.getEndLocation(),MapDirection.EAST));
         r23.addLane(new Lane(r23.getStartLocation(),r23.getEndLocation(),MapDirection.EAST));
         r24.addLane(new Lane(r24.getEndLocation(),r24.getStartLocation(),MapDirection.NORTH));
-    */
+*/
 
         Intersection i01 = new Intersection(new Coordinate(1,1));
         i01.setEastRoad(r01);
