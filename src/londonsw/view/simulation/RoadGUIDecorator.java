@@ -72,17 +72,18 @@ public class RoadGUIDecorator extends RoadDecorator {
 
                     roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY);
                     roadLine.setStrokeWidth(2 * this.getResizeFactor().getResizeY()); //TODO avoid hardcode
-                    roadLine.setStroke(Color.WHITE);
                     lines.getChildren().add(roadLine);
 
                     Polygon arrow = drawArrow();
 
                     if(l.getState()==1) {
+                        roadLine.setStroke(Color.WHITE);
                         arrow.setFill(Color.WHITE);
                     }
                     else
                     {
                         //lane not enabled
+                        roadLine.setStroke(Color.RED);
                         arrow.setFill(Color.RED);
                     }
 

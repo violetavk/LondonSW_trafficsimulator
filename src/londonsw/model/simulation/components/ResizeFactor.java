@@ -14,10 +14,18 @@ public class ResizeFactor {
         this.resizeY = resizeY;
     }
 
+    /**
+     * Desc
+     * @return
+     */
     public double getResizeX() {
         return resizeX;
     }
 
+    /**
+     *
+     * @param resizeX
+     */
     public void setResizeX(double resizeX) {
         this.resizeX = resizeX;
     }
