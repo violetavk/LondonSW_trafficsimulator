@@ -1,16 +1,20 @@
 package londonsw.view.simulation;
 
-import javafx.animation.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.MapDirection;
 import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Vehicle;
+
 
 /**
  * Created by felix on 04/03/2016.
@@ -25,6 +29,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
     private Rectangle rectangle;
     private GridPane gridPane;
     private ResizeFactor resizeFactor;
+    private Color color;
 
     public void setResizeFactor(ResizeFactor resizeFactor) {
         this.resizeFactor = resizeFactor;
@@ -48,6 +53,14 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
     public void setGridPane(GridPane gridPane) {
         this.gridPane = gridPane;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public void drawCar() {
@@ -89,7 +102,12 @@ public class VehicleGUIDecorator extends VehicleDecorator {
                 carDimensionX * this.getResizeFactor().getResizeX(),    //TODO: hardcode
                 carDimensionY * this.getResizeFactor().getResizeY());    //TODO: hardcode
 
-        r.setFill(Color.BLUE);
+
+        if(this.getVehiclePriority()==5){
+            r.setFill(this.getColor());
+        }
+        else
+            r.setFill(Color.BLUE);
 
         r.setRotate(angle);
 
