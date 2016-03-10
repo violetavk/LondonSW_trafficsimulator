@@ -6,12 +6,15 @@ import londonsw.controller.TrafficLightController;
 import londonsw.model.simulation.components.LightColour;
 import londonsw.model.simulation.components.TrafficLight;
 
+import java.io.Serializable;
+
 /**
  * Traffic Light GUI Logic is implemented here. One instance of this class is associated with exactly one instance
  * of a TrafficLight.
  */
-public class TrafficLightDecorator {
+public class TrafficLightDecorator implements Serializable {
 
+    private static final long serialVersionUID = 8123065437897754089L;
     private TrafficLight thisLight;
     private Circle circle;
 

@@ -12,6 +12,8 @@ import londonsw.controller.IntersectionController;
 import londonsw.model.simulation.components.Intersection;
 import londonsw.model.simulation.components.ResizeFactor;
 
+import java.io.Serializable;
+
 /**
  * Associates an Intersection GUI with an instance of an Intersection. Each has up to 4
  * TrafficLightDecorators that live inside this GUI. The Intersection does not have any
@@ -20,8 +22,9 @@ import londonsw.model.simulation.components.ResizeFactor;
  *
  * Exactly one IntersectionDecorator is created for exactly one Intersection.
  */
-public class IntersectionDecorator {
+public class IntersectionDecorator implements Serializable {
 
+    private static final long serialVersionUID = -197785071328536445L;
     private Intersection intersection;
     private int width = 100;
     private int height = 100;
