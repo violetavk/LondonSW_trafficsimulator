@@ -75,15 +75,14 @@ public class Map implements Serializable {
     public Lane getRandomLane()
     {
         Road road = getRandomRoad();
-
         Random randomLane = new Random();
-
-        int laneSize = randomLane.nextInt(road.getLanes().size());
-
+        int laneSize = randomLane.nextInt(road.getNumberLanes());
         Lane lane = road.getLanes().get(laneSize);
-
+        while(lane.getState() != 1) { // if road is disabled, choose a new one
+            road = getRandomRoad();
+            lane = road.getLanes().get(randomLane.nextInt(road.getNumberLanes()));
+        }
         //lane.setRoadIndex(laneSize);
-
         return lane;
     }
     public int getRandomCell(){
