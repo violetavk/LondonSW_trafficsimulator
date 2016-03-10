@@ -44,8 +44,9 @@ public class MapGridGUITestMain extends Application {
 
 
         //=========== FIRST CAR
-        Lane L1 = map.getRoads().get(1).getLanes().get(0);
+        Lane L1 = map.getRoads().get(9).getLanes().get(0);
         Car C1 = new Car(0, L1);
+       // C1.setVehicleBehavior(VehicleBehavior.AGGRESSIVE);
         VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
         vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator.drawCar();
@@ -79,10 +80,32 @@ public class MapGridGUITestMain extends Application {
         sp.getChildren().add(carPane3);
         vehicleGUIDecorator3.setVehicleState(1);
 
+        //========== FORTH CAR
+        Lane L4 = map.getRoads().get(13).getLanes().get(0);
+        Car C4 = new Car(0,L4);
+        VehicleGUIDecorator vehicleGUIDecorator4 = new VehicleGUIDecorator(C4);
+        vehicleGUIDecorator4.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+        vehicleGUIDecorator4.drawCar();
+        Pane carPane4 = new Pane();
+        carPane4.getChildren().add(vehicleGUIDecorator4.getRectangle());
+        sp.getChildren().add(carPane4);
+        vehicleGUIDecorator4.setVehicleState(1);
+
+        //========== FIFTH CAR
+        Lane L5 = map.getRoads().get(3).getLanes().get(0);
+        Car C5 = new Car(0,L5);
+        VehicleGUIDecorator vehicleGUIDecorator5 = new VehicleGUIDecorator(C5);
+        vehicleGUIDecorator5.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+        vehicleGUIDecorator5.drawCar();
+        Pane carPane5 = new Pane();
+        carPane5.getChildren().add(vehicleGUIDecorator5.getRectangle());
+        sp.getChildren().add(carPane5);
+        vehicleGUIDecorator5.setVehicleState(1);
+
         /**
          *  Ambulance inherits from vehicle
          */
-        Lane al = map.getRandomLane();
+       /* Lane al = map.getRandomLane();
         Ambulance a = new Ambulance(0,al);
         VehicleGUIDecorator AmbulanceGUIDecorator = new VehicleGUIDecorator(a);
         AmbulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
@@ -91,7 +114,7 @@ public class MapGridGUITestMain extends Application {
         Pane alPane = new Pane();
         alPane.getChildren().add(AmbulanceGUIDecorator.getRectangle());
         sp.getChildren().add(alPane);
-        AmbulanceGUIDecorator.setVehicleState(1);
+        AmbulanceGUIDecorator.setVehicleState(1);*/
 
 
         System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
@@ -472,7 +495,7 @@ public class MapGridGUITestMain extends Application {
         r04.addLane(new Lane(r04.getStartLocation(),r04.getEndLocation(),MapDirection.SOUTH));
         r05.addLane(new Lane(r05.getEndLocation(),r05.getStartLocation(),MapDirection.WEST));
         r06.addLane(new Lane(r06.getEndLocation(),r06.getStartLocation(),MapDirection.WEST));
-        r07.addLane(new Lane(r07.getEndLocation(),r07.getStartLocation(),MapDirection.SOUTH));
+        r07.addLane(new Lane(r07.getStartLocation(),r07.getEndLocation(),MapDirection.SOUTH));
         r08.addLane(new Lane(r08.getStartLocation(),r08.getEndLocation(),MapDirection.SOUTH));
         r09.addLane(new Lane(r09.getEndLocation(),r09.getStartLocation(),MapDirection.WEST));
         r10.addLane(new Lane(r10.getEndLocation(),r10.getStartLocation(),MapDirection.WEST));
