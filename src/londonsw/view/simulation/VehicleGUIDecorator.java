@@ -2,8 +2,10 @@ package londonsw.view.simulation;
 
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,6 +40,36 @@ public class VehicleGUIDecorator extends VehicleDecorator {
     private GridPane gridPane;
     private ResizeFactor resizeFactor;
     private Color color;
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    private Group group;
+
+    public Rectangle getCar() {
+        return car;
+    }
+
+    public void setCar(Rectangle car) {
+        this.car = car;
+    }
+
+    private Rectangle car;
+
+    public Pane getPane() {
+        return pane;
+    }
+
+    public void setPane(Pane pane) {
+        this.pane = pane;
+    }
+
+    private Pane pane;
 
     public void setResizeFactor(ResizeFactor resizeFactor) {
         this.resizeFactor = resizeFactor;
@@ -78,11 +110,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         double y = cellDimension * this.getResizeFactor().getResizeY();
 
         int numberLanes = this.getCurrentLane().getRoad().getNumberLanes();
-        double division =   cellDimension * this.getResizeFactor().getResizeX();
-
-        //division = division / numberLanes;
-
-        division = 1;
+        double division = 1;
 
         double carDimensionX = cellDimension;
         double carDimensionY = cellDimension;
@@ -92,7 +120,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         if(this.getCurrentLane().getRoad().runsVertically())
         {
             startPointX+=(this.getCurrentLane().getRoadIndex() * division);
-            //carDimensionX = cellDimension/numberLanes;
         }
 
         double startPointY = y * this.getCurrentCoordinate().getY();
@@ -101,26 +128,72 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         if(!this.getCurrentLane().getRoad().runsVertically())
         {
             startPointY+=(this.getCurrentLane().getRoadIndex() * division);
-            //carDimensionY = cellDimension/numberLanes;
+
         }
 
-        Rectangle r = new Rectangle(
+        Rectangle rectangleBackground = new Rectangle(
                 startPointX,
                 startPointY,
                 carDimensionX * this.getResizeFactor().getResizeX(),    //TODO: hardcode
                 carDimensionY * this.getResizeFactor().getResizeY());    //TODO: hardcode
 
+        Rectangle rectangleCar = new Rectangle
+                (
+                startPointX, startPointY,
+                (carDimensionX*this.getResizeFactor().getResizeX()),
+                (carDimensionY * this.getResizeFactor().getResizeY()/numberLanes)
+                );
+
         if(this.getVehiclePriority()==5){
-            r.setFill(this.getColor());
+            rectangleCar.setFill(this.getColor());
         }
-        else
-            r.setFill(Color.BLUE);
+        else{
+            rectangleCar.setFill(Color.BLUE);
+        }
 
-        r.setRotate(angle);
+        switch (this.getCurrentLane().getMovingDirection())
+        {
+            case NORTH:
 
-        r.setFill(Color.BLUE);
+                angle = -90;
 
-        this.setRectangle(r);
+            break;
+
+            case SOUTH:
+
+                angle =90;
+
+                break;
+
+            case EAST:
+
+                break;
+
+            case WEST:
+
+                angle = 180;
+
+                break;
+        }
+
+
+        rectangleBackground.setFill(Color.YELLOW);
+        rectangleBackground.setRotate(angle);
+        //rectangleCar.setRotate(angle);
+
+        Pane carPane = new Pane();
+
+        carPane.getChildren().addAll(rectangleBackground,rectangleCar);
+
+        this.setPane(carPane);
+
+        Group group = new Group(rectangleBackground,rectangleCar);
+
+        group.setRotate(angle);
+
+        this.setGroup(group);
+        //this.setCar(rectangleCar);
+        //this.setRectangle(rectangleBackground);
     }
 
     public void moveVehicleGUI(int step, int state) {
@@ -140,7 +213,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             double x = imageDimension * this.getResizeFactor().getResizeX();
             double y = imageDimension * this.getResizeFactor().getResizeY();
 
-            TranslateTransition tt = new TranslateTransition(Duration.millis(Ticker.getTickInterval()), this.getRectangle());//TODO: change to 1 tick duration
+            TranslateTransition tt = new TranslateTransition(Duration.millis(Ticker.getTickInterval()), this.getGroup());//TODO: change to 1 tick duration
 
             if(this.getPreviousLane().getMovingDirection()==this.getCurrentLane().getMovingDirection()) {
                 switch (this.getPreviousLane().getMovingDirection())
@@ -162,9 +235,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             else
             if(this.getPreviousLane().getMovingDirection()== MapDirection.EAST && this.getCurrentLane().getMovingDirection()==MapDirection.SOUTH)
             {
-                //x+=((this.getRectangle().getWidth()/numberLanes)*this.getCurrentLane().getRoadIndex()-(this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getHeight()/numberLanes)*this.getCurrentLane().getRoadIndex();
-
                 tt.setByX(x);
                 tt.setByY(y);
 
@@ -179,9 +249,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             else
             if(this.getPreviousLane().getMovingDirection()== MapDirection.SOUTH && this.getCurrentLane().getMovingDirection()==MapDirection.WEST)
             {
-                //x+=(this.getRectangle().getHeight()/numberLanes)*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getWidth()/numberLanes*this.getCurrentLane().getRoadIndex()- (this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-
                 tt.setByX(-x);
                 tt.setByY(y);
 
@@ -194,13 +261,8 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             else
             if(this.getPreviousLane().getMovingDirection()==MapDirection.WEST && this.getCurrentLane().getMovingDirection()==MapDirection.NORTH)
             {
-                //x+=((this.getRectangle().getWidth()/numberLanes)*this.getCurrentLane().getRoadIndex()+(this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getHeight()/numberLanes)*this.getCurrentLane().getRoadIndex();
-
                 tt.setByX(-x);
                 tt.setByY(-y);
-
-                //this.getRectangle().setRotate(this.getRectangle().getRotate()+90);
 
                 RotateTransition rt = new RotateTransition();
                 rt.setNode(tt.getNode());
@@ -211,14 +273,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             else
             if(this.getPreviousLane().getMovingDirection()==MapDirection.NORTH && this.getCurrentLane().getMovingDirection()==MapDirection.EAST)
             {
-
-                //x+=(this.getRectangle().getHeight()/numberLanes)*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getWidth()/numberLanes*this.getCurrentLane().getRoadIndex() + (this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-
-                //x+=(this.getRectangle().getWidth()/numberLanes);
-                //y+=this.getRectangle().getWidth()/numberLanes;
-
-
                 tt.setByX(x);
                 tt.setByY(-y);
 
@@ -232,9 +286,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             else
             if(this.getPreviousLane().getMovingDirection()==MapDirection.WEST && this.getCurrentLane().getMovingDirection()==MapDirection.SOUTH)
             {
-                //x+=((this.getRectangle().getWidth()/numberLanes)*this.getCurrentLane().getRoadIndex()-(this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getWidth()/numberLanes)*this.getCurrentLane().getRoadIndex();
-
                 tt.setByX(-x);
                 tt.setByY(y);
 
@@ -246,22 +297,20 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             }
             if(this.getPreviousLane().getMovingDirection()==MapDirection.EAST && this.getCurrentLane().getMovingDirection()==MapDirection.NORTH)
             {
-                //x+=(this.getCurrentLane().getRoadIndex() * division);
-
                 tt.setByX(x);
                 tt.setByY(-y);
 
                 RotateTransition rt = new RotateTransition();
                 rt.setNode(tt.getNode());
+
                 rt.setByAngle(-90);
                 rt.setDuration(Duration.millis(Ticker.getTickInterval()));
                 rt.play();
+
             }
             else
             if(this.getPreviousLane().getMovingDirection()==MapDirection.NORTH && this.getCurrentLane().getMovingDirection()==MapDirection.WEST)
             {
-                //y+=(this.getCurrentLane().getRoadIndex() * division);
-
                 tt.setByX(-x);
                 tt.setByY(-y);
 
@@ -274,9 +323,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             else
             if(this.getPreviousLane().getMovingDirection()==MapDirection.SOUTH && this.getCurrentLane().getMovingDirection()==MapDirection.EAST)
             {
-                //x+=(this.getRectangle().getHeight()/numberLanes)*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getWidth()/numberLanes*this.getCurrentLane().getRoadIndex() - (this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-
                 tt.setByX(x);
                 tt.setByY(y);
 
@@ -306,23 +352,32 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
                 case NORTH:
 
-                    doubleProperty = this.getRectangle().yProperty();
+                    doubleProperty = this.getGroup().layoutYProperty();
+                    //doubleProperty = this.getRectangle().yProperty();
                     distance = doubleProperty.getValue() - (imageDimension) * step;
 
                     break;
                 case SOUTH:
 
-                    doubleProperty = this.getRectangle().yProperty();
+                    doubleProperty = this.getGroup().layoutYProperty();
+                    //doubleProperty = this.getRectangle().yProperty();
                     distance = doubleProperty.getValue() + (imageDimension) * step;
 
                     break;
                 case EAST:
-                    doubleProperty = this.getRectangle().xProperty();
+
+                    //doubleProperty = this.getPane().layoutXProperty();
+
+                    doubleProperty = this.getGroup().layoutXProperty();
+
+                    //doubleProperty = this.getRectangle().xProperty();
                     distance = doubleProperty.getValue() + (imageDimension) * step;
 
                     break;
                 case WEST:
-                    doubleProperty = this.getRectangle().xProperty();
+
+                    doubleProperty = this.getGroup().layoutXProperty();
+                    //doubleProperty = this.getRectangle().xProperty();
                     distance = doubleProperty.getValue() - (imageDimension) * step;
 
                     break;
@@ -333,6 +388,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
             final KeyValue kv = new KeyValue(doubleProperty,
                     distance);
+
             final KeyFrame kf = new KeyFrame(Duration.millis(Ticker.getTickInterval()), kv);
 
             timeline.getKeyFrames().add(kf);
