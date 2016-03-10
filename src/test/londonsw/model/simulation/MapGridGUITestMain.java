@@ -1,6 +1,7 @@
 package londonsw.model.simulation;
 
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -51,12 +52,14 @@ public class MapGridGUITestMain extends Application {
         vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator.drawCar();
         Pane carPane = new Pane();
-        carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
+
+        carPane.getChildren().add(vehicleGUIDecorator.getGroup());
         StackPane sp = new StackPane();
         sp.getChildren().add(rootGP);
         sp.getChildren().add(carPane);
         Scene scene = new Scene(sp);
         vehicleGUIDecorator.setVehicleState(1);
+
 
         //=======     SECOND CAR
         Lane L2 = map.getRoads().get(1).getLanes().get(1);
@@ -65,7 +68,7 @@ public class MapGridGUITestMain extends Application {
         vehicleGUIDecorator2.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator2.drawCar();
         Pane carPane2 = new Pane();
-        carPane2.getChildren().add(vehicleGUIDecorator2.getRectangle());
+        carPane2.getChildren().add(vehicleGUIDecorator2.getGroup());
         sp.getChildren().add(carPane2);
         vehicleGUIDecorator2.setVehicleState(1);
 
@@ -76,7 +79,7 @@ public class MapGridGUITestMain extends Application {
         vehicleGUIDecorator3.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator3.drawCar();
         Pane carPane3 = new Pane();
-        carPane3.getChildren().add(vehicleGUIDecorator3.getRectangle());
+        carPane3.getChildren().add(vehicleGUIDecorator3.getGroup());
         sp.getChildren().add(carPane3);
         vehicleGUIDecorator3.setVehicleState(1);
 
@@ -87,7 +90,7 @@ public class MapGridGUITestMain extends Application {
         vehicleGUIDecorator4.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator4.drawCar();
         Pane carPane4 = new Pane();
-        carPane4.getChildren().add(vehicleGUIDecorator4.getRectangle());
+        carPane4.getChildren().add(vehicleGUIDecorator4.getGroup());
         sp.getChildren().add(carPane4);
         vehicleGUIDecorator4.setVehicleState(1);
 
@@ -98,7 +101,7 @@ public class MapGridGUITestMain extends Application {
         vehicleGUIDecorator5.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator5.drawCar();
         Pane carPane5 = new Pane();
-        carPane5.getChildren().add(vehicleGUIDecorator5.getRectangle());
+        carPane5.getChildren().add(vehicleGUIDecorator5.getGroup());
         sp.getChildren().add(carPane5);
         vehicleGUIDecorator5.setVehicleState(1);
 
@@ -471,7 +474,14 @@ public class MapGridGUITestMain extends Application {
         //l6.setState(0);
         r07.addLane(new Lane(r07.getEndLocation(),r07.getStartLocation(),MapDirection.NORTH));
         r08.addLane(new Lane(r08.getEndLocation(),r08.getStartLocation(),MapDirection.NORTH));
-        r09.addLane(new Lane(r09.getStartLocation(),r09.getEndLocation(),MapDirection.EAST));
+
+        Lane lane9Closed = new Lane(r09.getStartLocation(),r09.getEndLocation(),MapDirection.EAST);
+
+        lane9Closed.setState(0);
+
+        r09.addLane(lane9Closed);
+
+
         r10.addLane(new Lane(r10.getStartLocation(),r10.getEndLocation(),MapDirection.EAST));
         r11.addLane(new Lane(r11.getEndLocation(),r11.getStartLocation(),MapDirection.NORTH));
         r12.addLane(new Lane(r12.getStartLocation(),r12.getEndLocation(),MapDirection.EAST));
@@ -483,7 +493,12 @@ public class MapGridGUITestMain extends Application {
         r18.addLane(new Lane(r18.getEndLocation(),r18.getStartLocation(),MapDirection.NORTH));
         r19.addLane(new Lane(r19.getStartLocation(),r19.getEndLocation(),MapDirection.EAST));
         r20.addLane(new Lane(r20.getEndLocation(),r20.getStartLocation(),MapDirection.NORTH));
-        r21.addLane(new Lane(r21.getEndLocation(),r21.getStartLocation(),MapDirection.NORTH));
+
+        Lane lane21NClosed = new Lane(r21.getEndLocation(),r21.getStartLocation(),MapDirection.NORTH);
+        //lane21Closed.setState(0);
+
+        r21.addLane(lane21NClosed);
+
         r22.addLane(new Lane(r22.getStartLocation(),r22.getEndLocation(),MapDirection.EAST));
         r23.addLane(new Lane(r23.getStartLocation(),r23.getEndLocation(),MapDirection.EAST));
         r24.addLane(new Lane(r24.getEndLocation(),r24.getStartLocation(),MapDirection.NORTH));
@@ -509,7 +524,12 @@ public class MapGridGUITestMain extends Application {
         r18.addLane(new Lane(r18.getStartLocation(),r18.getEndLocation(),MapDirection.SOUTH));
         r19.addLane(new Lane(r19.getEndLocation(),r19.getStartLocation(),MapDirection.WEST));
         r20.addLane(new Lane(r20.getStartLocation(),r20.getEndLocation(),MapDirection.SOUTH));
-        r21.addLane(new Lane(r21.getStartLocation(),r21.getEndLocation(),MapDirection.SOUTH));
+
+        Lane lane21SClosed = new Lane(r21.getStartLocation(),r21.getEndLocation(),MapDirection.SOUTH);
+        lane21SClosed.setState(0);
+
+        r21.addLane(lane21SClosed);
+
         r22.addLane(new Lane(r22.getEndLocation(),r22.getStartLocation(),MapDirection.WEST));
         r23.addLane(new Lane(r23.getEndLocation(),r23.getStartLocation(),MapDirection.WEST));
         r24.addLane(new Lane(r24.getStartLocation(),r24.getEndLocation(),MapDirection.SOUTH));
