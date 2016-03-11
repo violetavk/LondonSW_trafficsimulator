@@ -204,10 +204,12 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     break;
             }
 
-            if(light.getState() == LightColour.RED)
-                this.vehicleState = 0;
-            else
-                this.vehicleState = 1;
+            if(light!=null) {
+                if (light.getState() == LightColour.RED)
+                    this.vehicleState = 0;
+                else
+                    this.vehicleState = 1;
+            }
         }
         else
             throw new Exception("Reading traffic light when not at end of lane");
