@@ -3,8 +3,6 @@ package londonsw.view.simulation;
 import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.VehicleBehavior;
-import londonsw.model.simulation.components.vehicles.Car;
-import londonsw.model.simulation.components.vehicles.ICar;
 import londonsw.model.simulation.components.vehicles.IVehicle;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 
@@ -29,6 +27,10 @@ public abstract class VehicleDecorator implements IVehicle {
     @Override
     public void setPreviousLane(Lane previousLane) {
         decoratedVehicle.setPreviousLane(previousLane);
+    }
+
+    public void setPreviousCoordinate(Coordinate coord) {
+        decoratedVehicle.setPreviousCoordinate(coord);
     }
 
     @Override
@@ -74,6 +76,15 @@ public abstract class VehicleDecorator implements IVehicle {
     @Override
     public Coordinate getCurrentCoordinate() {
         return decoratedVehicle.getCurrentCoordinate();
+    }
+
+    public Coordinate getPreviousCoordinate() {
+        return decoratedVehicle.getPreviousCoordinate();
+    }
+
+
+    public Coordinate getStoredCurrentCoordinate() {
+        return decoratedVehicle.getStoredCurrentCoordinate();
     }
 
     @Override

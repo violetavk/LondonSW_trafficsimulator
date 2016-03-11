@@ -9,7 +9,17 @@ public class Coordinate implements Serializable {
 
     private static final long serialVersionUID = 252245795148278739L;
     private int x, y;
-//Setting x and y
+
+    /**
+     *
+     * @param x takes the value of the x region/axis
+     * @param y takes the value of the y region
+     */
+    public Coordinate(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public void setY(int y) {
         this.y = y;
     }
@@ -18,31 +28,6 @@ public class Coordinate implements Serializable {
         this.x = x;
     }
 
-    /**
-     * Constructor, sets the default values of the x and y axis to 0
-     */
-    public Coordinate() {
-
-        this.x = 0;
-        this.y = 0;
-    }
-
-    /**
-     *
-     * @param x takes the value of the x region/axis
-     * @param y takes the value of the y region
-     * @throws NotACoordinateException validation check for negative values entered for x and y
-     */
-    public Coordinate(int x, int y) throws NotACoordinateException {
-        if(x<0 || y<0)
-        {
-            throw new NotACoordinateException("X and Y must be positive");
-        }
-
-        this.x=x;
-        this.y=y;
-    }
-//gets values of x and y
     public int getX() {
         return x;
     }
@@ -61,6 +46,14 @@ public class Coordinate implements Serializable {
         return (x == other.getX()) && (y == other.getY());
     }
 
+    public static Coordinate add(Coordinate a, Coordinate b) {
+        return new Coordinate(a.getX()+b.getX(), a.getY()+b.getY());
+    }
+
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
     /**
      * Adds a step to the coordinate based on map direction. i.e if the map direction is eastwards, and a specified coordinate is (2,1), calling addStep method returns a new coordinate with dimensions (2,1)
      * @param mapDirection i.e directions north,south, east or west
@@ -68,7 +61,7 @@ public class Coordinate implements Serializable {
      */
     public Coordinate addStep(MapDirection mapDirection)
     {
-        Coordinate sum = new Coordinate();
+        Coordinate sum = new Coordinate(-1,-1);
 
         switch (mapDirection) {
             case NORTH:
@@ -103,7 +96,7 @@ public class Coordinate implements Serializable {
 
     public static Coordinate rest(Coordinate a, Coordinate b)
     {
-        Coordinate rest = new Coordinate();
+        Coordinate rest = new Coordinate(-1,1);
 
         rest.setX(a.getX()- b.getX());
         rest.setY(a.getY()- b.getY());
@@ -111,14 +104,4 @@ public class Coordinate implements Serializable {
         return rest;
     }
 
-}
-
-/**
- * Exception handling, when invalid or negative values for x and y are entered
- */
-class NotACoordinateException extends Exception {
-    public NotACoordinateException() { super(); }
-    public NotACoordinateException(String msg) { super(msg); }
-    public NotACoordinateException(String msg, Throwable t) { super(msg,t); }
-    public NotACoordinateException(Throwable t) { super(t); }
 }
