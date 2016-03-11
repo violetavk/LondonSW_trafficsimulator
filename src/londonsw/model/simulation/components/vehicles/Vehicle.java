@@ -210,8 +210,14 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     System.out.println("Error Direction !");
                     break;
             }
+            if(vehiclePriority>1){
+                if(light.getState()== LightColour.RED){
+                    this.vehicleState=1;
 
-            if(light!=null) {
+                }
+            }
+
+           else if(light!=null) {
                 if (light.getState() == LightColour.RED)
                     this.vehicleState = 0;
                 else

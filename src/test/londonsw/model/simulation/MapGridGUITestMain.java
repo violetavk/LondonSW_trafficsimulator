@@ -1,19 +1,19 @@
 package londonsw.model.simulation;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-//import londonsw.System;
 import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Ambulance;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
+
+//import londonsw.System;
 
 public class MapGridGUITestMain extends Application {
 
@@ -112,18 +112,35 @@ public class MapGridGUITestMain extends Application {
         /**
          *  Ambulance inherits from vehicle
          */
-       /* Lane al = map.getRandomLane();
+        Lane al = map.getRandomLane();
         Ambulance a = new Ambulance(0,al);
         VehicleGUIDecorator AmbulanceGUIDecorator = new VehicleGUIDecorator(a);
         AmbulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         AmbulanceGUIDecorator.setColor(Color.RED);
         AmbulanceGUIDecorator.drawCar();
         Pane alPane = new Pane();
-        alPane.getChildren().add(AmbulanceGUIDecorator.getRectangle());
-        sp.getChildren().add(alPane);
-        AmbulanceGUIDecorator.setVehicleState(1);*/
+        alPane.getChildren().add(AmbulanceGUIDecorator.getGroup());
+        //sp.getChildren().add(alPane);
+        AmbulanceGUIDecorator.setVehicleState(1);
+        /**
+         * We would have a button to spawn an ambulance: single click deploys the ambulance and double click removes it.
+         * Button button = new Button("spawn ambulance"); button.setOnMouseClicked(event -> {do some action})
+         * As we don't have the buttons yet, stack pane is used to demonstrate
+         */
+        sp.setOnMouseClicked(event -> {
 
+            switch (event.getClickCount()){
+                case 1:
+                    sp.getChildren().add(alPane);
+                break;
 
+                case 2:
+                    sp.getChildren().remove(alPane);
+                break;
+
+            }
+
+        });
 
 
         System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
