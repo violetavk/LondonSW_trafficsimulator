@@ -21,11 +21,6 @@ public class CoordinateTest {
         assertEquals(2, c.getY());
     }
 
-    @Test(expected = NotACoordinateException.class)
-    public void testInvalidCoordinate() throws Exception {
-        Coordinate c = new Coordinate(-1,3);
-    }
-
     @Test
     public void testEquals() throws Exception {
         Coordinate c = new Coordinate(1,3);

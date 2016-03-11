@@ -14,7 +14,7 @@ public class TrafficLight extends Subscriber<Long> implements Serializable {
 
     private static final long serialVersionUID = 1299747948664926447L;
     private LightColour state;
-    private long duration = 6000;
+    private long duration = 1000;
     private long currentTime;
 
     /**

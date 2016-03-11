@@ -30,7 +30,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     private Random randomDirection;
     Lane l;
     Coordinate currentCoordinate;
-
+    private Coordinate previousCoordinate;
     private Lane previousLane;
 
     // debug only
@@ -100,8 +100,16 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         return previousLane;
     }
 
+    public void setPreviousCoordinate(Coordinate prev) {
+        this.previousCoordinate = prev;
+    }
+
     public void setPreviousLane(Lane previousLane) {
         this.previousLane = previousLane;
+    }
+
+    public Coordinate getPreviousCoordinate() {
+        return previousCoordinate;
     }
 
     /* getting the current coordinate of the car */
@@ -109,7 +117,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     {
         int currentCell = this.getCurrentCell();
         Lane currentLane = this.getCurrentLane();
-        Coordinate coordinate = new Coordinate();
+        Coordinate coordinate = new Coordinate(0,0);
 
         MapDirection mapDirection = currentLane.getMovingDirection();
 
@@ -137,8 +145,13 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                 break;
         }
 
+        this.currentCoordinate = coordinate;
 
         return coordinate;
+    }
+
+    public Coordinate getStoredCurrentCoordinate() {
+        return currentCoordinate;
     }
 
     //Setter
@@ -164,13 +177,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
             curCell= curCell+step;
             this.setCurrentCell(curCell,this.getCurrentLane());
             currentLane.setCell(this,curCell);
-
-//            System.out.println("Car moved from " + (curCell-step) + " to " + curCell);
-
-            this.setCurrentCoordinate(this.getCurrentCoordinate());
-
             return true;
-
        }
     }
 
@@ -283,7 +290,6 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     oldLane.setCell(null, oldLane.getLength() - 1);
                     this.setCurrentLane(l);
                     this.setCurrentCell(0, l);
-                    this.setCurrentCoordinate(l.getEntry());
                 }
             }else {this.setVehicleState(0);}
     }

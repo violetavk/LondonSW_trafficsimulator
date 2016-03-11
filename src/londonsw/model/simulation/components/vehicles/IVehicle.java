@@ -33,4 +33,6 @@ public interface IVehicle {
     void readTrafficLight() throws Exception;
     ArrayList<Lane> getLaneOptions() throws Exception;
     void vehicleTurn () throws Exception;
+    Coordinate getStoredCurrentCoordinate();
+    void setPreviousCoordinate(Coordinate coord);
 }

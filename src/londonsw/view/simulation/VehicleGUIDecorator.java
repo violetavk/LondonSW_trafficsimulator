@@ -2,23 +2,13 @@ package londonsw.view.simulation;
 
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point3D;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.*;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 import javafx.util.Duration;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Ticker;
+import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.MapDirection;
 import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Vehicle;
@@ -29,15 +19,21 @@ import londonsw.model.simulation.components.vehicles.Vehicle;
  */
 public class VehicleGUIDecorator extends VehicleDecorator {
 
-    public VehicleGUIDecorator(Vehicle decoratedVehicle) {
-        super(decoratedVehicle);
-        VehicleController.addVehicleAndDecoratorPair(decoratedVehicle,this);
-    }
-
+    double imageDimension;
     private Rectangle rectangle;
     private GridPane gridPane;
     private ResizeFactor resizeFactor;
     private Color color;
+    private double verticalStartFudgeFactor;
+    private double horizontalStartFudgeFactor;
+
+    public VehicleGUIDecorator(Vehicle decoratedVehicle) {
+        super(decoratedVehicle);
+        VehicleController.addVehicleAndDecoratorPair(decoratedVehicle,this);
+        imageDimension = 100.0;
+        verticalStartFudgeFactor = 0;
+        horizontalStartFudgeFactor = 0;
+    }
 
     public void setResizeFactor(ResizeFactor resizeFactor) {
         this.resizeFactor = resizeFactor;
@@ -72,45 +68,46 @@ public class VehicleGUIDecorator extends VehicleDecorator {
     }
 
     public void drawCar() {
-
-        double cellDimension = 100;
+        double cellDimension = imageDimension;
         double x = cellDimension * this.getResizeFactor().getResizeX();
         double y = cellDimension * this.getResizeFactor().getResizeY();
 
         int numberLanes = this.getCurrentLane().getRoad().getNumberLanes();
-        double division =   cellDimension * this.getResizeFactor().getResizeX();
-
-        division = division / numberLanes;
-
-//        division = 1;
-
+        double division = cellDimension * this.getResizeFactor().getResizeX() / numberLanes;
         double carDimensionX = cellDimension;
         double carDimensionY = cellDimension;
         double angle = 0.0;
-        double startPointX = x * this.getCurrentCoordinate().getX();
+//        double startPointX = x * this.getCurrentCoordinate().getX();
+
+        Coordinate coordinate = this.getCurrentCoordinate();
+        double[] start = coordinateToPixels(coordinate,this.getCurrentLane().getMovingDirection(),false);
+        double startPointX = start[0];
+        double startPointY = start[1];
 
         if(this.getCurrentLane().getRoad().runsVertically())
         {
-            startPointX+=(this.getCurrentLane().getRoadIndex() * division+ 10*resizeFactor.getResizeX());
+//            startPointX+=(this.getCurrentLane().getRoadIndex() * division+ (imageDimension/10)*resizeFactor.getResizeX());
             carDimensionX = cellDimension/numberLanes - 80*resizeFactor.getResizeX();
             carDimensionY -= 15;
+            verticalStartFudgeFactor = -carDimensionX*resizeFactor.getResizeX();
         }
-
-        double startPointY = y * this.getCurrentCoordinate().getY();
-
-        //car runs Horizontally
+//
+//        double startPointY = y * this.getCurrentCoordinate().getY();
+//
+//        car runs Horizontally
         if(!this.getCurrentLane().getRoad().runsVertically())
         {
-            startPointY+=(this.getCurrentLane().getRoadIndex() * division + 10*resizeFactor.getResizeX());
+//            startPointY+=(this.getCurrentLane().getRoadIndex() * division + 10*resizeFactor.getResizeX());
             carDimensionY = cellDimension/numberLanes - 80*resizeFactor.getResizeX();
             carDimensionX -= 15;
+            horizontalStartFudgeFactor = -carDimensionY*resizeFactor.getResizeX();
         }
 
         Rectangle r = new Rectangle(
                 startPointX,
                 startPointY,
-                carDimensionX * this.getResizeFactor().getResizeX(),    //TODO: hardcode
-                carDimensionY * this.getResizeFactor().getResizeY());    //TODO: hardcode
+                carDimensionX * this.getResizeFactor().getResizeX(),
+                carDimensionY * this.getResizeFactor().getResizeY());
 
         if(this.getVehiclePriority()==5){
             r.setFill(this.getColor());
@@ -130,8 +127,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         timeline.setAutoReverse(true);
 
         int numberLanes = this.getCurrentLane().getRoad().getNumberLanes();
-//        System.out.println("Rect. width: " + rectangle.getWidth() + ", height: " + rectangle.getHeight());
-
 
         /* move the car according to moving direction, below */
 
@@ -140,214 +135,193 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         }
         else if(state == 2)  //car is at intersection
         {
-            double imageDimension = 100.0;
-            double x = imageDimension * this.getResizeFactor().getResizeX();
-            double y = imageDimension * this.getResizeFactor().getResizeY();
+            TranslateTransition tt = new TranslateTransition(Duration.millis(Ticker.getTickInterval()), this.getRectangle());
+            MapDirection fromDirection = this.getPreviousLane().getMovingDirection();
+            MapDirection toDirection = this.getCurrentLane().getMovingDirection();
 
-            TranslateTransition tt = new TranslateTransition(Duration.millis(Ticker.getTickInterval()), this.getRectangle());//TODO: change to 1 tick duration
+            Coordinate coordinate = this.getPreviousCoordinate();
 
-            if(this.getPreviousLane().getMovingDirection()==this.getCurrentLane().getMovingDirection()) {
-                switch (this.getPreviousLane().getMovingDirection())
-                {
-                    case NORTH:
-                        tt.setByY(-y * 2);
-                        break;
-                    case SOUTH:
-                        tt.setByY(y * 2 + .5);
-                        break;
-                    case EAST:
-                        tt.setByX(x * 2);
-                        break;
-                    case WEST:
-                        tt.setByX(-x * 2);
-                        break;
-                }
-            }
-            else // TODO ES
-            if(this.getPreviousLane().getMovingDirection()== MapDirection.EAST && this.getCurrentLane().getMovingDirection()==MapDirection.SOUTH)
-            {
-                //x+=((this.getRectangle().getWidth()/numberLanes)*this.getCurrentLane().getRoadIndex()-(this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getHeight()/numberLanes)*this.getCurrentLane().getRoadIndex();
-                double factor = rectangle.getWidth()/numberLanes;
-                tt.setByX(x + factor);
-                tt.setByY(y);
+            double fromXPixels = rectangle.xProperty().doubleValue();
+            double fromYPixels = rectangle.yProperty().doubleValue();
 
-                //create rotation
+//            double[] currentLocation = coordinateToPixels(coordinate,toDirection);
+//            double fromXPixels = currentLocation[0];
+//            double fromYPixels = currentLocation[1];
+//            System.out.println("The car is at " + fromXPixels + ", " + fromYPixels + " but the system thinks " + rectangle.xProperty().doubleValue() + ", " + rectangle.yProperty().doubleValue());
 
-                RotateTransition rt = new RotateTransition();
-                rt.setNode(tt.getNode());
-                rt.setByAngle(90);
-                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
-                rt.play();
-            }
-            else // TODO SW
-            if(this.getPreviousLane().getMovingDirection()== MapDirection.SOUTH && this.getCurrentLane().getMovingDirection()==MapDirection.WEST)
-            {
-                //x+=(this.getRectangle().getHeight()/numberLanes)*this.getCurrentLane().getRoadIndex();
-//                y+=(this.getRectangle().getWidth()/numberLanes*this.getCurrentLane().getRoadIndex()- (this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
+            Coordinate fromTranslation = directionToTranslation(fromDirection);
+            Coordinate toTranslation = directionToTranslation(toDirection);
+            Coordinate overallTranslation = Coordinate.add(fromTranslation,toTranslation);
+            Coordinate newPosition = Coordinate.add(overallTranslation,coordinate);
 
-                tt.setByX(-x);
-                tt.setByY(y + this.getRectangle().getWidth()*this.getCurrentLane().getRoadIndex());
+            // work out rotation
+            int rotation = getRotationFromDirectionChange(fromDirection,toDirection);
+            System.out.println(fromDirection + " -> " + toDirection + ": " + fromTranslation + " + " + toTranslation + " = " + overallTranslation + " -> " + rotation + " -> New coord: " + newPosition);
 
-                RotateTransition rt = new RotateTransition();
-                rt.setNode(tt.getNode());
-                rt.setByAngle(90);
-                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
-                rt.play();
-            }
-            else // TODO WN
-            if(this.getPreviousLane().getMovingDirection()==MapDirection.WEST && this.getCurrentLane().getMovingDirection()==MapDirection.NORTH)
-            {
-                //x+=((this.getRectangle().getWidth()/numberLanes)*this.getCurrentLane().getRoadIndex()+(this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getHeight()/numberLanes)*this.getCurrentLane().getRoadIndex();
-                double factor = rectangle.getWidth()/numberLanes - numberLanes;
-                tt.setByX(-x + factor);
-                tt.setByY(-y);
+            // work out actual animation
+            double[] toPixels = coordinateToPixels(newPosition,toDirection,true);
+            double toXPixels = toPixels[0];
+            double toYPixels = toPixels[1];
+//            toXPixels = gridToPixelsIntersection(newPosition.getX(),toDirection,true,numberLanes);
+//            toYPixels = gridToPixelsIntersection(newPosition.getY(),toDirection,false, numberLanes);
 
-                //this.getRectangle().setRotate(this.getRectangle().getRotate()+90);
+            System.out.println("Moving by " + (toXPixels - fromXPixels) + ", " + (toYPixels - fromYPixels));
+            tt.setToX(toXPixels - fromXPixels);
+            tt.setToY(toYPixels - fromYPixels);
 
-                RotateTransition rt = new RotateTransition();
-                rt.setNode(tt.getNode());
-                rt.setByAngle(90);
-                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
-                rt.play();
-            }
-            else // TODO NE
-            if(this.getPreviousLane().getMovingDirection()==MapDirection.NORTH && this.getCurrentLane().getMovingDirection()==MapDirection.EAST)
-            {
-
-                //x+=(this.getRectangle().getHeight()/numberLanes)*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getWidth()/numberLanes*this.getCurrentLane().getRoadIndex() + (this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-
-//                x+=(this.getRectangle().getWidth()/numberLanes);
-//                y-=this.getRectangle().getWidth()/numberLanes;
-
-//                if(numberLanes > 1)
-//                    y -= this.getRectangle().getWidth();
-                double factor = rectangle.getWidth()/numberLanes;
-
-                tt.setByX(x + numberLanes);
-                tt.setByY(-y - factor);
-
-                RotateTransition rt = new RotateTransition();
-                rt.setNode(tt.getNode());
-                rt.setByAngle(90);
-                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
-                rt.play();
-
-            }
-            else // TODO WS
-            if(this.getPreviousLane().getMovingDirection()==MapDirection.WEST && this.getCurrentLane().getMovingDirection()==MapDirection.SOUTH)
-            {
-                //x+=((this.getRectangle().getWidth()/numberLanes)*this.getCurrentLane().getRoadIndex()-(this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getWidth()/numberLanes)*this.getCurrentLane().getRoadIndex();
-//                double factor = rectangle.getWidth()/numberLanes;
-                double factor = rectangle.getWidth()/numberLanes + (numberLanes+1);
-                tt.setByX(-x + factor);
-                tt.setByY(y - numberLanes*2.5);
-
-                RotateTransition rt = new RotateTransition();
-                rt.setNode(tt.getNode());
-                rt.setByAngle(-90);
-                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
-                rt.play();
-            }
-            else // TODO EN
-            if(this.getPreviousLane().getMovingDirection()==MapDirection.EAST && this.getCurrentLane().getMovingDirection()==MapDirection.NORTH)
-            {
-                //x+=(this.getCurrentLane().getRoadIndex() * division);
-                double factor = rectangle.getWidth()/numberLanes - (numberLanes+1);
-                tt.setByX(x - factor);
-                tt.setByY(-y);
-
-                RotateTransition rt = new RotateTransition();
-                rt.setNode(tt.getNode());
-                rt.setByAngle(-90);
-                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
-                rt.play();
-            }
-            else // TODO NW
-            if(this.getPreviousLane().getMovingDirection()==MapDirection.NORTH && this.getCurrentLane().getMovingDirection()==MapDirection.WEST)
-            {
-                double factor =(rectangle.getWidth()/numberLanes) + (numberLanes+1);
-
-                tt.setByX(-x + numberLanes*2.5);
-                tt.setByY(-y + factor);
-
-                RotateTransition rt = new RotateTransition();
-                rt.setNode(tt.getNode());
-                rt.setByAngle(-90);
-                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
-                rt.play();
-            }
-            else // TODO SE
-            if(this.getPreviousLane().getMovingDirection()==MapDirection.SOUTH && this.getCurrentLane().getMovingDirection()==MapDirection.EAST)
-            {
-                //x+=(this.getRectangle().getHeight()/numberLanes)*this.getCurrentLane().getRoadIndex();
-                //y+=(this.getRectangle().getWidth()/numberLanes*this.getCurrentLane().getRoadIndex() - (this.getRectangle().getHeight()/numberLanes))*this.getCurrentLane().getRoadIndex();
-                double factor = (rectangle.getWidth()/numberLanes) + (numberLanes+1);
-                tt.setByX(x - numberLanes);
-                tt.setByY(y - factor); // TODO do if numlanes check
-
-                //create rotation
-
-                RotateTransition rt = new RotateTransition();
-
-                rt.setNode(tt.getNode());
-                rt.setByAngle(-90);
-                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
-                rt.play();
-            }
-
+            RotateTransition rt = new RotateTransition();
+            rt.setNode(tt.getNode());
+            rt.setByAngle(rotation);
+            rt.setDuration(Duration.millis(Ticker.getTickInterval()));
+            rt.play();
             tt.play();
-
-            this.setVehicleState(1);    //move car again
+            this.setVehicleState(1);
 
         }
         else // car driving straight down road
         {
+            TranslateTransition tt = new TranslateTransition(Duration.millis(Ticker.getTickInterval()), this.getRectangle());
 
-            DoubleProperty doubleProperty = null;
-            double distance = 0;
-            double imageDimension = 100 * this.getResizeFactor().getResizeX();  //TODO: hardcode
+            Coordinate coordinate = this.getPreviousCoordinate();
+            MapDirection toDirection = this.getCurrentLane().getMovingDirection();
 
-            switch (this.getCurrentLane().getMovingDirection()) {
+            double fromXPixels = rectangle.xProperty().doubleValue();
+            double fromYPixels = rectangle.yProperty().doubleValue();
+//            double[] currentLocation = coordinateToPixels(coordinate,toDirection);
+//            double fromXPixels = currentLocation[0];
+//            double fromYPixels = currentLocation[1];
+//            rectangle.setX(fromXPixels);
+//            rectangle.setY(fromYPixels);
+            System.out.println("***Moving from " + fromXPixels + ", " + fromYPixels);
 
-                case NORTH:
+            Coordinate toTranslation = directionToTranslation(toDirection);
+            Coordinate newPosition = Coordinate.add(toTranslation,coordinate);
+//            System.out.println("Moving " + toDirection + " by " + toTranslation + " to " + newPosition);
 
-                    doubleProperty = this.getRectangle().yProperty();
-                    distance = doubleProperty.getValue() - (imageDimension) * step;
+            double[] toPixels = coordinateToPixels(newPosition,toDirection,false);
+            double toXPixels = toPixels[0];
+            double toYPixels = toPixels[1];
+//            toXPixels = gridToPixelsStraight(newPosition.getX(),toDirection,numberLanes);
+//            toYPixels = gridToPixelsStraight(newPosition.getY(),toDirection,numberLanes);
+//            System.out.println("Calculated location -> " + toXPixels + ", " + toYPixels);
 
-                    break;
-                case SOUTH:
+            if(toDirection == MapDirection.NORTH || toDirection == MapDirection.SOUTH)
+                tt.setToY(toYPixels - fromYPixels);
+            else if(toDirection == MapDirection.EAST || toDirection == MapDirection.WEST)
+                tt.setToX(toXPixels - fromXPixels);
 
-                    doubleProperty = this.getRectangle().yProperty();
-                    distance = doubleProperty.getValue() + (imageDimension) * step;
-
-                    break;
-                case EAST:
-                    doubleProperty = this.getRectangle().xProperty();
-                    distance = doubleProperty.getValue() + (imageDimension) * step;
-
-                    break;
-                case WEST:
-                    doubleProperty = this.getRectangle().xProperty();
-                    distance = doubleProperty.getValue() - (imageDimension) * step;
-
-                    break;
-
-            }
-
-//            java.lang.System.out.println(doubleProperty.getValue());
-
-            final KeyValue kv = new KeyValue(doubleProperty,
-                    distance);
-            final KeyFrame kf = new KeyFrame(Duration.millis(Ticker.getTickInterval()), kv);
-
-            timeline.getKeyFrames().add(kf);
-
-            timeline.play();
+            tt.play();
         }
-        System.out.println("(" + rectangle.getX() + ", " + rectangle.getY() + ")");
+    }
+
+    private double[] coordinateToPixels(Coordinate c, MapDirection direction, boolean fromIntersection) {
+        double[] pixels = new double[2];
+        int x = c.getX();
+        int y = c.getY();
+        System.out.println("Calculating location for "+c+"...");
+        if(direction == MapDirection.NORTH) {
+            pixels[0] = x * imageDimension * resizeFactor.getResizeX() + (.1 * imageDimension * resizeFactor.getResizeX() + horizontalStartFudgeFactor);
+            pixels[1] = y * imageDimension * resizeFactor.getResizeX() - horizontalStartFudgeFactor;
+        }
+        else if(direction == MapDirection.EAST) {
+            pixels[0] = x * imageDimension * resizeFactor.getResizeX() + (.1 * imageDimension * resizeFactor.getResizeX() - verticalStartFudgeFactor);
+            pixels[1] = y * imageDimension * resizeFactor.getResizeX() + (.1 * imageDimension * resizeFactor.getResizeX() + verticalStartFudgeFactor);
+        }
+        else if(direction == MapDirection.WEST) {
+            pixels[0] = x * imageDimension * resizeFactor.getResizeX() - verticalStartFudgeFactor;
+            pixels[1] = y * imageDimension * resizeFactor.getResizeX() + (.6 * imageDimension * resizeFactor.getResizeX() + verticalStartFudgeFactor);
+        }
+        else if(direction == MapDirection.SOUTH) {
+            pixels[0] = x * imageDimension * resizeFactor.getResizeX() + (.6 * imageDimension * resizeFactor.getResizeX()) + horizontalStartFudgeFactor;
+            pixels[1] = y * imageDimension * resizeFactor.getResizeX() + (.1 * imageDimension * resizeFactor.getResizeX()) - horizontalStartFudgeFactor;
+        }
+        System.out.println(" -> Location is " + pixels[0] + ", " + pixels[1]);
+
+        return pixels;
+    }
+
+    private double gridToPixelsStraight(int num, MapDirection toDirection, int numberLanes) {
+        switch (toDirection) {
+            case NORTH:
+                return num*imageDimension*resizeFactor.getResizeX();
+            case WEST:
+                return num*imageDimension*resizeFactor.getResizeX();// + rectangle.getWidth();
+            case SOUTH:
+                return num*imageDimension*resizeFactor.getResizeX();// + rectangle.getWidth()/numberLanes;
+            case EAST:
+                return num*imageDimension*resizeFactor.getResizeX();// + rectangle.getWidth();
+        }
+
+        return 0;
+    }
+
+    private double gridToPixelsIntersection(int num, MapDirection toDirection, boolean isX, int numberLanes) {
+        switch (toDirection) {
+            case WEST:
+                if(isX) {
+//                    return num * imageDimension * this.getResizeFactor().getResizeX() + (imageDimension / 3) * resizeFactor.getResizeX();
+                    return num * imageDimension * resizeFactor.getResizeX();
+                } else {
+                    return num * imageDimension * resizeFactor.getResizeX() + (.6 * imageDimension * resizeFactor.getResizeX());
+//                    return num * imageDimension * this.getResizeFactor().getResizeX() + (imageDimension / 2) * resizeFactor.getResizeX() - rectangle.getWidth()/numberLanes;
+                }
+            case SOUTH:
+                if(isX) {
+                    return num * imageDimension * this.getResizeFactor().getResizeX() + (imageDimension / 2) * resizeFactor.getResizeX() + rectangle.getWidth()/numberLanes;
+                } else {
+                    return num * imageDimension * this.getResizeFactor().getResizeX() + rectangle.getWidth()/numberLanes;
+                }
+            case EAST:
+                if(isX) {
+                    return num * imageDimension * resizeFactor.getResizeX() + (.1 * imageDimension * resizeFactor.getResizeX());
+//                    return num * imageDimension * this.getResizeFactor().getResizeX() + rectangle.getWidth();
+                } else {
+                    return num * imageDimension * resizeFactor.getResizeX() + (.1 * imageDimension * resizeFactor.getResizeX());
+//                    return num * imageDimension * this.getResizeFactor().getResizeX() - (imageDimension / 2) * resizeFactor.getResizeX() + rectangle.getWidth();
+                }
+            case NORTH:
+                if(isX) {
+                    return num * imageDimension * this.getResizeFactor().getResizeX();// + rectangle.getWidth()/numberLanes;
+                } else {
+                    return num * imageDimension * this.getResizeFactor().getResizeX();
+                }
+        }
+
+        return 0;
+    }
+
+    private int getRotationFromDirectionChange(MapDirection fromDirection, MapDirection toDirection) {
+        if(
+                (fromDirection == MapDirection.SOUTH && toDirection == MapDirection.EAST) ||
+                (fromDirection == MapDirection.NORTH && toDirection == MapDirection.WEST) ||
+                (fromDirection == MapDirection.EAST && toDirection == MapDirection.NORTH) ||
+                (fromDirection == MapDirection.WEST && toDirection == MapDirection.SOUTH)) {
+            return -90;
+        }
+        else if(
+                (fromDirection == MapDirection.EAST && toDirection == MapDirection.SOUTH) ||
+                (fromDirection == MapDirection.SOUTH && toDirection == MapDirection.WEST) ||
+                (fromDirection == MapDirection.WEST && toDirection == MapDirection.NORTH) ||
+                (fromDirection == MapDirection.NORTH && toDirection == MapDirection.EAST)) {
+            return 90;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    private Coordinate directionToTranslation(MapDirection fromDirection) {
+        switch (fromDirection) {
+            case NORTH:
+                return new Coordinate(0,-1);
+            case SOUTH:
+                return new Coordinate(0,1);
+            case EAST:
+                return new Coordinate(1,0);
+            case WEST:
+                return new Coordinate(-1,0);
+        }
+
+        return null;
     }
 }

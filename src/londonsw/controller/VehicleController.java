@@ -1,5 +1,6 @@
 package londonsw.controller;
 
+import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 import londonsw.view.simulation.VehicleGUIDecorator;
@@ -51,34 +52,28 @@ public class VehicleController {
 
     public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws Exception {
 
-
-Boolean move =true;
+        Boolean move = true;
+        vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
+        vehicleGUIDecorator.setPreviousCoordinate(vehicleGUIDecorator.getCurrentCoordinate());
 
         if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
-           vehicleGUIDecorator.readTrafficLight();
+            vehicleGUIDecorator.readTrafficLight();
 
-            if (vehicleGUIDecorator.getVehicleState()==1)
-            {
+            if (vehicleGUIDecorator.getVehicleState() == 1) {
                 ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
-
                 vehicleGUIDecorator.setVehicleState(2); //move vehicle to intersection
-
-                vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
-
                 vehicleGUIDecorator.vehicleTurn();
-
             }
-
         }
         else {
-
             if (vehicleGUIDecorator.getVehicleState() != 0) {
-              move= vehicleGUIDecorator.moveVehicle(step);
+                move = vehicleGUIDecorator.moveVehicle(step);
             }
         }
 
-        if (move){
-        vehicleGUIDecorator.moveVehicleGUI(step, vehicleGUIDecorator.getVehicleState());}
+        if (move) {
+            vehicleGUIDecorator.moveVehicleGUI(step, vehicleGUIDecorator.getVehicleState());
+        }
 
     }
 }
