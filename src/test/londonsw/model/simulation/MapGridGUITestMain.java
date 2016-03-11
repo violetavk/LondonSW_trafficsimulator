@@ -46,15 +46,14 @@ public class MapGridGUITestMain extends Application {
 
 
         //=========== FIRST CAR
-        Lane L1 = map.getRoads().get(13).getLanes().get(1);
+        Lane L1 = map.getRoads().get(0).getLanes().get(0);
         Car C1 = new Car(0, L1);
-        //C1.setVehicleBehavior(VehicleBehavior.AGGRESSIVE);
+        // C1.setVehicleBehavior(VehicleBehavior.AGGRESSIVE);
         VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
         vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator.drawCar();
         Pane carPane = new Pane();
-
-        carPane.getChildren().add(vehicleGUIDecorator.getGroup());
+        carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
         StackPane sp = new StackPane();
         sp.getChildren().add(rootGP);
         sp.getChildren().add(carPane);
