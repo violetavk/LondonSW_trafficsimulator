@@ -44,7 +44,7 @@ public class MapGridGUITestMain extends Application {
         //Lane L1 = map.getRandomLane();
 
 
-
+/*
         //=========== FIRST CAR
         Lane L1 = map.getRoads().get(0).getLanes().get(0);
         Car C1 = new Car(0, L1);
@@ -103,11 +103,14 @@ public class MapGridGUITestMain extends Application {
         carPane5.getChildren().add(vehicleGUIDecorator5.getRectangle());
         sp.getChildren().add(carPane5);
         vehicleGUIDecorator5.setVehicleState(1);
+*/
+
+
 
         /**
          *  Ambulance inherits from vehicle
          */
-        Lane al = map.getRandomLane();
+     /*   Lane al = map.getRandomLane();
         Ambulance a = new Ambulance(0,al);
         VehicleGUIDecorator ambulanceGUIDecorator = new VehicleGUIDecorator(a);
         ambulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
@@ -116,7 +119,9 @@ public class MapGridGUITestMain extends Application {
         Pane alPane = new Pane();
         alPane.getChildren().add(ambulanceGUIDecorator.getRectangle());
         //sp.getChildren().add(alPane);
-        ambulanceGUIDecorator.setVehicleState(1);
+        ambulanceGUIDecorator.setVehicleState(1);*/
+
+
 
 
         /**
@@ -124,7 +129,7 @@ public class MapGridGUITestMain extends Application {
          * Button button = new Button("spawn ambulance"); button.setOnMouseClicked(event -> {do some action})
          * As we don't have the buttons yet, stack pane is used to demonstrate
          */
-        sp.setOnMouseClicked(event -> {
+      /*  sp.setOnMouseClicked(event -> {
 
             switch (event.getClickCount()){
                 case 1:
@@ -138,9 +143,29 @@ public class MapGridGUITestMain extends Application {
             }
 
         });
+*/
+
+       // System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
+
+        StackPane sp = new StackPane();
+        sp.getChildren().add(rootGP);
+
+        Car testCar;
+        int c=0;
+        for (int i=0; i<50; i++){
+            testCar = generateCar(map,mapGridGUIDecorator,sp);
+            if (testCar!=null)
+                c++;}
+        System.out.println("Number of cars is "+ c);
 
 
-        System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
+        Scene scene = new Scene(sp);
+        primaryStage.setTitle("Map Layout");
+        primaryStage.setScene(scene);
+
+        primaryStage.show();
+        primaryStage.setResizable(false);
+
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
@@ -151,6 +176,45 @@ public class MapGridGUITestMain extends Application {
         //primaryStage.setFullScreen(true);
 
     }
+
+    public Car generateCar(Map map, MapGridGUIDecorator mapGridGUIDecorator, StackPane sp){
+
+        Lane L1 =map.getRandomLane();
+        Lane L2;
+
+        for (int a=0; a<map.getRoads().size();a++)
+        {
+            for(int b=0; b<2;b++)
+            {
+                L2= map.getRoads().get(a).getLanes().get(b);
+                for (int i=0; i<L1.getLength();i++) {
+                    if (L1.isCellEmpty(i)) {
+                        Car C1 = new Car(i, L1);
+                        // C1.setVehicleBehavior(VehicleBehavior.AGGRESSIVE);
+                        VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
+                        vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+                        vehicleGUIDecorator.drawCar();
+                        Pane carPane = new Pane();
+                        carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
+                        sp.getChildren().add(carPane);
+                        vehicleGUIDecorator.setVehicleState(1);
+                        System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
+                        return C1;
+
+                    }
+                }
+
+
+            }
+
+
+        }
+        
+        return null;
+
+    }
+
+
 
     public Map drawTestMapBasic() throws Exception {
 
