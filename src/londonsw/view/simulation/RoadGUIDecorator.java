@@ -1,5 +1,6 @@
 package londonsw.view.simulation;
 
+import javafx.event.EventType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -11,6 +12,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import londonsw.model.simulation.components.*;
 
+import java.beans.EventHandler;
 import java.util.ArrayList;
 
 /**
@@ -42,6 +44,7 @@ public class RoadGUIDecorator extends RoadDecorator {
         ImageView iv = new ImageView(im);
 
         StackPane stackPane = new StackPane();
+
 
         //draw amount of lines
         Pane lines = new Pane();
@@ -159,8 +162,12 @@ public class RoadGUIDecorator extends RoadDecorator {
                 }
             }
 
+        stackPane.setOnMouseClicked(event -> System.out.println("Clicked"));
+
         stackPane.getChildren().add(iv);
         stackPane.getChildren().add(lines);
+
+
 
         return stackPane;
     }

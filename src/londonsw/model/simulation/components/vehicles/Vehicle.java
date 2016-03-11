@@ -167,18 +167,27 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     }
 
     //Move a vehicle some steps forward
+
     public boolean moveVehicle(int step) {
-       int curCell= this.getCurrentCell();
-        if(curCell+step >= this.currentLane.getLength() || (!this.currentLane.isCellEmpty(curCell+step)) ) {
-           return false;
+        int curCell= this.getCurrentCell();
+        int validStep=0;
+        for (int i=1;i<=step;i++){
+            if (curCell+i >=this.currentLane.getLength()|| (!this.currentLane.isCellEmpty(curCell+i)))
+                break;
+            else
+                validStep=i;
         }
-       else {
+        if(curCell+validStep >= this.currentLane.getLength() || (!this.currentLane.isCellEmpty(curCell+validStep)) ) {
+            return false;
+        }
+        else {
             currentLane.setCell(null,curCell);
-            curCell= curCell+step;
+            curCell= curCell+validStep;
             this.setCurrentCell(curCell,this.getCurrentLane());
             currentLane.setCell(this,curCell);
             return true;
        }
+
     }
 
     /**
@@ -211,10 +220,12 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     break;
             }
 
-            if(light.getState() == LightColour.RED)
-                this.vehicleState = 0;
-            else
-                this.vehicleState = 1;
+            if(light!=null) {
+                if (light.getState() == LightColour.RED)
+                    this.vehicleState = 0;
+                else
+                    this.vehicleState = 1;
+            }
         }
         else
             throw new Exception("Reading traffic light when not at end of lane");

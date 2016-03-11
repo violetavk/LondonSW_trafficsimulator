@@ -11,6 +11,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
@@ -25,62 +28,39 @@ public class test extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        ImageView car = new ImageView();
-        car.setImage(new Image("car.png",100,100,false,false));
 
-        //Image im = new Image(roadBackgroundPath, image.getHeight() * getResizeFactor().getResizeX(), image.getWidth() * getResizeFactor().getResizeY(), false, false);
+        double startPointX = 50;
+        double startPointY = 50;
 
-        car.setX(-car.getImage().getWidth() / 2);
-        car.setY(300 - car.getImage().getHeight());
-        car.setRotate(90);
+        double carDimensionX = 100;
+        double carDimensionY = 100;
 
-        PathElement[] path =
-                {
-                        new MoveTo(0, 300),
-                        new ArcTo(100, 100, 0, 100, 400, false, false),
-                        new LineTo(300, 400),
-                        new ArcTo(100, 100, 0, 400, 300, false, false),
-                        new LineTo(400, 100),
-                        new ArcTo(100, 100, 0, 300, 0, false, false),
-                        new LineTo(100, 0),
-                        new ArcTo(100, 100, 0, 0, 100, false, false),
-                        new LineTo(0, 300),
-                        new ClosePath()
-                };
+        Rectangle rectangleBackground = new Rectangle(
+                startPointX,
+                startPointY,
+                carDimensionX,
+                carDimensionY);
 
-        Path road = new Path();
-        road.setStroke(Color.BLACK);
-        road.setStrokeWidth(75);
-        road.getElements().addAll(path);
+        rectangleBackground.setFill(Color.TRANSPARENT);
 
-        Path divider = new Path();
-        divider.setStroke(Color.WHITE);
-        divider.setStrokeWidth(4);
-        divider.getStrokeDashArray().addAll(10.0, 10.0);
-        divider.getElements().addAll(path);
+        Rectangle rectangleCar = new Rectangle
+                (
+                        startPointX, startPointY,
+                        carDimensionX,
+                        (carDimensionY /2)
+                );
 
-        PathTransition anim = new PathTransition();
-        anim.setNode(car);
-        anim.setPath(road);
-        anim.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        anim.setInterpolator(Interpolator.LINEAR);
-        anim.setDuration(new Duration(6000));
-        anim.setCycleCount(Timeline.INDEFINITE);
+        rectangleCar.setFill(Color.RED);
+
+        Pane shadowPane = new Pane();
+
+        shadowPane.getChildren().addAll(rectangleBackground,rectangleCar);
 
         Group root = new Group();
-        root.getChildren().addAll(road, divider, car);
-        root.setTranslateX(50);
-        root.setTranslateY(50);
-        root.setOnMouseClicked(me ->
-        {
-            Animation.Status status = anim.getStatus();
-            if (status == Animation.Status.RUNNING &&
-                    status != Animation.Status.PAUSED)
-                anim.pause();
-            else
-                anim.play();
-        });
-        Scene scene = new Scene(root, 500, 500, Color.DARKGREEN);
+
+        root.getChildren().add(shadowPane);
+
+        Scene scene = new Scene(root, 1000, 1000, Color.DARKGREEN);
 
         primaryStage.setTitle("PathTransition Demo");
         primaryStage.setScene(scene);

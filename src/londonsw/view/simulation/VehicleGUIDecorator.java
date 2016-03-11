@@ -19,7 +19,7 @@ import londonsw.model.simulation.components.vehicles.Vehicle;
  */
 public class VehicleGUIDecorator extends VehicleDecorator {
 
-    double imageDimension;
+    private double imageDimension;
     private Rectangle rectangle;
     private GridPane gridPane;
     private ResizeFactor resizeFactor;
@@ -86,18 +86,11 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
         if(this.getCurrentLane().getRoad().runsVertically())
         {
-//            startPointX+=(this.getCurrentLane().getRoadIndex() * division+ (imageDimension/10)*resizeFactor.getResizeX());
             carDimensionX = cellDimension/numberLanes - 80*resizeFactor.getResizeX();
             carDimensionY -= 15;
             verticalStartFudgeFactor = -carDimensionX*resizeFactor.getResizeX();
         }
-//
-//        double startPointY = y * this.getCurrentCoordinate().getY();
-//
-//        car runs Horizontally
-        if(!this.getCurrentLane().getRoad().runsVertically())
-        {
-//            startPointY+=(this.getCurrentLane().getRoadIndex() * division + 10*resizeFactor.getResizeX());
+        else {
             carDimensionY = cellDimension/numberLanes - 80*resizeFactor.getResizeX();
             carDimensionX -= 15;
             horizontalStartFudgeFactor = -carDimensionY*resizeFactor.getResizeX();
@@ -144,11 +137,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             double fromXPixels = rectangle.xProperty().doubleValue();
             double fromYPixels = rectangle.yProperty().doubleValue();
 
-//            double[] currentLocation = coordinateToPixels(coordinate,toDirection);
-//            double fromXPixels = currentLocation[0];
-//            double fromYPixels = currentLocation[1];
-//            System.out.println("The car is at " + fromXPixels + ", " + fromYPixels + " but the system thinks " + rectangle.xProperty().doubleValue() + ", " + rectangle.yProperty().doubleValue());
-
             Coordinate fromTranslation = directionToTranslation(fromDirection);
             Coordinate toTranslation = directionToTranslation(toDirection);
             Coordinate overallTranslation = Coordinate.add(fromTranslation,toTranslation);
@@ -162,8 +150,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             double[] toPixels = coordinateToPixels(newPosition,toDirection,true);
             double toXPixels = toPixels[0];
             double toYPixels = toPixels[1];
-//            toXPixels = gridToPixelsIntersection(newPosition.getX(),toDirection,true,numberLanes);
-//            toYPixels = gridToPixelsIntersection(newPosition.getY(),toDirection,false, numberLanes);
 
             System.out.println("Moving by " + (toXPixels - fromXPixels) + ", " + (toYPixels - fromYPixels));
             tt.setToX(toXPixels - fromXPixels);
@@ -187,23 +173,14 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
             double fromXPixels = rectangle.xProperty().doubleValue();
             double fromYPixels = rectangle.yProperty().doubleValue();
-//            double[] currentLocation = coordinateToPixels(coordinate,toDirection);
-//            double fromXPixels = currentLocation[0];
-//            double fromYPixels = currentLocation[1];
-//            rectangle.setX(fromXPixels);
-//            rectangle.setY(fromYPixels);
             System.out.println("***Moving from " + fromXPixels + ", " + fromYPixels);
 
             Coordinate toTranslation = directionToTranslation(toDirection);
             Coordinate newPosition = Coordinate.add(toTranslation,coordinate);
-//            System.out.println("Moving " + toDirection + " by " + toTranslation + " to " + newPosition);
 
             double[] toPixels = coordinateToPixels(newPosition,toDirection,false);
             double toXPixels = toPixels[0];
             double toYPixels = toPixels[1];
-//            toXPixels = gridToPixelsStraight(newPosition.getX(),toDirection,numberLanes);
-//            toYPixels = gridToPixelsStraight(newPosition.getY(),toDirection,numberLanes);
-//            System.out.println("Calculated location -> " + toXPixels + ", " + toYPixels);
 
             if(toDirection == MapDirection.NORTH || toDirection == MapDirection.SOUTH)
                 tt.setToY(toYPixels - fromYPixels);
@@ -238,56 +215,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         System.out.println(" -> Location is " + pixels[0] + ", " + pixels[1]);
 
         return pixels;
-    }
-
-    private double gridToPixelsStraight(int num, MapDirection toDirection, int numberLanes) {
-        switch (toDirection) {
-            case NORTH:
-                return num*imageDimension*resizeFactor.getResizeX();
-            case WEST:
-                return num*imageDimension*resizeFactor.getResizeX();// + rectangle.getWidth();
-            case SOUTH:
-                return num*imageDimension*resizeFactor.getResizeX();// + rectangle.getWidth()/numberLanes;
-            case EAST:
-                return num*imageDimension*resizeFactor.getResizeX();// + rectangle.getWidth();
-        }
-
-        return 0;
-    }
-
-    private double gridToPixelsIntersection(int num, MapDirection toDirection, boolean isX, int numberLanes) {
-        switch (toDirection) {
-            case WEST:
-                if(isX) {
-//                    return num * imageDimension * this.getResizeFactor().getResizeX() + (imageDimension / 3) * resizeFactor.getResizeX();
-                    return num * imageDimension * resizeFactor.getResizeX();
-                } else {
-                    return num * imageDimension * resizeFactor.getResizeX() + (.6 * imageDimension * resizeFactor.getResizeX());
-//                    return num * imageDimension * this.getResizeFactor().getResizeX() + (imageDimension / 2) * resizeFactor.getResizeX() - rectangle.getWidth()/numberLanes;
-                }
-            case SOUTH:
-                if(isX) {
-                    return num * imageDimension * this.getResizeFactor().getResizeX() + (imageDimension / 2) * resizeFactor.getResizeX() + rectangle.getWidth()/numberLanes;
-                } else {
-                    return num * imageDimension * this.getResizeFactor().getResizeX() + rectangle.getWidth()/numberLanes;
-                }
-            case EAST:
-                if(isX) {
-                    return num * imageDimension * resizeFactor.getResizeX() + (.1 * imageDimension * resizeFactor.getResizeX());
-//                    return num * imageDimension * this.getResizeFactor().getResizeX() + rectangle.getWidth();
-                } else {
-                    return num * imageDimension * resizeFactor.getResizeX() + (.1 * imageDimension * resizeFactor.getResizeX());
-//                    return num * imageDimension * this.getResizeFactor().getResizeX() - (imageDimension / 2) * resizeFactor.getResizeX() + rectangle.getWidth();
-                }
-            case NORTH:
-                if(isX) {
-                    return num * imageDimension * this.getResizeFactor().getResizeX();// + rectangle.getWidth()/numberLanes;
-                } else {
-                    return num * imageDimension * this.getResizeFactor().getResizeX();
-                }
-        }
-
-        return 0;
     }
 
     private int getRotationFromDirectionChange(MapDirection fromDirection, MapDirection toDirection) {
