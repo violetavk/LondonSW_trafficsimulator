@@ -52,7 +52,7 @@ public class VehicleController {
     public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws Exception {
 
 
-Boolean move =true;
+        Boolean move =true;
 
         if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
            vehicleGUIDecorator.readTrafficLight();

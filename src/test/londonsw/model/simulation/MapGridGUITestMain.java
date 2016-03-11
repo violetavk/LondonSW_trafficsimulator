@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+//import londonsw.System;
 import londonsw.model.simulation.components.*;
 import londonsw.model.simulation.components.vehicles.Ambulance;
 import londonsw.model.simulation.components.vehicles.Car;
@@ -45,9 +46,9 @@ public class MapGridGUITestMain extends Application {
 
 
         //=========== FIRST CAR
-        Lane L1 = map.getRoads().get(9).getLanes().get(0);
+        Lane L1 = map.getRoads().get(13).getLanes().get(1);
         Car C1 = new Car(0, L1);
-       // C1.setVehicleBehavior(VehicleBehavior.AGGRESSIVE);
+        C1.setVehicleBehavior(VehicleBehavior.AGGRESSIVE);
         VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
         vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator.drawCar();
@@ -60,9 +61,9 @@ public class MapGridGUITestMain extends Application {
         Scene scene = new Scene(sp);
         vehicleGUIDecorator.setVehicleState(1);
 
-
+/*
         //=======     SECOND CAR
-        Lane L2 = map.getRoads().get(1).getLanes().get(1);
+        Lane L2 = map.getRoads().get(15).getLanes().get(0);
         Car C2 = new Car(0, L2);
         VehicleGUIDecorator vehicleGUIDecorator2 = new VehicleGUIDecorator(C2);
         vehicleGUIDecorator2.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
@@ -71,10 +72,13 @@ public class MapGridGUITestMain extends Application {
         carPane2.getChildren().add(vehicleGUIDecorator2.getGroup());
         sp.getChildren().add(carPane2);
         vehicleGUIDecorator2.setVehicleState(1);
+*/
+
+            /*
 
         //========== THIRD CAR
-        Lane L3 = map.getRoads().get(11).getLanes().get(0);
-        Car C3 = new Car(0,L3);
+        Lane L3 = map.getRoads().get(0).getLanes().get(0);
+        Car C3 = new Car(2,L3);
         VehicleGUIDecorator vehicleGUIDecorator3 = new VehicleGUIDecorator(C3);
         vehicleGUIDecorator3.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator3.drawCar();
@@ -84,8 +88,8 @@ public class MapGridGUITestMain extends Application {
         vehicleGUIDecorator3.setVehicleState(1);
 
         //========== FORTH CAR
-        Lane L4 = map.getRoads().get(13).getLanes().get(0);
-        Car C4 = new Car(0,L4);
+        Lane L4 = map.getRoads().get(9).getLanes().get(0);
+        Car C4 = new Car(3,L4);
         VehicleGUIDecorator vehicleGUIDecorator4 = new VehicleGUIDecorator(C4);
         vehicleGUIDecorator4.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator4.drawCar();
@@ -95,8 +99,8 @@ public class MapGridGUITestMain extends Application {
         vehicleGUIDecorator4.setVehicleState(1);
 
         //========== FIFTH CAR
-        Lane L5 = map.getRoads().get(3).getLanes().get(0);
-        Car C5 = new Car(0,L5);
+        Lane L5 = map.getRoads().get(9).getLanes().get(0);
+        Car C5 = new Car(4,L5);
         VehicleGUIDecorator vehicleGUIDecorator5 = new VehicleGUIDecorator(C5);
         vehicleGUIDecorator5.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator5.drawCar();
@@ -104,7 +108,7 @@ public class MapGridGUITestMain extends Application {
         carPane5.getChildren().add(vehicleGUIDecorator5.getGroup());
         sp.getChildren().add(carPane5);
         vehicleGUIDecorator5.setVehicleState(1);
-
+*/
         /**
          *  Ambulance inherits from vehicle
          */
@@ -118,6 +122,8 @@ public class MapGridGUITestMain extends Application {
         alPane.getChildren().add(AmbulanceGUIDecorator.getRectangle());
         sp.getChildren().add(alPane);
         AmbulanceGUIDecorator.setVehicleState(1);*/
+
+
 
 
         System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
@@ -485,6 +491,7 @@ public class MapGridGUITestMain extends Application {
         r10.addLane(new Lane(r10.getStartLocation(),r10.getEndLocation(),MapDirection.EAST));
         r11.addLane(new Lane(r11.getEndLocation(),r11.getStartLocation(),MapDirection.NORTH));
         r12.addLane(new Lane(r12.getStartLocation(),r12.getEndLocation(),MapDirection.EAST));
+
         r13.addLane(new Lane(r13.getStartLocation(),r13.getEndLocation(),MapDirection.EAST));
         r14.addLane(new Lane(r14.getStartLocation(),r14.getEndLocation(),MapDirection.EAST));
         r15.addLane(new Lane(r15.getStartLocation(),r15.getEndLocation(),MapDirection.EAST));
@@ -516,7 +523,11 @@ public class MapGridGUITestMain extends Application {
         r10.addLane(new Lane(r10.getEndLocation(),r10.getStartLocation(),MapDirection.WEST));
         r11.addLane(new Lane(r11.getStartLocation(),r11.getEndLocation(),MapDirection.SOUTH));
         r12.addLane(new Lane(r12.getEndLocation(),r12.getStartLocation(),MapDirection.WEST));
-        r13.addLane(new Lane(r13.getEndLocation(),r13.getStartLocation(),MapDirection.WEST));
+
+        Lane lane13WClosed = new Lane(r13.getEndLocation(),r13.getStartLocation(),MapDirection.WEST);
+        lane13WClosed.setState(0);
+
+        r13.addLane(lane13WClosed);
         r14.addLane(new Lane(r14.getEndLocation(),r14.getStartLocation(),MapDirection.WEST));
         r15.addLane(new Lane(r15.getEndLocation(),r15.getStartLocation(),MapDirection.WEST));
         r16.addLane(new Lane(r16.getStartLocation(),r16.getEndLocation(),MapDirection.SOUTH));
@@ -604,7 +615,7 @@ public class MapGridGUITestMain extends Application {
         i12.setWestRoad(r13);
         i12.setEastRoad(r14);
         i12.setSouthRoad(r16);
-        i12.setDefaultTrafficLightsForRoads();
+        i12.setDefaultTrafficLightsForRoads();    //enables tl
 
         Intersection i13 = new Intersection(new Coordinate(13,10));
         i13.setWestRoad(r14);

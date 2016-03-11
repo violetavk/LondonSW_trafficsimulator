@@ -177,7 +177,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         }
 
 
-        rectangleBackground.setFill(Color.YELLOW);
+        rectangleBackground.setFill(Color.TRANSPARENT);
         rectangleBackground.setRotate(angle);
         //rectangleCar.setRotate(angle);
 
