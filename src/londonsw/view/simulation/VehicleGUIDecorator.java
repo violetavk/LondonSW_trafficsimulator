@@ -110,8 +110,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
         r.setRotate(angle);
 
-        r.setFill(Color.YELLOW);
-
         this.setRectangle(r);
     }
 
@@ -144,14 +142,14 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
             // work out rotation
             int rotation = getRotationFromDirectionChange(fromDirection,toDirection);
-            System.out.println(fromDirection + " -> " + toDirection + ": " + fromTranslation + " + " + toTranslation + " = " + overallTranslation + " -> " + rotation + " -> New coord: " + newPosition);
+//            System.out.println(fromDirection + " -> " + toDirection + ": " + fromTranslation + " + " + toTranslation + " = " + overallTranslation + " -> " + rotation + " -> New coord: " + newPosition);
 
             // work out actual animation
             double[] toPixels = coordinateToPixels(newPosition,toDirection,true);
             double toXPixels = toPixels[0];
             double toYPixels = toPixels[1];
 
-            System.out.println("Moving by " + (toXPixels - fromXPixels) + ", " + (toYPixels - fromYPixels));
+//            System.out.println("Moving by " + (toXPixels - fromXPixels) + ", " + (toYPixels - fromYPixels));
             tt.setToX(toXPixels - fromXPixels);
             tt.setToY(toYPixels - fromYPixels);
 
@@ -173,7 +171,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
             double fromXPixels = rectangle.xProperty().doubleValue();
             double fromYPixels = rectangle.yProperty().doubleValue();
-            System.out.println("***Moving from " + fromXPixels + ", " + fromYPixels);
+//            System.out.println("***Moving from " + fromXPixels + ", " + fromYPixels);
 
             Coordinate toTranslation = directionToTranslation(toDirection);
             Coordinate newPosition = Coordinate.add(toTranslation,coordinate);
@@ -195,7 +193,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         double[] pixels = new double[2];
         int x = c.getX();
         int y = c.getY();
-        System.out.println("Calculating location for "+c+"...");
+//        System.out.println("Calculating location for "+c+"...");
         if(direction == MapDirection.NORTH) {
             pixels[0] = x * imageDimension * resizeFactor.getResizeX() + (.1 * imageDimension * resizeFactor.getResizeX() + horizontalStartFudgeFactor);
             pixels[1] = y * imageDimension * resizeFactor.getResizeX() - horizontalStartFudgeFactor;
@@ -212,7 +210,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             pixels[0] = x * imageDimension * resizeFactor.getResizeX() + (.6 * imageDimension * resizeFactor.getResizeX()) + horizontalStartFudgeFactor;
             pixels[1] = y * imageDimension * resizeFactor.getResizeX() + (.1 * imageDimension * resizeFactor.getResizeX()) - horizontalStartFudgeFactor;
         }
-        System.out.println(" -> Location is " + pixels[0] + ", " + pixels[1]);
+//        System.out.println(" -> Location is " + pixels[0] + ", " + pixels[1]);
 
         return pixels;
     }

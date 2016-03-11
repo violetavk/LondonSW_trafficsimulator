@@ -19,7 +19,7 @@ public class Ticker {
 
     private static ArrayList<Subscriber<Long>> subscribers = new ArrayList<Subscriber<Long>>();;
 
-    private static long TICK_INTERVAL = 80;
+    private static long TICK_INTERVAL = 1000;
 
     private static Ticker instance;
 

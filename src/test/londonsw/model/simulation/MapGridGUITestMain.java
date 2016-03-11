@@ -60,67 +60,65 @@ public class MapGridGUITestMain extends Application {
         Scene scene = new Scene(sp);
         vehicleGUIDecorator.setVehicleState(1);
 
-/*
         //=======     SECOND CAR
-        Lane L2 = map.getRoads().get(15).getLanes().get(0);
+        Lane L2 = map.getRoads().get(0).getLanes().get(1);
         Car C2 = new Car(0, L2);
         VehicleGUIDecorator vehicleGUIDecorator2 = new VehicleGUIDecorator(C2);
         vehicleGUIDecorator2.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator2.drawCar();
         Pane carPane2 = new Pane();
-        carPane2.getChildren().add(vehicleGUIDecorator2.getGroup());
+        carPane2.getChildren().add(vehicleGUIDecorator2.getRectangle());
         sp.getChildren().add(carPane2);
         vehicleGUIDecorator2.setVehicleState(1);
-*/
-
-            /*
 
         //========== THIRD CAR
-        Lane L3 = map.getRoads().get(0).getLanes().get(0);
-        Car C3 = new Car(2,L3);
+        Lane L3 = map.getRoads().get(10).getLanes().get(0);
+        Car C3 = new Car(0,L3);
         VehicleGUIDecorator vehicleGUIDecorator3 = new VehicleGUIDecorator(C3);
         vehicleGUIDecorator3.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator3.drawCar();
         Pane carPane3 = new Pane();
-        carPane3.getChildren().add(vehicleGUIDecorator3.getGroup());
+        carPane3.getChildren().add(vehicleGUIDecorator3.getRectangle());
         sp.getChildren().add(carPane3);
         vehicleGUIDecorator3.setVehicleState(1);
 
         //========== FORTH CAR
-        Lane L4 = map.getRoads().get(9).getLanes().get(0);
-        Car C4 = new Car(3,L4);
+        Lane L4 = map.getRoads().get(13).getLanes().get(0);
+        Car C4 = new Car(0,L4);
         VehicleGUIDecorator vehicleGUIDecorator4 = new VehicleGUIDecorator(C4);
         vehicleGUIDecorator4.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator4.drawCar();
         Pane carPane4 = new Pane();
-        carPane4.getChildren().add(vehicleGUIDecorator4.getGroup());
+        carPane4.getChildren().add(vehicleGUIDecorator4.getRectangle());
         sp.getChildren().add(carPane4);
         vehicleGUIDecorator4.setVehicleState(1);
 
         //========== FIFTH CAR
-        Lane L5 = map.getRoads().get(9).getLanes().get(0);
-        Car C5 = new Car(4,L5);
+        Lane L5 = map.getRoads().get(3).getLanes().get(0);
+        Car C5 = new Car(0,L5);
         VehicleGUIDecorator vehicleGUIDecorator5 = new VehicleGUIDecorator(C5);
         vehicleGUIDecorator5.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
         vehicleGUIDecorator5.drawCar();
         Pane carPane5 = new Pane();
-        carPane5.getChildren().add(vehicleGUIDecorator5.getGroup());
+        carPane5.getChildren().add(vehicleGUIDecorator5.getRectangle());
         sp.getChildren().add(carPane5);
         vehicleGUIDecorator5.setVehicleState(1);
-*/
+
         /**
          *  Ambulance inherits from vehicle
          */
         Lane al = map.getRandomLane();
         Ambulance a = new Ambulance(0,al);
-        VehicleGUIDecorator AmbulanceGUIDecorator = new VehicleGUIDecorator(a);
-        AmbulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
-        AmbulanceGUIDecorator.setColor(Color.RED);
-        AmbulanceGUIDecorator.drawCar();
+        VehicleGUIDecorator ambulanceGUIDecorator = new VehicleGUIDecorator(a);
+        ambulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+        ambulanceGUIDecorator.setColor(Color.RED);
+        ambulanceGUIDecorator.drawCar();
         Pane alPane = new Pane();
-        alPane.getChildren().add(AmbulanceGUIDecorator.getGroup());
+        alPane.getChildren().add(ambulanceGUIDecorator.getRectangle());
         //sp.getChildren().add(alPane);
-        AmbulanceGUIDecorator.setVehicleState(1);
+        ambulanceGUIDecorator.setVehicleState(1);
+
+
         /**
          * We would have a button to spawn an ambulance: single click deploys the ambulance and double click removes it.
          * Button button = new Button("spawn ambulance"); button.setOnMouseClicked(event -> {do some action})
