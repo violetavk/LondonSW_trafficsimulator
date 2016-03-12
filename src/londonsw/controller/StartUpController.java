@@ -44,6 +44,10 @@ public class StartUpController extends Application{
 
     @FXML private TextField height;
 
+    @FXML public  MapLoadingController main;
+
+    @FXML public static String mapName;
+
     public void startSoftware(String[] args) {
         launch(args);
     }
@@ -69,6 +73,7 @@ public class StartUpController extends Application{
      * @param actionEvent click action
      * @throws Exception
      */
+
     public void goToSimulationMode(ActionEvent actionEvent) throws Exception {
 
         Parent simulationModeScreen  = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode" + ".fxml"));
@@ -77,25 +82,39 @@ public class StartUpController extends Application{
         Pane p = (Pane) node;
 
         //Create map
-        Map map = new Map(20,20);
+        FileChooser chooser=new FileChooser();
+        chooser.setTitle("Open File");
+        File file = chooser.showOpenDialog(new Stage());
 
-        //Decorate map to extend to GUI functionality
-        MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
+        mapName=file.getName();
 
-        //Always apply resize
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
+        if(file!=null)
+        {
+            Map map = Map.loadMap(file.getName());
+
+            // Map map = new Map(20,20);
+
+            //Decorate map to extend to GUI functionality
+            MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
+
+            //Always apply resize
+            mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
 
 
-        //Instantiate GridPane that will contain empty map with grass
-        GridPane root = mapGridGUIDecorator.drawComponents();
+            //Instantiate GridPane that will contain empty map with grass
+            GridPane root = mapGridGUIDecorator.drawComponents();
 
 
-        p.getChildren().add(root);
+            p.getChildren().add(root);
 
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-        stage.setScene(new Scene(simulationModeScreen));
-
+            stage.setScene(new Scene(simulationModeScreen));
+        }
+        else
+        {
+            //TODO: no file selected
+        }
     }
 
     public void goToMapBuilderMode(ActionEvent actionEvent) throws IOException {
@@ -134,4 +153,9 @@ public class StartUpController extends Application{
 
         stage.setScene(new Scene(mapCreation));
     }
+
+    public void init(MapLoadingController mapLoadingController) {
+        main=mapLoadingController;
+    }
+
 }
