@@ -1,13 +1,13 @@
 package londonsw.model.simulation;
 
-import londonsw.model.simulation.components.Component;
-import londonsw.model.simulation.components.Coordinate;
-import londonsw.model.simulation.components.Intersection;
-import londonsw.model.simulation.components.Lane;
-import londonsw.model.simulation.components.Road;
+import londonsw.controller.TrafficLightController;
+import londonsw.model.simulation.components.*;
+import londonsw.view.simulation.TrafficLightDecorator;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -19,6 +19,7 @@ public class Map implements Serializable {
     private ArrayList<Intersection> intersections;
     private MapGrid grid;
     private final static String MAP_DIR = "./maps/";
+    private final static String TRAFFIC_LIGHTS_TEMP = "_data";
 
 
     /**
@@ -172,18 +173,41 @@ public class Map implements Serializable {
             }
 
             String path = MAP_DIR + fileName;
+            String pathTemp = path + TRAFFIC_LIGHTS_TEMP;
 
             File file = new File(path);
+            File fileTemp = new File(pathTemp); // used for the traffic lights
             if(!file.exists()) {
                 file.createNewFile();
             }
+            if(!fileTemp.exists()) {
+                fileTemp.createNewFile();
+            }
 
+            // save the map
             FileOutputStream fileOut = new FileOutputStream(path);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this);
             out.close();
             fileOut.close();
-            System.out.printf("Serialized data is saved in " + path);
+
+            // save the traffic lights & intersection data
+            FileOutputStream fileOutTemp = new FileOutputStream(pathTemp);
+            ObjectOutputStream outTemp = new ObjectOutputStream(fileOutTemp);
+            ArrayList<Object> trafficLights = new ArrayList<>();
+            ArrayList<TrafficLight> lightsList = (ArrayList<TrafficLight>) convertFromStaticToSave(TrafficLightController.getAllTrafficLights());
+            System.out.println("Saved lights list: " + lightsList.size());
+            java.util.Map<TrafficLight,TrafficLightDecorator> lightsMap = (java.util.Map<TrafficLight, TrafficLightDecorator>) convertFromStaticToSave(TrafficLightController.getTrafficLightsMap());
+            System.out.println("Saved lights map: " + lightsMap.size());
+            // TODO get all the lights, but then convert them to a non static version of the list... have a helper method to copy the things
+            trafficLights.add(lightsList); // the array list of all traffic lights
+            trafficLights.add(lightsMap); // the HashMap of (TrafficLight, TrafficLightDecorator) pairs
+            outTemp.writeObject(trafficLights);
+            outTemp.close();
+            fileOutTemp.close();
+
+
+            System.out.printf("Serialized data is saved in " + path + " and " + path + TRAFFIC_LIGHTS_TEMP);
         }catch(IOException i)
         {
             i.printStackTrace();
@@ -192,15 +216,31 @@ public class Map implements Serializable {
 
     public static Map loadMap(String fileName) {
         String path = MAP_DIR + fileName;
+        String pathLights = MAP_DIR + fileName + TRAFFIC_LIGHTS_TEMP;
         Map map = null;
+        ArrayList<TrafficLight> allLights = null;
+        java.util.Map<TrafficLight,TrafficLightDecorator> lightsMap = null;
 
         try {
+            // open the Map
             File file = new File(path);
             FileInputStream fileIn = new FileInputStream(path);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             map = (Map) in.readObject();
             in.close();
             fileIn.close();
+
+            // open the Traffic Lights and TODO intersections
+            FileInputStream fileInLights = new FileInputStream(pathLights);
+            ObjectInputStream inLights = new ObjectInputStream(fileInLights);
+            ArrayList<Object> list = (ArrayList<Object>) inLights.readObject();
+            System.out.println("Loading lights.. size = " + list.size()); // should be 2
+            allLights = (ArrayList<TrafficLight>) list.get(0);
+            System.out.println("Found " + allLights.size() + " lights in list");
+            lightsMap = (java.util.Map<TrafficLight,TrafficLightDecorator>) list.get(1);
+            System.out.println("Found " + lightsMap.size() + " in map");
+            TrafficLightController.setAllTrafficLights(allLights);
+            TrafficLightController.setTrafficLightMap(lightsMap);
 
         } catch(IOException i) {
             System.out.println("IO Exception");
@@ -211,5 +251,20 @@ public class Map implements Serializable {
         }
 
         return map;
+    }
+
+    public Object convertFromStaticToSave(Object toConvert) {
+        if(toConvert instanceof ArrayList) {
+            ArrayList newList = new ArrayList();
+            Collections.copy(newList, (ArrayList) toConvert);
+            return newList;
+        }
+
+        if(toConvert instanceof java.util.Map) {
+            java.util.Map m = new HashMap<TrafficLight,TrafficLightDecorator>((HashMap<TrafficLight,TrafficLightDecorator>) toConvert);
+            return m;
+        }
+
+        return null;
     }
 }
