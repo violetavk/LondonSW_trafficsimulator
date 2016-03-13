@@ -64,28 +64,43 @@ public class Map implements Serializable {
     {
         ArrayList<Road> roads = getRoads();
 
+        Road road = null;
+
         Random randomRoad = new Random();
 
-        int roadSize = randomRoad.nextInt(this.getRoads().size());
+        if(roads.size()>0) {
 
-        Road road = roads.get(roadSize);
+            int roadSize = randomRoad.nextInt(this.getRoads().size());
+
+            road = roads.get(roadSize);
+        }
 
         return road;
     }
 
-    public Lane getRandomLane()
-    {
+    public Lane getRandomLane() {
         Road road = getRandomRoad();
-        Random randomLane = new Random();
-        int laneSize = randomLane.nextInt(road.getNumberLanes());
-        Lane lane = road.getLanes().get(laneSize);
-        while(lane.getState() != 1) { // if road is disabled, choose a new one
-            road = getRandomRoad();
-            lane = road.getLanes().get(randomLane.nextInt(road.getNumberLanes()));
+        Lane lane = null;
+
+        if (road != null) {
+            Random randomLane = new Random();
+            int numberLanes = road.getNumberLanes();
+
+
+            if (numberLanes > 0) {
+                int laneSize = randomLane.nextInt(road.getNumberLanes());
+                lane = road.getLanes().get(laneSize);
+                while (lane.getState() != 1) { // if road is disabled, choose a new one
+                    road = getRandomRoad();
+                    lane = road.getLanes().get(randomLane.nextInt(road.getNumberLanes()));
+                }
+            }
         }
-        //lane.setRoadIndex(laneSize);
+
         return lane;
+
     }
+
     public int getRandomCell(){
 
         Random randomCell = new Random();

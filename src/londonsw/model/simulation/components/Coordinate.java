@@ -50,6 +50,10 @@ public class Coordinate implements Serializable {
         return new Coordinate(a.getX()+b.getX(), a.getY()+b.getY());
     }
 
+    public static Coordinate substract(Coordinate a, Coordinate b) {
+        return new Coordinate(a.getX()-b.getX(), a.getY()-b.getY());
+    }
+
     public String toString() {
         return "(" + x + ", " + y + ")";
     }

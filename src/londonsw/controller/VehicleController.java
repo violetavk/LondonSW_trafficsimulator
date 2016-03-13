@@ -53,6 +53,7 @@ public class VehicleController {
     public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws Exception {
 
         Boolean move = true;
+
         vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
         vehicleGUIDecorator.setPreviousCoordinate(vehicleGUIDecorator.getCurrentCoordinate());
 
@@ -74,6 +75,5 @@ public class VehicleController {
         if (move) {
             vehicleGUIDecorator.moveVehicleGUI(step, vehicleGUIDecorator.getVehicleState());
         }
-
     }
 }
