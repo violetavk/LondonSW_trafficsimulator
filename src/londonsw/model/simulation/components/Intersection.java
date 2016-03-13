@@ -30,6 +30,16 @@ public class Intersection implements Component, Serializable {
     private TrafficLight eastTrafficLight;
     private TrafficLight westTrafficLight;
 
+    public String getIdIntersection() {
+        return idIntersection;
+    }
+
+    public void setIdIntersection(String idIntersection) {
+        this.idIntersection = idIntersection;
+    }
+
+    private String idIntersection;
+
     private Coordinate location;
 
     /* constructor */
