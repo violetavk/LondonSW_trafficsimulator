@@ -103,12 +103,12 @@ public abstract class VehicleDecorator implements IVehicle {
     }
 
     @Override
-    public void setCurrentLane(Lane currentLane) {
+    public void setCurrentLane(Lane currentLane) throws Exception {
         decoratedVehicle.setCurrentLane(currentLane);
     }
 
     @Override
-    public void setCurrentCell(int curCell, Lane currentLane) {
+    public void setCurrentCell(int curCell, Lane currentLane) throws Exception {
         decoratedVehicle.setCurrentCell(curCell,currentLane);
     }
 
@@ -123,7 +123,7 @@ public abstract class VehicleDecorator implements IVehicle {
     }
 
     @Override
-    public boolean moveVehicle(int step) {
+    public boolean moveVehicle(int step) throws Exception {
         return decoratedVehicle.moveVehicle(step);
     }
 

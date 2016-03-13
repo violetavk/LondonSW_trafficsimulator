@@ -153,22 +153,77 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     public Coordinate getStoredCurrentCoordinate() {
         return currentCoordinate;
     }
-
     //Setter
+
+    /**
+     * @param vehicleLength the length of a vehicle in type of integer
+     */
     public void setVehicleLength(int vehicleLength){this.vehicleLength=vehicleLength;}
+
+    /**
+     * @param vehicleSpeed the speed of vehicle in type of double
+     */
     public void setVehicleSpeed(double vehicleSpeed){this.vehicleSpeed=vehicleSpeed;}
     public void setVehiclePriority(int vehiclePriority){this.vehiclePriority=vehiclePriority;}
-    public void setCurrentLane(Lane currentLane){this.currentLane =currentLane;}
-    public void setCurrentCell(int curCell,Lane currentLane){this.currentCell=curCell;}
+
+
+    /**
+     * @param currentLane a lane to set car in, in type of lane
+     * @throws Exception if lane is not exist
+     * set a vehicle into a new lane
+     */
+    public void setCurrentLane(Lane currentLane) throws Exception{
+        if(currentLane != null){
+            this.currentLane =currentLane;}
+    else
+            throw new Exception("Lane is not Exist !");
+    }
+
+    /**
+     * @param curCell new cell to assign vehicle to
+     * @param currentLane lane that cell takes place in
+     * @throws Exception if the cell is out of bounds or is not empty
+     *
+     * set a vehicle into a new cell
+     * check if a new cell is empty, and not out of bounds
+     * not less than zero or equal or more than lane length
+     */
+    public void setCurrentCell(int curCell,Lane currentLane) throws Exception{
+        if ((curCell >=0)&& (curCell< currentLane.getLength())&& (currentLane.isCellEmpty(curCell))){
+            this.currentCell=curCell;
+        }else
+            throw new Exception("new cell is not available !");
+    }
+
+    /**
+     * @param vehicleState in type of integer
+     * set the state of vehicle
+     * 0 for still and 1 for movement
+     */
     public void setVehicleState(int vehicleState){this.vehicleState=vehicleState;}
-    public void setVehicleBehavior(VehicleBehavior vehicleBehavior){this.vehicleBehavior=vehicleBehavior;}
+
+    /**
+     * @param vehicleBehavior in type of VehicleBehavior enum
+     * sets the behavior of a vehicle
+     * there are three behaviors AVERAGE, AGGRESSIVE, and CAUTIOUS
+     */
+    public void setVehicleBehavior(VehicleBehavior vehicleBehavior){ this.vehicleBehavior = vehicleBehavior; }
+
     public void setCurrentCoordinate(Coordinate currentCoordinate) {
         this.currentCoordinate = currentCoordinate;
     }
 
-    //Move a vehicle some steps forward
-
-    public boolean moveVehicle(int step) {
+    /**
+     * @param step number of steps to move, depends on the behavior
+     * @return True if vehicle can move, False if not
+     * @throws Exception
+     *
+     * vehicle can move one step or more, depends on its behavior
+     * if it moves two steps, should check if this movement is available
+     * if not it checks if one step is available
+     * if not vehicle stops
+     */
+    public boolean moveVehicle(int step) throws Exception {
 
         if (step == 0) {
             return false;
@@ -193,6 +248,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     }
 
         /*
+      public boolean moveVehicle(int step) throws Exception {
         int curCell= this.getCurrentCell();
         int validStep=0;
         for (int i=1;i<=step;i++){
@@ -241,8 +297,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     break;
                 default: // ERROR case
                     light = null;
-                    System.out.println("Error Direction !");
-                    break;
+                    throw new Exception("Error Direction!");
+                   // break;
             }
             if(vehiclePriority>1){
                 if(light.getState()== LightColour.RED){
@@ -337,11 +393,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     }
 
 
-/*
-    //1 is moving, 0 is static
-    public void stopVehicle() {
-        vehicleState = 0;
-    } */
+
 
     /**
      * This is the method that gets called when the ticker terminates (i.e. the stop() method was called

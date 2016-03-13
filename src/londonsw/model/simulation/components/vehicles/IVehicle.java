@@ -25,11 +25,11 @@ public interface IVehicle {
     void setVehicleLength(int vehicleLength);
     void setVehicleSpeed(double vehicleSpeed);
     void setVehiclePriority(int vehiclePriority);
-    void setCurrentLane(Lane currentLane);
-    void setCurrentCell(int curCell,Lane currentLane);
+    void setCurrentLane(Lane currentLane) throws Exception;
+    void setCurrentCell(int curCell,Lane currentLane) throws Exception;
     void setVehicleState(int vehicleState);
     void setVehicleBehavior(VehicleBehavior vehicleBehavior);
-    boolean moveVehicle(int step);
+    boolean moveVehicle(int step) throws Exception;
     void readTrafficLight() throws Exception;
     ArrayList<Lane> getLaneOptions() throws Exception;
     void vehicleTurn () throws Exception;
