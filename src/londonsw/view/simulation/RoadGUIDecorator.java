@@ -45,7 +45,6 @@ public class RoadGUIDecorator extends RoadDecorator {
 
         StackPane stackPane = new StackPane();
 
-
         //draw amount of lines
         Pane lines = new Pane();
 
@@ -79,12 +78,10 @@ public class RoadGUIDecorator extends RoadDecorator {
 
                     Polygon arrow = drawArrow();
 
-                    if(l.getState()==1) {
+                    if (l.getState() == 1) {
                         roadLine.setStroke(Color.WHITE);
                         arrow.setFill(Color.WHITE);
-                    }
-                    else
-                    {
+                    } else {
                         //lane not enabled
                         roadLine.setStroke(Color.RED);
                         arrow.setFill(Color.RED);
@@ -130,11 +127,9 @@ public class RoadGUIDecorator extends RoadDecorator {
 
                     Polygon arrow = drawArrow();
 
-                    if(l.getState()==1) {
+                    if (l.getState() == 1) {
                         arrow.setFill(Color.WHITE);
-                    }
-                    else
-                    {
+                    } else {
                         //lane not enabled
                         arrow.setFill(Color.RED);
                     }
@@ -162,11 +157,8 @@ public class RoadGUIDecorator extends RoadDecorator {
                 }
             }
 
-        stackPane.setOnMouseClicked(event -> System.out.println("Clicked"));
-
         stackPane.getChildren().add(iv);
         stackPane.getChildren().add(lines);
-
 
 
         return stackPane;

@@ -91,6 +91,8 @@ public class IntersectionDecorator implements Serializable {
             lights.getChildren().add(westLight.getCircle());
         }
 
+        stackPane.setOnMouseClicked(event -> System.out.println("Clicked " + this.intersection.getIdIntersection()));
+
         stackPane.getChildren().add(iv);
         stackPane.getChildren().add(lights);
         return stackPane;

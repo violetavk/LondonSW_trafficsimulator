@@ -169,6 +169,30 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     //Move a vehicle some steps forward
 
     public boolean moveVehicle(int step) {
+
+        if (step == 0) {
+            return false;
+        } else {
+
+            int curCell = this.getCurrentCell();
+
+            if (curCell + step >= this.currentLane.getLength() || !this.currentLane.isCellEmpty(curCell + step)) {
+                moveVehicle(step - 1);
+            } else {
+                currentLane.setCell(null, curCell);
+                curCell += step;
+                this.setCurrentCell(curCell, this.getCurrentLane());
+                currentLane.setCell(this, curCell);
+
+                return true;
+            }
+
+            return true;
+
+        }
+    }
+
+        /*
         int curCell= this.getCurrentCell();
         int validStep=0;
         for (int i=1;i<=step;i++){
@@ -188,7 +212,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
             return true;
        }
 
-    }
+       */
+
 
     /**
      * to make a vehicle reads a traffic light
