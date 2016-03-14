@@ -212,11 +212,11 @@ public class Map implements Serializable {
             ArrayList<Object> trafficLights = new ArrayList<>();
             ArrayList<TrafficLight> lightsList = (ArrayList<TrafficLight>) convertFromStaticToSave(TrafficLightController.getAllTrafficLights());
             System.out.println("Saved lights list: " + lightsList.size());
-            java.util.Map<TrafficLight,TrafficLightDecorator> lightsMap = (java.util.Map<TrafficLight, TrafficLightDecorator>) convertFromStaticToSave(TrafficLightController.getTrafficLightsMap());
-            System.out.println("Saved lights map: " + lightsMap.size());
+            //java.util.Map<TrafficLight,TrafficLightDecorator> lightsMap = (java.util.Map<TrafficLight, TrafficLightDecorator>) convertFromStaticToSave(TrafficLightController.getTrafficLightsMap());
+            //System.out.println("Saved lights map: " + lightsMap.size());
             // TODO get all the lights, but then convert them to a non static version of the list... have a helper method to copy the things
             trafficLights.add(lightsList); // the array list of all traffic lights
-            trafficLights.add(lightsMap); // the HashMap of (TrafficLight, TrafficLightDecorator) pairs
+            //trafficLights.add(lightsMap); // the HashMap of (TrafficLight, TrafficLightDecorator) pairs
             outTemp.writeObject(trafficLights);
             outTemp.close();
             fileOutTemp.close();
@@ -254,8 +254,8 @@ public class Map implements Serializable {
             System.out.println("Found " + allLights.size() + " lights in list");
             lightsMap = (java.util.Map<TrafficLight,TrafficLightDecorator>) list.get(1);
             System.out.println("Found " + lightsMap.size() + " in map");
-            TrafficLightController.setAllTrafficLights(allLights);
-            TrafficLightController.setTrafficLightMap(lightsMap);
+            //TrafficLightController.setAllTrafficLights(allLights);
+            //TrafficLightController.setTrafficLightMap(lightsMap);
 
         } catch(IOException i) {
             System.out.println("IO Exception");

@@ -10,7 +10,6 @@ import londonsw.model.simulation.components.*;
  */
 public class MapGridGUIDecorator extends MapGridDecorator {
 
-
     private ResizeFactor resizeFactor;
 
     public MapGridGUIDecorator(MapGrid decoratedMapGrid) {
@@ -29,6 +28,8 @@ public class MapGridGUIDecorator extends MapGridDecorator {
         GridPane rootGP = new GridPane();
         Pane roadStackPane;
 
+        int roadCounter = 0;
+
         for (int y = 0; y < this.getHeight(); y++) {
             for (int x = 0; x < this.getWidth(); x++) {
 
@@ -36,17 +37,29 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                 if (current instanceof Road) {
 
+
                     RoadGUIDecorator roadGUIDecorator = new RoadGUIDecorator((Road) current);
 
                     roadGUIDecorator.setResizeFactor(this.getResizeFactor());
 
-                    roadStackPane = roadGUIDecorator.drawRoad(roadGUIDecorator.runsVertically() ? MapDirection.NORTH : MapDirection.EAST);  //TODO change logic
+                    roadStackPane = roadGUIDecorator.drawRoad();
+                    roadGUIDecorator.setCell(roadCounter);
+                    roadGUIDecorator.setPane(roadStackPane);
+                    roadGUIDecorator.setGridPaneCoordinates(new Coordinate(x,y));
+
+                    roadCounter++;
 
                 } else if (current instanceof Intersection) {
+
+                    roadCounter = 0;
+
                     IntersectionDecorator intersectionDecorator = new IntersectionDecorator((Intersection) current);
                     intersectionDecorator.setResizeFactor(this.getResizeFactor());
                     roadStackPane = intersectionDecorator.drawIntersection();
                 } else {
+
+                    roadCounter = 0;
+
                     LayoutGUI grassGUI = new LayoutGUI();
 
                     grassGUI.setHeight(this.getHeight());
@@ -56,11 +69,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
                     roadStackPane = grassGUI.drawGrass();
                 }
 
-//                rootGP.setRowIndex(roadStackPane, y);
-//                rootGP.setColumnIndex(roadStackPane, x);
-//                rootGP.getChildren().add(roadStackPane);
-
-                rootGP.add(roadStackPane,x,y);
+                rootGP.add(roadStackPane, x, y);
 
             }
         }

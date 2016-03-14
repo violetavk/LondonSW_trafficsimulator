@@ -109,5 +109,4 @@ public class IntersectionDecorator implements Serializable {
         stage.setScene(scene);
         stage.show();
     }
-
 }
