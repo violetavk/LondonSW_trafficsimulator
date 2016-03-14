@@ -18,14 +18,18 @@ public class MapGridGUITestMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Map map = MapExamples.drawMap1();
+        //Map map = MapExamples.drawMap1_1();
+        Map map = MapExamples.drawTestMapExample();
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
         double width = mapGridGUIDecorator.getWidth();
         double height = mapGridGUIDecorator.getHeight();
 
-//        mapGridGUIDecorator.setResizeFactor(new ResizeFactor((map.getWidth()/5) / width, (map.getHeight()/5) / height));    //TODO HARDCODE
+        mapGridGUIDecorator.setResizeFactor(new ResizeFactor((map.getWidth()/(5*1.0)) / width, (map.getHeight()/(5*1.0)) / height));    //TODO HARDCODE
+
+        //mapGridGUIDecorator.setResizeFactor(new ResizeFactor(1,1));
+
         mapGridGUIDecorator.setResizeFactor(new ResizeFactor(.25,.25));
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
@@ -75,7 +79,7 @@ public class MapGridGUITestMain extends Application {
 
         Car testCar;
         int c=0;
-        for (int i=0; i<1; i++){
+        for (int i=0; i<3; i++){
             testCar = generateCar(map,mapGridGUIDecorator,sp);
             if (testCar!=null)
                 c++;}
@@ -87,7 +91,6 @@ public class MapGridGUITestMain extends Application {
 
         primaryStage.show();
         primaryStage.setResizable(false);
-
 
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
@@ -101,8 +104,8 @@ public class MapGridGUITestMain extends Application {
 
     public Car generateCar(Map map, MapGridGUIDecorator mapGridGUIDecorator, StackPane sp){
 
-        //Lane L1 =map.getRandomLane();
-        Lane L1 =map.getRoads().get(0).getLanes().get(0);
+        Lane L1 =map.getRandomLane();
+        //Lane L1 =map.getRoads().get(0).getLanes().get(1);
 
         Lane L2;
 
@@ -115,12 +118,16 @@ public class MapGridGUITestMain extends Application {
                 for (int i=0; i<L1.getLength();i++) {
                     if (L1.isCellEmpty(i)) {
                         Car C1 = new Car(i, L1);
-                        C1.setVehicleBehavior(VehicleBehavior.AGGRESSIVE);
+                        //C1.setVehicleBehavior(VehicleBehavior.AGGRESSIVE);
                         VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
                         vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
                         vehicleGUIDecorator.drawCar();
                         Pane carPane = new Pane();
+
+                        carPane.setPickOnBounds(false); //allows me to click intersections
+
                         carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
+                        //carPane.getChildren().add(vehicleGUIDecorator.getGroup());
                         sp.getChildren().add(carPane);
                         vehicleGUIDecorator.setVehicleState(1);
                         System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
