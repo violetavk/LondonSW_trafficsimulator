@@ -372,7 +372,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
      * if there is no lane to move to, vehicle stops
      * @throws Exception
      */
-    public void vehicleTurn() throws Exception {
+    public boolean vehicleTurn() throws Exception {
         Lane oldLane = this.currentLane;
         Lane l;
         int num = this.getLaneOptions().size();
@@ -383,13 +383,16 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         l= this.getLaneOptions().get(size);
 
             //validate if its end of lane
-            if ((this.getCurrentCell() == this.currentLane.getLength() - 1) && (l.isCellEmpty(0)))
+            if ((this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) )
                 {
                     oldLane.setCell(null, oldLane.getLength() - 1);
                     this.setCurrentLane(l);
                     this.setCurrentCell(0, l);
+                    return true;
                 }
-            }else {this.setVehicleState(0);}
+            else {this.setVehicleState(0);
+        return false;}}
+        return true;
     }
 
 
