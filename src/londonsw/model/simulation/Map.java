@@ -2,6 +2,7 @@ package londonsw.model.simulation;
 
 import londonsw.controller.TrafficLightController;
 import londonsw.model.simulation.components.*;
+import londonsw.view.simulation.IntersectionDecorator;
 import londonsw.view.simulation.TrafficLightDecorator;
 
 import java.io.*;
@@ -188,15 +189,10 @@ public class Map implements Serializable {
             }
 
             String path = MAP_DIR + fileName;
-            String pathTemp = path + TRAFFIC_LIGHTS_TEMP;
 
             File file = new File(path);
-            File fileTemp = new File(pathTemp); // used for the traffic lights
             if(!file.exists()) {
                 file.createNewFile();
-            }
-            if(!fileTemp.exists()) {
-                fileTemp.createNewFile();
             }
 
             // save the map
@@ -205,22 +201,6 @@ public class Map implements Serializable {
             out.writeObject(this);
             out.close();
             fileOut.close();
-
-            // save the traffic lights & intersection data
-            FileOutputStream fileOutTemp = new FileOutputStream(pathTemp);
-            ObjectOutputStream outTemp = new ObjectOutputStream(fileOutTemp);
-            ArrayList<Object> trafficLights = new ArrayList<>();
-            ArrayList<TrafficLight> lightsList = (ArrayList<TrafficLight>) convertFromStaticToSave(TrafficLightController.getAllTrafficLights());
-            System.out.println("Saved lights list: " + lightsList.size());
-          //  java.util.Map<TrafficLight,TrafficLightDecorator> lightsMap = (java.util.Map<TrafficLight, TrafficLightDecorator>) convertFromStaticToSave(TrafficLightController.getTrafficLightsMap());
-          //  System.out.println("Saved lights map: " + lightsMap.size());
-            // TODO get all the lights, but then convert them to a non static version of the list... have a helper method to copy the things
-            trafficLights.add(lightsList); // the array list of all traffic lights
-           // trafficLights.add(lightsMap); // the HashMap of (TrafficLight, TrafficLightDecorator) pairs
-            outTemp.writeObject(trafficLights);
-            outTemp.close();
-            fileOutTemp.close();
-
 
             System.out.printf("Serialized data is saved in " + path + " and " + path + TRAFFIC_LIGHTS_TEMP);
         }catch(IOException i)
@@ -231,31 +211,55 @@ public class Map implements Serializable {
 
     public static Map loadMap(String fileName) {
         String path = MAP_DIR + fileName;
-        String pathLights = MAP_DIR + fileName + TRAFFIC_LIGHTS_TEMP;
         Map map = null;
-        ArrayList<TrafficLight> allLights = null;
-        java.util.Map<TrafficLight,TrafficLightDecorator> lightsMap = null;
 
         try {
             // open the Map
-            File file = new File(path);
             FileInputStream fileIn = new FileInputStream(path);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             map = (Map) in.readObject();
             in.close();
             fileIn.close();
 
-            // open the Traffic Lights and TODO intersections
-            FileInputStream fileInLights = new FileInputStream(pathLights);
-            ObjectInputStream inLights = new ObjectInputStream(fileInLights);
-            ArrayList<Object> list = (ArrayList<Object>) inLights.readObject();
-            System.out.println("Loading lights.. size = " + list.size()); // should be 2
-            allLights = (ArrayList<TrafficLight>) list.get(0);
-            System.out.println("Found " + allLights.size() + " lights in list");
-            lightsMap = (java.util.Map<TrafficLight,TrafficLightDecorator>) list.get(1);
-            System.out.println("Found " + lightsMap.size() + " in map");
-          //  TrafficLightController.setAllTrafficLights(allLights);
-           // TrafficLightController.setTrafficLightMap(lightsMap);
+            /*
+             * Each intersection has 4 traffic lights, for each traffic light:
+             *      - subscribe to the ticker
+             *      - create a new Decorator
+             * For each intersection:
+             *      - create a new IntersectionDecorator
+             *      - link each new TrafficLightDecorator to the corresponding field in the IntersectionDecorator
+             * */
+            for(Intersection i : map.getIntersections()) {
+                IntersectionDecorator decorator = new IntersectionDecorator(i);
+                TrafficLight north = i.getNorthTrafficLight();
+                TrafficLight south = i.getSouthTrafficLight();
+                TrafficLight east = i.getEastTrafficLight();
+                TrafficLight west = i.getWestTrafficLight();
+                if(north != null) {
+                    north.subscribeToTicker();
+                    TrafficLightDecorator dec = TrafficLightController.getInstance().createNewDecorator(north);
+                    decorator.setNorthTrafficLightDecorator(dec);
+                }
+                if(south != null) {
+                    south.subscribeToTicker();
+                    TrafficLightDecorator dec = TrafficLightController.getInstance().createNewDecorator(south);
+                    decorator.setSouthTrafficLightDecorator(dec);
+                }
+                if(east != null) {
+                    east.subscribeToTicker();
+                    TrafficLightDecorator dec = TrafficLightController.getInstance().createNewDecorator(east);
+                    decorator.setEastTrafficLightDecorator(dec);
+                }
+                if(west != null) {
+                    west.subscribeToTicker();
+                    TrafficLightDecorator dec = TrafficLightController.getInstance().createNewDecorator(west);
+                    decorator.setWestTrafficLightDecorator(dec);
+                }
+            }
+
+            System.out.println("# TrafficLights's subscribed: " + Ticker.getSubscribers().size());
+            System.out.println("# of lights added: " + TrafficLightController.getInstance().getAllTrafficLights().size());
+            System.out.println("# of decorators: " + TrafficLightController.getInstance().getTrafficLightsMap().size());
 
         } catch(IOException i) {
             System.out.println("IO Exception");
@@ -266,20 +270,5 @@ public class Map implements Serializable {
         }
 
         return map;
-    }
-
-    public Object convertFromStaticToSave(Object toConvert) {
-        if(toConvert instanceof ArrayList) {
-            ArrayList newList = new ArrayList();
-            Collections.copy(newList, (ArrayList) toConvert);
-            return newList;
-        }
-
-        if(toConvert instanceof java.util.Map) {
-            java.util.Map m = new HashMap<TrafficLight,TrafficLightDecorator>((HashMap<TrafficLight,TrafficLightDecorator>) toConvert);
-            return m;
-        }
-
-        return null;
     }
 }

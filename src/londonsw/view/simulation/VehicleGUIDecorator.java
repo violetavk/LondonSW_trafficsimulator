@@ -2,7 +2,9 @@ package londonsw.view.simulation;
 
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
+import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -13,10 +15,6 @@ import londonsw.model.simulation.components.MapDirection;
 import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 
-
-/**
- * Created by felix on 04/03/2016.
- */
 public class VehicleGUIDecorator extends VehicleDecorator {
 
     private double imageDimension;
@@ -26,6 +24,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
     private Color color;
     private double verticalStartFudgeFactor;
     private double horizontalStartFudgeFactor;
+    private Group group;
 
     public VehicleGUIDecorator(Vehicle decoratedVehicle) {
         super(decoratedVehicle);
@@ -65,6 +64,309 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public void drawCarS() {
+
+        double cellDimension = imageDimension;
+        double x = cellDimension * this.getResizeFactor().getResizeX();
+        double y = cellDimension * this.getResizeFactor().getResizeY();
+
+        int numberLanes = this.getCurrentLane().getRoad().getNumberLanes();
+
+        double carDimensionX = cellDimension;
+        double carDimensionY = cellDimension;
+        double angle = 0.0;
+        double startPointX = x * this.getCurrentCoordinate().getX();
+        double startPointY = y * this.getCurrentCoordinate().getY();
+
+        if(this.getCurrentLane().getRoad().runsVertically())
+        {
+            startPointX+=(this.getCurrentLane().getRoadIndex());
+        }
+
+        //car runs Horizontally
+        if(!this.getCurrentLane().getRoad().runsVertically())
+        {
+            //startPointY+=(this.getCurrentLane().getRoadIndex());
+        }
+
+        Rectangle rectangleBackground = new Rectangle(
+                startPointX,
+                startPointY,
+                carDimensionX * this.getResizeFactor().getResizeX(),    //TODO: hardcode
+                carDimensionY * this.getResizeFactor().getResizeY());    //TODO: hardcode
+
+        double carHeight = (carDimensionY * this.getResizeFactor().getResizeY()/numberLanes);
+
+        Rectangle rectangleCar = new Rectangle
+                (
+                        startPointX, startPointY ,
+                        (carDimensionX*this.getResizeFactor().getResizeX()),
+                        (carHeight)
+                );
+
+
+        double conversion = (numberLanes-1) - this.getCurrentLane().getRoadIndex();
+
+        double translation = 0.0;
+
+        if(this.decoratedVehicle.getCurrentLane().getMovingDirection()==MapDirection.WEST)
+        {
+            translation = carHeight * conversion;
+        }
+        else
+        if(this.decoratedVehicle.getCurrentLane().getMovingDirection()==MapDirection.EAST)
+        {
+            translation = carHeight * this.getCurrentLane().getRoadIndex();
+        }
+        else
+        if(this.decoratedVehicle.getCurrentLane().getMovingDirection()==MapDirection.NORTH)
+        {
+            translation = carHeight * this.getCurrentLane().getRoadIndex();
+        }
+        else
+        if(this.decoratedVehicle.getCurrentLane().getMovingDirection()==MapDirection.SOUTH)
+        {
+            translation = carHeight * conversion;
+        }
+
+        rectangleCar.setTranslateY(translation);
+
+        if(this.getVehiclePriority()==5){
+            rectangleCar.setFill(this.getColor());
+        }
+        else{
+            rectangleCar.setFill(Color.BLUE);
+        }
+
+        switch (this.getCurrentLane().getMovingDirection())
+        {
+            case NORTH:
+
+                angle = -90;
+
+                break;
+
+            case SOUTH:
+
+                angle =90;
+
+                break;
+
+            case EAST:
+
+                break;
+
+            case WEST:
+
+                angle = 180;
+
+                break;
+        }
+
+        rectangleBackground.setFill(Color.SNOW);
+        rectangleBackground.setRotate(angle);
+
+        Pane carPane = new Pane();
+
+        carPane.getChildren().addAll(rectangleBackground,rectangleCar);
+
+        Group group = new Group(rectangleBackground,rectangleCar);
+
+        group.setRotate(angle);
+
+        this.setGroup(group);
+    }
+
+    public void moveVehicleGUIS(int step, int state) {
+        final Timeline timeline = new Timeline();
+
+        int numberLanes = this.getCurrentLane().getRoad().getNumberLanes();
+
+        /* move the car according to moving direction, below */
+
+        if (state == 0) { // car must stop because red light, or something in the way
+            timeline.stop();
+        } else if (state == 2)  //car is at intersection
+        {
+            double x = this.imageDimension * this.getResizeFactor().getResizeX();
+            double y = this.imageDimension * this.getResizeFactor().getResizeY();
+
+            TranslateTransition tt = new TranslateTransition(Duration.millis(Ticker.getTickInterval()), this.getGroup());
+
+            if (this.getPreviousLane().getMovingDirection() == this.getCurrentLane().getMovingDirection()) {
+                switch (this.getPreviousLane().getMovingDirection()) {
+                    case NORTH:
+                        tt.setByY(-y * 2);
+                        break;
+                    case SOUTH:
+                        tt.setByY(y * 2);
+                        break;
+                    case EAST:
+                        tt.setByX(x * 2);
+                        break;
+                    case WEST:
+                        tt.setByX(-x * 2);
+                        break;
+                }
+            } else if (this.getPreviousLane().getMovingDirection() == MapDirection.EAST && this.getCurrentLane().getMovingDirection() == MapDirection.SOUTH) {
+
+                //Shift according to slot available
+
+                tt.setByX(x);
+                tt.setByY(y);
+
+                //create rotation
+
+                RotateTransition rt = new RotateTransition();
+                rt.setNode(tt.getNode());
+                rt.setByAngle(90);
+                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
+                rt.play();
+
+                TranslateTransition ttShift = new TranslateTransition();
+
+                ttShift.setNode(this.getGroup().getChildren().get(1));
+
+                //ttShift.setToY(this.getCurrentLane().getRoadIndex()*x/numberLanes);
+
+                ttShift.setToY(0);
+
+                ttShift.play();
+
+
+            } else if (this.getPreviousLane().getMovingDirection() == MapDirection.SOUTH && this.getCurrentLane().getMovingDirection() == MapDirection.WEST) {
+                tt.setByX(-x);
+                tt.setByY(y);
+
+                RotateTransition rt = new RotateTransition();
+                rt.setNode(tt.getNode());
+                rt.setByAngle(90);
+                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
+                rt.play();
+            } else if (this.getPreviousLane().getMovingDirection() == MapDirection.WEST && this.getCurrentLane().getMovingDirection() == MapDirection.NORTH) {
+                tt.setByX(-x);
+                tt.setByY(-y);
+
+                RotateTransition rt = new RotateTransition();
+                rt.setNode(tt.getNode());
+                rt.setByAngle(90);
+                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
+                rt.play();
+            } else if (this.getPreviousLane().getMovingDirection() == MapDirection.NORTH && this.getCurrentLane().getMovingDirection() == MapDirection.EAST) {
+                tt.setByX(x);
+                tt.setByY(-y);
+
+                RotateTransition rt = new RotateTransition();
+                rt.setNode(tt.getNode());
+                rt.setByAngle(90);
+                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
+                rt.play();
+
+            } else if (this.getPreviousLane().getMovingDirection() == MapDirection.WEST && this.getCurrentLane().getMovingDirection() == MapDirection.SOUTH) {
+                tt.setByX(-x);
+                tt.setByY(y);
+
+                RotateTransition rt = new RotateTransition();
+                rt.setNode(tt.getNode());
+                rt.setByAngle(-90);
+                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
+                rt.play();
+            }
+            if (this.getPreviousLane().getMovingDirection() == MapDirection.EAST && this.getCurrentLane().getMovingDirection() == MapDirection.NORTH) {
+                tt.setByX(x);
+                tt.setByY(-y);
+
+                RotateTransition rt = new RotateTransition();
+                rt.setNode(tt.getNode());
+
+                rt.setByAngle(-90);
+                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
+                rt.play();
+
+            } else if (this.getPreviousLane().getMovingDirection() == MapDirection.NORTH && this.getCurrentLane().getMovingDirection() == MapDirection.WEST) {
+                tt.setByX(-x);
+                tt.setByY(-y);
+
+                RotateTransition rt = new RotateTransition();
+                rt.setNode(tt.getNode());
+                rt.setByAngle(-90);
+                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
+                rt.play();
+            } else if (this.getPreviousLane().getMovingDirection() == MapDirection.SOUTH && this.getCurrentLane().getMovingDirection() == MapDirection.EAST) {
+                tt.setByX(x);
+                tt.setByY(y);
+
+                //create rotation
+
+                RotateTransition rt = new RotateTransition();
+
+                rt.setNode(tt.getNode());
+                rt.setByAngle(-90);
+                rt.setDuration(Duration.millis(Ticker.getTickInterval()));
+                rt.play();
+            }
+
+            tt.play();
+
+            this.setVehicleState(1);    //move car again
+
+        } else // car driving straight down road
+        {
+
+            DoubleProperty doubleProperty = null;
+            double distance = 0;
+            double imageDimension = 100 * this.getResizeFactor().getResizeX();  //TODO: hardcode
+
+            switch (this.getCurrentLane().getMovingDirection()) {
+
+                case NORTH:
+
+                    doubleProperty = this.getGroup().layoutYProperty();
+                    distance = doubleProperty.getValue() - (imageDimension) * step;
+
+                    break;
+                case SOUTH:
+
+                    doubleProperty = this.getGroup().layoutYProperty();
+                    distance = doubleProperty.getValue() + (imageDimension) * step;
+
+                    break;
+                case EAST:
+
+                    doubleProperty = this.getGroup().layoutXProperty();
+                    distance = doubleProperty.getValue() + (imageDimension) * step;
+
+                    break;
+                case WEST:
+
+                    doubleProperty = this.getGroup().layoutXProperty();
+                    distance = doubleProperty.getValue() - (imageDimension) * step;
+
+                    break;
+
+            }
+
+            java.lang.System.out.println(doubleProperty.getValue());
+
+            final KeyValue kv = new KeyValue(doubleProperty,
+                    distance);
+
+            final KeyFrame kf = new KeyFrame(Duration.millis(Ticker.getTickInterval()), kv);
+
+            timeline.getKeyFrames().add(kf);
+
+            timeline.play();
+        }
     }
 
     public void drawCar() {

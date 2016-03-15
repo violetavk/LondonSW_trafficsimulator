@@ -53,6 +53,14 @@ public class Ticker {
     }
 
     /**
+     * Get the list of all subscribers of this ticker, which can include Vehicles and TrafficLights
+     * @return ArrayList of all subscribers of the ticker
+     */
+    public static ArrayList<Subscriber<Long>> getSubscribers() {
+        return subscribers;
+    }
+
+    /**
      * Get the length of the current tick interval
      * @return length of the current tick interval
      */

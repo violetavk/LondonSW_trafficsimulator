@@ -54,6 +54,22 @@ public class IntersectionDecorator implements Serializable {
         resizeFactor = rf;
     }
 
+    public void setNorthTrafficLightDecorator(TrafficLightDecorator t) {
+        northLight = t;
+    }
+
+    public void setWestTrafficLightDecorator(TrafficLightDecorator t) {
+        westLight = t;
+    }
+
+    public void setSouthTrafficLightDecorator(TrafficLightDecorator t) {
+        southLight = t;
+    }
+
+    public void setEastTrafficLightDecorator(TrafficLightDecorator t) {
+        eastLight = t;
+    }
+
     public StackPane drawIntersection() {
         StackPane stackPane = new StackPane();
 

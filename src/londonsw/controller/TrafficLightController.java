@@ -14,8 +14,31 @@ import java.util.Map;
  */
 public class TrafficLightController {
 
-    private static Map<TrafficLight, TrafficLightDecorator> trafficLights = new HashMap<TrafficLight, TrafficLightDecorator>();;
-    private static ArrayList<TrafficLight> allLights = new ArrayList<TrafficLight>();
+    private Map<TrafficLight, TrafficLightDecorator> trafficLights;
+    private ArrayList<TrafficLight> allLights;
+
+    private static TrafficLightController instance;
+
+    protected TrafficLightController() {
+        trafficLights = new HashMap<>();
+        allLights = new ArrayList<>();
+    }
+
+    public static TrafficLightController getInstance() {
+        if(instance == null) {
+            instance = new TrafficLightController();
+        }
+        return instance;
+    }
+
+    /**
+     * Creates a new TrafficLightDecorator for the given TrafficLight
+     * @param tl the TrafficLight for which to create the decorator
+     * @return the newly created decorated for that TrafficLight
+     */
+    public TrafficLightDecorator createNewDecorator(TrafficLight tl) {
+        return new TrafficLightDecorator(tl);
+    }
 
     /**
      * Called by the TrafficLight (in the model) when the color changes. It tells the corresponding
@@ -23,7 +46,7 @@ public class TrafficLightController {
      * @param colour the new color to be
      * @param tl a TrafficLight that had its color changed
      */
-    public static void colourChanged(LightColour colour, TrafficLight tl) {
+    public void colourChanged(LightColour colour, TrafficLight tl) {
         if(trafficLights.get(tl) == null) {
             System.out.println("No TrafficLightDecorator associated with this traffic light");
         }
@@ -36,7 +59,7 @@ public class TrafficLightController {
      * @param tl the TrafficLight instance from the model
      * @param gui the corresponding instance of the TrafficLightDecorator for that TrafficLight
      */
-    public static void addTrafficLightAndDecoratorPair(TrafficLight tl, TrafficLightDecorator gui) {
+    public void addTrafficLightAndDecoratorPair(TrafficLight tl, TrafficLightDecorator gui) {
         trafficLights.put(tl,gui);
         allLights.add(tl);
     }
@@ -46,7 +69,7 @@ public class TrafficLightController {
      * @param tl a TrafficLight that you are querying for to get its decorator
      * @return the corresponding TrafficLightDecorator for that TrafficLight
      */
-    public static TrafficLightDecorator getTrafficLightGUI(TrafficLight tl) {
+    public TrafficLightDecorator getTrafficLightGUI(TrafficLight tl) {
         return trafficLights.get(tl);
     }
 
@@ -54,8 +77,26 @@ public class TrafficLightController {
      * Get a list of all the TrafficLights in the system
      * @return ArrayList of all lights
      */
-    public static ArrayList<TrafficLight> getAllTrafficLights() {
+    public ArrayList<TrafficLight> getAllTrafficLights() {
         return allLights;
+    }
+
+    /**
+     * Set the duration of all the traffic lights in the map
+     * @param duration the duration of the traffic light in milliseconds
+     */
+    public void setTrafficLightDuration(long duration) {
+        for(TrafficLight t : allLights) {
+            t.setDuration(duration);
+        }
+    }
+
+    /**
+     * Gets the HashMap of all TrafficLight,TrafficLightDecorator pairs
+     * @return
+     */
+    public Map getTrafficLightsMap() {
+        return trafficLights;
     }
 
 }

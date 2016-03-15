@@ -22,7 +22,7 @@ public class TrafficLight extends Subscriber<Long> implements Serializable {
      */
     public TrafficLight() {
         this.currentTime = 0;
-        Ticker.subscribe(this);
+        Ticker.subscribe(this); // this line may not be necessary if we're only loading maps from files
         state = LightColour.RED;
     }
 
@@ -34,6 +34,13 @@ public class TrafficLight extends Subscriber<Long> implements Serializable {
         this.currentTime = 0;
         Ticker.subscribe(this);
         this.state = colour;
+    }
+
+    /**
+     * Subscribes this traffic light to the Ticker. Especially useful if using a loaded map!
+     */
+    public void subscribeToTicker() {
+        Ticker.subscribe(this);
     }
 
     /**
@@ -122,7 +129,7 @@ public class TrafficLight extends Subscriber<Long> implements Serializable {
 
             currentTime = Ticker.getTickInterval();
             nextState();
-            TrafficLightController.colourChanged(state, this);
+            TrafficLightController.getInstance().colourChanged(state, this);
         }
 //        System.out.println("time: " + aLong + "  color: " + state); // debug only
     }
