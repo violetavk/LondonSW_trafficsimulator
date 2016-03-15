@@ -84,6 +84,15 @@ public class Lane implements Serializable {
         return false;
     }
 
+    public boolean isFull ()
+    {
+        for (int i=0; i<this.getLength();i++)
+        {if (this.isCellEmpty(i))
+            return false;
+        }
+        return true;
+    }
+
     public Coordinate getEntry() {
         return entry;
     }
@@ -96,6 +105,7 @@ public class Lane implements Serializable {
     public Road getRoad() {return road; }
 
     public void setRoad(Road road) {this.road = road;}
+
 
    /* public void setIntersection(Intersection intersection) {
         if((this.getMovingDirection()== MapDirection.WEST) &&

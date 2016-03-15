@@ -60,10 +60,12 @@ public class VehicleController {
         if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
             vehicleGUIDecorator.readTrafficLight();
 
-            if (vehicleGUIDecorator.getVehicleState() == 1) {
-                ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
+            if (vehicleGUIDecorator.getVehicleState() == 1 ) {
+               // ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
+                //check next lane available
+
                 vehicleGUIDecorator.setVehicleState(2); //move vehicle to intersection
-                vehicleGUIDecorator.vehicleTurn();
+               move = vehicleGUIDecorator.vehicleTurn();
             }
         }
         else {

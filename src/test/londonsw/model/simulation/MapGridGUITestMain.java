@@ -18,7 +18,7 @@ public class MapGridGUITestMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Map map = MapExamples.drawMap1();
+        Map map = MapExamples.drawTestMapExample();
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
@@ -75,7 +75,7 @@ public class MapGridGUITestMain extends Application {
 
         Car testCar;
         int c=0;
-        for (int i=0; i<1; i++){
+        for (int i=0; i<100; i++){
             testCar = generateCar(map,mapGridGUIDecorator,sp);
             if (testCar!=null)
                 c++;}
@@ -99,33 +99,36 @@ public class MapGridGUITestMain extends Application {
 
     }
 
+
+
     public Car generateCar(Map map, MapGridGUIDecorator mapGridGUIDecorator, StackPane sp){
 
-        //Lane L1 =map.getRandomLane();
-        Lane L1 =map.getRoads().get(0).getLanes().get(0);
+        Lane L1 =map.getRandomLane();
+       // Lane L1 =map.getRoads().get(0).getLanes().get(0);
 
         Lane L2;
 
-        if(L1!=null)
-        for (int a=0; a<map.getRoads().size();a++)
-        {
-            for(int b=0; b<map.getRoads().get(a).getNumberLanes();b++)
-            {
-                L2= map.getRoads().get(a).getLanes().get(b);
-                for (int i=0; i<L1.getLength();i++) {
-                    if (L1.isCellEmpty(i)) {
-                        Car C1 = new Car(i, L1);
-                        C1.setVehicleBehavior(VehicleBehavior.AGGRESSIVE);
-                        VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
-                        vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
-                        vehicleGUIDecorator.drawCar();
-                        Pane carPane = new Pane();
-                        carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
-                        sp.getChildren().add(carPane);
-                        vehicleGUIDecorator.setVehicleState(1);
-                        System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
-                        return C1;
+        if(L1!=null && (!L1.isFull())) {
+            for (int a = 0; a < map.getRoads().size(); a++) {
+                for (int b = 0; b < map.getRoads().get(a).getNumberLanes(); b++) {
+                    // L2= map.getRoads().get(a).getLanes().get(b);
+                    //L1=map.getRoads().get(8).getLanes().get(1);
+                    L1 = map.getRandomLane();
+                    for (int i = 0; i < L1.getLength(); i++) {
+                        if (L1.isCellEmpty(i)) {
+                            Car C1 = new Car(i, L1);
+                            //C1.setVehicleBehavior(VehicleBehavior.AGGRESSIVE);
+                            VehicleGUIDecorator vehicleGUIDecorator = new VehicleGUIDecorator(C1);
+                            vehicleGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+                            vehicleGUIDecorator.drawCar();
+                            Pane carPane = new Pane();
+                            carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
+                            sp.getChildren().add(carPane);
+                            vehicleGUIDecorator.setVehicleState(1);
+                            System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
+                            return C1;
 
+                        }
                     }
                 }
             }
@@ -135,7 +138,8 @@ public class MapGridGUITestMain extends Application {
 
     }
 
-    public static void main(String[] args) {
+
+        public static void main(String[] args) {
         launch(args);
     }
 }

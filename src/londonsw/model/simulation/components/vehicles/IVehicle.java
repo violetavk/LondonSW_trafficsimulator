@@ -32,7 +32,7 @@ public interface IVehicle {
     boolean moveVehicle(int step) throws Exception;
     void readTrafficLight() throws Exception;
     ArrayList<Lane> getLaneOptions() throws Exception;
-    void vehicleTurn () throws Exception;
+    boolean vehicleTurn () throws Exception;
     Coordinate getStoredCurrentCoordinate();
     void setPreviousCoordinate(Coordinate coord);
 }

@@ -138,7 +138,7 @@ public abstract class VehicleDecorator implements IVehicle {
     }
 
     @Override
-    public void vehicleTurn() throws Exception {
-        decoratedVehicle.vehicleTurn();
+    public boolean vehicleTurn() throws Exception {
+        return decoratedVehicle.vehicleTurn();
     }
 }
