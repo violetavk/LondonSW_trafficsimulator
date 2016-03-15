@@ -16,7 +16,7 @@ public class MapTest {
         Map map = drawTestMap();
         printMapGrid(map);
         System.out.println(System.getProperty("user.dir"));
-        map.saveMap("FixedMap.map");
+       // map.saveMap("FixedMap.map");
     }
 
     @Test

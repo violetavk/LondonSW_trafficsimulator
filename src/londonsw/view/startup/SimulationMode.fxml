@@ -11,8 +11,8 @@
 <?import javafx.scene.layout.*?>
 
 
-<Pane fx:controller="londonsw.controller.SimulationController"
-        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="londonsw.controller.StartUpController"
+        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="900" prefHeight="-Infinity" prefWidth="-Infinity" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button onAction="#resetSimulation" alignment="CENTER" layoutX="700.0" layoutY="120.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="15.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Reset" textAlignment="CENTER" textFill="GREEN" underline="true">
          <font>
