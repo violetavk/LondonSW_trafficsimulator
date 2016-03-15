@@ -15,10 +15,6 @@ import londonsw.model.simulation.components.MapDirection;
 import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 
-
-/**
- * Created by felix on 04/03/2016.
- */
 public class VehicleGUIDecorator extends VehicleDecorator {
 
     private double imageDimension;
@@ -28,15 +24,6 @@ public class VehicleGUIDecorator extends VehicleDecorator {
     private Color color;
     private double verticalStartFudgeFactor;
     private double horizontalStartFudgeFactor;
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
     private Group group;
 
     public VehicleGUIDecorator(Vehicle decoratedVehicle) {
@@ -77,6 +64,14 @@ public class VehicleGUIDecorator extends VehicleDecorator {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public void drawCarS() {

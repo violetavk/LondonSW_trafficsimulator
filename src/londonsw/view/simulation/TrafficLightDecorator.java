@@ -25,7 +25,7 @@ public class TrafficLightDecorator implements Serializable {
     public TrafficLightDecorator(TrafficLight thisLight) {
         this.thisLight = thisLight;
         circle = new Circle();
-        TrafficLightController.addTrafficLightAndDecoratorPair(thisLight, this);
+        TrafficLightController.getInstance().addTrafficLightAndDecoratorPair(thisLight, this);
     }
 
     /**

@@ -29,14 +29,7 @@ public class Intersection implements Component, Serializable {
     private TrafficLight southTrafficLight;
     private TrafficLight eastTrafficLight;
     private TrafficLight westTrafficLight;
-
-    public String getIdIntersection() {
-        return idIntersection;
-    }
-
-    public void setIdIntersection(String idIntersection) {
-        this.idIntersection = idIntersection;
-    }
+    private ArrayList<TrafficLight> allLights;
 
     private String idIntersection;
 
@@ -83,6 +76,9 @@ public class Intersection implements Component, Serializable {
     public Coordinate getLocation() {
         return location;
     }
+    public String getIdIntersection() {
+        return idIntersection;
+    }
 
     /* setters */
     public void setNorthTrafficLight(TrafficLight northTrafficLight) {
@@ -100,6 +96,10 @@ public class Intersection implements Component, Serializable {
     public void setLocation(Coordinate location) throws IntersectionSetupException {
         this.location = location;
     }
+    public void setIdIntersection(String idIntersection) {
+        this.idIntersection = idIntersection;
+    }
+
 
     public void setNorthRoad(Road northRoad) throws Exception {
         if((this.location.getX() == northRoad.getEndLocation().getX()
