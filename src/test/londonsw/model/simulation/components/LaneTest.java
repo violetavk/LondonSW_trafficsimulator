@@ -522,6 +522,7 @@ public class LaneTest extends Application {
 
     }
 
+    //generate car in chosen road
     public Car generateCarOnRoad(Map map, MapGridGUIDecorator mapGridGUIDecorator, StackPane sp,int roadNumber,int laneNumber){
 
 
