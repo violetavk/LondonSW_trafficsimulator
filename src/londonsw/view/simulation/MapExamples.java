@@ -12,6 +12,8 @@ import londonsw.model.simulation.components.*;
  */
 public class MapExamples {
 
+
+
     public static Map drawMap1() throws Exception {
         Map map = new Map(15,15);
 
@@ -20,11 +22,80 @@ public class MapExamples {
         Road r3 = new Road(new Coordinate(1,2), new Coordinate(1,9));
         Road r4 = new Road(new Coordinate(11,2), new Coordinate(11,9));
 
+        r1.setRoadId("r1");
+        r2.setRoadId("r2");
+        r3.setRoadId("r3");
+        r4.setRoadId("r4");
+
         Road roadMatrix[] = {r1,r2,r3,r4};
 
         Lane laneR1L1 = new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST);
 
+
+        //System.out.println( laneR1L1.getLength());
+
+
+        Lane laneR1L2 = new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST);
+        Lane laneR1L3 = new Lane(r1.getEndLocation(),r1.getStartLocation(), MapDirection.WEST);
+        Lane laneR1L4 = new Lane(r1.getEndLocation(),r1.getStartLocation(), MapDirection.WEST);
+
+        Lane laneR2L1 = new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.EAST);
+        Lane laneR2L2 = new Lane(r2.getStartLocation(),r2.getEndLocation(), MapDirection.EAST);
+        Lane laneR2L3 = new Lane(r2.getEndLocation(),r2.getStartLocation(), MapDirection.WEST);
+        Lane laneR2L4 = new Lane(r2.getEndLocation(),r2.getStartLocation(), MapDirection.WEST);
+
+        Lane laneR3L1 = new Lane(r3.getEndLocation(),r3.getStartLocation(), MapDirection.NORTH);
+        Lane laneR3L2 = new Lane(r3.getEndLocation(),r3.getStartLocation(), MapDirection.NORTH);
+        Lane laneR3L3 = new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH);
+        Lane laneR3L4 = new Lane(r3.getStartLocation(),r3.getEndLocation(), MapDirection.SOUTH);
+
+        Lane laneR4L1 = new Lane(r4.getEndLocation(),r4.getStartLocation(), MapDirection.NORTH);
+        Lane laneR4L2 = new Lane(r4.getEndLocation(),r4.getStartLocation(), MapDirection.NORTH);
+        Lane laneR4L3 = new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.SOUTH);
+        Lane laneR4L4 = new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.SOUTH);
+
+        laneR1L1.setLaneID("l1r1");
+        laneR1L2.setLaneID("l2r1");
+        laneR1L3.setLaneID("l3r1");
+        laneR1L4.setLaneID("l4r1");
+
+        laneR2L1.setLaneID("l1r2");
+        laneR2L2.setLaneID("l2r2");
+        laneR2L3.setLaneID("l3r2");
+        laneR2L4.setLaneID("l4r2");
+
+        laneR3L1.setLaneID("l1r3");
+        laneR3L2.setLaneID("l2r3");
+        laneR3L3.setLaneID("l3r3");
+        laneR3L4.setLaneID("l4r3");
+
+        laneR4L1.setLaneID("l1r4");
+        laneR4L2.setLaneID("l2r4");
+        laneR4L3.setLaneID("l3r4");
+        laneR4L4.setLaneID("l4r4");
+
         r1.addLane(laneR1L1);
+        //r1.addLane(laneR1L2);
+        //r1.addLane(laneR1L3);
+        r1.addLane(laneR1L4);
+
+        r2.addLane(laneR2L1);
+        //r2.addLane(laneR2L2);
+        //r2.addLane(laneR2L3);
+        r2.addLane(laneR2L4);
+
+        r3.addLane(laneR3L1);
+        //r3.addLane(laneR3L2);
+        //r3.addLane(laneR3L3);
+        r3.addLane(laneR3L4);
+        
+        laneR4L3.setState(0);
+        //laneR4L4.setState(0);
+
+        r4.addLane(laneR4L1);
+        //r4.addLane(laneR4L2);
+        //r4.addLane(laneR4L3);
+        r4.addLane(laneR4L4);
 
         for(int i = 0 ; i < roadMatrix.length; i++)
             map.addRoad(roadMatrix[i]);
@@ -33,6 +104,7 @@ public class MapExamples {
         i1.setIdIntersection("i1");
         i1.setEastRoad(r1);
         i1.setSouthRoad(r3);
+        i1.setDefaultTrafficLightsForRoads();
 
         Intersection i2 = new Intersection(new Coordinate(11,1));
         i2.setIdIntersection("i2");
@@ -56,6 +128,26 @@ public class MapExamples {
         map.addIntersection(i4);
 
         return  map;
+    }
+
+    public static Map drawMap1_1() throws Exception{
+
+        Map map = new Map(6,6);
+
+        Road R1 = new Road(new Coordinate(1,1),new Coordinate(4,1));
+
+        R1.setRoadId("r1");
+
+        Lane laneR1L1 = new Lane(R1.getStartLocation(),R1.getEndLocation(),MapDirection.EAST);
+
+        laneR1L1.setLaneID("L1");
+
+        R1.addLane(laneR1L1);
+
+        map.addRoad(R1);
+
+        return map;
+
     }
 
     public static Map drawTestMapBasic() throws Exception {

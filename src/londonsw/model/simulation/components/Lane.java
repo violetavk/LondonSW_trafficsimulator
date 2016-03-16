@@ -24,6 +24,16 @@ public class Lane implements Serializable {
     private int RoadIndex;
     private int state;
 
+    public String getLaneID() {
+        return laneID;
+    }
+
+    public void setLaneID(String laneID) {
+        this.laneID = laneID;
+    }
+
+    private String laneID;
+
     public int getState() {
         return state;
     }

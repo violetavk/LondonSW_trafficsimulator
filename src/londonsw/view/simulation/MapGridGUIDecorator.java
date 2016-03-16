@@ -1,15 +1,21 @@
 package londonsw.view.simulation;
 
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import londonsw.model.simulation.MapGrid;
 import londonsw.model.simulation.components.*;
+
+import java.util.ArrayList;
 
 /**
  * Created by felix on 25/02/2016.
  */
 public class MapGridGUIDecorator extends MapGridDecorator {
-
 
     private ResizeFactor resizeFactor;
 
@@ -27,7 +33,11 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
     public GridPane drawComponents() throws Exception {
         GridPane rootGP = new GridPane();
-        Pane roadStackPane;
+        StackPane roadPane;
+
+        int roadCounter = 0;
+
+        ArrayList<RoadGUIDecorator> roadArray = new ArrayList<>();
 
         for (int y = 0; y < this.getHeight(); y++) {
             for (int x = 0; x < this.getWidth(); x++) {
@@ -40,27 +50,64 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                     roadGUIDecorator.setResizeFactor(this.getResizeFactor());
 
-                    roadStackPane = roadGUIDecorator.drawRoad(roadGUIDecorator.runsVertically() ? MapDirection.NORTH : MapDirection.EAST);  //TODO change logic
+                    roadPane = roadGUIDecorator.drawRoad();
+
+                    roadPane.getChildren().get(1).setOnMouseClicked(event->
+                            {
+                                for (RoadGUIDecorator rd: roadArray
+                                        ) {
+
+                                    if(rd.decoratedRoad.getRoadId() == roadGUIDecorator.decoratedRoad.getRoadId()) {
+
+                                        Node nGroup = rd.getPane().getChildren().get(1);
+
+                                        Group group = (Group) nGroup;
+
+                                        Node nArrow = group.getChildren().get(1);
+
+                                        LaneArrow arrow = (LaneArrow) nArrow;
+
+                                        arrow.setFill(Color.RED);
+
+                                        System.out.println(arrow.getLaneId());
+
+                                        //n.ge
+
+                                    }
+
+                                }
+                            }
+                    );
+
+                    roadGUIDecorator.setCell(roadCounter);
+                    roadGUIDecorator.setPane(roadPane);
+                    roadGUIDecorator.setGridPaneCoordinates(new Coordinate(x,y));
+
+                    roadArray.add(roadGUIDecorator);
+
+                    roadCounter++;
 
                 } else if (current instanceof Intersection) {
+
+                    roadCounter = 0;
+
                     IntersectionDecorator intersectionDecorator = new IntersectionDecorator((Intersection) current);
                     intersectionDecorator.setResizeFactor(this.getResizeFactor());
-                    roadStackPane = intersectionDecorator.drawIntersection();
+                    roadPane = intersectionDecorator.drawIntersection();
                 } else {
+
+                    roadCounter = 0;
+
                     LayoutGUI grassGUI = new LayoutGUI();
 
                     grassGUI.setHeight(this.getHeight());
                     grassGUI.setWidth(this.getWidth());
                     grassGUI.setResizeFactor(this.getResizeFactor());
 
-                    roadStackPane = grassGUI.drawGrass();
+                    roadPane = grassGUI.drawGrass();
                 }
 
-//                rootGP.setRowIndex(roadStackPane, y);
-//                rootGP.setColumnIndex(roadStackPane, x);
-//                rootGP.getChildren().add(roadStackPane);
-
-                rootGP.add(roadStackPane,x,y);
+                rootGP.add(roadPane, x, y);
 
             }
         }

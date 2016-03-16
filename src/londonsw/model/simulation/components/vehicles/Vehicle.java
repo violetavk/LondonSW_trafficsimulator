@@ -292,6 +292,9 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     public void readTrafficLight()throws Exception {
         if (this.getCurrentCell() == this.currentLane.getLength() -1) {
             TrafficLight light;
+
+            if(this.getCurrentLane().getEndIntersection()!=null)
+            {
             switch (this.getCurrentLane().getMovingDirection()){
                 case NORTH:
                     light= this.getCurrentLane().getEndIntersection().getSouthTrafficLight();
@@ -323,6 +326,13 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                 else
                     this.vehicleState = 1;
             }
+        }else
+            {
+                System.out.println("No Intersection assigned");
+                this.vehicleState = 3;  //possible state to remove vehicle
+            }
+
+
         }
         else
             throw new Exception("Reading traffic light when not at end of lane");

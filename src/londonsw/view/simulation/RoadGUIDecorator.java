@@ -1,18 +1,14 @@
 package londonsw.view.simulation;
 
-import javafx.event.EventType;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Material;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Polyline;
 import londonsw.model.simulation.components.*;
-
-import java.beans.EventHandler;
 import java.util.ArrayList;
 
 /**
@@ -24,6 +20,35 @@ public class RoadGUIDecorator extends RoadDecorator {
     }
 
     private ResizeFactor resizeFactor;
+    private Coordinate gridPaneCoordinates;
+
+    public Pane getPane() {
+        return paneRoad;
+    }
+
+    public void setPane(Pane paneRoad) {
+        this.paneRoad = paneRoad;
+    }
+
+    private Pane paneRoad;
+
+    public int getCell() {
+        return Cell;
+    }
+
+    public void setCell(int cell) {
+        Cell = cell;
+    }
+
+    public Coordinate getGridPaneCoordinates() {
+        return gridPaneCoordinates;
+    }
+
+    public void setGridPaneCoordinates(Coordinate gridPaneCoordinates) {
+        gridPaneCoordinates = gridPaneCoordinates;
+    }
+
+    private int Cell;
 
     public ResizeFactor getResizeFactor() {
         return resizeFactor;
@@ -33,7 +58,7 @@ public class RoadGUIDecorator extends RoadDecorator {
         this.resizeFactor = resizeFactor;
     }
 
-    public StackPane drawRoad(MapDirection mapDirection) {
+    public StackPane drawRoad() {
 
         String roadBackgroundPath = "RoadBackground.png";   //TODO avoid hardcode
 
@@ -46,7 +71,7 @@ public class RoadGUIDecorator extends RoadDecorator {
         StackPane stackPane = new StackPane();
 
         //draw amount of lines
-        Pane lines = new Pane();
+        Group lines = new Group();
 
         int numberLanes = this.getNumberLanes();
 
@@ -60,7 +85,7 @@ public class RoadGUIDecorator extends RoadDecorator {
 
         int j = 0;
 
-        if (mapDirection == MapDirection.EAST || mapDirection == MapDirection.WEST) {
+        if (!this.runsVertically()) {
             for (int i = 0; i < numberLanes * 2; i++) {
                 if (i % 2 == 0) {
 
@@ -74,9 +99,8 @@ public class RoadGUIDecorator extends RoadDecorator {
 
                     roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY);
                     roadLine.setStrokeWidth(2 * this.getResizeFactor().getResizeY()); //TODO avoid hardcode
-                    lines.getChildren().add(roadLine);
 
-                    Polygon arrow = drawArrow();
+                    LaneArrow arrow = drawArrow(l.getLaneID());
 
                     if (l.getState() == 1) {
                         roadLine.setStroke(Color.WHITE);
@@ -101,7 +125,7 @@ public class RoadGUIDecorator extends RoadDecorator {
 
                     arrow.setRotate(angle - 90);
 
-                    lines.getChildren().add(arrow);
+                    lines.getChildren().addAll(roadLine,arrow);
 
                     j++;
 
@@ -119,19 +143,20 @@ public class RoadGUIDecorator extends RoadDecorator {
                     double lineEndX = division * (i + 1);
                     double lineEndY = im.getHeight() - 10;
 
-                    roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY); //TODO avoid hardcode
+                    roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY);
                     roadLine.setStrokeWidth(2 * this.getResizeFactor().getResizeY()); //TODO avoid hardcode
-                    roadLine.setStroke(Color.WHITE);
 
                     lines.getChildren().add(roadLine);
 
-                    Polygon arrow = drawArrow();
+                    LaneArrow arrow = drawArrow(l.getLaneID());
 
                     if (l.getState() == 1) {
                         arrow.setFill(Color.WHITE);
+                        roadLine.setStroke(Color.WHITE);
                     } else {
                         //lane not enabled
                         arrow.setFill(Color.RED);
+                        roadLine.setStroke(Color.RED);
                     }
 
                     double angle = 0.0;
@@ -157,6 +182,8 @@ public class RoadGUIDecorator extends RoadDecorator {
                 }
             }
 
+        //stackPane.setOnMouseClicked(event -> System.out.println("Clicked " + this.getRoadId() + " Cell: " + this.getCell()     )   );
+
         stackPane.getChildren().add(iv);
         stackPane.getChildren().add(lines);
 
@@ -164,15 +191,33 @@ public class RoadGUIDecorator extends RoadDecorator {
         return stackPane;
     }
 
-    public Polygon drawArrow() {
-        Polygon arrow = new Polygon();
+    private void repaintWithNewState(Lane l, Polygon arrow) {
+
+        System.out.println(l.getLaneID());
+        l.setState(l.getState()==0?1:0);
+
+        arrow.setFill(Color.RED);
+
+    }
+
+    private void paintArrows(Polygon arrow, Lane lane) {
+
+        lane.setState(0);
+        arrow.setFill(Color.RED);
+
+    }
+
+    public LaneArrow drawArrow(String id) {
+        LaneArrow arrow = new LaneArrow();
+
+        arrow.setLaneId(id);
 
         double arrowResizeFactor = resizeFactor.getResizeX() * 1.75;
-        arrow.getPoints().addAll(new Double[]{
+        arrow.getPoints().addAll(
                 0.0 * arrowResizeFactor, 5.0 * arrowResizeFactor,
                 -5.0 * arrowResizeFactor, -5.0 * arrowResizeFactor,
                 5.0 * arrowResizeFactor, -5.0 * arrowResizeFactor
-        });
+        );
 
         return arrow;
     }
