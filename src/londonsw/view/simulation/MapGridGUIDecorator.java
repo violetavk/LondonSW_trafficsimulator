@@ -6,6 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import londonsw.model.simulation.MapGrid;
 import londonsw.model.simulation.components.*;
@@ -63,19 +64,28 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                                         Group group = (Group) nGroup;
 
-                                        Node nArrow = group.getChildren().get(1);
+                                        //1 for first arrow, 3 for second arrow
 
-                                        LaneArrow arrow = (LaneArrow) nArrow;
+                                        Node n = group.getChildren().get(0);
 
-                                        arrow.setFill(arrow.getFill()==Color.RED?Color.WHITE:Color.RED);
 
-                                        //System.out.println(arrow.lane.getLaneID());
+                                        //int index = l.lane.getRoadIndex()==0?1:3;
 
-                                        arrow.lane.setState(arrow.lane.getState()==0?1:0);
+                                        //Node nArrow = group.getChildren().get(index);
+                                        //Node nLine = group.getChildren().get(index-1);
+
+                                        //LaneArrow arrow = (LaneArrow) nArrow;
+                                        //Line line = (Line) nLine;
+
+                                        //arrow.setFill(arrow.getFill()==Color.RED?Color.WHITE:Color.RED);
+                                        //line.setFill(arrow.getFill()==Color.RED?Color.WHITE:Color.RED);
 
                                     }
 
                                 }
+
+                                //Enable or disable
+
                             }
                     );
 

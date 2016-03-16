@@ -20,7 +20,7 @@ public class MapGridGUITestMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Map map = MapExamples.drawMap1_1();
+        Map map = MapExamples.drawMap1();
         //Map map = MapExamples.drawTestMapExample();
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
@@ -28,11 +28,11 @@ public class MapGridGUITestMain extends Application {
         double width = mapGridGUIDecorator.getWidth();
         double height = mapGridGUIDecorator.getHeight();
 
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor((map.getWidth()/(5*1.0)) / width, (map.getHeight()/(5*1.0)) / height));    //TODO HARDCODE
+        //mapGridGUIDecorator.setResizeFactor(new ResizeFactor((map.getWidth()/(5*1.0)) / width, (map.getHeight()/(5*1.0)) / height));    //TODO HARDCODE
 
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(1,1));
+        //mapGridGUIDecorator.setResizeFactor(new ResizeFactor(1,1));
 
-        //mapGridGUIDecorator.setResizeFactor(new ResizeFactor(.25,.25));
+        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(.25,.25));
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 

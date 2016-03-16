@@ -18,8 +18,6 @@ public class Lane implements Serializable {
     private Coordinate exit;
     private MapDirection movingDirection;
     private Road road;
-    // private Intersection intersection;
-    //private Intersection laneIntersection;
     private Intersection endIntersection;
     private int RoadIndex;
     private int state;
