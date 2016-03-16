@@ -53,43 +53,45 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                     roadPane = roadGUIDecorator.drawRoad();
 
-                    roadPane.getChildren().get(1).setOnMouseClicked(event->
+                    roadPane.getChildren().get(1).setOnMouseClicked(event ->
                             {
-                                LaneArrow laneArrow = (LaneArrow) event.getTarget();
 
-                                for (RoadGUIDecorator rd: roadArray
-                                        ) {
+                                if (event.getTarget() instanceof LaneArrow) {
+                                    LaneArrow laneArrow = (LaneArrow) event.getTarget();
 
-
-                                    if(rd.decoratedRoad.getRoadId() == roadGUIDecorator.decoratedRoad.getRoadId()) {
-
-                                        Node nGroup = rd.getPane().getChildren().get(1);
-
-                                        Group gRoad = (Group) nGroup;
+                                    for (RoadGUIDecorator rd : roadArray
+                                            ) {
 
 
-                                        Group g = (Group) gRoad.getChildren().get(laneArrow.lane.getRoadIndex());
+                                        if (rd.decoratedRoad.getId() == roadGUIDecorator.decoratedRoad.getId()) {
 
-                                        Line lineArrow = (Line) g.getChildren().get(0);
-                                        Polygon arrow = (Polygon) g.getChildren().get(1);
+                                            Node nGroup = rd.getPane().getChildren().get(1);
 
-                                        lineArrow.setStroke(lineArrow.getStroke()==Color.RED?Color.WHITE:Color.RED);
-                                        arrow.setFill(arrow.getFill()==Color.RED?Color.WHITE:Color.RED);
+                                            Group gRoad = (Group) nGroup;
+
+
+                                            Group g = (Group) gRoad.getChildren().get(laneArrow.lane.getRoadIndex());
+
+                                            Line lineArrow = (Line) g.getChildren().get(0);
+                                            Polygon arrow = (Polygon) g.getChildren().get(1);
+
+                                            lineArrow.setStroke(lineArrow.getStroke() == Color.RED ? Color.WHITE : Color.RED);
+                                            arrow.setFill(arrow.getFill() == Color.RED ? Color.WHITE : Color.RED);
+
+                                        }
 
                                     }
 
+                                    System.out.println(laneArrow.lane.getLaneID());
+                                    laneArrow.lane.setState(laneArrow.lane.getState() == 0 ? 1 : 0);
+
                                 }
-
-                                System.out.println(laneArrow.lane.getLaneID());
-                                laneArrow.lane.setState(laneArrow.lane.getState()==0?1:0);
-
                             }
                     );
 
-
                     roadGUIDecorator.setCell(roadCounter);
                     roadGUIDecorator.setPane(roadPane);
-                    roadGUIDecorator.setGridPaneCoordinates(new Coordinate(x,y));
+                    roadGUIDecorator.setGridPaneCoordinates(new Coordinate(x, y));
 
                     roadArray.add(roadGUIDecorator);
 

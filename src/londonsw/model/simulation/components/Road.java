@@ -16,17 +16,17 @@ public class Road implements Component, Serializable, IRoad {
     private Coordinate end;
     private ArrayList<Lane> lanes;
     private Intersection intersection;
+    private static  int counter=0;
 
-    public String getRoadId() {
-        return RoadId;
+    public int getId() {
+        return id;
     }
 
-    public void setRoadId(String roadId) {
-        RoadId = roadId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    private String RoadId;
-
+    private int id;
 
     /**
      * Creates an instance of a new Road. It has no lanes yet. (Note: a road without lanes
@@ -42,6 +42,7 @@ public class Road implements Component, Serializable, IRoad {
         lanes = new ArrayList<Lane>();
         this.start = start;
         this.end = end;
+        this.id=++counter;
     }
 
     /**

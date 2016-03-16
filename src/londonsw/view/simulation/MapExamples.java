@@ -22,11 +22,6 @@ public class MapExamples {
         Road r3 = new Road(new Coordinate(1,2), new Coordinate(1,9));
         Road r4 = new Road(new Coordinate(11,2), new Coordinate(11,9));
 
-        r1.setRoadId("r1");
-        r2.setRoadId("r2");
-        r3.setRoadId("r3");
-        r4.setRoadId("r4");
-
         Road roadMatrix[] = {r1,r2,r3,r4};
 
         Lane laneR1L1 = new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST);
@@ -49,26 +44,6 @@ public class MapExamples {
         Lane laneR4L3 = new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.SOUTH);
         Lane laneR4L4 = new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.SOUTH);
 
-        laneR1L1.setLaneID("l1r1");
-        laneR1L2.setLaneID("l2r1");
-        laneR1L3.setLaneID("l3r1");
-        laneR1L4.setLaneID("l4r1");
-
-        laneR2L1.setLaneID("l1r2");
-        laneR2L2.setLaneID("l2r2");
-        laneR2L3.setLaneID("l3r2");
-        laneR2L4.setLaneID("l4r2");
-
-        laneR3L1.setLaneID("l1r3");
-        laneR3L2.setLaneID("l2r3");
-        laneR3L3.setLaneID("l3r3");
-        laneR3L4.setLaneID("l4r3");
-
-        laneR4L1.setLaneID("l1r4");
-        laneR4L2.setLaneID("l2r4");
-        laneR4L3.setLaneID("l3r4");
-        laneR4L4.setLaneID("l4r4");
-
         r1.addLane(laneR1L1);
         //r1.addLane(laneR1L2);
         //r1.addLane(laneR1L3);
@@ -84,7 +59,7 @@ public class MapExamples {
         //r3.addLane(laneR3L3);
         r3.addLane(laneR3L4);
 
-        laneR4L3.setState(0);
+        //laneR4L3.setState(0);
         //laneR4L4.setState(0);
 
         r4.addLane(laneR4L1);
@@ -96,24 +71,19 @@ public class MapExamples {
             map.addRoad(roadMatrix[i]);
 
         Intersection i1 = new Intersection(new Coordinate(1,1));
-        i1.setIdIntersection("i1");
         i1.setEastRoad(r1);
         i1.setSouthRoad(r3);
         i1.setDefaultTrafficLightsForRoads();
 
         Intersection i2 = new Intersection(new Coordinate(11,1));
-        i2.setIdIntersection("i2");
         i2.setWestRoad(r1);
         i2.setSouthRoad(r4);
 
         Intersection i3 = new Intersection(new Coordinate(1,10));
-        i3.setIdIntersection("i3");
         i3.setEastRoad(r2);
         i3.setNorthRoad(r3);
 
         Intersection i4 = new Intersection(new Coordinate(11,10));
-
-        i4.setIdIntersection("i4");
         i4.setWestRoad(r2);
         i4.setNorthRoad(r4);
 
@@ -131,11 +101,7 @@ public class MapExamples {
 
         Road R1 = new Road(new Coordinate(1,1),new Coordinate(4,1));
 
-        R1.setRoadId("r1");
-
         Lane laneR1L1 = new Lane(R1.getStartLocation(),R1.getEndLocation(),MapDirection.EAST);
-
-        laneR1L1.setLaneID("L1");
 
         R1.addLane(laneR1L1);
 
@@ -435,7 +401,7 @@ public class MapExamples {
         r03.addLane(new Lane(r03.getEndLocation(),r03.getStartLocation(),MapDirection.NORTH));
         r04.addLane(new Lane(r04.getEndLocation(),r04.getStartLocation(),MapDirection.NORTH));
         Lane l5 = new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST);
-        l5.setState(0);
+        //l5.setState(0);
         r05.addLane(l5);
         Lane l6 = new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST);
         r06.addLane(l6);
