@@ -27,16 +27,16 @@
       </VBox>
       <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <children>
-            <Button layoutX="165.0" layoutY="32.0" mnemonicParsing="false"
+            <Button fx:id="simulationModeButton" layoutX="165.0" layoutY="32.0" mnemonicParsing="false"
                     prefHeight="70.0" prefWidth="270.0" text="Choose Pre-made Map..."
                     onAction="#goToSimulationMode"/>
          </children>
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
          <children>
-            <Button layoutX="165.0" layoutY="32.0" mnemonicParsing="false"
+            <Button fx:id="mapMakerButton" layoutX="165.0" layoutY="32.0" mnemonicParsing="false"
                     prefHeight="70.0" prefWidth="270.0" text="Create New Map..."
-                    onAction="#goToMapBuilderMode"/>
+                    onAction="#goToMapMakerMode"/>
          </children>
       </Pane>
    </children>
