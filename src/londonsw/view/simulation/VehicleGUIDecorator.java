@@ -120,9 +120,22 @@ public class VehicleGUIDecorator extends VehicleDecorator {
                 carDimensionX * this.getResizeFactor().getResizeX(),
                 carDimensionY * this.getResizeFactor().getResizeY());
 
-        if(this.getVehiclePriority()==5){
-            r.setFill(this.getColor());
+        /**
+         * Simulating Ambulance using fill Transitions
+         *
+         */
+        FillTransition ft = new FillTransition();
+        ft.setShape(r);
+        ft.setDuration(Duration.millis(500));
+        if(this.getVehiclePriority()==5) {
+            ft.setFromValue(this.getColor());
+            ft.setToValue(Color.BLUE);
+            ft.setCycleCount(Timeline.INDEFINITE);
+            ft.setAutoReverse(true);
+            ft.setInterpolator(Interpolator.LINEAR);
+            ft.play();
         }
+
         else
             r.setFill(Color.YELLOW);
 

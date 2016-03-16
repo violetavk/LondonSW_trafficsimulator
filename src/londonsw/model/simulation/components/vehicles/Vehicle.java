@@ -313,7 +313,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     throw new Exception("Error Direction!");
                    // break;
             }
-            if(vehiclePriority>1){
+
+            if(vehiclePriority>1 && light!=null){
                 if(light.getState()== LightColour.RED){
                     this.vehicleState=1;
 
@@ -326,7 +327,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                 else
                     this.vehicleState = 1;
             }
-        }else
+        }
+            else
             {
                 System.out.println("No Intersection assigned");
                 int curCell = this.getCurrentCell();

@@ -5,8 +5,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import londonsw.model.simulation.components.*;
+import londonsw.model.simulation.components.Lane;
+import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Ambulance;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.view.simulation.MapExamples;
@@ -87,6 +89,26 @@ public class MapGridGUITestMain extends Application {
                 c++;}
         System.out.println("Number of cars is "+ c);
 
+        /**
+         * We can now use a single button to spawn and un-spawn new instances of ambulance
+         * However, not able to remove them. Still working on it.
+         * Un-comment to see what i mean.
+         */
+
+        /*
+        sp.setOnMouseClicked(event -> {
+            Ambulance testambulance = null;
+            if(sp.getChildren().contains(testambulance)){
+                sp.getChildren().remove(testambulance);
+            }
+        else{
+
+                testambulance = generateAmbulance(map,mapGridGUIDecorator,sp);
+        }
+       });
+        */
+
+
         Scene scene = new Scene(sp);
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
@@ -103,6 +125,45 @@ public class MapGridGUITestMain extends Application {
         //primaryStage.setFullScreen(true);
 
     }
+
+    /**
+     *Re-used rawan method to generate new ambulances...
+     * @param map
+     * @param mapGridGUIDecorator
+     * @param sp
+     * @return
+     */
+    public Ambulance generateAmbulance(Map map, MapGridGUIDecorator mapGridGUIDecorator, StackPane sp){
+        Lane AmbLane = map.getRandomLane();
+
+        if (AmbLane!=null && (!AmbLane.isFull())){
+            for (int x = 0; x < map.getRoads().size(); x++) {
+                for (int y = 0; y < map.getRoads().get(x).getNumberLanes(); y++) {
+                    AmbLane=map.getRandomLane();
+                    for (int z = 0; z < AmbLane.getLength(); z++) {
+                        if (AmbLane.isCellEmpty(z)) {
+                            Ambulance A  = new Ambulance(z, AmbLane);
+                            VehicleGUIDecorator ambulanceGUIDecorator = new VehicleGUIDecorator(A);
+                            ambulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+                            ambulanceGUIDecorator.setColor(Color.RED);
+                            ambulanceGUIDecorator.drawCar();
+                            Pane alPane = new Pane();
+                            alPane.getChildren().add(ambulanceGUIDecorator.getRectangle());
+                            sp.getChildren().add(alPane);
+                            ambulanceGUIDecorator.setVehicleState(1);
+                            return A;
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+        return null;
+    }
+
 
     public Car generateCar(Map map, MapGridGUIDecorator mapGridGUIDecorator, StackPane sp){
 
