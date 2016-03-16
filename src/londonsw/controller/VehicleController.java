@@ -58,6 +58,7 @@ public class VehicleController {
         vehicleGUIDecorator.setPreviousCoordinate(vehicleGUIDecorator.getCurrentCoordinate());
 
         if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
+            //only read when intersection is available
             vehicleGUIDecorator.readTrafficLight();
 
             if (vehicleGUIDecorator.getVehicleState() == 1 ) {
