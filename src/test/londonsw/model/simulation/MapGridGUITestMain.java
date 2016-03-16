@@ -43,16 +43,16 @@ public class MapGridGUITestMain extends Application {
         /**
          *  Ambulance inherits from vehicle
          */
-        Lane al = map.getRandomLane();
-        Ambulance a = new Ambulance(0,al);
-        VehicleGUIDecorator ambulanceGUIDecorator = new VehicleGUIDecorator(a);
-        ambulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
-        ambulanceGUIDecorator.setColor(Color.RED);
-        ambulanceGUIDecorator.drawCar();
-        Pane alPane = new Pane();
-        alPane.getChildren().add(ambulanceGUIDecorator.getRectangle());
-        //sp.getChildren().add(alPane);
-        ambulanceGUIDecorator.setVehicleState(1);
+//        Lane al = map.getRandomLane();
+//        Ambulance a = new Ambulance(0,al);
+//        VehicleGUIDecorator ambulanceGUIDecorator = new VehicleGUIDecorator(a);
+//        ambulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+//        ambulanceGUIDecorator.setColor(Color.RED);
+//        ambulanceGUIDecorator.drawCar();
+//        Pane alPane = new Pane();
+//        alPane.getChildren().add(ambulanceGUIDecorator.getRectangle());
+//        //sp.getChildren().add(alPane);
+//        ambulanceGUIDecorator.setVehicleState(1);
 
         /**
          * We would have a button to spawn an ambulance: single click deploys the ambulance and double click removes it.
@@ -91,13 +91,23 @@ public class MapGridGUITestMain extends Application {
         /**
          * We can now use a single button to spawn and un-spawn the ambulance
          */
-        sp.setOnMouseClicked(event -> {if(sp.getChildren().contains(alPane)){
-            sp.getChildren().remove(alPane);}
+        sp.setOnMouseClicked(event -> {
+            Ambulance testambulance= null;
+           VehicleGUIDecorator testamb = new VehicleGUIDecorator(testambulance);
+            if(sp.getChildren().contains(testambulance)){
+                sp.getChildren().remove(testambulance);
+            }
+//            if(sp.getChildren().contains(alPane)){
+//            sp.getChildren().remove(alPane);
+//            }
         else{
-            sp.getChildren().add(alPane);
+           // sp.getChildren().add(alPane);
+
+                testambulance = generateAmbulance(map,mapGridGUIDecorator,sp);
         };
         });
 
+//        Ambulance testamb = generateAmbulance(map,mapGridGUIDecorator,sp);
 
         Scene scene = new Scene(sp);
         primaryStage.setTitle("Map Layout");
@@ -110,6 +120,37 @@ public class MapGridGUITestMain extends Application {
 
     }
 
+    public Ambulance generateAmbulance(Map map,MapGridGUIDecorator mapGridGUIDecorator, StackPane sp){
+        Lane AmbLane = map.getRandomLane();
+
+        if (AmbLane!=null && (!AmbLane.isFull())){
+            for (int x = 0; x < map.getRoads().size(); x++) {
+                for (int y = 0; y < map.getRoads().get(x).getNumberLanes(); y++) {
+                    AmbLane=map.getRandomLane();
+                    for (int z = 0; z < AmbLane.getLength(); z++) {
+                        if (AmbLane.isCellEmpty(z)) {
+                            Ambulance A  = new Ambulance(z, AmbLane);
+                            VehicleGUIDecorator ambulanceGUIDecorator = new VehicleGUIDecorator(A);
+                            ambulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+                            ambulanceGUIDecorator.setColor(Color.RED);
+                            ambulanceGUIDecorator.drawCar();
+                            Pane alPane = new Pane();
+                            alPane.getChildren().add(ambulanceGUIDecorator.getRectangle());
+                            sp.getChildren().add(alPane);
+                            ambulanceGUIDecorator.setVehicleState(1);
+                            return A;
+
+
+                    }
+                }
+
+            }
+
+        }
+
+    }
+        return null;
+    }
 
 
     public Car generateCar(Map map, MapGridGUIDecorator mapGridGUIDecorator, StackPane sp){
