@@ -71,7 +71,6 @@ public class RoadGUIDecorator extends RoadDecorator {
         StackPane stackPane = new StackPane();
 
         //draw amount of lines
-        //Group lines = new Group();
         Group arrowLines = new Group();
 
         int numberLanes = this.getNumberLanes();
@@ -102,7 +101,7 @@ public class RoadGUIDecorator extends RoadDecorator {
 
                     arrow = new LaneArrow(lane,roadLine,resizeFactor);
 
-                    arrowLines.getChildren().addAll(arrow);
+                    arrowLines.getChildren().addAll(arrow.getGroup());
 
                     j++;
 
@@ -110,8 +109,6 @@ public class RoadGUIDecorator extends RoadDecorator {
             }
         } else
             for (int i = 0; i < numberLanes * 2; i++) {
-
-                //TODO:
 
                 if (i % 2 == 0) {
 
@@ -125,19 +122,15 @@ public class RoadGUIDecorator extends RoadDecorator {
                     Line roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY);
 
                     arrow = new LaneArrow(lane,roadLine,resizeFactor);
-                    arrowLines.getChildren().addAll(arrow);
+                    arrowLines.getChildren().addAll(arrow.getGroup());
 
                     j++;
 
                 }
             }
 
-        //stackPane.setOnMouseClicked(event -> System.out.println("Clicked " + this.getRoadId() + " Cell: " + this.getCell()     )   );
-
         stackPane.getChildren().add(iv);
-        //stackPane.getChildren().add(lines);
         stackPane.getChildren().add(arrowLines);
-
 
         return stackPane;
     }

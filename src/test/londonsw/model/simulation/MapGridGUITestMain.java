@@ -21,6 +21,7 @@ public class MapGridGUITestMain extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         Map map = MapExamples.drawMap1();
+
         //Map map = MapExamples.drawTestMapExample();
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());

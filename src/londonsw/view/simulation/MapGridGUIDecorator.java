@@ -55,39 +55,37 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                     roadPane.getChildren().get(1).setOnMouseClicked(event->
                             {
+                                LaneArrow laneArrow = (LaneArrow) event.getTarget();
+
                                 for (RoadGUIDecorator rd: roadArray
                                         ) {
+
 
                                     if(rd.decoratedRoad.getRoadId() == roadGUIDecorator.decoratedRoad.getRoadId()) {
 
                                         Node nGroup = rd.getPane().getChildren().get(1);
 
-                                        Group group = (Group) nGroup;
-
-                                        //1 for first arrow, 3 for second arrow
-
-                                        Node n = group.getChildren().get(0);
+                                        Group gRoad = (Group) nGroup;
 
 
-                                        //int index = l.lane.getRoadIndex()==0?1:3;
+                                        Group g = (Group) gRoad.getChildren().get(laneArrow.lane.getRoadIndex());
 
-                                        //Node nArrow = group.getChildren().get(index);
-                                        //Node nLine = group.getChildren().get(index-1);
+                                        Line lineArrow = (Line) g.getChildren().get(0);
+                                        Polygon arrow = (Polygon) g.getChildren().get(1);
 
-                                        //LaneArrow arrow = (LaneArrow) nArrow;
-                                        //Line line = (Line) nLine;
-
-                                        //arrow.setFill(arrow.getFill()==Color.RED?Color.WHITE:Color.RED);
-                                        //line.setFill(arrow.getFill()==Color.RED?Color.WHITE:Color.RED);
+                                        lineArrow.setStroke(lineArrow.getStroke()==Color.RED?Color.WHITE:Color.RED);
+                                        arrow.setFill(arrow.getFill()==Color.RED?Color.WHITE:Color.RED);
 
                                     }
 
                                 }
 
-                                //Enable or disable
+                                System.out.println(laneArrow.lane.getLaneID());
+                                laneArrow.lane.setState(laneArrow.lane.getState()==0?1:0);
 
                             }
                     );
+
 
                     roadGUIDecorator.setCell(roadCounter);
                     roadGUIDecorator.setPane(roadPane);
