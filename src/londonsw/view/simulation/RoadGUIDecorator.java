@@ -24,35 +24,6 @@ public class RoadGUIDecorator extends RoadDecorator {
     }
 
     private ResizeFactor resizeFactor;
-    private Coordinate gridPaneCoordinates;
-
-    public Pane getPane() {
-        return paneRoad;
-    }
-
-    public void setPane(Pane paneRoad) {
-        this.paneRoad = paneRoad;
-    }
-
-    private Pane paneRoad;
-
-    public int getCell() {
-        return Cell;
-    }
-
-    public void setCell(int cell) {
-        Cell = cell;
-    }
-
-    public Coordinate getGridPaneCoordinates() {
-        return gridPaneCoordinates;
-    }
-
-    public void setGridPaneCoordinates(Coordinate gridPaneCoordinates) {
-        gridPaneCoordinates = gridPaneCoordinates;
-    }
-
-    private int Cell;
 
     public ResizeFactor getResizeFactor() {
         return resizeFactor;
@@ -62,7 +33,7 @@ public class RoadGUIDecorator extends RoadDecorator {
         this.resizeFactor = resizeFactor;
     }
 
-    public StackPane drawRoad() {
+    public StackPane drawRoad(MapDirection mapDirection) {
 
         String roadBackgroundPath = "RoadBackground.png";   //TODO avoid hardcode
 
@@ -89,7 +60,7 @@ public class RoadGUIDecorator extends RoadDecorator {
 
         int j = 0;
 
-        if (!this.runsVertically()) {
+        if (mapDirection == MapDirection.EAST || mapDirection == MapDirection.WEST) {
             for (int i = 0; i < numberLanes * 2; i++) {
                 if (i % 2 == 0) {
 
@@ -103,7 +74,6 @@ public class RoadGUIDecorator extends RoadDecorator {
 
                     roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY);
                     roadLine.setStrokeWidth(2 * this.getResizeFactor().getResizeY()); //TODO avoid hardcode
-
                     lines.getChildren().add(roadLine);
 
                     Polygon arrow = drawArrow();
@@ -131,11 +101,7 @@ public class RoadGUIDecorator extends RoadDecorator {
 
                     arrow.setRotate(angle - 90);
 
-                    //arrow.setOnMouseClicked(event-> repaintWithNewState(l,mapDirection));
-
                     lines.getChildren().add(arrow);
-
-                    //lines.setOnMouseClicked(event -> System.out.println("Clicked " + l.getLaneID()));
 
                     j++;
 
@@ -153,8 +119,9 @@ public class RoadGUIDecorator extends RoadDecorator {
                     double lineEndX = division * (i + 1);
                     double lineEndY = im.getHeight() - 10;
 
-                    roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY);
+                    roadLine = new Line(lineStartX, lineStartY, lineEndX, lineEndY); //TODO avoid hardcode
                     roadLine.setStrokeWidth(2 * this.getResizeFactor().getResizeY()); //TODO avoid hardcode
+                    roadLine.setStroke(Color.WHITE);
 
                     lines.getChildren().add(roadLine);
 
@@ -162,11 +129,9 @@ public class RoadGUIDecorator extends RoadDecorator {
 
                     if (l.getState() == 1) {
                         arrow.setFill(Color.WHITE);
-                        roadLine.setStroke(Color.WHITE);
                     } else {
                         //lane not enabled
                         arrow.setFill(Color.RED);
-                        roadLine.setStroke(Color.RED);
                     }
 
                     double angle = 0.0;
@@ -192,8 +157,6 @@ public class RoadGUIDecorator extends RoadDecorator {
                 }
             }
 
-        stackPane.setOnMouseClicked(event -> System.out.println("Clicked " + this.getRoadId() + " Cell: " + this.getCell()));
-
         stackPane.getChildren().add(iv);
         stackPane.getChildren().add(lines);
 
@@ -201,29 +164,15 @@ public class RoadGUIDecorator extends RoadDecorator {
         return stackPane;
     }
 
-    private void repaintWithNewState(Lane l, MapDirection mapDirection) {
-
-        System.out.println(l.getLaneID());
-        l.setState(l.getState()==0?1:0);
-
-    }
-
-    private void paintArrows(Polygon arrow, Lane lane) {
-
-        lane.setState(0);
-        arrow.setFill(Color.RED);
-
-    }
-
     public Polygon drawArrow() {
         Polygon arrow = new Polygon();
 
         double arrowResizeFactor = resizeFactor.getResizeX() * 1.75;
-        arrow.getPoints().addAll(
+        arrow.getPoints().addAll(new Double[]{
                 0.0 * arrowResizeFactor, 5.0 * arrowResizeFactor,
                 -5.0 * arrowResizeFactor, -5.0 * arrowResizeFactor,
                 5.0 * arrowResizeFactor, -5.0 * arrowResizeFactor
-        );
+        });
 
         return arrow;
     }

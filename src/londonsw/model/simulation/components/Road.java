@@ -17,16 +17,6 @@ public class Road implements Component, Serializable, IRoad {
     private ArrayList<Lane> lanes;
     private Intersection intersection;
 
-    public String getRoadId() {
-        return RoadId;
-    }
-
-    public void setRoadId(String roadId) {
-        RoadId = roadId;
-    }
-
-    private String RoadId;
-
 
     /**
      * Creates an instance of a new Road. It has no lanes yet. (Note: a road without lanes

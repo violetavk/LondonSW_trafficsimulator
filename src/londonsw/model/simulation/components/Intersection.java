@@ -227,6 +227,7 @@ public class Intersection implements Component, Serializable {
             }
         }
     }
+
 }
 
 class IntersectionSetupException extends Exception {
