@@ -68,7 +68,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
                                             Node nGroup = rd.getPane().getChildren().get(1);
 
                                             Group gRoad = (Group) nGroup;
-                                            
+
                                             Group g = (Group) gRoad.getChildren().get(laneArrow.lane.getRoadIndex());
 
                                             Line lineArrow = (Line) g.getChildren().get(0);

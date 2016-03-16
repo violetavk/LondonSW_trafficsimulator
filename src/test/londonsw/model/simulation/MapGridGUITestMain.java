@@ -18,7 +18,7 @@ public class MapGridGUITestMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Map map = MapExamples.drawMap1();
+        Map map = MapExamples.drawMap1_1();
 
         //Map map = MapExamples.drawTestMapExample();
 
@@ -131,6 +131,7 @@ public class MapGridGUITestMain extends Application {
                             carPane.getChildren().add(vehicleGUIDecorator.getRectangle());
                             //carPane.getChildren().add(vehicleGUIDecorator.getGroup());
                             sp.getChildren().add(carPane);
+                            vehicleGUIDecorator.setPane(carPane);
                             vehicleGUIDecorator.setVehicleState(1);
                             System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
                             return C1;
