@@ -35,6 +35,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
     // debug only
     int timesTicked;
+    private static  int counter=0;
+    private int id;
 
 
     /**
@@ -48,8 +50,16 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         this.currentLane.setCell(this,currentCell);
         Ticker.subscribe(this);
         timesTicked = 0;
+        id=++counter;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     /**
      * Gets the length of a vehicle
@@ -420,7 +430,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     @Override
     public void onNext(Long aLong) {
         System.out.print("Tick! " + aLong + "     ");
-        System.out.println("Location: " + this.getCurrentCoordinate().getX() + "," + this.getCurrentCoordinate().getY());
+        System.out.println("Car: "+ this.getId()+"  Location: " + this.getCurrentCoordinate().getX() + "," + this.getCurrentCoordinate().getY());
         try {
             if (vehicleBehavior == VehicleBehavior.AVERAGE) {
                 VehicleController.moveOnTick(this,1);
