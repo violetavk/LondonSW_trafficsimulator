@@ -67,11 +67,11 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                                         LaneArrow arrow = (LaneArrow) nArrow;
 
-                                        arrow.setFill(Color.RED);
+                                        arrow.setFill(arrow.getFill()==Color.RED?Color.WHITE:Color.RED);
 
-                                        System.out.println(arrow.getLaneId());
+                                        //System.out.println(arrow.lane.getLaneID());
 
-                                        //n.ge
+                                        arrow.lane.setState(arrow.lane.getState()==0?1:0);
 
                                     }
 
