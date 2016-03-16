@@ -411,7 +411,7 @@ public class MapExamples {
 
         Lane lane9Closed = new Lane(r09.getStartLocation(),r09.getEndLocation(),MapDirection.EAST);
 
-        lane9Closed.setState(0);
+        //lane9Closed.setState(0);
 
         r09.addLane(lane9Closed);
 
@@ -453,7 +453,7 @@ public class MapExamples {
         r12.addLane(new Lane(r12.getEndLocation(),r12.getStartLocation(),MapDirection.WEST));
 
         Lane lane13WClosed = new Lane(r13.getEndLocation(),r13.getStartLocation(),MapDirection.WEST);
-        lane13WClosed.setState(0);
+        //lane13WClosed.setState(0);
 
         r13.addLane(lane13WClosed);
         r14.addLane(new Lane(r14.getEndLocation(),r14.getStartLocation(),MapDirection.WEST));
@@ -465,7 +465,7 @@ public class MapExamples {
         r20.addLane(new Lane(r20.getStartLocation(),r20.getEndLocation(),MapDirection.SOUTH));
 
         Lane lane21SClosed = new Lane(r21.getStartLocation(),r21.getEndLocation(),MapDirection.SOUTH);
-        lane21SClosed.setState(0);
+        //lane21SClosed.setState(0);
 
         r21.addLane(lane21SClosed);
 
