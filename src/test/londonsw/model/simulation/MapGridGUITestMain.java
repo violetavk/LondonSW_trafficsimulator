@@ -5,11 +5,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import londonsw.model.simulation.components.*;
+import londonsw.model.simulation.components.Lane;
+import londonsw.model.simulation.components.ResizeFactor;
 import londonsw.model.simulation.components.vehicles.Ambulance;
 import londonsw.model.simulation.components.vehicles.Car;
-import londonsw.view.simulation.MapExamples;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
 
@@ -42,7 +43,7 @@ public class MapGridGUITestMain extends Application {
         /**
          *  Ambulance inherits from vehicle
          */
-     /*   Lane al = map.getRandomLane();
+        Lane al = map.getRandomLane();
         Ambulance a = new Ambulance(0,al);
         VehicleGUIDecorator ambulanceGUIDecorator = new VehicleGUIDecorator(a);
         ambulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
@@ -51,7 +52,7 @@ public class MapGridGUITestMain extends Application {
         Pane alPane = new Pane();
         alPane.getChildren().add(ambulanceGUIDecorator.getRectangle());
         //sp.getChildren().add(alPane);
-        ambulanceGUIDecorator.setVehicleState(1);*/
+        ambulanceGUIDecorator.setVehicleState(1);
 
         /**
          * We would have a button to spawn an ambulance: single click deploys the ambulance and double click removes it.
@@ -81,11 +82,22 @@ public class MapGridGUITestMain extends Application {
 
         Car testCar;
         int c=0;
-        for (int i=0; i<50; i++){
+        for (int i=0; i<1; i++){
             testCar = generateCar(map,mapGridGUIDecorator,sp);
             if (testCar!=null)
                 c++;}
         System.out.println("Number of cars is "+ c);
+
+        /**
+         * We can now use a single button to spawn and un-spawn the ambulance
+         */
+        sp.setOnMouseClicked(event -> {if(sp.getChildren().contains(alPane)){
+            sp.getChildren().remove(alPane);}
+        else{
+            sp.getChildren().add(alPane);
+        };
+        });
+
 
         Scene scene = new Scene(sp);
         primaryStage.setTitle("Map Layout");
