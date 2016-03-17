@@ -20,9 +20,9 @@ public class MapGridGUITestMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Map map = MapExamples.drawMap1();
+        //Map map = MapExamples.drawMap1();
 
-        //Map map = MapExamples.drawTestMapExample();
+        Map map = MapExamples.drawTestMapExample();
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
@@ -83,7 +83,7 @@ public class MapGridGUITestMain extends Application {
 
         Car testCar;
         int c=0;
-        for (int i=0; i<3; i++){
+        for (int i=0; i<70; i++){
             testCar = generateCar(map,mapGridGUIDecorator,sp);
             if (testCar!=null)
                 c++;}

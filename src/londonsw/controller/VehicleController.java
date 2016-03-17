@@ -73,6 +73,7 @@ public class VehicleController {
         else {
             if (vehicleGUIDecorator.getVehicleState() != 0) {
                 move = vehicleGUIDecorator.moveVehicle(step);
+                System.out.println(move);
             }
         }
 

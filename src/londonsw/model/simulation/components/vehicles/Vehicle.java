@@ -235,26 +235,29 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
      */
     public boolean moveVehicle(int step) throws Exception {
 
-        if (step == 0) {
+        int curCell = this.getCurrentCell();
+
+        if(step==0)
+        {
+            currentLane.setCell(null, curCell);
+            curCell += step;
+            this.setCurrentCell(curCell, this.getCurrentLane());
+            currentLane.setCell(this, curCell);
             return false;
-        } else {
-
-            int curCell = this.getCurrentCell();
-
-            if (curCell + step >= this.currentLane.getLength() || !this.currentLane.isCellEmpty(curCell + step)) {
-                moveVehicle(step - 1);
-            } else {
-                currentLane.setCell(null, curCell);
-                curCell += step;
-                this.setCurrentCell(curCell, this.getCurrentLane());
-                currentLane.setCell(this, curCell);
-
-                return true;
-            }
-
-            return true;
-
         }
+
+        if (curCell + step >= this.currentLane.getLength() || !this.currentLane.isCellEmpty(curCell + step)) {
+            moveVehicle(step - 1);
+        } else {
+            currentLane.setCell(null, curCell);
+            curCell += step;
+            this.setCurrentCell(curCell, this.getCurrentLane());
+            currentLane.setCell(this, curCell);
+            return true;
+        }
+
+        return false;
+
     }
 
         /*
