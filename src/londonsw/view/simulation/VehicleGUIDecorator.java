@@ -194,6 +194,14 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             this.setVehicleState(1);
 
         }
+        else
+            if(state == 3)
+            {
+                //Car deleted state
+
+                this.getPane().getChildren().remove(this.getRectangle());
+
+            }
         else // car driving straight down road
         {
             TranslateTransition tt = new TranslateTransition(Duration.millis(Ticker.getTickInterval()), this.getRectangle());

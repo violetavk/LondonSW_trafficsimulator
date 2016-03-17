@@ -20,7 +20,7 @@ public class MapGridGUITestMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Map map = MapExamples.drawMap1_1();
+        Map map = MapExamples.drawMap1();
 
         //Map map = MapExamples.drawTestMapExample();
 
