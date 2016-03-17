@@ -21,8 +21,9 @@ public class MapExamples {
         Road r2 = new Road(new Coordinate(2,10),new Coordinate(10,10));
         Road r3 = new Road(new Coordinate(1,2), new Coordinate(1,9));
         Road r4 = new Road(new Coordinate(11,2), new Coordinate(11,9));
+        Road rExit = new Road(new Coordinate(12,1), new Coordinate(12,1));
 
-        Road roadMatrix[] = {r1,r2,r3,r4};
+        Road roadMatrix[] = {r1,r2,r3,r4 , rExit};
 
         Lane laneR1L1 = new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST);
         Lane laneR1L2 = new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST);
@@ -43,6 +44,8 @@ public class MapExamples {
         Lane laneR4L2 = new Lane(r4.getEndLocation(),r4.getStartLocation(), MapDirection.NORTH);
         Lane laneR4L3 = new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.SOUTH);
         Lane laneR4L4 = new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.SOUTH);
+
+        Lane laneExitL1 = new Lane(rExit.getStartLocation(),rExit.getEndLocation(),MapDirection.EAST);
 
         r1.addLane(laneR1L1);
         //r1.addLane(laneR1L2);
@@ -67,6 +70,8 @@ public class MapExamples {
         //r4.addLane(laneR4L3);
         r4.addLane(laneR4L4);
 
+        rExit.addLane(laneExitL1);
+
         for(int i = 0 ; i < roadMatrix.length; i++)
             map.addRoad(roadMatrix[i]);
 
@@ -78,14 +83,17 @@ public class MapExamples {
         Intersection i2 = new Intersection(new Coordinate(11,1));
         i2.setWestRoad(r1);
         i2.setSouthRoad(r4);
+        i2.setEastRoad(rExit);
 
         Intersection i3 = new Intersection(new Coordinate(1,10));
         i3.setEastRoad(r2);
         i3.setNorthRoad(r3);
 
         Intersection i4 = new Intersection(new Coordinate(11,10));
+
         i4.setWestRoad(r2);
         i4.setNorthRoad(r4);
+
 
         map.addIntersection(i1);
         map.addIntersection(i2);

@@ -333,7 +333,9 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                 System.out.println("No Intersection assigned");
                 int curCell = this.getCurrentCell();
                 currentLane.setCell(null, curCell);
+                this.setVehicleState(3);
                 this.unsubscribe();
+
             }
 
 
