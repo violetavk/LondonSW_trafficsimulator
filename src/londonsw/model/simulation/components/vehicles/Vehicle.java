@@ -404,29 +404,36 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         return null;
     }
 
+    public Lane chooseLane() throws Exception {
+        int num = 0;
+
+        if(this.getLaneOptions()!=null) {
+            num = this.getLaneOptions().size();
+        }
+
+        if (num > 0) {
+            randomDirection = new Random();
+            int size = randomDirection.nextInt(this.getLaneOptions().size());
+            l= this.getLaneOptions().get(size);
+            return l;
+        }
+        return null;
+    }
+
+
+
     /**
      * Chooses lane randomly from lanes options
      * vehicle turn to new chosen lane
      * if there is no lane to move to, vehicle stops
      * @throws Exception
      */
-    public boolean vehicleTurn() throws Exception {
+    public boolean vehicleTurn(Lane l) throws Exception {
         Lane oldLane = this.currentLane;
-        Lane l;
 
-        int num = 0;
-
-                if(this.getLaneOptions()!=null) {
-                 num = this.getLaneOptions().size();
-                }
-
-        if (num > 0) {
-        randomDirection = new Random();
-        int size = randomDirection.nextInt(this.getLaneOptions().size());
-        l= this.getLaneOptions().get(size);
 
             //validate if its end of lane
-            if ((this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) )
+            if ((l != null) && (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) )
                 {
                     oldLane.setCell(null, oldLane.getLength() - 1);
                     this.setCurrentLane(l);
@@ -434,8 +441,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     return true;
                 }
             else {this.setVehicleState(0);
-        return false;}}
-        return true;
+        return false;}
+
     }
 
 

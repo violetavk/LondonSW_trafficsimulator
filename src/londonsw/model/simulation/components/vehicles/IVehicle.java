@@ -29,10 +29,11 @@ public interface IVehicle {
     void setCurrentCell(int curCell,Lane currentLane) throws Exception;
     void setVehicleState(int vehicleState);
     void setVehicleBehavior(VehicleBehavior vehicleBehavior);
+    Lane chooseLane () throws Exception;
     boolean moveVehicle(int step) throws Exception;
     void readTrafficLight() throws Exception;
     ArrayList<Lane> getLaneOptions() throws Exception;
-    boolean vehicleTurn () throws Exception;
+    boolean vehicleTurn (Lane l) throws Exception;
     Coordinate getStoredCurrentCoordinate();
     void setPreviousCoordinate(Coordinate coord);
 }

@@ -37,6 +37,13 @@ public class Lane implements Serializable {
         return state;
     }
 
+    public Vehicle getVehicleInIntersection() {
+
+        return lane[length-1];
+    }
+
+
+
     public void setState(int state) {
         this.state = state;
     }
