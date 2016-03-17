@@ -290,46 +290,47 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
      * @throws Exception
      */
     public void readTrafficLight()throws Exception {
-        if (this.getCurrentCell() == this.currentLane.getLength() -1) {
+        if (this.getCurrentCell() == this.currentLane.getLength() - 1) {
             TrafficLight light;
 
-            if(this.getCurrentLane().getEndIntersection()!=null)
-            {
-            switch (this.getCurrentLane().getMovingDirection()){
-                case NORTH:
-                    light= this.getCurrentLane().getEndIntersection().getSouthTrafficLight();
-                    break;
-                case SOUTH:
-                    light= this.getCurrentLane().getEndIntersection().getNorthTrafficLight();
-                    break;
-                case EAST:
-                    light= this.getCurrentLane().getEndIntersection().getWestTrafficLight();
-                    break;
-                case WEST:
-                    light= this.getCurrentLane().getEndIntersection().getEastTrafficLight();
-                    break;
-                default: // ERROR case
-                    light = null;
-                    throw new Exception("Error Direction!");
-                   // break;
-            }
+            if (this.getCurrentLane().getEndIntersection() != null) {
+                switch (this.getCurrentLane().getMovingDirection()) {
+                    case NORTH:
+                        light = this.getCurrentLane().getEndIntersection().getSouthTrafficLight();
+                        break;
+                    case SOUTH:
+                        light = this.getCurrentLane().getEndIntersection().getNorthTrafficLight();
+                        break;
+                    case EAST:
+                        light = this.getCurrentLane().getEndIntersection().getWestTrafficLight();
+                        break;
+                    case WEST:
+                        light = this.getCurrentLane().getEndIntersection().getEastTrafficLight();
+                        break;
+                    default: // ERROR case
+                        light = null;
+                        throw new Exception("Error Direction!");
+                        // break;
+                }
 
-            if(vehiclePriority>1 && light!=null){
-                if(light.getState()== LightColour.RED){
-                    this.vehicleState=1;
+                if (vehiclePriority > 1 && light != null) {
+                    if (light.getState() == LightColour.RED) {
+                        this.vehicleState = 1;
+
+                    }
+                } else if (light != null) {
+                    if (light.getState() == LightColour.RED)
+                        this.vehicleState = 0;
+                    else
+                        this.vehicleState = 1;
+                }
+                else
+                {
+                    //move because there isn't any traffic light
+                    this.setVehicleState(1);
 
                 }
-            }
-
-           else if(light!=null) {
-                if (light.getState() == LightColour.RED)
-                    this.vehicleState = 0;
-                else
-                    this.vehicleState = 1;
-            }
-        }
-            else
-            {
+            } else {
                 System.out.println("No Intersection assigned");
                 int curCell = this.getCurrentCell();
                 currentLane.setCell(null, curCell);
@@ -339,8 +340,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
             }
 
 
-        }
-        else
+        } else
             throw new Exception("Reading traffic light when not at end of lane");
     }
 
@@ -438,6 +438,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     oldLane.setCell(null, oldLane.getLength() - 1);
                     this.setCurrentLane(l);
                     this.setCurrentCell(0, l);
+                    //this.setVehicleState(2);
                     return true;
                 }
             else {this.setVehicleState(0);
