@@ -104,7 +104,7 @@ public class MapTest {
 
     @Test
     public void testGetRandomCell() throws Exception {
-       Map map = Map.loadMap("testmap.map");
+       Map map = Map.loadMap("BigMap.map");
        int check= map.getRandomCell();
         System.out.print(check);
         assertTrue(0 <= check && check<= map.getRandomLane().getLength());

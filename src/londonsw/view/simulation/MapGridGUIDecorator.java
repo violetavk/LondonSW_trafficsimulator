@@ -125,4 +125,18 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
         return rootGP;
     }
+
+    public void redrawCell(int x, int y, GridPane gp) {
+        Component component = this.getGrid()[y][x];
+        StackPane sp = new StackPane();
+        if(component instanceof Intersection) {
+            System.out.println("Drawing an intersection...");
+            IntersectionDecorator intersectionDecorator = new IntersectionDecorator((Intersection) component);
+            intersectionDecorator.setResizeFactor(this.getResizeFactor());
+            sp = intersectionDecorator.drawIntersection();
+        }
+
+        gp.add(sp, x, y);
+        System.out.println("Done");
+    }
 }

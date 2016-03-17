@@ -60,12 +60,12 @@ public class StartUpController extends Application{
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../view/startup/StartScreen.fxml"));
-        stage.setTitle("LondonSW Traffic Simulator");
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.show();
+        primaryStage.setTitle("LondonSW Traffic Simulator");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
 
@@ -166,9 +166,18 @@ public class StartUpController extends Application{
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
         result.ifPresent(widthAndHeight -> {
-            System.out.println("Width = " + widthAndHeight.getKey() + ", Height = " + widthAndHeight.getValue());
+            int width = Integer.parseInt(widthAndHeight.getKey());
+            int height = Integer.parseInt(widthAndHeight.getValue());
+            System.out.println("Width = " + width + ", Height = " + height);
 
-            // TODO now go to the next screen!
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            MapMakerController mapMakerController = new MapMakerController(stage);
+            mapMakerController.setWidthAndHeight(width,height);
+            try {
+                mapMakerController.drawScreen();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
 
