@@ -64,9 +64,10 @@ public class VehicleController {
             if (vehicleGUIDecorator.getVehicleState() == 1 ) {
                // ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
                 //check next lane available
+                Lane l =vehicleGUIDecorator.chooseLane();
 
                 vehicleGUIDecorator.setVehicleState(2); //move vehicle to intersection
-               move = vehicleGUIDecorator.vehicleTurn();
+               move = vehicleGUIDecorator.vehicleTurn(l);
             }
         }
         else {
