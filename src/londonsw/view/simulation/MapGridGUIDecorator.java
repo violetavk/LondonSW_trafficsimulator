@@ -81,7 +81,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                                     }
 
-                                    System.out.println(laneArrow.lane.getId());
+                                    System.out.println("Lane ID: " + laneArrow.lane.getId() + " Lane State: " + laneArrow.lane.getState());
                                     laneArrow.lane.setState(laneArrow.lane.getState() == 0 ? 1 : 0);
 
                                 }

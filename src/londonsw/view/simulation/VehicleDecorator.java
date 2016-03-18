@@ -147,4 +147,9 @@ public abstract class VehicleDecorator implements IVehicle {
         return decoratedVehicle.vehicleTurn(l);
     }
 
+    @Override
+    public boolean turnFirst (Lane l) throws Exception{
+        return decoratedVehicle.turnFirst(l);
+    }
+
 }
