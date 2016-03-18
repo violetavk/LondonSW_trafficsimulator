@@ -36,4 +36,5 @@ public interface IVehicle {
     boolean vehicleTurn (Lane l) throws Exception;
     Coordinate getStoredCurrentCoordinate();
     void setPreviousCoordinate(Coordinate coord);
+     boolean turnFirst (Lane l) throws Exception;
 }
