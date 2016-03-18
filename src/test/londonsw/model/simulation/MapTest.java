@@ -1,6 +1,7 @@
 package londonsw.model.simulation;
 
 import londonsw.model.simulation.components.*;
+import londonsw.view.simulation.MapExamples;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
@@ -13,10 +14,12 @@ public class MapTest {
 
     @Test
     public void testSaveMap() throws Exception {
-        Map map = drawTestMap();
+        //Map map = drawTestMap();
+        Map map = MapExamples.drawMap1();
+
         printMapGrid(map);
         System.out.println(System.getProperty("user.dir"));
-       // map.saveMap("FixedMap.map");
+        map.saveMap("drawMap1.map");
     }
 
     @Test

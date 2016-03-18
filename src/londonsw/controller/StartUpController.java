@@ -2,8 +2,6 @@ package londonsw.controller;
 
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 /**
  *
  */
@@ -53,6 +50,8 @@ public class StartUpController extends Application{
     @FXML private TextField width;
 
     @FXML private TextField height;
+
+    @FXML public  MapLoadingController main;
 
     @FXML public static String mapName;
 
@@ -93,11 +92,13 @@ public class StartUpController extends Application{
         chooser.setTitle("Open File");
         File file = chooser.showOpenDialog(new Stage());
 
-        mapName=file.getName().toString();
+        mapName=file.getName();
 
         if(file!=null)
         {
             Map map = Map.loadMap(file.getName());
+
+            // Map map = new Map(20,20);
 
             //Decorate map to extend to GUI functionality
             MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
@@ -109,12 +110,12 @@ public class StartUpController extends Application{
             //Instantiate GridPane that will contain empty map with grass
             GridPane root = mapGridGUIDecorator.drawComponents();
 
+
             p.getChildren().add(root);
 
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
             stage.setScene(new Scene(simulationModeScreen));
-            //stage.setFullScreen(true);
         }
         else
         {
@@ -208,62 +209,10 @@ public class StartUpController extends Application{
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         stage.setScene(new Scene(mapCreation));
-
-        stage.setFullScreen(true);
-    }
-    public void StartSimulation(ActionEvent actionEvent) throws Exception {
-
-        Map map=Map.loadMap(mapName);
-        Parent simulationModeScreen  = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode" + ".fxml"));
-        Node node = simulationModeScreen.lookup("#Scene");
-
-        Pane p = (Pane) node;
-
-
-        //Decorate map to extend to GUI functionality
-        MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
-
-        //Always apply resize
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
-
-
-        //Instantiate GridPane that will contain empty map with grass
-        GridPane root = mapGridGUIDecorator.drawComponents();
-
-        p.getChildren().add(root);
-
-
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        stage.setScene(new Scene(simulationModeScreen));
-
     }
 
-    public void resetSimulation(ActionEvent actionEvent)throws Exception {
-        Parent simulationModeScreen  = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode" + ".fxml"));
-
-        Node node = simulationModeScreen.lookup("#Scene");
-        Pane p = (Pane) node;
-
-        //Create map
-        Map map = new Map(20,20);
-
-        //Decorate map to extend to GUI functionality
-        MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
-
-        //Always apply resize
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
-
-
-        //Instantiate GridPane that will contain empty map with grass
-        GridPane root = mapGridGUIDecorator.drawComponents();
-
-
-        p.getChildren().add(root);
-
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        stage.setScene(new Scene(simulationModeScreen));
+    public void init(MapLoadingController mapLoadingController) {
+        main=mapLoadingController;
     }
 
 }
