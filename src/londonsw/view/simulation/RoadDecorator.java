@@ -59,14 +59,4 @@ public abstract class RoadDecorator implements IRoad {
     public boolean runsVertically() {
         return this.decoratedRoad.runsVertically();
     }
-
-    @Override
-    public String getRoadId() {
-        return this.decoratedRoad.getRoadId();
-    }
-
-    @Override
-    public void setRoadId(String roadId) {
-        decoratedRoad.setRoadId(roadId);
-    }
 }

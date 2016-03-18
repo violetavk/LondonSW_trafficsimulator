@@ -120,4 +120,5 @@ public class MapGrid implements Serializable, IMapGrid {
         else
             return false;
     }
+
 }

@@ -15,6 +15,4 @@ public interface IRoad {
     void setIntersection(Intersection intersection);
     int getLength();
     boolean runsVertically();
-    String getRoadId();
-    void setRoadId(String roadId);
 }

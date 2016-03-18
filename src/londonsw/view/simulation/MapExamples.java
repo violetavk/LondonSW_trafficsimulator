@@ -12,6 +12,8 @@ import londonsw.model.simulation.components.*;
  */
 public class MapExamples {
 
+
+
     public static Map drawMap1() throws Exception {
         Map map = new Map(15,15);
 
@@ -19,20 +21,11 @@ public class MapExamples {
         Road r2 = new Road(new Coordinate(2,10),new Coordinate(10,10));
         Road r3 = new Road(new Coordinate(1,2), new Coordinate(1,9));
         Road r4 = new Road(new Coordinate(11,2), new Coordinate(11,9));
+        Road rExit = new Road(new Coordinate(12,1), new Coordinate(12,1));
 
-        r1.setRoadId("r1");
-        r2.setRoadId("r2");
-        r3.setRoadId("r3");
-        r4.setRoadId("r4");
-
-        Road roadMatrix[] = {r1,r2,r3,r4};
+        Road roadMatrix[] = {r1,r2,r3,r4 , rExit};
 
         Lane laneR1L1 = new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST);
-
-
-        //System.out.println( laneR1L1.getLength());
-
-
         Lane laneR1L2 = new Lane(r1.getStartLocation(),r1.getEndLocation(), MapDirection.EAST);
         Lane laneR1L3 = new Lane(r1.getEndLocation(),r1.getStartLocation(), MapDirection.WEST);
         Lane laneR1L4 = new Lane(r1.getEndLocation(),r1.getStartLocation(), MapDirection.WEST);
@@ -52,25 +45,7 @@ public class MapExamples {
         Lane laneR4L3 = new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.SOUTH);
         Lane laneR4L4 = new Lane(r4.getStartLocation(),r4.getEndLocation(), MapDirection.SOUTH);
 
-        laneR1L1.setLaneID("l1r1");
-        laneR1L2.setLaneID("l2r1");
-        laneR1L3.setLaneID("l3r1");
-        laneR1L4.setLaneID("l4r1");
-
-        laneR2L1.setLaneID("l1r2");
-        laneR2L2.setLaneID("l2r2");
-        laneR2L3.setLaneID("l3r2");
-        laneR2L4.setLaneID("l4r2");
-
-        laneR3L1.setLaneID("l1r3");
-        laneR3L2.setLaneID("l2r3");
-        laneR3L3.setLaneID("l3r3");
-        laneR3L4.setLaneID("l4r3");
-
-        laneR4L1.setLaneID("l1r4");
-        laneR4L2.setLaneID("l2r4");
-        laneR4L3.setLaneID("l3r4");
-        laneR4L4.setLaneID("l4r4");
+        Lane laneExitL1 = new Lane(rExit.getStartLocation(),rExit.getEndLocation(),MapDirection.EAST);
 
         r1.addLane(laneR1L1);
         //r1.addLane(laneR1L2);
@@ -87,8 +62,7 @@ public class MapExamples {
         //r3.addLane(laneR3L3);
         r3.addLane(laneR3L4);
 
-
-        laneR4L3.setState(0);
+        //laneR4L3.setState(0);
         //laneR4L4.setState(0);
 
         r4.addLane(laneR4L1);
@@ -96,30 +70,30 @@ public class MapExamples {
         //r4.addLane(laneR4L3);
         r4.addLane(laneR4L4);
 
+        rExit.addLane(laneExitL1);
+
         for(int i = 0 ; i < roadMatrix.length; i++)
             map.addRoad(roadMatrix[i]);
 
         Intersection i1 = new Intersection(new Coordinate(1,1));
-        i1.setIdIntersection("i1");
         i1.setEastRoad(r1);
         i1.setSouthRoad(r3);
         i1.setDefaultTrafficLightsForRoads();
 
         Intersection i2 = new Intersection(new Coordinate(11,1));
-        i2.setIdIntersection("i2");
         i2.setWestRoad(r1);
         i2.setSouthRoad(r4);
+        i2.setEastRoad(rExit);
 
         Intersection i3 = new Intersection(new Coordinate(1,10));
-        i3.setIdIntersection("i3");
         i3.setEastRoad(r2);
         i3.setNorthRoad(r3);
 
         Intersection i4 = new Intersection(new Coordinate(11,10));
 
-        i4.setIdIntersection("i4");
         i4.setWestRoad(r2);
         i4.setNorthRoad(r4);
+
 
         map.addIntersection(i1);
         map.addIntersection(i2);
@@ -135,7 +109,9 @@ public class MapExamples {
 
         Road R1 = new Road(new Coordinate(1,1),new Coordinate(4,1));
 
-        R1.setRoadId("r1");
+        Lane laneR1L1 = new Lane(R1.getStartLocation(),R1.getEndLocation(),MapDirection.EAST);
+
+        R1.addLane(laneR1L1);
 
         map.addRoad(R1);
 
@@ -428,13 +404,6 @@ public class MapExamples {
         Road r23 = new Road(new Coordinate(9,20),new Coordinate(19,20));
         Road r24 = new Road(new Coordinate(20,16), new Coordinate(20,19));
 
-        /*This is a one lane Map
-        If you want two lanes map
-        comment these Lines , and uncomment The two lane code
-        at the bottom
-         */
-
-/*
         r01.addLane(new Lane(r01.getStartLocation(),r01.getEndLocation(),MapDirection.EAST));
         r02.addLane(new Lane (r02.getEndLocation(),r02.getStartLocation(),MapDirection.NORTH));
         r03.addLane(new Lane(r03.getEndLocation(),r03.getStartLocation(),MapDirection.NORTH));
@@ -445,47 +414,12 @@ public class MapExamples {
         Lane l6 = new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST);
         r06.addLane(l6);
         //l6.setState(0);
-        r07.addLane(new Lane(r07.getStartLocation(),r07.getEndLocation(),MapDirection.SOUTH));
-        r08.addLane(new Lane(r08.getStartLocation(),r08.getEndLocation(),MapDirection.SOUTH));
-        r09.addLane(new Lane(r09.getEndLocation(),r09.getStartLocation(),MapDirection.WEST));
-        r10.addLane(new Lane(r10.getEndLocation(),r10.getStartLocation(),MapDirection.WEST));
-        r11.addLane(new Lane(r11.getEndLocation(),r11.getStartLocation(),MapDirection.NORTH));
-        r12.addLane(new Lane(r12.getStartLocation(),r12.getEndLocation(),MapDirection.EAST));
-        r13.addLane(new Lane(r13.getStartLocation(),r13.getEndLocation(),MapDirection.EAST));
-        r14.addLane(new Lane(r14.getStartLocation(),r14.getEndLocation(),MapDirection.EAST));
-        r15.addLane(new Lane(r15.getStartLocation(),r15.getEndLocation(),MapDirection.EAST));
-        r16.addLane(new Lane(r16.getEndLocation(),r16.getStartLocation(),MapDirection.NORTH));
-        r17.addLane(new Lane(r17.getEndLocation(),r17.getStartLocation(),MapDirection.NORTH));
-        r18.addLane(new Lane(r18.getEndLocation(),r18.getStartLocation(),MapDirection.NORTH));
-        r19.addLane(new Lane(r19.getStartLocation(),r19.getEndLocation(),MapDirection.EAST));
-        r20.addLane(new Lane(r20.getEndLocation(),r20.getStartLocation(),MapDirection.NORTH));
-        r21.addLane(new Lane(r21.getEndLocation(),r21.getStartLocation(),MapDirection.NORTH));
-        r22.addLane(new Lane(r22.getEndLocation(),r22.getStartLocation(),MapDirection.WEST));
-        r23.addLane(new Lane(r23.getEndLocation(),r23.getStartLocation(),MapDirection.WEST));
-        r24.addLane(new Lane(r24.getStartLocation(),r24.getEndLocation(),MapDirection.SOUTH));
-*/
-
-          /*This is a two lane Map
-        If you want one lanes map
-        comment these Lines , and uncomment The one lane code above
-         */
-
-        r01.addLane(new Lane(r01.getStartLocation(),r01.getEndLocation(),MapDirection.EAST));
-        r02.addLane(new Lane (r02.getEndLocation(),r02.getStartLocation(),MapDirection.NORTH));
-        r03.addLane(new Lane(r03.getEndLocation(),r03.getStartLocation(),MapDirection.NORTH));
-        r04.addLane(new Lane(r04.getEndLocation(),r04.getStartLocation(),MapDirection.NORTH));
-        Lane l5 = new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST);
-        l5.setState(0);
-        r05.addLane(l5);
-        Lane l6 = new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST);
-        r06.addLane(l6);
-        //l6.setState(0);
         r07.addLane(new Lane(r07.getEndLocation(),r07.getStartLocation(),MapDirection.NORTH));
         r08.addLane(new Lane(r08.getEndLocation(),r08.getStartLocation(),MapDirection.NORTH));
 
         Lane lane9Closed = new Lane(r09.getStartLocation(),r09.getEndLocation(),MapDirection.EAST);
 
-        lane9Closed.setState(0);
+        //lane9Closed.setState(0);
 
         r09.addLane(lane9Closed);
 
@@ -527,7 +461,7 @@ public class MapExamples {
         r12.addLane(new Lane(r12.getEndLocation(),r12.getStartLocation(),MapDirection.WEST));
 
         Lane lane13WClosed = new Lane(r13.getEndLocation(),r13.getStartLocation(),MapDirection.WEST);
-        lane13WClosed.setState(0);
+        //lane13WClosed.setState(0);
 
         r13.addLane(lane13WClosed);
         r14.addLane(new Lane(r14.getEndLocation(),r14.getStartLocation(),MapDirection.WEST));
@@ -539,7 +473,7 @@ public class MapExamples {
         r20.addLane(new Lane(r20.getStartLocation(),r20.getEndLocation(),MapDirection.SOUTH));
 
         Lane lane21SClosed = new Lane(r21.getStartLocation(),r21.getEndLocation(),MapDirection.SOUTH);
-        lane21SClosed.setState(0);
+        //lane21SClosed.setState(0);
 
         r21.addLane(lane21SClosed);
 

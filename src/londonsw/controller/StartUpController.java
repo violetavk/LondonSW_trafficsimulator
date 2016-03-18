@@ -2,15 +2,18 @@ package londonsw.controller;
 
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -20,6 +23,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import javafx.scene.layout.AnchorPane;
 
+import javafx.util.Pair;
 import londonsw.model.simulation.Map;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.vehicles.Car;
@@ -29,6 +33,9 @@ import londonsw.view.simulation.VehicleGUIDecorator;
 
 //import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -39,6 +46,8 @@ public class StartUpController extends Application{
     public Label londonSWlabel;
     public Label trafficSimLabel;
     public Button startButton;
+    public Button simulationModeButton;
+    public Button mapMakerButton;
 
 
     @FXML private TextField width;
@@ -52,12 +61,12 @@ public class StartUpController extends Application{
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../view/startup/StartScreen.fxml"));
-        stage.setTitle("LondonSW Traffic Simulator");
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.show();
+        primaryStage.setTitle("LondonSW Traffic Simulator");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
 
@@ -72,7 +81,6 @@ public class StartUpController extends Application{
      * @param actionEvent click action
      * @throws Exception
      */
-
     public void goToSimulationMode(ActionEvent actionEvent) throws Exception {
 
         Parent simulationModeScreen  = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode" + ".fxml"));
@@ -106,7 +114,7 @@ public class StartUpController extends Application{
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
             stage.setScene(new Scene(simulationModeScreen));
-            stage.setFullScreen(true);
+            //stage.setFullScreen(true);
         }
         else
         {
@@ -114,13 +122,64 @@ public class StartUpController extends Application{
         }
     }
 
-    public void goToMapBuilderMode(ActionEvent actionEvent) throws IOException {
+    public void goToMapMakerMode(ActionEvent actionEvent) {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Choose Map Size");
+        dialog.setHeaderText("Choose new map's width and height");
+        dialog.setGraphic(null);
 
-        Parent setMapDimension = FXMLLoader.load(getClass().getResource("../view/startup/MapDimension" + ".fxml"));
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
 
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        ButtonType doneButton = new ButtonType("Done", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(doneButton, ButtonType.CANCEL);
 
-        stage.setScene(new Scene(setMapDimension));
+        ObservableList<Integer> choices = FXCollections.observableArrayList();
+        for(int i = 5; i <= 50; i++) {
+            choices.add(i);
+        }
+
+        ChoiceBox<Integer> widthBox = new ChoiceBox<>();
+        widthBox.setItems(choices);
+        widthBox.setMinWidth(100);
+        ChoiceBox<Integer> heightBox = new ChoiceBox<>();
+        heightBox.setItems(choices);
+        heightBox.setMinWidth(100);
+
+        grid.add(new Label("Width:"), 0, 0);
+        grid.add(widthBox, 1, 0);
+        grid.add(new Label("Height:"), 0, 1);
+        grid.add(heightBox, 1, 1);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if(dialogButton == doneButton) {
+                return new Pair<>(widthBox.getValue().toString(),heightBox.getValue().toString());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(widthAndHeight -> {
+            int width = Integer.parseInt(widthAndHeight.getKey());
+            int height = Integer.parseInt(widthAndHeight.getValue());
+            System.out.println("Width = " + width + ", Height = " + height);
+
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            MapMakerController mapMakerController = new MapMakerController(stage);
+            mapMakerController.setWidthAndHeight(width,height);
+            try {
+                mapMakerController.drawScreen();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
 
     }
 

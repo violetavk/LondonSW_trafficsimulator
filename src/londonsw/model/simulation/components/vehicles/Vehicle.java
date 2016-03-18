@@ -35,6 +35,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
     // debug only
     int timesTicked;
+    private static  int counter=0;
+    private int id;
 
 
     /**
@@ -48,8 +50,16 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         this.currentLane.setCell(this,currentCell);
         Ticker.subscribe(this);
         timesTicked = 0;
+        id=++counter;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     /**
      * Gets the length of a vehicle
@@ -282,6 +292,9 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     public void readTrafficLight()throws Exception {
         if (this.getCurrentCell() == this.currentLane.getLength() -1) {
             TrafficLight light;
+
+            if(this.getCurrentLane().getEndIntersection()!=null)
+            {
             switch (this.getCurrentLane().getMovingDirection()){
                 case NORTH:
                     light= this.getCurrentLane().getEndIntersection().getSouthTrafficLight();
@@ -300,7 +313,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     throw new Exception("Error Direction!");
                    // break;
             }
-            if(vehiclePriority>1){
+
+            if(vehiclePriority>1 && light!=null){
                 if(light.getState()== LightColour.RED){
                     this.vehicleState=1;
 
@@ -313,6 +327,18 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                 else
                     this.vehicleState = 1;
             }
+        }
+            else
+            {
+                System.out.println("No Intersection assigned");
+                int curCell = this.getCurrentCell();
+                currentLane.setCell(null, curCell);
+                this.setVehicleState(3);
+                this.unsubscribe();
+
+            }
+
+
         }
         else
             throw new Exception("Reading traffic light when not at end of lane");
@@ -331,39 +357,51 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     public ArrayList<Lane> getLaneOptions() throws Exception {
         laneOptions.clear();
 
-        if ((this.currentLane.getEndIntersection().getEastRoad()!=null) &&
-                (this.currentLane.getMovingDirection()!=MapDirection.WEST))
-        {for(int i=0; i<this.currentLane.getEndIntersection().getEastRoad().getNumberLanes();i++)
-             {if((this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.EAST)
-                 && (this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getState()==1))
-                 {laneOptions.add(this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i));
-                 }}}
+        if(this.currentLane.getEndIntersection()!=null) {
+            if ((this.currentLane.getEndIntersection().getEastRoad() != null) &&
+                    (this.currentLane.getMovingDirection() != MapDirection.WEST)) {
+                for (int i = 0; i < this.currentLane.getEndIntersection().getEastRoad().getNumberLanes(); i++) {
+                    if ((this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.EAST)
+                            && (this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getState() == 1)) {
+                        laneOptions.add(this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i));
+                    }
+                }
+            }
 
-        if ((this.currentLane.getEndIntersection().getSouthRoad()!= null) &&
-                (this.currentLane.getMovingDirection()!=MapDirection.NORTH))
-        {for(int i=0; i<this.currentLane.getEndIntersection().getSouthRoad().getNumberLanes();i++)
-             {if((this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.SOUTH)
-                 && (this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getState()==1))
-                {laneOptions.add(this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i));
-                }}}
+            if ((this.currentLane.getEndIntersection().getSouthRoad() != null) &&
+                    (this.currentLane.getMovingDirection() != MapDirection.NORTH)) {
+                for (int i = 0; i < this.currentLane.getEndIntersection().getSouthRoad().getNumberLanes(); i++) {
+                    if ((this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.SOUTH)
+                            && (this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getState() == 1)) {
+                        laneOptions.add(this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i));
+                    }
+                }
+            }
 
-        if ((this.currentLane.getEndIntersection().getNorthRoad()!= null)&&
-                (this.currentLane.getMovingDirection()!=MapDirection.SOUTH))
-        {for(int i=0; i<this.currentLane.getEndIntersection().getNorthRoad().getNumberLanes();i++)
-            {if((this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.NORTH)
-                    && (this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getState()==1))
-               {laneOptions.add(this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i));
-               }}}
+            if ((this.currentLane.getEndIntersection().getNorthRoad() != null) &&
+                    (this.currentLane.getMovingDirection() != MapDirection.SOUTH)) {
+                for (int i = 0; i < this.currentLane.getEndIntersection().getNorthRoad().getNumberLanes(); i++) {
+                    if ((this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.NORTH)
+                            && (this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getState() == 1)) {
+                        laneOptions.add(this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i));
+                    }
+                }
+            }
 
-        if ((this.currentLane.getEndIntersection().getWestRoad()!= null)&&
-                (this.currentLane.getMovingDirection()!=MapDirection.EAST))
-        {for(int i=0; i<this.currentLane.getEndIntersection().getWestRoad().getNumberLanes();i++)
-            {if((this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getMovingDirection()== MapDirection.WEST)
-                    && (this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getState()==1))
-               {laneOptions.add(this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i));
-               }}}
+            if ((this.currentLane.getEndIntersection().getWestRoad() != null) &&
+                    (this.currentLane.getMovingDirection() != MapDirection.EAST)) {
+                for (int i = 0; i < this.currentLane.getEndIntersection().getWestRoad().getNumberLanes(); i++) {
+                    if ((this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.WEST)
+                            && (this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getState() == 1)) {
+                        laneOptions.add(this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i));
+                    }
+                }
+            }
 
-        return laneOptions;
+            return laneOptions;
+        }
+
+        return null;
     }
 
     /**
@@ -375,7 +413,12 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     public boolean vehicleTurn() throws Exception {
         Lane oldLane = this.currentLane;
         Lane l;
-        int num = this.getLaneOptions().size();
+
+        int num = 0;
+
+                if(this.getLaneOptions()!=null) {
+                 num = this.getLaneOptions().size();
+                }
 
         if (num > 0) {
         randomDirection = new Random();
@@ -420,7 +463,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     @Override
     public void onNext(Long aLong) {
         System.out.print("Tick! " + aLong + "     ");
-        System.out.println("Location: " + this.getCurrentCoordinate().getX() + "," + this.getCurrentCoordinate().getY());
+        System.out.println("Car: "+ this.getId()+"  Location: " + this.getCurrentCoordinate().getX() + "," + this.getCurrentCoordinate().getY());
         try {
             if (vehicleBehavior == VehicleBehavior.AVERAGE) {
                 VehicleController.moveOnTick(this,1);
@@ -428,7 +471,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                 VehicleController.moveOnTick(this,2);
             } else if (vehicleBehavior == VehicleBehavior.CAUTIOUS) {
                 VehicleController.moveOnTick(this,1);
-            } else {
+            } else
+            {
                 VehicleController.moveOnTick(this,1); // default behaviour
             }
         } catch(Exception e) {

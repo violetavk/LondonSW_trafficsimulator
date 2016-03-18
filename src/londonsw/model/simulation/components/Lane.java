@@ -22,15 +22,16 @@ public class Lane implements Serializable {
     private int RoadIndex;
     private int state;
 
-    public String getLaneID() {
-        return laneID;
+    public int getId() {
+        return id;
     }
 
-    public void setLaneID(String laneID) {
-        this.laneID = laneID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    private String laneID;
+    private int id;
+    private static  int counter=0;
 
     public int getState() {
         return state;
@@ -55,6 +56,7 @@ public class Lane implements Serializable {
         this.movingDirection = movingDirection;
         length = this.getLaneLength();
         lane = new Vehicle[length];
+        id=++counter;
         this.setState(1);
     }
 
