@@ -35,22 +35,23 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
     // debug only
     int timesTicked;
-    private static  int counter=0;
+    private static int counter = 0;
     private int id;
 
 
     /**
      * Create a vehicle and set its position by specify a cell in a lane
+     *
      * @param currentCell the cell to set vehicle in, in the lane
-     * @param currentLane  the lane to set vehicle in
+     * @param currentLane the lane to set vehicle in
      */
-    public Vehicle( int currentCell, Lane currentLane) {
+    public Vehicle(int currentCell, Lane currentLane) {
         this.currentCell = currentCell;
         this.currentLane = currentLane;
-        this.currentLane.setCell(this,currentCell);
+        this.currentLane.setCell(this, currentCell);
         Ticker.subscribe(this);
         timesTicked = 0;
-        id=++counter;
+        id = ++counter;
     }
 
     public int getId() {
@@ -63,47 +64,68 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
     /**
      * Gets the length of a vehicle
+     *
      * @return the length of a vehicle in type of integer
      * each type of vehicle has its own length
      */
-    public int getVehicleLength() {return vehicleLength;}
+    public int getVehicleLength() {
+        return vehicleLength;
+    }
 
     /**
      * Gets the speed of a vehicle
+     *
      * @return the speed of a vehicle in type of double
      * each vehicle's speed depends on its behavior
      */
-    public double getVehicleSpeed() {return vehicleSpeed;}
+    public double getVehicleSpeed() {
+        return vehicleSpeed;
+    }
 
 
-    public int getVehiclePriority(){return  vehiclePriority;}
+    public int getVehiclePriority() {
+        return vehiclePriority;
+    }
 
     /**
      * Gets the lane which is vehicle in
+     *
      * @return the lane which is vehicle in on the current time in type of lane
      */
-    public Lane getCurrentLane(){return currentLane;}
+    public Lane getCurrentLane() {
+        return currentLane;
+    }
 
     /**
      * Gets the current cell in lane which is vehicle in
+     *
      * @return cell from lane which is vehicle in on the current time , in type of integer
      */
-    public int getCurrentCell(){return currentCell;}
+    public int getCurrentCell() {
+        return currentCell;
+    }
 
     /**
      * Gets the state of vehicle which are 0 refers to still or 1 refers to moving
+     *
      * @return the state of vehicle in type if integer
      */
-    public int getVehicleState(){return  vehicleState;}
+    public int getVehicleState() {
+        return vehicleState;
+    }
 
     /**
      * Gets the behavior of a vehicle from three behaviors AVERAGE, AGGRESSIVE, and CAUTIOUS
+     *
      * @return the behavior of a vehicle in type of enum VehicleBehavior
      */
-    public VehicleBehavior getVehicleBehavior(){return VehicleBehavior.randomLetter(); }
+    public VehicleBehavior getVehicleBehavior() {
+        return VehicleBehavior.randomLetter();
+    }
 
     /**
      * Gets the previous lane which vehicle was in
+     *
      * @return the previous lane in type of Lane
      */
     public Lane getPreviousLane() {
@@ -123,17 +145,15 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     }
 
     /* getting the current coordinate of the car */
-    public Coordinate getCurrentCoordinate()
-    {
+    public Coordinate getCurrentCoordinate() {
         int currentCell = this.getCurrentCell();
         Lane currentLane = this.getCurrentLane();
-        Coordinate coordinate = new Coordinate(0,0);
+        Coordinate coordinate = new Coordinate(0, 0);
 
         MapDirection mapDirection = currentLane.getMovingDirection();
 
 
-        switch (mapDirection)
-        {
+        switch (mapDirection) {
             case NORTH:
                 coordinate.setX(currentLane.getEntry().getX());
                 coordinate.setY(currentLane.getEntry().getY() - currentCell);
@@ -145,12 +165,12 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                 break;
 
             case EAST:
-                coordinate.setX(currentLane.getEntry().getX()+currentCell);
+                coordinate.setX(currentLane.getEntry().getX() + currentCell);
                 coordinate.setY(currentLane.getEntry().getY());
                 break;
 
             case WEST:
-                coordinate.setX(currentLane.getEntry().getX()-currentCell);
+                coordinate.setX(currentLane.getEntry().getX() - currentCell);
                 coordinate.setY(currentLane.getEntry().getY());
                 break;
         }
@@ -168,56 +188,68 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     /**
      * @param vehicleLength the length of a vehicle in type of integer
      */
-    public void setVehicleLength(int vehicleLength){this.vehicleLength=vehicleLength;}
+    public void setVehicleLength(int vehicleLength) {
+        this.vehicleLength = vehicleLength;
+    }
 
     /**
      * @param vehicleSpeed the speed of vehicle in type of double
      */
-    public void setVehicleSpeed(double vehicleSpeed){this.vehicleSpeed=vehicleSpeed;}
-    public void setVehiclePriority(int vehiclePriority){this.vehiclePriority=vehiclePriority;}
+    public void setVehicleSpeed(double vehicleSpeed) {
+        this.vehicleSpeed = vehicleSpeed;
+    }
+
+    public void setVehiclePriority(int vehiclePriority) {
+        this.vehiclePriority = vehiclePriority;
+    }
 
 
     /**
      * @param currentLane a lane to set car in, in type of lane
      * @throws Exception if lane is not exist
-     * set a vehicle into a new lane
+     *                   set a vehicle into a new lane
      */
-    public void setCurrentLane(Lane currentLane) throws Exception{
-        if(currentLane != null){
-            this.currentLane =currentLane;}
-    else
+    public void setCurrentLane(Lane currentLane) throws Exception {
+        if (currentLane != null) {
+            this.currentLane = currentLane;
+        } else
             throw new Exception("Lane is not Exist !");
     }
 
     /**
-     * @param curCell new cell to assign vehicle to
+     * @param curCell     new cell to assign vehicle to
      * @param currentLane lane that cell takes place in
      * @throws Exception if the cell is out of bounds or is not empty
-     *
-     * set a vehicle into a new cell
-     * check if a new cell is empty, and not out of bounds
-     * not less than zero or equal or more than lane length
+     *                   <p>
+     *                   set a vehicle into a new cell
+     *                   check if a new cell is empty, and not out of bounds
+     *                   not less than zero or equal or more than lane length
      */
-    public void setCurrentCell(int curCell,Lane currentLane) throws Exception{
-        if ((curCell >=0)&& (curCell< currentLane.getLength())&& (currentLane.isCellEmpty(curCell))){
-            this.currentCell=curCell;
-        }else
+    public void setCurrentCell(int curCell, Lane currentLane) throws Exception {
+        if ((curCell >= 0) && (curCell < currentLane.getLength()) && (currentLane.isCellEmpty(curCell))) {
+            this.currentCell = curCell;
+        } else if (this.getVehiclePriority() != 5) {
             throw new Exception("new cell is not available !");
+        }
     }
 
     /**
      * @param vehicleState in type of integer
-     * set the state of vehicle
-     * 0 for still and 1 for movement
+     *                     set the state of vehicle
+     *                     0 for still and 1 for movement
      */
-    public void setVehicleState(int vehicleState){this.vehicleState=vehicleState;}
+    public void setVehicleState(int vehicleState) {
+        this.vehicleState = vehicleState;
+    }
 
     /**
      * @param vehicleBehavior in type of VehicleBehavior enum
-     * sets the behavior of a vehicle
-     * there are three behaviors AVERAGE, AGGRESSIVE, and CAUTIOUS
+     *                        sets the behavior of a vehicle
+     *                        there are three behaviors AVERAGE, AGGRESSIVE, and CAUTIOUS
      */
-    public void setVehicleBehavior(VehicleBehavior vehicleBehavior){ this.vehicleBehavior = vehicleBehavior; }
+    public void setVehicleBehavior(VehicleBehavior vehicleBehavior) {
+        this.vehicleBehavior = vehicleBehavior;
+    }
 
     public void setCurrentCoordinate(Coordinate currentCoordinate) {
         this.currentCoordinate = currentCoordinate;
@@ -225,41 +257,54 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
     /**
      * @param step number of steps to move, depends on the behavior
-     * @return True if vehicle can move, False if not
-     * @throws Exception
-     *
-     * vehicle can move one step or more, depends on its behavior
-     * if it moves two steps, should check if this movement is available
-     * if not it checks if one step is available
-     * if not vehicle stops
+     * @return returns the number of steps the vehicle is able to achieve
+     * @throws Exception vehicle can move one step or more, depends on its behavior
+     *                   if it moves two steps, should check if this movement is available
+     *                   if not it checks if one step is available
+     *                   if not vehicle stops
      */
-    public boolean moveVehicle(int step) throws Exception {
+    public int moveVehicle(int step) throws Exception {
 
         int curCell = this.getCurrentCell();
 
-        if(step==0)
-        {
+        while (step > 0) {
+            if (curCell + step >= this.currentLane.getLength() || !this.currentLane.isCellEmpty(curCell + step)) {
+                step--;
+            } else
+                break;
+        }
+
             currentLane.setCell(null, curCell);
             curCell += step;
             this.setCurrentCell(curCell, this.getCurrentLane());
             currentLane.setCell(this, curCell);
+
+            return step;
+        }
+
+        /*
+            if (step == 0) {
+                currentLane.setCell(null, curCell);
+                curCell += step;
+                this.setCurrentCell(curCell, this.getCurrentLane());
+                currentLane.setCell(this, curCell);
+                return false;
+            }
+
+            if (curCell + step >= this.currentLane.getLength() || !this.currentLane.isCellEmpty(curCell + step)) {
+                moveVehicle(step - 1);
+            } else {
+                currentLane.setCell(null, curCell);
+                curCell += step;
+                this.setCurrentCell(curCell, this.getCurrentLane());
+                currentLane.setCell(this, curCell);
+                return true;
+            }
+
             return false;
-        }
+*/
 
-        if (curCell + step >= this.currentLane.getLength() || !this.currentLane.isCellEmpty(curCell + step)) {
-            moveVehicle(step - 1);
-        } else {
-            currentLane.setCell(null, curCell);
-            curCell += step;
-            this.setCurrentCell(curCell, this.getCurrentLane());
-            currentLane.setCell(this, curCell);
-            return true;
-        }
-
-        return false;
-
-    }
-
+   // }
         /*
       public boolean moveVehicle(int step) throws Exception {
         int curCell= this.getCurrentCell();
@@ -339,6 +384,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                 currentLane.setCell(null, curCell);
                 this.setVehicleState(3);
                 this.unsubscribe();
+
 
             }
 
@@ -506,8 +552,9 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
      * vehicle turn to new chosen lane
      * if there is no lane to move to, vehicle stops
      * @throws Exception
+     * method returns integer representation of booleans
      */
-    public boolean vehicleTurn(Lane l) throws Exception {
+    public int vehicleTurn(Lane l) throws Exception {
         Lane oldLane = this.currentLane;
 
 
@@ -518,10 +565,10 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     this.setCurrentLane(l);
                     this.setCurrentCell(0, l);
                     //this.setVehicleState(2);
-                    return true;
+                    return 1;
                 }
             else {this.setVehicleState(0);
-                return false;}
+                return 0;}
 
     }
 

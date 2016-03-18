@@ -78,21 +78,24 @@ public class MapExamples {
         Intersection i1 = new Intersection(new Coordinate(1,1));
         i1.setEastRoad(r1);
         i1.setSouthRoad(r3);
-        //i1.setDefaultTrafficLightsForRoads();
+        i1.setDefaultTrafficLightsForRoads();
 
         Intersection i2 = new Intersection(new Coordinate(11,1));
         i2.setWestRoad(r1);
         i2.setSouthRoad(r4);
         i2.setEastRoad(rExit);
+        i2.setDefaultTrafficLightsForRoads();
 
         Intersection i3 = new Intersection(new Coordinate(1,10));
         i3.setEastRoad(r2);
         i3.setNorthRoad(r3);
+        i3.setDefaultTrafficLightsForRoads();
 
         Intersection i4 = new Intersection(new Coordinate(11,10));
 
         i4.setWestRoad(r2);
         i4.setNorthRoad(r4);
+        i4.setDefaultTrafficLightsForRoads();
 
 
         map.addIntersection(i1);
