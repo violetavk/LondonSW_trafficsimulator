@@ -37,9 +37,11 @@ public class Lane implements Serializable {
         return state;
     }
 
-    public Vehicle getVehicleInIntersection() {
-
-        return lane[length-1];
+    public Vehicle getVehicleInIntersection() throws Exception {
+        if (lane[length-1] != null)
+            return lane[length-1];
+        else
+            return null;
     }
 
 
