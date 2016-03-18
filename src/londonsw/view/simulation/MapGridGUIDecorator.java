@@ -135,7 +135,12 @@ public class MapGridGUIDecorator extends MapGridDecorator {
             intersectionDecorator.setResizeFactor(this.getResizeFactor());
             sp = intersectionDecorator.drawIntersection();
         }
-
+        else if(component instanceof Road) {
+            System.out.println("Drawing a road...");
+            RoadGUIDecorator roadGUIDecorator = new RoadGUIDecorator((Road) component);
+            roadGUIDecorator.setResizeFactor(this.getResizeFactor());
+            sp = roadGUIDecorator.drawRoad();
+        }
         gp.add(sp, x, y);
         System.out.println("Done");
     }
