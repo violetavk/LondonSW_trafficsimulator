@@ -76,10 +76,13 @@ public class LaneArrow extends Polygon {
         }
 
         this.setRotate(angle - 90);
+        //roadLine.setRotate(angle - 90);
 
         Group group = new Group();
 
         group.getChildren().addAll(roadLine,this);
+
+        //group.setRotate(angle - 90);
 
         this.setGroup(group);
 
