@@ -1,6 +1,5 @@
 package londonsw.controller;
 
-import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 import londonsw.view.simulation.VehicleGUIDecorator;
@@ -52,7 +51,7 @@ public class VehicleController {
 
     public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws Exception {
 
-        Boolean move = true;
+        int move = 0;
 
         vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
         vehicleGUIDecorator.setPreviousCoordinate(vehicleGUIDecorator.getCurrentCoordinate());
@@ -74,12 +73,8 @@ public class VehicleController {
         else {
             if (vehicleGUIDecorator.getVehicleState() != 0) {
                 move = vehicleGUIDecorator.moveVehicle(step);
-                System.out.println(move);
             }
         }
-
-        if (move) {
-            vehicleGUIDecorator.moveVehicleGUI(step, vehicleGUIDecorator.getVehicleState());
-        }
+            vehicleGUIDecorator.moveVehicleGUI(move, vehicleGUIDecorator.getVehicleState());
     }
 }
