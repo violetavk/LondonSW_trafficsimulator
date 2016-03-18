@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,12 +22,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import londonsw.controller.MapMakerController;
+import londonsw.model.mapmaker.MapMaker;
 import londonsw.model.simulation.Map;
 import londonsw.model.simulation.components.*;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import org.reactfx.EventStream;
 import org.reactfx.EventStreams;
 
+import java.util.Optional;
 import java.util.Stack;
 
 /**
@@ -141,40 +144,48 @@ public class MapMakerScreen {
                 final int y = i;
                 current.setOnMouseClicked((MouseEvent click) -> {
                     MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
-                    current.requestFocus();
                     MapMakerController.setCurrentFocused(ComponentType.MAP_SQUARE);
+                    current.requestFocus();
                 });
                 current.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
                     ComponentType previous = MapMakerController.getPreviousFocused();
                     Coordinate coord = new Coordinate(x,y);
+
                     if(previous == ComponentType.INTERSECTION) {
-                        System.out.println("Adding new intersection at " + x + ", " + y);
-                        Intersection intersection = new Intersection(coord);
-                        map.addIntersection(intersection);
-                        mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
+                        StackPane sp = addIntersection(x,y,map,mapGridGUIDecorator,mapGridPane,intersectionImgView);
+                        sp.setOnMouseClicked(click -> {
+                            System.out.println("Clicked intersection");
+                            ComponentType currentFocused = MapMakerController.getCurrentFocused();
+                            if(currentFocused == ComponentType.ROADNS) {
+                                System.out.println("Put a RoadNS here");
+
+                            }
+                        });
+
+
                     }
                     else if(previous == ComponentType.ROADNS) {
-                        System.out.println("Adding RoadNS at " + x + ", " + y);
-                        Road road = new Road(coord,coord);
-                        try {
-                            road.addLane(new Lane(coord,coord,MapDirection.NORTH));
-                            road.addLane(new Lane(coord,coord,MapDirection.SOUTH));
-                            map.addRoad(road);
-                            mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        StackPane sp = addRoadNS(x,y,map,mapGridGUIDecorator,mapGridPane,roadNSImgView);
+                        sp.setOnMouseClicked(click -> {
+                            System.out.println("Clicked a RoadNS");
+                        });
+                    }
+                    else if(previous == ComponentType.ROADEW) {
+                        StackPane sp = addRoadEW(x,y,map,mapGridGUIDecorator,mapGridPane,roadEWImgView);
+                        sp.setOnMouseClicked(click -> {
+                            System.out.println("Clicked a RoadEW");
+                        });
                     }
                 });
             }
         }
 
         // Add intersection click processing
-        DropShadow ds = new DropShadow(15, Color.BLUE);
+        DropShadow ds = new DropShadow(15, Color.ROYALBLUE);
         intersectionImgView.setOnMouseClicked(click -> {
             MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
-            intersectionImgView.requestFocus();
             MapMakerController.setCurrentFocused(ComponentType.INTERSECTION);
+            intersectionImgView.requestFocus();
             System.out.println("Current focused is " + MapMakerController.getCurrentFocused());
         });
         intersectionImgView.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -188,8 +199,8 @@ public class MapMakerScreen {
 
         roadNSImgView.setOnMouseClicked(click -> {
             MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
-            roadNSImgView.requestFocus();
             MapMakerController.setCurrentFocused(ComponentType.ROADNS);
+            roadNSImgView.requestFocus();
             System.out.println("Current focused is " + MapMakerController.getCurrentFocused());
         });
         roadNSImgView.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -201,11 +212,65 @@ public class MapMakerScreen {
             }
         });
 
+        roadEWImgView.setOnMouseClicked(click -> {
+            MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
+            MapMakerController.setCurrentFocused(ComponentType.ROADEW);
+            roadEWImgView.requestFocus();
+            System.out.println("Current focused is " + MapMakerController.getCurrentFocused());
+        });
+        roadEWImgView.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if(newValue) {
+                roadEWImgView.setEffect(ds);
+            }
+            else {
+                roadEWImgView.setEffect(null);
+            }
+        });
+
+        saveButton.setOnMouseClicked(click -> {
+            System.out.println("Clicked Save Map");
+            TextInputDialog nameDialog = new TextInputDialog();
+            nameDialog.setTitle("Save Map");
+            nameDialog.setHeaderText("Please provide a name for your map (no spaces or special characters).\nSaved maps go into the /maps directory of your working directory.");
+            nameDialog.setContentText("File name");
+            Optional<String> result = nameDialog.showAndWait();
+            result.ifPresent(name -> {
+                name = name.concat(".map");
+                System.out.println("Chose the name " + name);
+                Map finalMap = buildAndSaveMap(map);
+            });
+        });
 
 
         borderPane.setRight(sideComponents);
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
+        primaryStage.centerOnScreen();
+    }
+
+    private Map buildAndSaveMap(Map map) {
+        System.out.println("Building and saving map...");
+        int width = map.getWidth();
+        int height = map.getHeight();
+        Map fixed = new Map(width,height);
+
+        for(int i = 0; i < height; i++) {
+            for(int j = 0; j < width; j++) {
+                Component current = map.getGrid().get(i, j);
+                if(current instanceof Intersection) {
+                    System.out.println("Found Intersection at " + j + ", " + i);
+                }
+                else if(current instanceof Road) {
+                    Road road = (Road) current;
+                    if(road.runsVertically()) {
+                        System.out.println("Found Vertical Road at " + j + ", " + i);
+                    } else {
+                        System.out.println("Found Horizontal Road at " + j + ", " + i);
+                    }
+                }
+            }
+        }
+        return fixed;
     }
 
     private Node getNodeFromIndex(int row, int column, GridPane gridPane) {
@@ -218,5 +283,60 @@ public class MapMakerScreen {
             }
         }
         return result;
+    }
+
+    private StackPane addIntersection(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
+        System.out.println("Adding new intersection at " + x + ", " + y);
+        Coordinate coord = new Coordinate(x,y);
+        Intersection intersection = new Intersection(coord);
+        map.addIntersection(intersection);
+        StackPane sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
+        // put focus back on Intersection
+        MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
+        MapMakerController.setCurrentFocused(ComponentType.INTERSECTION);
+        imgView.requestFocus();
+        return sp;
+    }
+
+    private StackPane addRoadNS(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
+        System.out.println("Adding RoadNS at " + x + ", " + y);
+        StackPane sp = null;
+        Coordinate coord = new Coordinate(x,y);
+        Road road = new Road(coord,coord);
+        try {
+            road.addLane(new Lane(coord,coord,MapDirection.NORTH));
+            road.addLane(new Lane(coord,coord,MapDirection.SOUTH));
+            map.addRoad(road);
+            sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
+
+            // put focus back on RoadNS
+            MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
+            MapMakerController.setCurrentFocused(ComponentType.ROADNS);
+            imgView.requestFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sp;
+    }
+
+    private StackPane addRoadEW(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
+        System.out.println("Adding RoadEW at " + x + ", " + y);
+        StackPane sp = null;
+        Coordinate coord = new Coordinate(x,y);
+        Road road = new Road(coord,coord);
+        try {
+            road.addLane(new Lane(coord,coord,MapDirection.EAST));
+            road.addLane(new Lane(coord,coord,MapDirection.WEST));
+            map.addRoad(road);
+            sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
+
+            // put focus back on RoadEW
+            MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
+            MapMakerController.setCurrentFocused(ComponentType.ROADEW);
+            imgView.requestFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sp;
     }
 }

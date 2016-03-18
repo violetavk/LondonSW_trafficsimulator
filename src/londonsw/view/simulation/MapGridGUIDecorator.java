@@ -8,8 +8,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import londonsw.controller.MapMakerController;
 import londonsw.model.simulation.MapGrid;
 import londonsw.model.simulation.components.*;
+import londonsw.view.mapcreation.ComponentType;
 
 import java.util.ArrayList;
 
@@ -126,7 +128,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
         return rootGP;
     }
 
-    public void redrawCell(int x, int y, GridPane gp) {
+    public StackPane redrawCell(int x, int y, GridPane gp) {
         Component component = this.getGrid()[y][x];
         StackPane sp = new StackPane();
         if(component instanceof Intersection) {
@@ -143,5 +145,6 @@ public class MapGridGUIDecorator extends MapGridDecorator {
         }
         gp.add(sp, x, y);
         System.out.println("Done");
+        return sp;
     }
 }
