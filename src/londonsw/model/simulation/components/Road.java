@@ -16,7 +16,7 @@ public class Road implements Component, Serializable, IRoad {
     private Coordinate end;
     private ArrayList<Lane> lanes;
     private Intersection intersection;
-    private static  int counter=0;
+    private static int counter = 0;
 
     public int getId() {
         return id;
@@ -36,17 +36,18 @@ public class Road implements Component, Serializable, IRoad {
      * The coordinates can be in any order, as long as they form a straight line.
      *
      * @param start the location of one end of the road
-     * @param end the location of the other end of the road
+     * @param end   the location of the other end of the road
      */
-    public Road(Coordinate start, Coordinate end ) {
+    public Road(Coordinate start, Coordinate end) {
         lanes = new ArrayList<Lane>();
         this.start = start;
         this.end = end;
-        this.id=++counter;
+        this.id = ++counter;
     }
 
     /**
      * Gets the number of lanes a road has
+     *
      * @return number of lanes in the road
      */
     public ArrayList<Lane> getLanes() {
@@ -66,13 +67,17 @@ public class Road implements Component, Serializable, IRoad {
 
     /**
      * Gets the lane at the index specified
+     *
      * @param i index of lane
      * @return the instance of Lane at that index i
      */
-    public Lane getLaneAtIndex(int i) { return lanes.get(i); }
+    public Lane getLaneAtIndex(int i) {
+        return lanes.get(i);
+    }
 
     /**
      * Gets the beginning coordinate of the road
+     *
      * @return location of beginning of road of type Coordinate
      */
     public Coordinate getStartLocation() {
@@ -81,6 +86,7 @@ public class Road implements Component, Serializable, IRoad {
 
     /**
      * Gets the end coordinate of the road
+     *
      * @return location of end of road of type Coordinate
      */
     public Coordinate getEndLocation() {
@@ -89,9 +95,12 @@ public class Road implements Component, Serializable, IRoad {
 
     /**
      * Gets the number of lanes currently part of the road
+     *
      * @return number of lanes in the road of type int
      */
-    public int getNumberLanes() {return lanes.size();}
+    public int getNumberLanes() {
+        return lanes.size();
+    }
 
     public Intersection getIntersection() {
         //TODO
@@ -114,6 +123,7 @@ public class Road implements Component, Serializable, IRoad {
     /**
      * Uses the coordinates to determine how long the road is
      * A road has a minimum length of 1
+     *
      * @return length of the road
      */
     public int getLength() {
@@ -123,15 +133,13 @@ public class Road implements Component, Serializable, IRoad {
         int bY = end.getY();
         int length;
 
-        if(aX == bX) {
-            length = Math.abs(aY-bY) + 1;
+        if (aX == bX) {
+            length = Math.abs(aY - bY) + 1;
             return length;
-        }
-        else if(aY == bY) {
-            length = Math.abs(aX-bX) + 1;
+        } else if (aY == bY) {
+            length = Math.abs(aX - bX) + 1;
             return length;
-        }
-        else
+        } else
             return -1;
     }
 
@@ -145,10 +153,18 @@ public class Road implements Component, Serializable, IRoad {
         int bX = end.getX();
 
         // if aX==bX, then road runs vertically
-        if(aX == bX)
+        if (aX == bX)
             return true;
 
         // if aY==bY, then road runs horizontally
         return false;
+    }
+
+    public boolean runsVertically(MapDirection mapDirection) {
+
+        if (mapDirection.equals(mapDirection.NORTH) || mapDirection.equals(mapDirection.SOUTH))
+            return true;
+        else
+            return false;
     }
 }

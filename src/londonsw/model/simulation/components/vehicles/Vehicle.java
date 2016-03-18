@@ -512,7 +512,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
 
             //validate if its end of lane
-            if ((l != null) && (turnFirst(l)) && (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)))
+            if ((l != null) /*&& (turnFirst(l)) */&& (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)))
                 {
                     oldLane.setCell(null, oldLane.getLength() - 1);
                     this.setCurrentLane(l);
