@@ -85,7 +85,7 @@ public class RoadGUIDecorator extends RoadDecorator {
 
         int j = 0;
 
-        if (!this.runsVertically()) {
+        if (!this.runsVertically(lanes.get(0).getMovingDirection())) {
             for (int i = 0; i < numberLanes * 2; i++) {
                 if (i % 2 == 0) {
 

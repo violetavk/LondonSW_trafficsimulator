@@ -59,4 +59,9 @@ public abstract class RoadDecorator implements IRoad {
     public boolean runsVertically() {
         return this.decoratedRoad.runsVertically();
     }
+
+    public boolean runsVertically(MapDirection mapDirection) {
+        return this.decoratedRoad.runsVertically(mapDirection);
+    }
+
 }

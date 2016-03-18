@@ -81,7 +81,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                                     }
 
-                                    System.out.println(laneArrow.lane.getId());
+                                    System.out.println("Lane ID: " + laneArrow.lane.getId() + " Lane State: " + laneArrow.lane.getState());
                                     laneArrow.lane.setState(laneArrow.lane.getState() == 0 ? 1 : 0);
 
                                 }
@@ -135,7 +135,12 @@ public class MapGridGUIDecorator extends MapGridDecorator {
             intersectionDecorator.setResizeFactor(this.getResizeFactor());
             sp = intersectionDecorator.drawIntersection();
         }
-
+        else if(component instanceof Road) {
+            System.out.println("Drawing a road...");
+            RoadGUIDecorator roadGUIDecorator = new RoadGUIDecorator((Road) component);
+            roadGUIDecorator.setResizeFactor(this.getResizeFactor());
+            sp = roadGUIDecorator.drawRoad();
+        }
         gp.add(sp, x, y);
         System.out.println("Done");
     }

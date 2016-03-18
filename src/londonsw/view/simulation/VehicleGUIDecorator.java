@@ -198,9 +198,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
             if(state == 3)
             {
                 //Car deleted state
-
                 this.getPane().getChildren().remove(this.getRectangle());
-
             }
         else // car driving straight down road
         {

@@ -235,26 +235,29 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
      */
     public boolean moveVehicle(int step) throws Exception {
 
-        if (step == 0) {
+        int curCell = this.getCurrentCell();
+
+        if(step==0)
+        {
+            currentLane.setCell(null, curCell);
+            curCell += step;
+            this.setCurrentCell(curCell, this.getCurrentLane());
+            currentLane.setCell(this, curCell);
             return false;
-        } else {
-
-            int curCell = this.getCurrentCell();
-
-            if (curCell + step >= this.currentLane.getLength() || !this.currentLane.isCellEmpty(curCell + step)) {
-                moveVehicle(step - 1);
-            } else {
-                currentLane.setCell(null, curCell);
-                curCell += step;
-                this.setCurrentCell(curCell, this.getCurrentLane());
-                currentLane.setCell(this, curCell);
-
-                return true;
-            }
-
-            return true;
-
         }
+
+        if (curCell + step >= this.currentLane.getLength() || !this.currentLane.isCellEmpty(curCell + step)) {
+            moveVehicle(step - 1);
+        } else {
+            currentLane.setCell(null, curCell);
+            curCell += step;
+            this.setCurrentCell(curCell, this.getCurrentLane());
+            currentLane.setCell(this, curCell);
+            return true;
+        }
+
+        return false;
+
     }
 
         /*
@@ -290,46 +293,47 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
      * @throws Exception
      */
     public void readTrafficLight()throws Exception {
-        if (this.getCurrentCell() == this.currentLane.getLength() -1) {
+        if (this.getCurrentCell() == this.currentLane.getLength() - 1) {
             TrafficLight light;
 
-            if(this.getCurrentLane().getEndIntersection()!=null)
-            {
-            switch (this.getCurrentLane().getMovingDirection()){
-                case NORTH:
-                    light= this.getCurrentLane().getEndIntersection().getSouthTrafficLight();
-                    break;
-                case SOUTH:
-                    light= this.getCurrentLane().getEndIntersection().getNorthTrafficLight();
-                    break;
-                case EAST:
-                    light= this.getCurrentLane().getEndIntersection().getWestTrafficLight();
-                    break;
-                case WEST:
-                    light= this.getCurrentLane().getEndIntersection().getEastTrafficLight();
-                    break;
-                default: // ERROR case
-                    light = null;
-                    throw new Exception("Error Direction!");
-                   // break;
-            }
+            if (this.getCurrentLane().getEndIntersection() != null) {
+                switch (this.getCurrentLane().getMovingDirection()) {
+                    case NORTH:
+                        light = this.getCurrentLane().getEndIntersection().getSouthTrafficLight();
+                        break;
+                    case SOUTH:
+                        light = this.getCurrentLane().getEndIntersection().getNorthTrafficLight();
+                        break;
+                    case EAST:
+                        light = this.getCurrentLane().getEndIntersection().getWestTrafficLight();
+                        break;
+                    case WEST:
+                        light = this.getCurrentLane().getEndIntersection().getEastTrafficLight();
+                        break;
+                    default: // ERROR case
+                        light = null;
+                        throw new Exception("Error Direction!");
+                        // break;
+                }
 
-            if(vehiclePriority>1 && light!=null){
-                if(light.getState()== LightColour.RED){
-                    this.vehicleState=1;
+                if (vehiclePriority > 1 && light != null) {
+                    if (light.getState() == LightColour.RED) {
+                        this.vehicleState = 1;
+
+                    }
+                } else if (light != null) {
+                    if (light.getState() == LightColour.RED)
+                        this.vehicleState = 0;
+                    else
+                        this.vehicleState = 1;
+                }
+                else
+                {
+                    //move because there isn't any traffic light
+                    this.setVehicleState(1);
 
                 }
-            }
-
-           else if(light!=null) {
-                if (light.getState() == LightColour.RED)
-                    this.vehicleState = 0;
-                else
-                    this.vehicleState = 1;
-            }
-        }
-            else
-            {
+            } else {
                 System.out.println("No Intersection assigned");
                 int curCell = this.getCurrentCell();
                 currentLane.setCell(null, curCell);
@@ -339,8 +343,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
             }
 
 
-        }
-        else
+        } else
             throw new Exception("Reading traffic light when not at end of lane");
     }
 
@@ -404,38 +407,122 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         return null;
     }
 
+
+    public boolean turnFirst (Lane l)throws Exception{
+        switch (this.getCurrentLane().getMovingDirection()) {
+            case NORTH:
+                if(this.getCurrentLane().getEndIntersection().getNorthRoad()!=null) {
+                    for (int i = 0; i < this.currentLane.getEndIntersection().getNorthRoad().getNumberLanes(); i++) {
+                        if ((this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.SOUTH)){
+                               if ((this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                                if (this.getId()>this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection().getId())
+                                    return true;
+                                else{ System.out.println("smaller ID, cant move,NORTH my ID is  " + this.getId() + " yours is "
+                                        +this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection().getId());
+                                    return false;}
+                               }else {System.out.println("`there is no car so I can move, NORTH my ID is  " + this.getId());
+                                   return true;}
+                        }
+                    }
+                }else return true;
+
+            case SOUTH:
+                if(this.getCurrentLane().getEndIntersection().getSouthRoad()!=null) {
+                    for (int i = 0; i < this.currentLane.getEndIntersection().getSouthRoad().getNumberLanes(); i++) {
+                        if ((this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.NORTH)){
+                               if( (this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                            if (this.getId()>this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection().getId())
+                                    return true;
+                                else{ System.out.println("smaller ID, cant move, SOUTH my ID is  " + this.getId() + " yours is "
+                                    +this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection().getId());
+                                    return false;}
+                               }
+                               else {System.out.println("there is no car so I can move, SOUTH my ID is  " + this.getId());
+                                   return true;}
+                        }
+                    }
+                }else return true;
+
+            case EAST:
+                if(this.getCurrentLane().getEndIntersection().getEastRoad()!=null) {
+                    for (int i = 0; i < this.currentLane.getEndIntersection().getEastRoad().getNumberLanes(); i++) {
+                        if ((this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.WEST)){
+                            if( (this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                                if (this.getId()>this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getVehicleInIntersection().getId())
+                                    return true;
+                                else{ System.out.println("smaller ID, cant move,EAST my ID is  " + this.getId() + " yours is "
+                                        +this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getVehicleInIntersection().getId());
+                                    return false;}
+                            }
+                            else {System.out.println("there is no car so I can move, EAST my ID is  " + this.getId());
+                                return true;}
+                        }
+                    }
+                }else return true;
+
+            case WEST:
+                if(this.getCurrentLane().getEndIntersection().getWestRoad()!=null) {
+                    for (int i = 0; i < this.currentLane.getEndIntersection().getWestRoad().getNumberLanes(); i++) {
+                        if ((this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.EAST)){
+                            if( (this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                                if (this.getId()>this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getVehicleInIntersection().getId())
+                                    return true;
+                                else{ System.out.println("smaller ID, cant move, WEST my ID is  " + this.getId() + " yours is "
+                                        +this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getVehicleInIntersection().getId());
+                                    return false;}
+                            }
+                            else {System.out.println("there is no car so I can move, WEST my ID is  " + this.getId());
+                                return true;}
+                        }
+                    }
+                }else return true;
+
+                default:
+                    return true;
+        }
+    }
+
+
+    public Lane chooseLane() throws Exception {
+        int num = 0;
+
+        if(this.getLaneOptions()!=null) {
+            num = this.getLaneOptions().size();
+        }
+
+        if (num > 0) {
+            randomDirection = new Random();
+            int size = randomDirection.nextInt(this.getLaneOptions().size());
+            l= this.getLaneOptions().get(size);
+            return l;
+        }
+        return null;
+    }
+
+
+
     /**
      * Chooses lane randomly from lanes options
      * vehicle turn to new chosen lane
      * if there is no lane to move to, vehicle stops
      * @throws Exception
      */
-    public boolean vehicleTurn() throws Exception {
+    public boolean vehicleTurn(Lane l) throws Exception {
         Lane oldLane = this.currentLane;
-        Lane l;
 
-        int num = 0;
-
-                if(this.getLaneOptions()!=null) {
-                 num = this.getLaneOptions().size();
-                }
-
-        if (num > 0) {
-        randomDirection = new Random();
-        int size = randomDirection.nextInt(this.getLaneOptions().size());
-        l= this.getLaneOptions().get(size);
 
             //validate if its end of lane
-            if ((this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) )
+            if ((l != null) /*&& (turnFirst(l)) */&& (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)))
                 {
                     oldLane.setCell(null, oldLane.getLength() - 1);
                     this.setCurrentLane(l);
                     this.setCurrentCell(0, l);
+                    //this.setVehicleState(2);
                     return true;
                 }
             else {this.setVehicleState(0);
-        return false;}}
-        return true;
+                return false;}
+
     }
 
 

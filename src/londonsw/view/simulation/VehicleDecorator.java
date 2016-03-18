@@ -138,7 +138,18 @@ public abstract class VehicleDecorator implements IVehicle {
     }
 
     @Override
-    public boolean vehicleTurn() throws Exception {
-        return decoratedVehicle.vehicleTurn();
+    public Lane chooseLane () throws Exception{
+        return decoratedVehicle.chooseLane();
     }
+
+    @Override
+    public boolean vehicleTurn(Lane l) throws Exception {
+        return decoratedVehicle.vehicleTurn(l);
+    }
+
+    @Override
+    public boolean turnFirst (Lane l) throws Exception{
+        return decoratedVehicle.turnFirst(l);
+    }
+
 }
