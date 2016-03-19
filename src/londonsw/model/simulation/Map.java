@@ -277,4 +277,26 @@ public class Map implements Serializable {
 
         return map;
     }
+
+    /**
+     * For debug only. Prints the map layout to the console.
+     */
+    public void printMapGrid() {
+        Component[][] grid = this.getGrid().getGrid();
+        int width = this.getGrid().getWidth();
+        int height = this.getGrid().getHeight();
+        for(int i = 0; i < height; i++) {
+            for(int j = 0; j < width; j++) {
+                Component current = grid[i][j];
+                if(current instanceof Road)
+                    System.out.print("R ");
+                else if(current instanceof Intersection)
+                    System.out.print("I ");
+                else
+                    System.out.print("- ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
 }

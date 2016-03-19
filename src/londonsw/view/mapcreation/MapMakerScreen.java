@@ -240,7 +240,11 @@ public class MapMakerScreen {
             result.ifPresent(name -> {
                 name = name.concat(".map");
                 System.out.println("Chose the name " + name);
-                Map finalMap = buildAndSaveMap(map);
+                try {
+                    Map finalMap = buildAndSaveMap(map);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
         });
 
@@ -251,7 +255,7 @@ public class MapMakerScreen {
         primaryStage.setResizable(false);
     }
 
-    private Map buildAndSaveMap(Map map) {
+    private Map buildAndSaveMap(Map map) throws Exception {
         /*
         Plan:
             Step 1:
@@ -273,6 +277,9 @@ public class MapMakerScreen {
                 Component current = map.getGrid().get(x, y);
                 if(current instanceof Intersection) {
                     System.out.println("Found Intersection at " + x + ", " + y);
+                    Intersection i = new Intersection(new Coordinate(x, y));
+                    fixed.addIntersection(i);
+                    fixed.printMapGrid();
                 }
                 else if(current instanceof Road) {
                     Road road = (Road) current;
@@ -280,6 +287,25 @@ public class MapMakerScreen {
                         System.out.println("Found Vertical Road at " + x + ", " + y);
                     } else {
                         System.out.println("Found Horizontal Road at " + x + ", " + y);
+                        Coordinate lastKnownCoord = road.getEndLocation();
+                        if(lastKnownCoord.getX() != width-1) {
+                            Component next = map.getGrid().get(x++, y);
+                            while (next != null && next instanceof Road) {
+                                System.out.println("bit of road at " + ((Road) next).getStartLocation());
+                                lastKnownCoord = ((Road) next).getEndLocation();
+                                if(x == width) break;
+                                next = map.getGrid().get(x++, y);
+                            }
+                            x--; // we overshot by 1, so go back
+                        }
+                        Coordinate start = road.getStartLocation();
+                        Coordinate end = lastKnownCoord;
+                        System.out.println("Road starts at " + start + " and ends at " + end);
+                        Road newRoad = new Road(start, end);
+                        newRoad.addLane(new Lane(start, end, MapDirection.EAST));
+                        newRoad.addLane(new Lane(end, start, MapDirection.WEST));
+                        fixed.addRoad(newRoad);
+                        fixed.printMapGrid();
                     }
                 }
             }
