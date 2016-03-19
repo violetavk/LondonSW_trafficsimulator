@@ -143,6 +143,14 @@ public class MapGridGUIDecorator extends MapGridDecorator {
             roadGUIDecorator.setResizeFactor(this.getResizeFactor());
             sp = roadGUIDecorator.drawRoad();
         }
+        else if(component == null) { // Grass
+            System.out.println("Drawing a grass...");
+            LayoutGUI grassGUI = new LayoutGUI();
+            grassGUI.setHeight(this.getHeight());
+            grassGUI.setWidth(this.getWidth());
+            grassGUI.setResizeFactor(this.getResizeFactor());
+            sp = grassGUI.drawGrass();
+        }
         gp.add(sp, x, y);
         System.out.println("Done");
         return sp;

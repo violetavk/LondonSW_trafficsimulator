@@ -61,6 +61,10 @@ public class MapGrid implements Serializable, IMapGrid {
         return grid[y][x];
     }
 
+    public void clearCell(int x, int y) {
+        grid[y][x] = null;
+    }
+
     /**
      * Adds a Component to the map grid structure
      * @param c the Component to be added

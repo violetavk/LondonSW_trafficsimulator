@@ -179,6 +179,12 @@ public class Map implements Serializable {
         grid.addComponent(i);
     }
 
+    public void clearCell(Coordinate c) {
+        int x = c.getX();
+        int y = c.getY();
+        grid.clearCell(x, y);
+    }
+
     public void saveMap(String fileName)
     {
         try
