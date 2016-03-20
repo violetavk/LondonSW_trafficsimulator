@@ -122,6 +122,198 @@ public class MapExamples {
 
     }
 
+
+    public Map dratMap4 () throws Exception {
+
+        Map map = new Map(22, 22);
+
+        Road r04 = new Road(new Coordinate(1, 11), new Coordinate(1, 14));
+        Road r08 = new Road(new Coordinate(20, 11), new Coordinate(20, 14));
+        Road r09 = new Road(new Coordinate(9, 15), new Coordinate(19, 15));
+        Road r10 = new Road(new Coordinate(2, 15), new Coordinate(7, 15));
+        Road r13 = new Road(new Coordinate(2, 10), new Coordinate(7, 10));
+        Road r14 = new Road(new Coordinate(9, 10), new Coordinate(12, 10));
+        Road r15 = new Road(new Coordinate(14, 10), new Coordinate(19, 10));
+        Road r16 = new Road(new Coordinate(8, 11), new Coordinate(8, 14));
+        Road r20 = new Road(new Coordinate(1, 16), new Coordinate(1, 19));
+        Road r21 = new Road(new Coordinate(8, 16), new Coordinate(8, 19));
+        Road r22 = new Road(new Coordinate(2, 20), new Coordinate(7, 20));
+        Road r23 = new Road(new Coordinate(9, 20), new Coordinate(19, 20));
+        Road r24 = new Road(new Coordinate(20, 16), new Coordinate(20, 19));
+
+        /*This is a one lane Map
+        If you want two lanes map
+        comment these Lines , and uncomment The two lane code
+        at the bottom
+         */
+
+/*
+        r01.addLane(new Lane(r01.getStartLocation(),r01.getEndLocation(),MapDirection.EAST));
+        r02.addLane(new Lane (r02.getEndLocation(),r02.getStartLocation(),MapDirection.NORTH));
+        r03.addLane(new Lane(r03.getEndLocation(),r03.getStartLocation(),MapDirection.NORTH));
+        r04.addLane(new Lane(r04.getEndLocation(),r04.getStartLocation(),MapDirection.NORTH));
+        Lane l5 = new Lane(r05.getStartLocation(),r05.getEndLocation(),MapDirection.EAST);
+        //l5.setState(0);
+        r05.addLane(l5);
+        Lane l6 = new Lane(r06.getStartLocation(),r06.getEndLocation(),MapDirection.EAST);
+        r06.addLane(l6);
+        //l6.setState(0);
+        r07.addLane(new Lane(r07.getStartLocation(),r07.getEndLocation(),MapDirection.SOUTH));
+        r08.addLane(new Lane(r08.getStartLocation(),r08.getEndLocation(),MapDirection.SOUTH));
+        r09.addLane(new Lane(r09.getEndLocation(),r09.getStartLocation(),MapDirection.WEST));
+        r10.addLane(new Lane(r10.getEndLocation(),r10.getStartLocation(),MapDirection.WEST));
+        r11.addLane(new Lane(r11.getEndLocation(),r11.getStartLocation(),MapDirection.NORTH));
+        r12.addLane(new Lane(r12.getStartLocation(),r12.getEndLocation(),MapDirection.EAST));
+        r13.addLane(new Lane(r13.getStartLocation(),r13.getEndLocation(),MapDirection.EAST));
+        r14.addLane(new Lane(r14.getStartLocation(),r14.getEndLocation(),MapDirection.EAST));
+        r15.addLane(new Lane(r15.getStartLocation(),r15.getEndLocation(),MapDirection.EAST));
+        r16.addLane(new Lane(r16.getEndLocation(),r16.getStartLocation(),MapDirection.NORTH));
+        r17.addLane(new Lane(r17.getEndLocation(),r17.getStartLocation(),MapDirection.NORTH));
+        r18.addLane(new Lane(r18.getEndLocation(),r18.getStartLocation(),MapDirection.NORTH));
+        r19.addLane(new Lane(r19.getStartLocation(),r19.getEndLocation(),MapDirection.EAST));
+        r20.addLane(new Lane(r20.getEndLocation(),r20.getStartLocation(),MapDirection.NORTH));
+        r21.addLane(new Lane(r21.getEndLocation(),r21.getStartLocation(),MapDirection.NORTH));
+        r22.addLane(new Lane(r22.getEndLocation(),r22.getStartLocation(),MapDirection.WEST));
+        r23.addLane(new Lane(r23.getEndLocation(),r23.getStartLocation(),MapDirection.WEST));
+        r24.addLane(new Lane(r24.getStartLocation(),r24.getEndLocation(),MapDirection.SOUTH));
+*/
+
+          /*This is a two lane Map
+        If you want one lanes map
+        comment these Lines , and uncomment The one lane code above
+         */
+
+
+
+        r04.addLane(new Lane(r04.getEndLocation(), r04.getStartLocation(), MapDirection.NORTH));
+        r08.addLane(new Lane(r08.getEndLocation(), r08.getStartLocation(), MapDirection.NORTH));
+        Lane l9=new Lane(r09.getStartLocation(), r09.getEndLocation(), MapDirection.EAST);
+        // l9.setState(0);
+        r09.addLane(l9);
+        r10.addLane(new Lane(r10.getStartLocation(), r10.getEndLocation(), MapDirection.EAST));
+        r13.addLane(new Lane(r13.getStartLocation(), r13.getEndLocation(), MapDirection.EAST));
+        r14.addLane(new Lane(r14.getStartLocation(), r14.getEndLocation(), MapDirection.EAST));
+        r15.addLane(new Lane(r15.getStartLocation(), r15.getEndLocation(), MapDirection.EAST));
+        Lane l16 =new Lane(r16.getEndLocation(), r16.getStartLocation(), MapDirection.NORTH);
+        //l16.setState(0);
+        r16.addLane(l16);
+        r20.addLane(new Lane(r20.getEndLocation(), r20.getStartLocation(), MapDirection.NORTH));
+        r21.addLane(new Lane(r21.getEndLocation(), r21.getStartLocation(), MapDirection.NORTH));
+        r22.addLane(new Lane(r22.getStartLocation(), r22.getEndLocation(), MapDirection.EAST));
+        r23.addLane(new Lane(r23.getStartLocation(), r23.getEndLocation(), MapDirection.EAST));
+        r24.addLane(new Lane(r24.getEndLocation(), r24.getStartLocation(), MapDirection.NORTH));
+
+
+        r04.addLane(new Lane(r04.getStartLocation(), r04.getEndLocation(), MapDirection.SOUTH));
+        r08.addLane(new Lane(r08.getStartLocation(), r08.getEndLocation(), MapDirection.SOUTH));
+        r09.addLane(new Lane(r09.getEndLocation(), r09.getStartLocation(), MapDirection.WEST));
+        r10.addLane(new Lane(r10.getEndLocation(), r10.getStartLocation(), MapDirection.WEST));
+        r13.addLane(new Lane(r13.getEndLocation(), r13.getStartLocation(), MapDirection.WEST));
+        r14.addLane(new Lane(r14.getEndLocation(), r14.getStartLocation(), MapDirection.WEST));
+        r15.addLane(new Lane(r15.getEndLocation(), r15.getStartLocation(), MapDirection.WEST));
+        r16.addLane(new Lane(r16.getStartLocation(), r16.getEndLocation(), MapDirection.SOUTH));
+        r20.addLane(new Lane(r20.getStartLocation(), r20.getEndLocation(), MapDirection.SOUTH));
+        r21.addLane(new Lane(r21.getStartLocation(), r21.getEndLocation(), MapDirection.SOUTH));
+        r22.addLane(new Lane(r22.getEndLocation(), r22.getStartLocation(), MapDirection.WEST));
+        r23.addLane(new Lane(r23.getEndLocation(), r23.getStartLocation(), MapDirection.WEST));
+        r24.addLane(new Lane(r24.getStartLocation(), r24.getEndLocation(), MapDirection.SOUTH));
+
+
+        Intersection i03 = new Intersection(new Coordinate(1, 10));
+        i03.setSouthRoad(r04);
+        i03.setEastRoad(r13);
+        i03.setDefaultTrafficLightsForRoads();
+
+        Intersection i04 = new Intersection(new Coordinate(1, 15));
+        i04.setNorthRoad(r04);
+        i04.setEastRoad(r10);
+        i04.setSouthRoad(r20);
+        i04.setDefaultTrafficLightsForRoads();
+
+
+        Intersection i08 = new Intersection(new Coordinate(20, 10));
+        i08.setSouthRoad(r08);
+        i08.setWestRoad(r15);
+        i08.setDefaultTrafficLightsForRoads();
+
+        Intersection i09 = new Intersection(new Coordinate(20, 15));
+        i09.setNorthRoad(r08);
+        i09.setWestRoad(r09);
+        i09.setSouthRoad(r24);
+        i09.setDefaultTrafficLightsForRoads();
+
+        Intersection i10 = new Intersection(new Coordinate(8, 15));
+        i10.setEastRoad(r09);
+        i10.setWestRoad(r10);
+        i10.setNorthRoad(r16);
+        i10.setSouthRoad(r21);
+        i10.setDefaultTrafficLightsForRoads();
+
+
+        Intersection i12 = new Intersection(new Coordinate(8, 10));
+        i12.setWestRoad(r13);
+        i12.setEastRoad(r14);
+        i12.setSouthRoad(r16);
+        i12.setDefaultTrafficLightsForRoads();
+
+        Intersection i13 = new Intersection(new Coordinate(13, 10));
+        i13.setWestRoad(r14);
+        i13.setEastRoad(r15);
+        i13.setDefaultTrafficLightsForRoads();
+
+        Intersection i15 = new Intersection(new Coordinate(1, 20));
+        i15.setNorthRoad(r20);
+        i15.setEastRoad(r22);
+        i15.setDefaultTrafficLightsForRoads();
+
+        Intersection i16 = new Intersection(new Coordinate(8, 20));
+        i16.setWestRoad(r22);
+        i16.setNorthRoad(r21);
+        i16.setEastRoad(r23);
+        i16.setDefaultTrafficLightsForRoads();
+
+        Intersection i17 = new Intersection(new Coordinate(20, 20));
+        i17.setWestRoad(r23);
+        i17.setNorthRoad(r24);
+        i17.setDefaultTrafficLightsForRoads();
+
+
+
+
+
+
+        map.addRoad(r04);
+        map.addRoad(r08);
+        map.addRoad(r09);
+        map.addRoad(r10);
+        map.addRoad(r13);
+        map.addRoad(r14);
+        map.addRoad(r15);
+        map.addRoad(r16);
+        map.addRoad(r20);
+        map.addRoad(r21);
+        map.addRoad(r22);
+        map.addRoad(r23);
+        map.addRoad(r24);
+
+
+        map.addIntersection(i03);
+        map.addIntersection(i04);
+        map.addIntersection(i08);
+        map.addIntersection(i09);
+        map.addIntersection(i10);
+        map.addIntersection(i12);
+        map.addIntersection(i13);
+        map.addIntersection(i15);
+        map.addIntersection(i16);
+        map.addIntersection(i17);
+
+        return map;
+
+
+    }
+
+
     public static Map drawTestMapBasic() throws Exception {
 
         Map map = new Map(10, 10);
