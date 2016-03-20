@@ -82,65 +82,45 @@ public class StartUpController extends Application{
      */
     public void goToSimulationMode(ActionEvent actionEvent) throws Exception {
 
-        // TODO Open the file chooser and choose a map
+        Parent simulationModeScreen  = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode" + ".fxml"));
 
-        // TODO Get the file name  (eg. Testmap.map)
+        Node node = simulationModeScreen.lookup("#Scene");
+        Pane p = (Pane) node;
+
+        //Create map
+        FileChooser chooser=new FileChooser();
+        chooser.setTitle("Open File");
+        File file = chooser.showOpenDialog(new Stage());
+
+        mapName=file.getName();
+
+        if(file!=null)
+        {
+            Map map = Map.loadMap(file.getName());
+
+            // Map map = new Map(20,20);
+
+            //Decorate map to extend to GUI functionality
+            MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
+
+            //Always apply resize
+            mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
 
 
-
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        SimulationController simulationController = new SimulationController(stage);
-        simulationController.setMapName("BigMap.map"); // TODO change to the loaded map name
-        simulationController.drawScreen();
+            //Instantiate GridPane that will contain empty map with grass
+            GridPane root = mapGridGUIDecorator.drawComponents();
 
 
-//        Parent simulationModeScreen  = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode" + ".fxml"));
-//
-//        Node node = simulationModeScreen.lookup("#Scene");
-//        Pane p = (Pane) node;
-//
-//        //Create map
-//        FileChooser chooser=new FileChooser();
-//        chooser.setTitle("Open File");
-//        File file = chooser.showOpenDialog(new Stage());
-//
-//        mapName=file.getName();
-//
-//        if(file!=null)
-//        {
-//            Map map = Map.loadMap(file.getName());
-//
-//            // Map map = new Map(20,20);
-//
-//            //Decorate map to extend to GUI functionality
-//            MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
-//
-//            //Always apply resize
-//            mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
-//
-//
-//            //Instantiate GridPane that will contain empty map with grass
-//            GridPane root = mapGridGUIDecorator.drawComponents();
-//
-//
-//            p.getChildren().add(root);
-//
-//            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-//
-//            stage.setScene(new Scene(simulationModeScreen));
-//        }
-//        else
-//        {
-//            //TODO: no file selected
-//        }
-    }
+            p.getChildren().add(root);
 
-    public void goToSimulation(ActionEvent actionEvent) {
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-        // SimulationController controller = new SimulationController(stage);
-        // controller.setFileName(filename)
-
-        // controller.drawScreen();
+            stage.setScene(new Scene(simulationModeScreen));
+        }
+        else
+        {
+            //TODO: no file selected
+        }
     }
 
     public void goToMapMakerMode(ActionEvent actionEvent) {
