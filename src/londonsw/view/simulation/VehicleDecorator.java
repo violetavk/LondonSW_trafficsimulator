@@ -123,7 +123,7 @@ public abstract class VehicleDecorator implements IVehicle {
     }
 
     @Override
-    public boolean moveVehicle(int step) throws Exception {
+    public int moveVehicle(int step) throws Exception {
         return decoratedVehicle.moveVehicle(step);
     }
 
@@ -143,7 +143,7 @@ public abstract class VehicleDecorator implements IVehicle {
     }
 
     @Override
-    public boolean vehicleTurn(Lane l) throws Exception {
+    public int vehicleTurn(Lane l) throws Exception {
         return decoratedVehicle.vehicleTurn(l);
     }
 

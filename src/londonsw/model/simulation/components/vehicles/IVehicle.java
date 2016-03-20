@@ -30,10 +30,10 @@ public interface IVehicle {
     void setVehicleState(int vehicleState);
     void setVehicleBehavior(VehicleBehavior vehicleBehavior);
     Lane chooseLane () throws Exception;
-    boolean moveVehicle(int step) throws Exception;
+    int moveVehicle(int step) throws Exception;//changed return type to int
     void readTrafficLight() throws Exception;
     ArrayList<Lane> getLaneOptions() throws Exception;
-    boolean vehicleTurn (Lane l) throws Exception;
+    int vehicleTurn (Lane l) throws Exception; //changed return type to int
     Coordinate getStoredCurrentCoordinate();
     void setPreviousCoordinate(Coordinate coord);
      boolean turnFirst (Lane l) throws Exception;

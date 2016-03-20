@@ -1,11 +1,7 @@
 package londonsw.view.mapcreation;
 
-import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -22,23 +18,24 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import londonsw.controller.MapMakerController;
-import londonsw.model.mapmaker.MapMaker;
 import londonsw.model.simulation.Map;
 import londonsw.model.simulation.components.*;
 import londonsw.view.simulation.MapGridGUIDecorator;
-import org.reactfx.EventStream;
-import org.reactfx.EventStreams;
 
 import java.util.Optional;
-import java.util.Stack;
 
-/**
- * Created by violet on 16/03/2016.
- */
+
+@SuppressWarnings("Duplicates")
 public class MapMakerScreen {
 
     private int width;
     private int height;
+
+    private ImageView intersectionImgView;
+    private ImageView roadNSImgView;
+    private ImageView roadEWImgView;
+    private ImageView grassImgView;
+
 
     public MapMakerScreen(int width, int height) {
         this.width = width;
@@ -75,53 +72,67 @@ public class MapMakerScreen {
         MapMakerController.setCurrentFocused(ComponentType.NOTHING);
 
         VBox sideComponents = new VBox();
+        GridPane sideComponents2 = new GridPane();
 
-        // Add "components" label
+        /* Add "Components" label */
         Label componentsLabel = new Label("Components");
         componentsLabel.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD,14));
         componentsLabel.setPadding(new Insets(15,5,0,20));
         sideComponents.getChildren().add(componentsLabel);
 
-        // Add Intersection component square image
+        /* Add Intersection square image */
         VBox intersectionPane = new VBox();
         Label intersectionLabel = new Label("Intersection");
         intersectionLabel.setPadding(new Insets(5,5,0,30));
         intersectionLabel.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,12));
         Image intersectionImg = new Image("IntersectionX.png",60,60,true,false);
-        ImageView intersectionImgView = new ImageView(intersectionImg);
+        intersectionImgView = new ImageView(intersectionImg);
         StackPane intersectionStackPane = new StackPane(intersectionImgView);
         intersectionStackPane.setPadding(new Insets(0,10,10,10));
         intersectionPane.getChildren().add(intersectionLabel);
         intersectionPane.getChildren().add(intersectionStackPane);
         sideComponents.getChildren().add(intersectionPane);
 
-        // Add RoadNS
+        /* Add RoadNS square image */
         VBox roadNSPane = new VBox();
         Label roadNSLabel = new Label("Road (North-South)");
         roadNSLabel.setPadding(new Insets(5,5,0,15));
         roadNSLabel.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,12));
         Image roadNSImg = new Image("RoadBackgroundNS.png",60,60,true,false);
-        ImageView roadNSImgView = new ImageView(roadNSImg);
+        roadNSImgView = new ImageView(roadNSImg);
         StackPane roadNSStackPane = new StackPane(roadNSImgView);
         roadNSStackPane.setPadding(new Insets(0,10,10,10));
         roadNSPane.getChildren().add(roadNSLabel);
         roadNSPane.getChildren().add(roadNSStackPane);
         sideComponents.getChildren().add(roadNSPane);
 
-        // Add RoadEW
+        /* Add RoadEW square image */
         VBox roadEWPane = new VBox();
         Label roadEWLabel = new Label("Road (East-West)");
         roadEWLabel.setPadding(new Insets(5,5,0,15));
         roadEWLabel.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,12));
         Image roadEWImg = new Image("RoadBackgroundEW.png",60,60,true,false);
-        ImageView roadEWImgView = new ImageView(roadEWImg);
+        roadEWImgView = new ImageView(roadEWImg);
         StackPane roadEWStackPane = new StackPane(roadEWImgView);
         roadEWStackPane.setPadding(new Insets(0,10,10,10));
         roadEWPane.getChildren().add(roadEWLabel);
         roadEWPane.getChildren().add(roadEWStackPane);
         sideComponents.getChildren().add(roadEWPane);
 
-        // Add Save, Reset, (Clear current cell maybe) buttons
+        /* Add Grass square image to empty out cells */
+        VBox grassPane = new VBox();
+        Label grassLabel = new Label("Grass (clear square)");
+        grassLabel.setPadding(new Insets(5,5,0,15));
+        grassLabel.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,12));
+        Image grassImg = new Image("Grass.png",60,60,true,false);
+        grassImgView = new ImageView(grassImg);
+        StackPane grassStackPane = new StackPane(grassImgView);
+        grassStackPane.setPadding(new Insets(0,10,10,10));
+        grassPane.getChildren().add(grassLabel);
+        grassPane.getChildren().add(grassStackPane);
+        sideComponents.getChildren().add(grassPane);
+
+        /* Add Save, Reset buttons */
         VBox buttonsPane = new VBox();
         buttonsPane.setPadding(new Insets(0,0,0,20));
         Label toolsLabel = new Label("Tools");
@@ -136,7 +147,7 @@ public class MapMakerScreen {
         sideComponents.getChildren().add(buttonsPane);
 
 
-        // Add Map click processing
+        /* Add click processing for Map grid squares */
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
                 Node current = getNodeFromIndex(i, j, mapGridPane);
@@ -149,84 +160,76 @@ public class MapMakerScreen {
                 });
                 current.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
                     ComponentType previous = MapMakerController.getPreviousFocused();
-                    Coordinate coord = new Coordinate(x,y);
-
                     if(previous == ComponentType.INTERSECTION) {
-                        StackPane sp = addIntersection(x,y,map,mapGridGUIDecorator,mapGridPane,intersectionImgView);
-                        sp.setOnMouseClicked(click -> {
-                            System.out.println("Clicked intersection");
-                            ComponentType currentFocused = MapMakerController.getCurrentFocused();
-                            if(currentFocused == ComponentType.ROADNS) {
-                                System.out.println("Put a RoadNS here");
-
-                            }
-                        });
-
-
+                        addIntersection(x,y,map,mapGridGUIDecorator,mapGridPane,intersectionImgView);
                     }
                     else if(previous == ComponentType.ROADNS) {
-                        StackPane sp = addRoadNS(x,y,map,mapGridGUIDecorator,mapGridPane,roadNSImgView);
-                        sp.setOnMouseClicked(click -> {
-                            System.out.println("Clicked a RoadNS");
-                        });
+                        addRoadNS(x,y,map,mapGridGUIDecorator,mapGridPane,roadNSImgView);
                     }
                     else if(previous == ComponentType.ROADEW) {
-                        StackPane sp = addRoadEW(x,y,map,mapGridGUIDecorator,mapGridPane,roadEWImgView);
-                        sp.setOnMouseClicked(click -> {
-                            System.out.println("Clicked a RoadEW");
-                        });
+                        addRoadEW(x,y,map,mapGridGUIDecorator,mapGridPane,roadEWImgView);
+                    }
+                    else if(previous == ComponentType.GRASS) {
+                        addGrass(x,y,map,mapGridGUIDecorator,mapGridPane,grassImgView);
                     }
                 });
             }
         }
 
-        // Add intersection click processing
-        DropShadow ds = new DropShadow(15, Color.ROYALBLUE);
+        /* Add intersection icon click processing */
+        DropShadow ds = new DropShadow(15, Color.BLUE);
         intersectionImgView.setOnMouseClicked(click -> {
             MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
             MapMakerController.setCurrentFocused(ComponentType.INTERSECTION);
             intersectionImgView.requestFocus();
-            System.out.println("Current focused is " + MapMakerController.getCurrentFocused());
         });
         intersectionImgView.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if(newValue) {
+            if(newValue)
                 intersectionImgView.setEffect(ds);
-            }
-            else {
+            else
                 intersectionImgView.setEffect(null);
-            }
         });
 
+        /* Add roadNS icon click processing */
         roadNSImgView.setOnMouseClicked(click -> {
             MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
             MapMakerController.setCurrentFocused(ComponentType.ROADNS);
             roadNSImgView.requestFocus();
-            System.out.println("Current focused is " + MapMakerController.getCurrentFocused());
         });
         roadNSImgView.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if(newValue) {
+            if(newValue)
                 roadNSImgView.setEffect(ds);
-            }
-            else {
+            else
                 roadNSImgView.setEffect(null);
-            }
         });
 
+        /* Add roadEW icon click processing */
         roadEWImgView.setOnMouseClicked(click -> {
             MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
             MapMakerController.setCurrentFocused(ComponentType.ROADEW);
             roadEWImgView.requestFocus();
-            System.out.println("Current focused is " + MapMakerController.getCurrentFocused());
         });
         roadEWImgView.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if(newValue) {
+            if(newValue)
                 roadEWImgView.setEffect(ds);
-            }
-            else {
+            else
                 roadEWImgView.setEffect(null);
-            }
         });
 
+        /* Add grass icon click processing */
+        grassImgView.setOnMouseClicked(click -> {
+            MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
+            MapMakerController.setCurrentFocused(ComponentType.GRASS);
+            grassImgView.requestFocus();
+        });
+        grassImgView.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if(newValue)
+                grassImgView.setEffect(ds);
+            else
+                grassImgView.setEffect(null);
+        });
+
+        /* Add save button functionality */
         saveButton.setOnMouseClicked(click -> {
             System.out.println("Clicked Save Map");
             TextInputDialog nameDialog = new TextInputDialog();
@@ -237,35 +240,72 @@ public class MapMakerScreen {
             result.ifPresent(name -> {
                 name = name.concat(".map");
                 System.out.println("Chose the name " + name);
-                Map finalMap = buildAndSaveMap(map);
+                try {
+                    Map finalMap = buildAndSaveMap(map);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
         });
-
 
         borderPane.setRight(sideComponents);
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         primaryStage.centerOnScreen();
+        primaryStage.setResizable(false);
     }
 
-    private Map buildAndSaveMap(Map map) {
+    private Map buildAndSaveMap(Map map) throws Exception {
+        /*
+        Plan:
+            Step 1:
+                - If found intersection, add it to map as a new intersection
+                - If found road, do a while loop going down or up while next is still instance of road, register the length
+                and add to the new map with 2 lanes
+            Step 2:
+                - Go thru all the intersections and register the roads to it (northRoad,eastRoad, etc.), and register all
+                traffic lights
+
+         */
         System.out.println("Building and saving map...");
         int width = map.getWidth();
         int height = map.getHeight();
         Map fixed = new Map(width,height);
 
-        for(int i = 0; i < height; i++) {
-            for(int j = 0; j < width; j++) {
-                Component current = map.getGrid().get(i, j);
+        for(int y = 0; y < height; y++) {
+            for(int x = 0; x < width; x++) {
+                Component current = map.getGrid().get(x, y);
                 if(current instanceof Intersection) {
-                    System.out.println("Found Intersection at " + j + ", " + i);
+                    System.out.println("Found Intersection at " + x + ", " + y);
+                    Intersection i = new Intersection(new Coordinate(x, y));
+                    fixed.addIntersection(i);
+                    fixed.printMapGrid();
                 }
                 else if(current instanceof Road) {
                     Road road = (Road) current;
                     if(road.runsVertically()) {
-                        System.out.println("Found Vertical Road at " + j + ", " + i);
+                        System.out.println("Found Vertical Road at " + x + ", " + y);
                     } else {
-                        System.out.println("Found Horizontal Road at " + j + ", " + i);
+                        System.out.println("Found Horizontal Road at " + x + ", " + y);
+                        Coordinate lastKnownCoord = road.getEndLocation();
+                        if(lastKnownCoord.getX() != width-1) {
+                            Component next = map.getGrid().get(x++, y);
+                            while (next != null && next instanceof Road) {
+                                System.out.println("bit of road at " + ((Road) next).getStartLocation());
+                                lastKnownCoord = ((Road) next).getEndLocation();
+                                if(x == width) break;
+                                next = map.getGrid().get(x++, y);
+                            }
+                            x--; // we overshot by 1, so go back
+                        }
+                        Coordinate start = road.getStartLocation();
+                        Coordinate end = lastKnownCoord;
+                        System.out.println("Road starts at " + start + " and ends at " + end);
+                        Road newRoad = new Road(start, end);
+                        newRoad.addLane(new Lane(start, end, MapDirection.EAST));
+                        newRoad.addLane(new Lane(end, start, MapDirection.WEST));
+                        fixed.addRoad(newRoad);
+                        fixed.printMapGrid();
                     }
                 }
             }
@@ -286,20 +326,31 @@ public class MapMakerScreen {
     }
 
     private StackPane addIntersection(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
-        System.out.println("Adding new intersection at " + x + ", " + y);
         Coordinate coord = new Coordinate(x,y);
         Intersection intersection = new Intersection(coord);
         map.addIntersection(intersection);
         StackPane sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
+
+        sp.setOnMouseClicked(click -> {
+            ComponentType currentFocused = MapMakerController.getCurrentFocused();
+            if(currentFocused == ComponentType.ROADNS) {
+                addRoadNS(x,y,map,mapGridGUIDecorator,mapGridPane,roadNSImgView);
+            } else if(currentFocused == ComponentType.ROADEW) {
+                addRoadEW(x,y,map,mapGridGUIDecorator,mapGridPane,roadEWImgView);
+            } else if(currentFocused == ComponentType.GRASS) {
+                addGrass(x,y,map,mapGridGUIDecorator,mapGridPane,grassImgView);
+            }
+        });
+
         // put focus back on Intersection
         MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
         MapMakerController.setCurrentFocused(ComponentType.INTERSECTION);
         imgView.requestFocus();
+
         return sp;
     }
 
     private StackPane addRoadNS(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
-        System.out.println("Adding RoadNS at " + x + ", " + y);
         StackPane sp = null;
         Coordinate coord = new Coordinate(x,y);
         Road road = new Road(coord,coord);
@@ -308,6 +359,17 @@ public class MapMakerScreen {
             road.addLane(new Lane(coord,coord,MapDirection.SOUTH));
             map.addRoad(road);
             sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
+
+            sp.setOnMouseClicked(click -> {
+                ComponentType currentFocused = MapMakerController.getCurrentFocused();
+                if(currentFocused == ComponentType.INTERSECTION) {
+                    addIntersection(x,y,map,mapGridGUIDecorator,mapGridPane,intersectionImgView);
+                } else if(currentFocused == ComponentType.GRASS) {
+                    addGrass(x,y,map,mapGridGUIDecorator,mapGridPane,grassImgView);
+                } else if(currentFocused == ComponentType.ROADEW) {
+                    addRoadEW(x,y,map,mapGridGUIDecorator,mapGridPane,roadEWImgView);
+                }
+            });
 
             // put focus back on RoadNS
             MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
@@ -320,7 +382,6 @@ public class MapMakerScreen {
     }
 
     private StackPane addRoadEW(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
-        System.out.println("Adding RoadEW at " + x + ", " + y);
         StackPane sp = null;
         Coordinate coord = new Coordinate(x,y);
         Road road = new Road(coord,coord);
@@ -329,6 +390,17 @@ public class MapMakerScreen {
             road.addLane(new Lane(coord,coord,MapDirection.WEST));
             map.addRoad(road);
             sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
+
+            sp.setOnMouseClicked(click -> {
+                ComponentType currentFocused = MapMakerController.getCurrentFocused();
+                if(currentFocused == ComponentType.INTERSECTION) {
+                    addIntersection(x,y,map,mapGridGUIDecorator,mapGridPane,intersectionImgView);
+                } else if(currentFocused == ComponentType.ROADNS) {
+                    addRoadNS(x,y,map,mapGridGUIDecorator,mapGridPane,roadNSImgView);
+                } else if(currentFocused == ComponentType.GRASS) {
+                    addGrass(x,y,map,mapGridGUIDecorator,mapGridPane,grassImgView);
+                }
+            });
 
             // put focus back on RoadEW
             MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
@@ -339,4 +411,29 @@ public class MapMakerScreen {
         }
         return sp;
     }
+
+    private void addGrass(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
+        Coordinate coord = new Coordinate(x,y);
+        map.clearCell(coord);
+
+        StackPane sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
+
+        sp.setOnMouseClicked(click -> {
+            ComponentType currentFocused = MapMakerController.getCurrentFocused();
+            if(currentFocused == ComponentType.INTERSECTION) {
+                addIntersection(x,y,map,mapGridGUIDecorator,mapGridPane,intersectionImgView);
+            } else if(currentFocused == ComponentType.ROADNS) {
+                addRoadNS(x,y,map,mapGridGUIDecorator,mapGridPane,roadNSImgView);
+            } else if(currentFocused == ComponentType.ROADEW) {
+                addRoadEW(x,y,map,mapGridGUIDecorator,mapGridPane,roadEWImgView);
+            }
+        });
+
+        // put focus back on Grass
+        MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
+        MapMakerController.setCurrentFocused(ComponentType.GRASS);
+        imgView.requestFocus();
+
+    }
+
 }

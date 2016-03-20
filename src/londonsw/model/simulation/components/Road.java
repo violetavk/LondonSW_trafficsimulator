@@ -151,10 +151,26 @@ public class Road implements Component, Serializable, IRoad {
     public boolean runsVertically() {
         int aX = start.getX();
         int bX = end.getX();
+        int aY = start.getY();
+        int bY = end.getY();
 
         // if aX==bX, then road runs vertically
-        if (aX == bX)
+        if (aX == bX) {
+            if(aY == bY) {
+                // the road is length of 1, do something else
+                if(lanes.size() == 0) {
+                    return true;
+                } else {
+                    Lane lane = lanes.get(0);
+                    if(lane.getMovingDirection() == MapDirection.NORTH || lane.getMovingDirection() == MapDirection.SOUTH) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
             return true;
+        }
 
         // if aY==bY, then road runs horizontally
         return false;

@@ -15,14 +15,16 @@ import londonsw.view.simulation.MapExamples;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
 
+import java.util.ArrayList;
+
 public class MapGridGUITestMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        //Map map = MapExamples.drawMap1();
+        Map map = MapExamples.drawMap1();
 
-        Map map = MapExamples.drawTestMapExample();
+        //Map map = MapExamples.drawTestMapExample();
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
@@ -83,31 +85,42 @@ public class MapGridGUITestMain extends Application {
 
         Car testCar;
         int c=0;
-        for (int i=0; i<70; i++){
+        for (int i=0; i<10; i++){
             testCar = generateCar(map,mapGridGUIDecorator,sp);
             if (testCar!=null)
                 c++;}
         System.out.println("Number of cars is "+ c);
 
         /**
-         * We can now use a single button to spawn and un-spawn new instances of ambulance
-         * However, not able to remove them. Still working on it.
-         * Un-comment to see what i mean.
+         * We can now use a single button to spawn and un-spawn ambulance.
+         * We can also remove it from simulation
          */
-
-        /*
         sp.setOnMouseClicked(event -> {
-            Ambulance testambulance = null;
-            if(sp.getChildren().contains(testambulance)){
-                sp.getChildren().remove(testambulance);
+
+                    ArrayList subscribers = Ticker.getSubscribers();
+
+            Boolean flag = true;
+
+            for(Object obj:subscribers)
+            {
+                if(obj instanceof Ambulance == true)
+                {
+                    //there is an ambulance but we must check if all are unsuscribed
+                    Ambulance a = (Ambulance) obj;
+                    if(!a.isUnsubscribed())
+                    {
+                        flag = false;
+                    }
+                }
             }
-        else{
 
-                testambulance = generateAmbulance(map,mapGridGUIDecorator,sp);
-        }
-       });
-        */
+            if(flag)
+            {
+                generateAmbulance(map,mapGridGUIDecorator,sp);
+            }
 
+
+        });
 
         Scene scene = new Scene(sp);
         primaryStage.setTitle("Map Layout");
@@ -149,6 +162,7 @@ public class MapGridGUITestMain extends Application {
                             ambulanceGUIDecorator.drawCar();
                             Pane alPane = new Pane();
                             alPane.getChildren().add(ambulanceGUIDecorator.getRectangle());
+                            ambulanceGUIDecorator.setPane(alPane);
                             sp.getChildren().add(alPane);
                             ambulanceGUIDecorator.setVehicleState(1);
                             return A;

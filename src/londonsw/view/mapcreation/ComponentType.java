@@ -8,5 +8,6 @@ public enum ComponentType {
     ROADNS,
     ROADEW,
     MAP_SQUARE,
+    GRASS,
     NOTHING
 }
