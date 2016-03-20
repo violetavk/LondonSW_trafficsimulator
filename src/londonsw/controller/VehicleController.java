@@ -1,8 +1,10 @@
 package londonsw.controller;
 
+
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 import londonsw.view.simulation.VehicleGUIDecorator;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,11 +62,13 @@ public class VehicleController {
             //only read when intersection is available
             vehicleGUIDecorator.readTrafficLight();
 
+
             if (vehicleGUIDecorator.getVehicleState() == 1 ) {
                // ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
                 //check next lane available
                 Lane l =vehicleGUIDecorator.chooseLane();
-                vehicleGUIDecorator.turnFirst(l);
+
+              //  vehicleGUIDecorator.turnFirst(l);
 
                 vehicleGUIDecorator.setVehicleState(2); //move vehicle to intersection
                move = vehicleGUIDecorator.vehicleTurn(l);
