@@ -9,18 +9,29 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.ResizeFactor;
+import londonsw.model.simulation.components.TrafficLight;
 import londonsw.model.simulation.components.vehicles.Ambulance;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.view.simulation.MapExamples;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
 
 public class MapGridGUITestMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        //Delete log file if exists
+
+        String logFile = "Log.txt"; //TODO: hardcode
+
+        File file = new File(logFile);
+
+        file.delete();
 
         Map map = MapExamples.drawMap1();
 
@@ -95,6 +106,8 @@ public class MapGridGUITestMain extends Application {
          * We can now use a single button to spawn and un-spawn ambulance.
          * We can also remove it from simulation
          */
+
+        /*
         sp.setOnMouseClicked(event -> {
 
                     ArrayList subscribers = Ticker.getSubscribers();
@@ -121,6 +134,9 @@ public class MapGridGUITestMain extends Application {
 
 
         });
+        */
+
+
 
         Scene scene = new Scene(sp);
         primaryStage.setTitle("Map Layout");
@@ -135,8 +151,9 @@ public class MapGridGUITestMain extends Application {
         primaryStage.show();
         primaryStage.setResizable(false);
 
-        //primaryStage.setFullScreen(true);
+        Log log = new Log(logFile);
 
+        //primaryStage.setFullScreen(true);
     }
 
     /**
@@ -208,7 +225,7 @@ public class MapGridGUITestMain extends Application {
                             sp.getChildren().add(carPane);
                             vehicleGUIDecorator.setPane(carPane);
                             vehicleGUIDecorator.setVehicleState(1);
-                            System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
+                            //System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
                             return C1;
 
                         }
