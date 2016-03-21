@@ -276,40 +276,59 @@ public class MapMakerScreen {
             for(int x = 0; x < width; x++) {
                 Component current = map.getGrid().get(x, y);
                 if(current instanceof Intersection) {
-                    System.out.println("Found Intersection at " + x + ", " + y);
-                    Intersection i = new Intersection(new Coordinate(x, y));
+                    Coordinate location = new Coordinate(x, y);
+                    Intersection i = new Intersection(location);
                     fixed.addIntersection(i);
-                    fixed.printMapGrid();
+                    deleteFromOldMap(map, location, location);
                 }
                 else if(current instanceof Road) {
                     Road road = (Road) current;
+                    Coordinate lastKnownCoord = road.getEndLocation();
+
                     if(road.runsVertically()) {
-                        System.out.println("Found Vertical Road at " + x + ", " + y);
-                    } else {
-                        System.out.println("Found Horizontal Road at " + x + ", " + y);
-                        Coordinate lastKnownCoord = road.getEndLocation();
+                        if(lastKnownCoord.getY() != height-1) {
+                            Component next = map.getGrid().get(x,y++);
+                            while(next != null && next instanceof Road) {
+                                lastKnownCoord = ((Road) next).getEndLocation();
+                                if(y == height) break;
+                                next = map.getGrid().get(x, y++);
+                            }
+                            y = road.getStartLocation().getY(); // go back to the row we started at
+                        }
+                        Coordinate start = road.getStartLocation();
+                        Coordinate end = lastKnownCoord;
+                        Road newRoad = new Road(start, end);
+                        newRoad.addLane(new Lane(end, start, MapDirection.NORTH));
+                        newRoad.addLane(new Lane(start, end, MapDirection.SOUTH));
+                        fixed.addRoad(newRoad);
+                        deleteFromOldMap(map, start, end);
+                    }
+                    else {
                         if(lastKnownCoord.getX() != width-1) {
                             Component next = map.getGrid().get(x++, y);
                             while (next != null && next instanceof Road) {
-                                System.out.println("bit of road at " + ((Road) next).getStartLocation());
                                 lastKnownCoord = ((Road) next).getEndLocation();
                                 if(x == width) break;
                                 next = map.getGrid().get(x++, y);
                             }
-                            x--; // we overshot by 1, so go back
+                            x = x - 2; // we overshot by 1, so go back, and loop will increment, so go back another
                         }
                         Coordinate start = road.getStartLocation();
                         Coordinate end = lastKnownCoord;
-                        System.out.println("Road starts at " + start + " and ends at " + end);
                         Road newRoad = new Road(start, end);
                         newRoad.addLane(new Lane(start, end, MapDirection.EAST));
                         newRoad.addLane(new Lane(end, start, MapDirection.WEST));
                         fixed.addRoad(newRoad);
-                        fixed.printMapGrid();
+                        deleteFromOldMap(map, start, end);
                     }
                 }
             }
         }
+
+        System.out.println("Fixed map: ");
+        fixed.printMapGrid();
+        System.out.println("Num intersections: " + fixed.getIntersections().size());
+        System.out.println("Num roads: " + fixed.getRoads().size());
         return fixed;
     }
 
@@ -434,6 +453,23 @@ public class MapMakerScreen {
         MapMakerController.setCurrentFocused(ComponentType.GRASS);
         imgView.requestFocus();
 
+    }
+
+    private void deleteFromOldMap(Map oldMap, Coordinate start, Coordinate end) {
+        int startX = start.getX();
+        int startY = start.getY();
+        int endX = end.getX();
+        int endY = end.getY();
+
+        if(startY == endY) { // horizontal
+            for(int i = startX; i <= endX; i++) {
+                oldMap.clearCell(new Coordinate(i, startY));
+            }
+        } else { // vertical
+            for(int i = startY; i <= endY; i++) {
+                oldMap.clearCell(new Coordinate(startX, i));
+            }
+        }
     }
 
 }

@@ -132,19 +132,16 @@ public class MapGridGUIDecorator extends MapGridDecorator {
         Component component = this.getGrid()[y][x];
         StackPane sp = new StackPane();
         if(component instanceof Intersection) {
-            System.out.println("Drawing an intersection...");
             IntersectionDecorator intersectionDecorator = new IntersectionDecorator((Intersection) component);
             intersectionDecorator.setResizeFactor(this.getResizeFactor());
             sp = intersectionDecorator.drawIntersection();
         }
         else if(component instanceof Road) {
-            System.out.println("Drawing a road...");
             RoadGUIDecorator roadGUIDecorator = new RoadGUIDecorator((Road) component);
             roadGUIDecorator.setResizeFactor(this.getResizeFactor());
             sp = roadGUIDecorator.drawRoad();
         }
         else if(component == null) { // Grass
-            System.out.println("Drawing a grass...");
             LayoutGUI grassGUI = new LayoutGUI();
             grassGUI.setHeight(this.getHeight());
             grassGUI.setWidth(this.getWidth());
@@ -152,7 +149,6 @@ public class MapGridGUIDecorator extends MapGridDecorator {
             sp = grassGUI.drawGrass();
         }
         gp.add(sp, x, y);
-        System.out.println("Done");
         return sp;
     }
 }
