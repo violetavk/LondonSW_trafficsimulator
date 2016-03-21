@@ -10,16 +10,14 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<Pane fx:controller="londonsw.controller.SimulationController"
-        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane id="Pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="900" prefHeight="-Infinity" prefWidth="-Infinity" style="-fx-background-color: papayawhip;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="londonsw.controller.SimulationController">
    <children>
-      <Button onAction="#resetSimulation" alignment="CENTER" layoutX="700.0" layoutY="120.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="15.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Reset" textAlignment="CENTER" textFill="GREEN" underline="true">
+      <Button alignment="CENTER" layoutX="700.0" layoutY="120.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#resetSimulation" prefHeight="15.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Reset" textAlignment="CENTER" textFill="GREEN" underline="true">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Button>
-      <Button onAction="#StartSimulation" alignment="CENTER" layoutX="600.0" layoutY="120.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Start" textAlignment="CENTER" textFill="GREEN" underline="true">
+      <Button alignment="CENTER" layoutX="600.0" layoutY="120.0" mnemonicParsing="false" onAction="#StartSimulation" prefHeight="26.0" prefWidth="60.0" style="-fx-background-color: gold;" text="Start" textAlignment="CENTER" textFill="GREEN" underline="true">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
@@ -44,9 +42,8 @@
             <Font name="PT Sans Caption Bold" size="33.0" />
          </font>
       </Label>
-      <Pane id="Scene"
-            layoutX="16.0" layoutY="74.0" style="-fx-background-color: white;" />
-      <Label layoutX="600.0" layoutY="263.0" prefHeight="19.0" prefWidth="35.0" text="Car">
+      <Pane id="Scene" layoutX="16.0" layoutY="74.0" style="-fx-background-color: white;" />
+      <Label id="carLabel" layoutX="600.0" layoutY="263.0" prefHeight="19.0" prefWidth="35.0" text="Car">
          <font>
             <Font name="System Bold Italic" size="11.0" />
          </font>
@@ -56,14 +53,14 @@
             <Font name="System Bold Italic" size="11.0" />
          </font>
       </Label>
-      <Slider layoutX="650.0" layoutY="263.0" prefHeight="16.0" prefWidth="76.0" />
-      <Slider layoutX="650.0" layoutY="232.0" prefHeight="16.0" prefWidth="82.0" />
+      <Slider id="speedSlider" layoutX="662.0" layoutY="265.0" prefHeight="16.0" prefWidth="76.0" />
+      <Slider id="carSlider" fx:id="carSlider" layoutX="659.0" layoutY="232.0" prefHeight="16.0" prefWidth="82.0" />
       <Label layoutX="600.0" layoutY="295.0" prefHeight="19.0" prefWidth="60.0" text="Dimension">
          <font>
             <Font name="System Bold Italic" size="11.0" />
          </font>
       </Label>
-      <Slider layoutX="650.0" layoutY="295.0" prefHeight="15.0" prefWidth="76.0" />
+      <Slider id="mapSlider" layoutX="662.0" layoutY="297.0" prefHeight="15.0" prefWidth="76.0" />
       <VBox layoutX="600.0" layoutY="170.0">
          <children>
             <Label layoutX="600.0" layoutY="500.0" prefHeight="19.0" prefWidth="149.0" text="20 cars">
