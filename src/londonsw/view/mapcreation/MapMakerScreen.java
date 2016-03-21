@@ -22,6 +22,7 @@ import londonsw.model.simulation.Map;
 import londonsw.model.simulation.components.*;
 import londonsw.view.simulation.MapGridGUIDecorator;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -36,12 +37,21 @@ public class MapMakerScreen {
     private ImageView roadEWImgView;
     private ImageView grassImgView;
 
-
+    /**
+     * Creates a new MapMaker screen
+     * @param width the width the user chose for their map
+     * @param height the height the user chose for their map
+     */
     public MapMakerScreen(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * Draws the MapMaker screen and displays it to the user
+     * @param primaryStage the stage to show it in
+     * @throws Exception
+     */
     public void drawScreen(Stage primaryStage) throws Exception {
         // Create the base BorderPane for the whole window
         BorderPane borderPane = new BorderPane();
@@ -62,7 +72,6 @@ public class MapMakerScreen {
         Pane mapPane = new Pane();
         Map map = new Map(width, height);
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
-//        ResizeFactor resizeFactor = ResizeFactor.getSuggestedResizeFactor(width,height);
         System.out.println("Using RF of " + .25);
         mapGridGUIDecorator.setResizeFactor(new ResizeFactor(.25,.25));
         GridPane mapGridPane = mapGridGUIDecorator.drawComponents();
@@ -72,7 +81,6 @@ public class MapMakerScreen {
         MapMakerController.setCurrentFocused(ComponentType.NOTHING);
 
         VBox sideComponents = new VBox();
-        GridPane sideComponents2 = new GridPane();
 
         /* Add "Components" label */
         Label componentsLabel = new Label("Components");
@@ -145,7 +153,6 @@ public class MapMakerScreen {
         buttonsPane.getChildren().add(resetButton);
 
         sideComponents.getChildren().add(buttonsPane);
-
 
         /* Add click processing for Map grid squares */
         for(int i = 0; i < height; i++) {
@@ -255,18 +262,13 @@ public class MapMakerScreen {
         primaryStage.setResizable(false);
     }
 
+    /**
+     * Build the map that the user drew into a complete and connected map
+     * @param map the map that the user built
+     * @return a fixed map that has all roads and intersections connected
+     * @throws Exception
+     */
     private Map buildAndSaveMap(Map map) throws Exception {
-        /*
-        Plan:
-            Step 1:
-                - If found intersection, add it to map as a new intersection
-                - If found road, do a while loop going down or up while next is still instance of road, register the length
-                and add to the new map with 2 lanes
-            Step 2:
-                - Go thru all the intersections and register the roads to it (northRoad,eastRoad, etc.), and register all
-                traffic lights
-
-         */
         System.out.println("Building and saving map...");
         int width = map.getWidth();
         int height = map.getHeight();
@@ -329,9 +331,17 @@ public class MapMakerScreen {
         fixed.printMapGrid();
         System.out.println("Num intersections: " + fixed.getIntersections().size());
         System.out.println("Num roads: " + fixed.getRoads().size());
+        assignIntersectionsToRoads(fixed);
         return fixed;
     }
 
+    /**
+     * Gets the Node at a given location in the GridPane
+     * @param row the row (y-coordinate) where to get the Node
+     * @param column the column (x-coordinate) where to get the Node
+     * @param gridPane the GridPane to get a Node from
+     * @return the Node at that given location from the GridPane
+     */
     private Node getNodeFromIndex(int row, int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> childrens = gridPane.getChildren();
@@ -344,7 +354,17 @@ public class MapMakerScreen {
         return result;
     }
 
-    private StackPane addIntersection(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
+    /**
+     * Adds an intersection to the map where the user clicks
+     *
+     * @param x the x coordinate where to add the intersection
+     * @param y the y coordinate where to add the intersection
+     * @param map the map to add the intersection to
+     * @param mapGridGUIDecorator the GUI decorator associated with this map
+     * @param mapGridPane the gridPane that would need to be updated with the new view
+     * @param imgView the associated image to place in the x,y cell
+     */
+    private void addIntersection(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
         Coordinate coord = new Coordinate(x,y);
         Intersection intersection = new Intersection(coord);
         map.addIntersection(intersection);
@@ -365,19 +385,26 @@ public class MapMakerScreen {
         MapMakerController.setPreviousFocused(MapMakerController.getCurrentFocused());
         MapMakerController.setCurrentFocused(ComponentType.INTERSECTION);
         imgView.requestFocus();
-
-        return sp;
     }
 
-    private StackPane addRoadNS(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
-        StackPane sp = null;
+    /**
+     * Adds a section of road with 2 lanes that travels in the directions north and south
+     *
+     * @param x the x coordinate where to add the road
+     * @param y the y coordinate where to add the road
+     * @param map the map to add the road to
+     * @param mapGridGUIDecorator the GUI decorator associated with this map
+     * @param mapGridPane the gridPane that would need to be updated with the new view
+     * @param imgView the associated image to place in the x,y cell
+     */
+    private void addRoadNS(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
         Coordinate coord = new Coordinate(x,y);
         Road road = new Road(coord,coord);
         try {
             road.addLane(new Lane(coord,coord,MapDirection.NORTH));
             road.addLane(new Lane(coord,coord,MapDirection.SOUTH));
             map.addRoad(road);
-            sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
+            StackPane sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
 
             sp.setOnMouseClicked(click -> {
                 ComponentType currentFocused = MapMakerController.getCurrentFocused();
@@ -397,18 +424,26 @@ public class MapMakerScreen {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sp;
     }
 
-    private StackPane addRoadEW(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
-        StackPane sp = null;
+    /**
+     * Adds a section of road with 2 lanes that travels in the directions east and west
+     *
+     * @param x the x coordinate where to add the road
+     * @param y the y coordinate where to add the road
+     * @param map the map to add the road to
+     * @param mapGridGUIDecorator the GUI decorator associated with this map
+     * @param mapGridPane the gridPane that would need to be updated with the new view
+     * @param imgView the associated image to place in the x,y cell
+     */
+    private void addRoadEW(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
         Coordinate coord = new Coordinate(x,y);
         Road road = new Road(coord,coord);
         try {
             road.addLane(new Lane(coord,coord,MapDirection.EAST));
             road.addLane(new Lane(coord,coord,MapDirection.WEST));
             map.addRoad(road);
-            sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
+            StackPane sp = mapGridGUIDecorator.redrawCell(x,y,mapGridPane);
 
             sp.setOnMouseClicked(click -> {
                 ComponentType currentFocused = MapMakerController.getCurrentFocused();
@@ -428,9 +463,19 @@ public class MapMakerScreen {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sp;
     }
 
+    /**
+     * Adds a "grass" component to the map, aka a null component
+     * Useful if the user wants to delete a map component they placed in the map
+     *
+     * @param x the x coordinate where to add the grass
+     * @param y the y coordinate where to add the grass
+     * @param map the map to add the grass to
+     * @param mapGridGUIDecorator the GUI decorator associated with this map
+     * @param mapGridPane the gridPane that would need to be updated with the new view
+     * @param imgView the associated image to place in the x,y cell
+     */
     private void addGrass(int x, int y, Map map, MapGridGUIDecorator mapGridGUIDecorator, GridPane mapGridPane, ImageView imgView) {
         Coordinate coord = new Coordinate(x,y);
         map.clearCell(coord);
@@ -455,6 +500,14 @@ public class MapMakerScreen {
 
     }
 
+    /**
+     * When saving a map, we are looping through the map that was built and adding the fixed roads to a new map.
+     * To prevent adding the same bits of roads again, delete all the bits from the already added road
+     *
+     * @param oldMap the map from which to delete some number of components
+     * @param start the start coordinate from where to begin deleting components
+     * @param end the end coordinate to which we must delete all components
+     */
     private void deleteFromOldMap(Map oldMap, Coordinate start, Coordinate end) {
         int startX = start.getX();
         int startY = start.getY();
@@ -469,6 +522,18 @@ public class MapMakerScreen {
             for(int i = startY; i <= endY; i++) {
                 oldMap.clearCell(new Coordinate(startX, i));
             }
+        }
+    }
+
+    /**
+     * Takes a map with disconnected Roads and Intersections and connects them. This is like connecting nodes (intersections) to
+     * edges (roads) in a directed graph.
+     * @param fixed the map where components need to be connected
+     */
+    private void assignIntersectionsToRoads(Map fixed) {
+        ArrayList<Intersection> intersections = fixed.getIntersections();
+        for(int i = 0; i < intersections.size(); i++) {
+
         }
     }
 
