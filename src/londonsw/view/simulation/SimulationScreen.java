@@ -22,7 +22,7 @@ import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.model.simulation.Map;
 import javafx.scene.text.Text;
-import java.math.
+import javafx.util.converter.IntegerStringConverter;
 
 public class SimulationScreen {
 
@@ -30,7 +30,7 @@ public class SimulationScreen {
 
     private int mapSceneIndex=0;
 
-    private int initCar=1;
+    private int initCar =0;
 
     public SimulationScreen(Map map) {
         this.map = map;
@@ -63,7 +63,12 @@ public class SimulationScreen {
         borderPane.setCenter(mapPane);
 
         //Start&Reset
+
         VBox simulationControl = new VBox();
+
+        Label carNumberSituation = new Label();
+        carNumberSituation.setText("There are "+ String.valueOf(initCar)+ " car in the system");
+        simulationControl.getChildren().add(carNumberSituation);
 
         Button startSimulation = new Button("Start");
         Button resetSimulation = new Button("Reset");
@@ -98,6 +103,7 @@ public class SimulationScreen {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 System.out.println(newValue);
+                initCar=oldValue.intValue();
                int newCar = newValue.intValue() - oldValue.intValue();
 
                 StackPane sp = new StackPane();
@@ -110,10 +116,9 @@ public class SimulationScreen {
                 }
                 else
                 {
-                    mapPane.getChildren().remove(1,mapSceneIndex);
-                    mapSceneIndex=0;
-                    for(int i=0;i<)
+                    //TODO
                 }
+                carNumberSituation.setText("There are "+ String.valueOf(initCar)+ " cars in the system");
             }
         });
 
@@ -131,7 +136,8 @@ public class SimulationScreen {
         startSimulation.setOnMouseClicked(click -> {
             System.out.println("Start Simulation");
             StackPane sp = new StackPane();
-            initCar=(int) slider.getValue();
+            initCar=(int)slider.getValue();
+            carNumberSituation.setText("There are "+ String.valueOf(initCar)+ " cars in the system");
             for(int i=0; i< initCar;i++) {
                 generateCar(map, mapGridGUIDecorator, sp);
             }
@@ -142,8 +148,9 @@ public class SimulationScreen {
         resetSimulation.setOnMouseClicked(click->{
             System.out.println("Reset Simulation");
             //StackPane sp = new StackPane();
+            carNumberSituation.setText("There are 0 car in the system");
             mapPane.getChildren().remove(1,mapSceneIndex);
-            mapSceneIndex=0;
+            mapSceneIndex=1;
         });
     }
 
