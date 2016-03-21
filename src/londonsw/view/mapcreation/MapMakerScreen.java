@@ -1,5 +1,6 @@
 package londonsw.view.mapcreation;
 
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -71,7 +72,7 @@ public class MapMakerScreen {
         Map map = new Map(width, height);
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
         System.out.println("Using RF of " + .25);
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(.25,.25));
+        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(.5,.5));
         GridPane mapGridPane = mapGridGUIDecorator.drawComponents();
         mapGridPane.setPadding(new Insets(0,0,5,5));
         mapPane.getChildren().add(mapGridPane);
@@ -243,6 +244,11 @@ public class MapMakerScreen {
             nameDialog.setContentText("File name");
             Button btOk = (Button) nameDialog.getDialogPane().lookupButton(ButtonType.OK);
             TextField textfield = nameDialog.getEditor();
+            Platform.runLater(() -> textfield.requestFocus());
+            btOk.setDisable(true);
+            textfield.textProperty().addListener(((observable, oldValue, newValue) -> {
+                btOk.setDisable(newValue.trim().isEmpty());
+            }));
 
             Optional<String> result = nameDialog.showAndWait();
             result.ifPresent(name -> {
@@ -531,13 +537,52 @@ public class MapMakerScreen {
      * edges (roads) in a directed graph.
      * @param fixed the map where components need to be connected
      */
-    private void assignIntersectionsToRoads(Map fixed) {
+    private void assignIntersectionsToRoads(Map fixed) throws Exception {
         ArrayList<Intersection> intersections = fixed.getIntersections();
         for(int i = 0; i < intersections.size(); i++) {
             Intersection current = intersections.get(i);
             Coordinate coord = current.getLocation();
-            System.out.println("-> Intersection at " + coord);
+            int x = coord.getX();
+            int y = coord.getY();
+            Coordinate north = (y-1 >= 0) ? new Coordinate(x, y-1) : null;
+            Coordinate south = (y+1 < height) ? new Coordinate(x, y + 1) : null;
+            Coordinate east = (x + 1 < width) ? new Coordinate(x + 1, y) : null;
+            Coordinate west = (x - 1 >= 0) ? new Coordinate(x - 1, y) : null;
+
+            if(north != null) {
+                Component component = fixed.getAtLocation(north);
+                if(component instanceof Road) {
+                    current.setNorthRoad((Road) component);
+                }
+            }
+
+            if(south != null) {
+                Component component = fixed.getAtLocation(south);
+                if(component instanceof Road) {
+                    current.setSouthRoad((Road) component);
+                }
+            }
+
+            if(east != null) {
+                Component component = fixed.getAtLocation(east);
+                if(component instanceof Road) {
+                    current.setEastRoad((Road) component);
+                }
+            }
+
+            if(west != null) {
+                Component component = fixed.getAtLocation(west);
+                if(component instanceof Road) {
+                    current.setWestRoad((Road) component);
+                }
+            }
+
+            current.setDefaultTrafficLightsForRoads();
         }
+    }
+
+    private void goBack() {
+
     }
 
 }
