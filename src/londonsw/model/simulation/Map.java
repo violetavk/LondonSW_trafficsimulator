@@ -207,8 +207,6 @@ public class Map implements Serializable {
             out.writeObject(this);
             out.close();
             fileOut.close();
-
-            System.out.printf("Serialized data is saved in " + path + " and " + path + TRAFFIC_LIGHTS_TEMP);
         }catch(IOException i)
         {
             i.printStackTrace();

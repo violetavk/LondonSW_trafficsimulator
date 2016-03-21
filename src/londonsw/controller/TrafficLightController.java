@@ -48,7 +48,7 @@ public class TrafficLightController {
      */
     public void colourChanged(LightColour colour, TrafficLight tl) {
         if(trafficLights.get(tl) == null) {
-            System.out.println("No TrafficLightDecorator associated with this traffic light");
+            return;
         }
         trafficLights.get(tl).setGUIColour(colour);
     }

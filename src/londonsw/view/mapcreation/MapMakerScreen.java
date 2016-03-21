@@ -275,6 +275,17 @@ public class MapMakerScreen {
             });
         });
 
+        resetButton.setOnMouseClicked(click -> {
+            for(int y = 0; y < height; y++) {
+                for(int x = 0; x < width; x++) {
+                    Component component = map.getAtLocation(new Coordinate(x, y));
+                    if(component instanceof Road || component instanceof Intersection) {
+                        addGrass(x,y,map,mapGridGUIDecorator,mapGridPane,grassImgView);
+                    }
+                }
+            }
+        });
+
         backButton.setOnMouseClicked(click -> {
             try {
                 goBack(primaryStage);
@@ -355,10 +366,6 @@ public class MapMakerScreen {
             }
         }
 
-        System.out.println("Fixed map: ");
-        fixed.printMapGrid();
-        System.out.println("Num intersections: " + fixed.getIntersections().size());
-        System.out.println("Num roads: " + fixed.getRoads().size());
         assignIntersectionsToRoads(fixed);
         return fixed;
     }
@@ -602,6 +609,11 @@ public class MapMakerScreen {
         }
     }
 
+    /**
+     * Goes back to the previous screen (Choose mode screen)
+     * @param stage the stage which will display the screen
+     * @throws Exception
+     */
     private void goBack(Stage stage) throws Exception {
         Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../startup/ChooseModeScreen.fxml"));
         stage.setScene(new Scene(chooseModeScreen));
