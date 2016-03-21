@@ -51,7 +51,7 @@ public class StartUpController extends Application{
 
     @FXML private TextField height;
 
-    @FXML public  MapLoadingController main;
+
 
     @FXML public static String mapName;
 
@@ -82,10 +82,10 @@ public class StartUpController extends Application{
      */
     public void goToSimulationMode(ActionEvent actionEvent) throws Exception {
 
-        Parent simulationModeScreen  = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode" + ".fxml"));
+       // Parent simulationModeScreen  = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode" + ".fxml"));
 
-        Node node = simulationModeScreen.lookup("#Scene");
-        Pane p = (Pane) node;
+       // Node node = simulationModeScreen.lookup("#Scene");
+        //Pane p = (Pane) node;
 
         //Create map
         FileChooser chooser=new FileChooser();
@@ -101,21 +101,26 @@ public class StartUpController extends Application{
             // Map map = new Map(20,20);
 
             //Decorate map to extend to GUI functionality
-            MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            SimulationController simulationController = new SimulationController(stage);
+            simulationController.setMapName(mapName);
+            simulationController.drawScreen();
+
+           // MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
             //Always apply resize
-            mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
+           // mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
 
 
             //Instantiate GridPane that will contain empty map with grass
-            GridPane root = mapGridGUIDecorator.drawComponents();
+           // GridPane root = mapGridGUIDecorator.drawComponents();
 
 
-            p.getChildren().add(root);
+            //p.getChildren().add(root);
 
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+           // Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-            stage.setScene(new Scene(simulationModeScreen));
+            //stage.setScene(new Scene(simulationModeScreen));
         }
         else
         {
@@ -209,10 +214,6 @@ public class StartUpController extends Application{
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         stage.setScene(new Scene(mapCreation));
-    }
-
-    public void init(MapLoadingController mapLoadingController) {
-        main=mapLoadingController;
     }
 
 }

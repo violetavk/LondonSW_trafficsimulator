@@ -10,11 +10,11 @@ public class MapLoadingController {
     @FXML SimulationController simulationController;
    // @FXML String mapName;
 
-    @FXML public void initialize(){
-        System.out.println("started");
-        startUpController.init(this);
-        simulationController.init(this);
-    }
+   // @FXML public void initialize(){
+     //   System.out.println("started");
+       // startUpController.init(this);
+      //  simulationController.init(this);
+   // }
 
 
     public String getMapNameFromStartUp() {
