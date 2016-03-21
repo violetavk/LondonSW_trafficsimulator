@@ -80,7 +80,7 @@ public class VehicleController {
             }
         }
 
-        if(move>0)
+        if(move>0 && vehicleGUIDecorator.getVehicleState()!=0)
             vehicleGUIDecorator.moveVehicleGUI(move, vehicleGUIDecorator.getVehicleState());
     }
 }

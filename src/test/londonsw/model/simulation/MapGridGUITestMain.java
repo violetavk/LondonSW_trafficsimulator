@@ -33,9 +33,11 @@ public class MapGridGUITestMain extends Application {
 
         file.delete();
 
-        Map map = MapExamples.drawMap1();
+        //Map map = MapExamples.drawMap1();
+        Map map = MapExamples.dratMap4();
 
         //Map map = MapExamples.drawTestMapExample();
+
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
@@ -96,11 +98,11 @@ public class MapGridGUITestMain extends Application {
 
         Car testCar;
         int c=0;
-        for (int i=0; i<10; i++){
+        /*for (int i=0; i<2; i++){
             testCar = generateCar(map,mapGridGUIDecorator,sp);
             if (testCar!=null)
                 c++;}
-        System.out.println("Number of cars is "+ c);
+        System.out.println("Number of cars is "+ c);*/
 
         /**
          * We can now use a single button to spawn and un-spawn ambulance.

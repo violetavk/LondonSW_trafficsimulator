@@ -1,5 +1,10 @@
 package londonsw.model.simulation.components;
 
+import londonsw.controller.IntersectionController;
+import londonsw.model.simulation.components.vehicles.Vehicle;
+import rx.Subscriber;
+import londonsw.model.simulation.Ticker;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,7 +22,7 @@ import java.util.Random;
  */
 
 
-public class Intersection implements Component, Serializable {
+public class Intersection extends Subscriber<Long> implements Component, Serializable {
 
     private static final long serialVersionUID = -2621352799268337492L;
     private Road northRoad;
@@ -45,6 +50,7 @@ public class Intersection implements Component, Serializable {
         this.southTrafficLight = null;
         this.eastTrafficLight = null;
         this.westTrafficLight = null;
+        Ticker.subscribe(this);
 
         id=++counter;
     }
@@ -228,6 +234,129 @@ public class Intersection implements Component, Serializable {
             }
         }
     }
+
+
+    public static ArrayList<Integer> generateRandom (){
+        int size =4;
+        ArrayList<Integer> list = new ArrayList<Integer>(size);
+        ArrayList<Integer> l = new ArrayList<Integer>(size);
+
+        for(int i = 1; i <= size; i++) {
+            list.add(i);
+        }Random rand = new Random();
+        while(list.size() > 0) {
+            int index = rand.nextInt(list.size());
+            l.add(list.get(index));
+           // System.out.println("Selected: "+list.remove(index));
+            list.remove(index);
+        }
+
+        return l;
+
+    }
+
+
+    public ArrayList<Vehicle> giveVehiclePriorities (ArrayList<Integer>  randomPriority) throws Exception {
+
+       // ArrayList<Integer>  randomPriority = (ArrayList<Integer>)this.generateRandom(4).clone();
+        ArrayList<Vehicle> vehicleInIntersection= new ArrayList<>() ;
+
+        if (this.getNorthRoad() != null) {
+            for (int i = 0; i < this.getNorthRoad().getNumberLanes(); i++) {
+                if ((this.getNorthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.SOUTH)) {
+                    if ((this.getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                        this.getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriority(randomPriority.get(0));
+                        vehicleInIntersection.add( this.getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection());
+                    }
+                }
+            }
+        }
+
+        if (this.getSouthRoad() != null) {
+            for (int i = 0; i < this.getSouthRoad().getNumberLanes(); i++) {
+                if ((this.getSouthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.NORTH)) {
+                    if ((this.getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                        this.getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriority(randomPriority.get(1));
+                        vehicleInIntersection.add( this.getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection());
+                    }
+                }
+            }
+        }
+
+        if (this.getEastRoad() != null) {
+            for (int i = 0; i < this.getEastRoad().getNumberLanes(); i++) {
+                if ((this.getEastRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.WEST)) {
+                    if ((this.getEastRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                        this.getEastRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriority(randomPriority.get(2));
+                        vehicleInIntersection.add( this.getEastRoad().getLaneAtIndex(i).getVehicleInIntersection());
+                    }
+                }
+            }
+        }
+
+        if (this.getWestRoad() != null) {
+            for (int i = 0; i < this.getWestRoad().getNumberLanes(); i++) {
+                if ((this.getWestRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.EAST)) {
+                    if ((this.getWestRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                        this.getWestRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriority(randomPriority.get(3));
+                        vehicleInIntersection.add( this.getWestRoad().getLaneAtIndex(i).getVehicleInIntersection());
+                    }
+                }
+            }
+        }
+        return vehicleInIntersection;
+
+    }
+
+    public boolean vehicleTurnFirst (ArrayList<Vehicle> vehicles)throws Exception{
+        int max=0;
+
+        for (int i=0; i<vehicles.size();i++)
+        {System.out.println("ID is: " + vehicles.get(i).getId()+ "  priority is : "+ vehicles.get(i).getVehiclePriority());}
+
+
+
+        if (vehicles != null) {
+    for (int i = 0; i < vehicles.size(); i++) {
+            if (max <= vehicles.get(i).getVehiclePriority())
+                max = vehicles.get(i).getVehiclePriority();
+    }
+
+
+    for (int i = 0; i < vehicles.size(); i++) {
+            if (vehicles.get(i).getVehiclePriority() != max)
+            {System.out.println(vehicles.get(i).getId()+ " has to stop");
+                vehicles.get(i).setVehicleState(0);}
+    }
+}
+
+        return true;
+    }
+
+
+    @Override
+    public void onCompleted() {
+
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onNext(Long aLong){
+        try {
+            //System.out.println("Here Iam ..................");
+
+            IntersectionController.vehicleTurnFirst(this, this.giveVehiclePriorities(this.generateRandom()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 }
 
