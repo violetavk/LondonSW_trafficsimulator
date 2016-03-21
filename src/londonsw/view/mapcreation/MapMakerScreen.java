@@ -3,8 +3,10 @@ package londonsw.view.mapcreation;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
@@ -141,15 +143,24 @@ public class MapMakerScreen {
 
         /* Add Save, Reset buttons */
         VBox buttonsPane = new VBox();
-        buttonsPane.setPadding(new Insets(0,0,0,20));
+        buttonsPane.setPadding(new Insets(0,0,0,10));
         Label toolsLabel = new Label("Tools");
         toolsLabel.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD,14));
-        toolsLabel.setPadding(new Insets(15,5,5,0));
+        toolsLabel.setPadding(new Insets(15,5,5,35));
         buttonsPane.getChildren().add(toolsLabel);
+        Insets padding = new Insets(0,0,5,0);
         Button saveButton = new Button("Save Map");
-        buttonsPane.getChildren().add(saveButton);
+        StackPane saveButtonPane = new StackPane(saveButton);
+        saveButtonPane.setPadding(padding);
+        buttonsPane.getChildren().add(saveButtonPane);
         Button resetButton = new Button("Reset Map");
-        buttonsPane.getChildren().add(resetButton);
+        StackPane resetButtonPane = new StackPane(resetButton);
+        resetButtonPane.setPadding(padding);
+        buttonsPane.getChildren().add(resetButtonPane);
+        Button backButton = new Button("Go Back");
+        StackPane backButtonPane = new StackPane(backButton);
+        backButtonPane.setPadding(padding);
+        buttonsPane.getChildren().add(backButtonPane);
 
         sideComponents.getChildren().add(buttonsPane);
 
@@ -256,10 +267,20 @@ public class MapMakerScreen {
                 System.out.println("Chose the name " + name);
                 try {
                     Map finalMap = buildAndSaveMap(map);
+                    finalMap.saveMap(name);
+                    goBack(primaryStage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
+        });
+
+        backButton.setOnMouseClicked(click -> {
+            try {
+                goBack(primaryStage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
         borderPane.setRight(sideComponents);
@@ -581,8 +602,11 @@ public class MapMakerScreen {
         }
     }
 
-    private void goBack() {
-
+    private void goBack(Stage stage) throws Exception {
+        Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../startup/ChooseModeScreen.fxml"));
+        stage.setScene(new Scene(chooseModeScreen));
+        stage.centerOnScreen();
+        stage.setResizable(false);
     }
 
 }
