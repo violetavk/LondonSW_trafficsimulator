@@ -20,7 +20,6 @@ public class Map implements Serializable {
     private ArrayList<Intersection> intersections;
     private MapGrid grid;
     private final static String MAP_DIR = "./maps/";
-    private final static String TRAFFIC_LIGHTS_TEMP = "_data";
 
 
     /**
@@ -179,12 +178,20 @@ public class Map implements Serializable {
         grid.addComponent(i);
     }
 
+    /**
+     * Removes the map Component at the given coordinate (only deletes it from the model, not the view)
+     * @param c the coordinate where to delete the Map component
+     */
     public void clearCell(Coordinate c) {
         int x = c.getX();
         int y = c.getY();
         grid.clearCell(x, y);
     }
 
+    /**
+     * Saves the map to the disk. Given a file name, it saves the map into MAP_DIR with that file name
+     * @param fileName the file name for saving the map
+     */
     public void saveMap(String fileName)
     {
         try

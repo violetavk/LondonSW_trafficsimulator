@@ -1,3 +1,5 @@
 workspace.xml
 tasks.xml
 uiDesigner.xml
+logs/
+out/

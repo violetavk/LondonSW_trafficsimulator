@@ -27,16 +27,12 @@ public class MapGridGUITestMain extends Application {
 
         //Delete log file if exists
 
-        String logFile = "Log.txt"; //TODO: hardcode
+        String logFile = "Log_MapGridGUITestMain";
 
-        File file = new File(logFile);
-
-        file.delete();
 
         Map map = MapExamples.drawMap1();
 
-        //Map map = MapExamples.drawTestMapExample();
-
+//        Map map = MapExamples.drawTestMapExample();
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
         double width = mapGridGUIDecorator.getWidth();

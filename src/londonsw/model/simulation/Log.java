@@ -4,6 +4,7 @@ import londonsw.model.simulation.components.TrafficLight;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 import rx.Subscriber;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.FileHandler;
@@ -13,19 +14,45 @@ import java.util.logging.SimpleFormatter;
 
  /**
  * Created by felix on 18/03/2016.
+  * Logs what is happening in the system for every tick.
  */
-
 
 public class Log extends Subscriber<Long> {
 
      private String fileName;
+     private final String LOG_DIR = "./logs/";
+     private String filePath;
 
+     /**
+      * Creates a log with the given file name to log what is happening in the system. It will be stored in the
+      * directory LOG_DIR.
+      * @param fileName the file name for the log
+      */
      public Log(String fileName) {
-
          this.fileName = fileName;
+
+         File directory = new File(LOG_DIR);
+         if(!directory.exists()) {
+             directory.mkdir();
+         }
+
+         filePath = LOG_DIR + fileName + ".log";
+         File logFile = new File(filePath);
+         if(!logFile.exists()) {
+             try {
+                 logFile.createNewFile();
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+         }
+
          Ticker.subscribe(this);
      }
 
+     /**
+      * Generates log information for that Ticker tick
+      * @param aLong current time in the system
+      */
      private void generate(long aLong) {
 
          ArrayList al = Ticker.getSubscribers();
@@ -87,7 +114,7 @@ public class Log extends Subscriber<Long> {
              sb.append(System.lineSeparator());
              sb.append("============================================================");
 
-             fh = new FileHandler(this.fileName,true);
+             fh = new FileHandler(filePath,true);
 
              logger.addHandler(fh);
              SimpleFormatter formatter = new SimpleFormatter();
@@ -104,9 +131,7 @@ public class Log extends Subscriber<Long> {
      }
 
      @Override
-     public void onCompleted() {
-
-     }
+     public void onCompleted() {  }
 
      /**
       * If there's some error with the ticker and this subscriber, this method would call.
@@ -116,10 +141,12 @@ public class Log extends Subscriber<Long> {
      @Override
      public void onError(Throwable throwable) {    }
 
+     /**
+      * Called on Ticker tick, will generated a log entry for that tick
+      * @param aLong current time in the sytem
+      */
      @Override
      public void onNext(Long aLong) {
-
         generate(aLong);
-
      }
  }
