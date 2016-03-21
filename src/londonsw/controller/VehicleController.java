@@ -15,23 +15,25 @@ import java.util.Map;
  */
 public class VehicleController {
 
-    private static Map<Vehicle,VehicleGUIDecorator> vehiclesAndDecorators = new HashMap<>();
+    private static Map<Vehicle, VehicleGUIDecorator> vehiclesAndDecorators = new HashMap<>();
     private static ArrayList<Vehicle> allVehicles = new ArrayList<>();
 
     /**
      * Register a car to a specific CarGuiDecorator so we can retrieve it and draw the decorator for
      * for that car. This replaces the need to pass the CarGuiDecorator as a parameter. This also adds
      * the vehicle to an ArrayList, only to keep track of all cars in the system and nothing more.
-     * @param vehicle an instance of a Vehicle type
+     *
+     * @param vehicle   an instance of a Vehicle type
      * @param decorator the CarGuiDecorator for that specific vehicle
      */
     public static void addVehicleAndDecoratorPair(Vehicle vehicle, VehicleGUIDecorator decorator) {
-        vehiclesAndDecorators.put(vehicle,decorator);
+        vehiclesAndDecorators.put(vehicle, decorator);
         allVehicles.add(vehicle);
     }
 
     /**
      * Retrieve the CarGuiDecorator for the vehicle, for operations that happen outside this class
+     *
      * @param vehicle the Vehicle to retrieve the decorator for
      * @return CarGuiDecorator instance associated with that specific Vehicle
      */
@@ -42,13 +44,14 @@ public class VehicleController {
     /**
      * This is the method that gets called by the Vehicle (in the model) when the ticker ticks. This controller
      * handles the rest of the moving.
-     * @param v the Vehicle that notified that it should move
+     *
+     * @param v    the Vehicle that notified that it should move
      * @param step how far the vehicle should move
      * @throws Exception
      */
     public static void moveOnTick(Vehicle v, int step) throws Exception {
         VehicleGUIDecorator decorator = vehiclesAndDecorators.get(v);
-        moveVehicle(decorator,step);
+        moveVehicle(decorator, step);
     }
 
     public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws Exception {
@@ -63,24 +66,26 @@ public class VehicleController {
             vehicleGUIDecorator.readTrafficLight();
 
 
-            if (vehicleGUIDecorator.getVehicleState() == 1 ) {
-               // ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
+            if (vehicleGUIDecorator.getVehicleState() == 1) {
+                // ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
                 //check next lane available
-                Lane l =vehicleGUIDecorator.chooseLane();
+                Lane l = vehicleGUIDecorator.chooseLane();
 
-              //  vehicleGUIDecorator.turnFirst(l);
+                //  vehicleGUIDecorator.turnFirst(l);
 
                 vehicleGUIDecorator.setVehicleState(2); //move vehicle to intersection
-               move = vehicleGUIDecorator.vehicleTurn(l);
+                move = vehicleGUIDecorator.vehicleTurn(l);
             }
-        }
-        else {
+        } else {
             if (vehicleGUIDecorator.getVehicleState() != 0) {
                 move = vehicleGUIDecorator.moveVehicle(step);
             }
         }
 
-        if(move>0)
+        if (vehicleGUIDecorator.getVehicleState() == 3) //vehicle is deleted just move to next space
+        {
+            vehicleGUIDecorator.moveVehicleGUI(move, vehicleGUIDecorator.getVehicleState());
+        } else if (move > 0)
             vehicleGUIDecorator.moveVehicleGUI(move, vehicleGUIDecorator.getVehicleState());
     }
 }
