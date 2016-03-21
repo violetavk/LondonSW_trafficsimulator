@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -19,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import londonsw.model.simulation.components.Lane;
+import londonsw.model.simulation.components.vehicles.Ambulance;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.model.simulation.Map;
 import javafx.scene.text.Text;
@@ -28,9 +30,13 @@ public class SimulationScreen {
 
     private Map map;
 
-    private int mapSceneIndex=0;
+    private int mapSceneIndex = 0;
 
-    private int initCar =0;
+    private int initCar = 0;
+
+    private int flag = 0;
+
+    private int systemState = 0;
 
     public SimulationScreen(Map map) {
         this.map = map;
@@ -58,7 +64,7 @@ public class SimulationScreen {
         mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0 / map.getWidth(), 5.0 / map.getHeight()));
         GridPane mapGridPane = mapGridGUIDecorator.drawComponents();
         mapPane.setPadding(new Insets(0, 0, 5, 5));
-        mapPane.getChildren().add(mapSceneIndex,mapGridPane);
+        mapPane.getChildren().add(mapSceneIndex, mapGridPane);
         mapSceneIndex++;
         borderPane.setCenter(mapPane);
 
@@ -67,7 +73,7 @@ public class SimulationScreen {
         VBox simulationControl = new VBox();
 
         Label carNumberSituation = new Label();
-        carNumberSituation.setText("There are "+ String.valueOf(initCar)+ " car in the system");
+        carNumberSituation.setText("There are " + String.valueOf(initCar) + " car in the system");
         simulationControl.getChildren().add(carNumberSituation);
 
         Button startSimulation = new Button("Start");
@@ -80,45 +86,72 @@ public class SimulationScreen {
         resetSimulation.setPadding(new Insets(10, 10, 10, 10));
         resetSimulation.setPrefSize(90, 30);
         simulationControl.getChildren().add(resetSimulation);
-       // borderPane.setRight(simulationControl);
+        // borderPane.setRight(simulationControl);
 
         //Add/Delete ambulance
+        Button ambulanceAddDelete = new Button("Add/Delete Ambulance");
+        ambulanceAddDelete.setPrefSize(160,30);
+        simulationControl.getChildren().add(ambulanceAddDelete);
+        StackPane sp = new StackPane();
+        generateAmbulance(map, mapGridGUIDecorator, sp);
 
         //carSlider
-        VBox sliderControl=new VBox();
-        sliderControl.setPadding(new Insets(20,20,20,20));
+        VBox sliderControl = new VBox();
+        sliderControl.setPadding(new Insets(20, 20, 20, 20));
         Pane carLabel = new Pane();
         Label carNumber = new Label("Car Number");
         carLabel.getChildren().add(carNumber);
         sliderControl.getChildren().add(carLabel);
 
-        Pane carSlider =new Pane();
-        Slider slider=new Slider(1,60,30);
+        Pane carSlider = new Pane();
+        Slider slider = new Slider(1, 60, 30);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
         slider.setMajorTickUnit(10);
         //slider.setBlockIncrement(1);
 
+        /**
+         * Using a slider control the number of cars in the system
+         */
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 System.out.println(newValue);
-                initCar=oldValue.intValue();
-               int newCar = newValue.intValue() - oldValue.intValue();
+                initCar = oldValue.intValue();
+                int newCar = newValue.intValue() - oldValue.intValue();
 
                 StackPane sp = new StackPane();
-                mapPane.getChildren().add(mapSceneIndex,sp);
+                mapPane.getChildren().add(mapSceneIndex, sp);
                 mapSceneIndex++;
-                if(newCar>=0) {
+                if (newCar >= 0) {
                     for (int i = 0; i < newCar; i++) {
                         generateCar(map, mapGridGUIDecorator, sp);
-                    }
+                 }
+             } else {
+                //TODO
                 }
-                else
-                {
-                    //TODO
+                carNumberSituation.setText("There are " + String.valueOf(initCar) + " cars in the system");
+            }
+     });
+
+        /**
+         * "Add/Delete Ambulance" Button click control
+         * the first click adds an ambulance in the system, the next click will delete the ambulance, next add...
+         */
+        ambulanceAddDelete.setOnMouseClicked(click -> {
+            while (systemState==1) {
+                System.out.println("Add/Delete ambulance");
+                int ambulanceIndex = mapSceneIndex;
+                if (flag == 0) {
+                    StackPane ambulanceStackPane = new StackPane();
+                    generateAmbulance(map, mapGridGUIDecorator, ambulanceStackPane);
+                    mapPane.getChildren().add(ambulanceIndex, ambulanceStackPane);
+                    mapSceneIndex++;
+                    flag = 1;
+                } else {
+                    mapPane.getChildren().remove(ambulanceIndex);
+                    flag = 0;
                 }
-                carNumberSituation.setText("There are "+ String.valueOf(initCar)+ " cars in the system");
             }
         });
 
@@ -133,27 +166,43 @@ public class SimulationScreen {
         primaryStage.centerOnScreen();
 
         //StackPane sp = new StackPane();
+
+        /**
+         * To start simulation
+         */
         startSimulation.setOnMouseClicked(click -> {
             System.out.println("Start Simulation");
-            StackPane sp = new StackPane();
-            initCar=(int)slider.getValue();
-            carNumberSituation.setText("There are "+ String.valueOf(initCar)+ " cars in the system");
-            for(int i=0; i< initCar;i++) {
-                generateCar(map, mapGridGUIDecorator, sp);
+            systemState = 1;
+            StackPane carStackPane = new StackPane();
+            initCar = (int) slider.getValue();
+            carNumberSituation.setText("There are " + String.valueOf(initCar) + " cars in the system");
+            for (int i = 0; i < initCar; i++) {
+                generateCar(map, mapGridGUIDecorator, carStackPane);
             }
-            mapPane.getChildren().add(mapSceneIndex,sp);
+            mapPane.getChildren().add(mapSceneIndex,carStackPane);
             mapSceneIndex++;
         });
 
-        resetSimulation.setOnMouseClicked(click->{
+        /**
+         * To stop simulation
+         */
+        resetSimulation.setOnMouseClicked(click -> {
             System.out.println("Reset Simulation");
+            systemState = 0;
             //StackPane sp = new StackPane();
             carNumberSituation.setText("There are 0 car in the system");
-            mapPane.getChildren().remove(1,mapSceneIndex);
-            mapSceneIndex=1;
+            mapPane.getChildren().remove(1, mapSceneIndex);
+            mapSceneIndex = 1;
         });
     }
 
+    /**
+     * Car generator
+     * @param map
+     * @param mapGridGUIDecorator
+     * @param sp
+     * @return
+     */
     public Car generateCar(Map map, MapGridGUIDecorator mapGridGUIDecorator, StackPane sp) {
 
         Lane L1 = map.getRandomLane();
@@ -192,4 +241,44 @@ public class SimulationScreen {
         return null;
 
     }
+
+    /**
+     * Ambulance generator
+     * @param map
+     * @param mapGridGUIDecorator
+     * @param sp
+     * @return
+     */
+    public Ambulance generateAmbulance(Map map, MapGridGUIDecorator mapGridGUIDecorator, StackPane sp) {
+        Lane AmbLane = map.getRandomLane();
+
+        if (AmbLane != null && (!AmbLane.isFull())) {
+            for (int x = 0; x < map.getRoads().size(); x++) {
+                for (int y = 0; y < map.getRoads().get(x).getNumberLanes(); y++) {
+                    AmbLane = map.getRandomLane();
+                    for (int z = 0; z < AmbLane.getLength(); z++) {
+                        if (AmbLane.isCellEmpty(z)) {
+                            Ambulance A = new Ambulance(z, AmbLane);
+                            VehicleGUIDecorator ambulanceGUIDecorator = new VehicleGUIDecorator(A);
+                            ambulanceGUIDecorator.setResizeFactor(mapGridGUIDecorator.getResizeFactor());
+                            ambulanceGUIDecorator.setColor(Color.RED);
+                            ambulanceGUIDecorator.drawCar();
+                            Pane alPane = new Pane();
+                            alPane.getChildren().add(ambulanceGUIDecorator.getRectangle());
+                            ambulanceGUIDecorator.setPane(alPane);
+                            sp.getChildren().add(alPane);
+                            ambulanceGUIDecorator.setVehicleState(1);
+                            return A;
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+        return null;
+    }
 }
+
