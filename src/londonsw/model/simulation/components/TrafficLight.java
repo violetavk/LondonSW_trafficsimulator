@@ -138,11 +138,9 @@ public class TrafficLight extends Subscriber<Long> implements Serializable {
             currentTime += Ticker.getTickInterval();
         }
         else {
-
             currentTime = Ticker.getTickInterval();
             nextState();
             TrafficLightController.getInstance().colourChanged(state, this);
         }
-//        System.out.println("time: " + aLong + "  color: " + state); // debug only
     }
 }

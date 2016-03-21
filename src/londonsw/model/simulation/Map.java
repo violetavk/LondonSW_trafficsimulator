@@ -60,24 +60,27 @@ public class Map implements Serializable {
         return roads;
     }
 
-    public Road getRandomRoad()
-    {
+    /**
+     * Gets a random road from the Map
+     * @return a random Road instance from the current map
+     */
+    public Road getRandomRoad() {
         ArrayList<Road> roads = getRoads();
-
         Road road = null;
-
         Random randomRoad = new Random();
 
-        if(roads.size()>0) {
-
+        if(roads.size() > 0) {
             int roadSize = randomRoad.nextInt(this.getRoads().size());
-
             road = roads.get(roadSize);
         }
 
         return road;
     }
 
+    /**
+     * Gets a random lane from the Map
+     * @return a random Lane instance from the current Map
+     */
     public Lane getRandomLane() {
         Road road = getRandomRoad();
         Lane lane = null;
@@ -85,7 +88,6 @@ public class Map implements Serializable {
         if (road != null) {
             Random randomLane = new Random();
             int numberLanes = road.getNumberLanes();
-
 
             if (numberLanes > 0) {
                 int laneSize = randomLane.nextInt(road.getNumberLanes());
@@ -98,15 +100,15 @@ public class Map implements Serializable {
         }
 
         return lane;
-
     }
 
+    /**
+     * Gets a random cell from a random Lane from the system, which is an int. A vehicle can go in this cell.
+     * @return index of random cell from a random Lane in the Map
+     */
     public int getRandomCell(){
-
         Random randomCell = new Random();
-
         Lane randomLane = getRandomLane();
-
         return randomCell.nextInt(randomLane.getLength());
     }
 
@@ -220,6 +222,12 @@ public class Map implements Serializable {
         }
     }
 
+    /**
+     * Loads a map from the disk with the given file name. It unserializes it and returns an instance of a Map. This
+     * method is static so it can be called without any instances of a Map.
+     * @param fileName the name of the map file to open (extension included)
+     * @return an instance of a loaded Map that was opened from the disk
+     */
     public static Map loadMap(String fileName) {
         String path = MAP_DIR + fileName;
         Map map = null;

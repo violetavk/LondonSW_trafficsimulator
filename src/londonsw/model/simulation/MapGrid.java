@@ -55,12 +55,27 @@ public class MapGrid implements Serializable, IMapGrid {
         return height;
     }
 
+    /**
+     * Gets all Components from the MapGrid
+     * @return an ArrayList of all components in the Map
+     */
     public ArrayList<Component> getAllComponents() { return allComponents; }
 
+    /**
+     * Gets a Component from the MapGrid at the given (x, y) location
+     * @param x the x coordinate of the requested Component
+     * @param y the y coordinate of the requested Component
+     * @return a Component at the location (x, y), if there is nothing there, null is returned
+     */
     public Component get(int x, int y) {
         return grid[y][x];
     }
 
+    /**
+     * Empties the cell at the given (x, y) location
+     * @param x the x-coordinate where to clear the
+     * @param y
+     */
     public void clearCell(int x, int y) {
         grid[y][x] = null;
     }
@@ -79,7 +94,7 @@ public class MapGrid implements Serializable, IMapGrid {
             allComponents.add(i);
             return true;
         }
-        else if(c instanceof Road) { // TODO there must be a better way of representing a road cell
+        else if(c instanceof Road) {
             Road road = (Road) c;
             Coordinate start = road.getStartLocation();
             Coordinate end = road.getEndLocation();
