@@ -79,6 +79,8 @@ public class VehicleController {
                 move = vehicleGUIDecorator.moveVehicle(step);
             }
         }
+
+        if(move>0)
             vehicleGUIDecorator.moveVehicleGUI(move, vehicleGUIDecorator.getVehicleState());
     }
 }
