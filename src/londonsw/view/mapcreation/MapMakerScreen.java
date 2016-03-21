@@ -5,9 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -243,6 +241,9 @@ public class MapMakerScreen {
             nameDialog.setTitle("Save Map");
             nameDialog.setHeaderText("Please provide a name for your map (no spaces or special characters).\nSaved maps go into the /maps directory of your working directory.");
             nameDialog.setContentText("File name");
+            Button btOk = (Button) nameDialog.getDialogPane().lookupButton(ButtonType.OK);
+            TextField textfield = nameDialog.getEditor();
+
             Optional<String> result = nameDialog.showAndWait();
             result.ifPresent(name -> {
                 name = name.concat(".map");
@@ -533,7 +534,9 @@ public class MapMakerScreen {
     private void assignIntersectionsToRoads(Map fixed) {
         ArrayList<Intersection> intersections = fixed.getIntersections();
         for(int i = 0; i < intersections.size(); i++) {
-
+            Intersection current = intersections.get(i);
+            Coordinate coord = current.getLocation();
+            System.out.println("-> Intersection at " + coord);
         }
     }
 
