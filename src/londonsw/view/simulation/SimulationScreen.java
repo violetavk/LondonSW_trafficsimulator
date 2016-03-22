@@ -17,6 +17,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.converter.LongStringConverter;
+import londonsw.controller.SimulationController;
+import londonsw.controller.StartUpController;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Map;
 import londonsw.model.simulation.Ticker;
@@ -34,6 +36,8 @@ import londonsw.model.simulation.components.vehicles.Vehicle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+
+import static javafx.fxml.FXMLLoader.load;
 
 public class SimulationScreen {
 
@@ -131,22 +135,37 @@ public class SimulationScreen {
 
         //carSlider
         VBox sliderControl = new VBox();
-        sliderControl.setPadding(new Insets(20, 20, 20, 20));
+        sliderControl.setPadding(new Insets(10, 10, 10, 10));
         Pane carLabel = new Pane();
         Label carNumber = new Label("Car Number");
         carNumber.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         carLabel.getChildren().add(carNumber);
         sliderControl.getChildren().add(carLabel);
+       // sliderControl.setAlignment(carLabel,Pos.TOP_RIGHT);
 
         Pane carSlider = new Pane();
+        carSlider.setPadding(new Insets(10,10,10,10));
         Slider slider = new Slider(1, 60, 30);
+        slider.setDisable(true);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
         slider.setMajorTickUnit(10);
-        //slider.setBlockIncrement(1);
+        slider.setBlockIncrement(1);
+        carSlider.getChildren().add(slider);
+        sliderControl.getChildren().add(carSlider);
+        //sliderControl.setAlignment(slider,Pos.BOTTOM_RIGHT);
+        simulationControl.getChildren().add(sliderControl);
+        borderPane.setRight(simulationControl);
 
         backButton.setOnMouseClicked(click->{
-            //TODO
+            try {
+                Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../startup/ChooseModeScreen.fxml"));
+                primaryStage.setScene(new Scene(chooseModeScreen));
+                primaryStage.centerOnScreen();
+                primaryStage.setResizable(false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         /**
@@ -197,12 +216,6 @@ public class SimulationScreen {
             }
         });
 
-        carSlider.getChildren().add(slider);
-        sliderControl.getChildren().add(carSlider);
-
-        simulationControl.getChildren().add(sliderControl);
-        borderPane.setRight(simulationControl);
-
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         primaryStage.centerOnScreen();
@@ -227,6 +240,7 @@ public class SimulationScreen {
                     Ticker.setTickInterval(speed);
                     System.out.println("Start Simulation");
                     systemState = 1;
+                    slider.setDisable(false);
                     StackPane carStackPane = new StackPane();
                     initCar = (int) slider.getValue();
                     carNumberSituation.setText("There are " + String.valueOf(initCar) + " cars in the system");
@@ -262,6 +276,7 @@ public class SimulationScreen {
         resetSimulation.setOnMouseClicked(click -> {
             System.out.println("Reset Simulation");
             systemState = 0;
+            slider.setDisable(true);
             //StackPane sp = new StackPane();
             carNumberSituation.setText("There are 0 car in the system");
             mapPane.getChildren().remove(1, mapSceneIndex);
