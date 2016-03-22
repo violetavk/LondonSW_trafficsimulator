@@ -33,6 +33,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     private Coordinate previousCoordinate;
     private Lane previousLane;
     int vehiclePriorityToTurn;
+    TrafficLight vehicleTrafficLight;
+
 
 
     // debug only
@@ -55,6 +57,23 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         timesTicked = 0;
         id = ++counter;
     }
+
+    /**
+     * gets the traffic light that vehicle must read
+     * @return trafiic light in front of a vehicle in type of traffic light
+     */
+    public TrafficLight getVehicleTrafficLight() {
+        return vehicleTrafficLight;
+    }
+
+    /**
+     * sets the traffic lighrt for vehicle
+     * @param vehicleTrafficLight trffic light in front of vehicle
+     */
+    public void setVehicleTrafficLight(TrafficLight vehicleTrafficLight) {
+        this.vehicleTrafficLight = vehicleTrafficLight;
+    }
+
 
     /**
      * sets the vehicle priority to turn
@@ -346,7 +365,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                         // break;
                 }
 
-                if (vehiclePriority > 1 && light != null) {
+                if (this.getVehiclePriority() > 1 && light != null) {
                     if (light.getState() == LightColour.RED) {
                         this.vehicleState = 1;
 

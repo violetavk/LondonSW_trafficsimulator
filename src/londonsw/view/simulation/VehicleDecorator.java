@@ -2,6 +2,7 @@ package londonsw.view.simulation;
 
 import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
+import londonsw.model.simulation.components.TrafficLight;
 import londonsw.model.simulation.components.VehicleBehavior;
 import londonsw.model.simulation.components.vehicles.IVehicle;
 import londonsw.model.simulation.components.vehicles.Vehicle;
@@ -151,5 +152,25 @@ public abstract class VehicleDecorator implements IVehicle {
     public boolean turnFirst (Lane l) throws Exception{
         return decoratedVehicle.turnFirst(l);
     }
+
+    @Override
+    public int getVehiclePriorityToTurn(){
+        return decoratedVehicle.getVehiclePriorityToTurn();
+    }
+
+    @Override
+    public void setVehiclePriorityToTurn(int vehiclePriorityToTurn){
+         decoratedVehicle.setVehiclePriorityToTurn( vehiclePriorityToTurn);
+    }
+    @Override
+    public TrafficLight getVehicleTrafficLight(){
+        return decoratedVehicle.getVehicleTrafficLight();
+    }
+
+    @Override
+    public void setVehicleTrafficLight(TrafficLight vehicleTrafficLight){
+        decoratedVehicle.setVehicleTrafficLight(vehicleTrafficLight);
+    }
+
 
 }
