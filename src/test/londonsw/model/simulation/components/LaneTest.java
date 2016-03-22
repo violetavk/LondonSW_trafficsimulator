@@ -551,16 +551,16 @@ public class LaneTest extends Application {
         r04.addLane(new Lane(r04.getEndLocation(), r04.getStartLocation(), MapDirection.NORTH));
         r08.addLane(new Lane(r08.getEndLocation(), r08.getStartLocation(), MapDirection.NORTH));
         Lane l9=new Lane(r09.getStartLocation(), r09.getEndLocation(), MapDirection.EAST);
-         l9.setState(0);
+         //l9.setState(0);
         r09.addLane(l9);
         r10.addLane(new Lane(r10.getStartLocation(), r10.getEndLocation(), MapDirection.EAST));
         r13.addLane(new Lane(r13.getStartLocation(), r13.getEndLocation(), MapDirection.EAST));
         Lane l14 =new Lane(r14.getStartLocation(), r14.getEndLocation(), MapDirection.EAST);
-        l14.setState(0);
+       // l14.setState(0);
         r14.addLane(l14);
         r15.addLane(new Lane(r15.getStartLocation(), r15.getEndLocation(), MapDirection.EAST));
         Lane l16 =new Lane(r16.getEndLocation(), r16.getStartLocation(), MapDirection.NORTH);
-        l16.setState(0);
+        //l16.setState(0);
         r16.addLane(l16);
         r20.addLane(new Lane(r20.getEndLocation(), r20.getStartLocation(), MapDirection.NORTH));
         r21.addLane(new Lane(r21.getEndLocation(), r21.getStartLocation(), MapDirection.NORTH));
@@ -776,10 +776,10 @@ public class LaneTest extends Application {
 
          Car testCar;
         for (int i=0; i<20; i++) {
-          //  testCar = generateCarOnRoad(map, mapGridGUIDecorator, sp, 8, 1);
+              testCar = generateCarOnRoad(map, mapGridGUIDecorator, sp, 8, 1);
             //testCar = generateCarOnRoad(map, mapGridGUIDecorator, sp, 8, 0);
 
-            //testCar = generateCarOnRoad(map, mapGridGUIDecorator, sp, 3, 0);
+            testCar = generateCarOnRoad(map, mapGridGUIDecorator, sp, 3, 0);
             //testCar = generateCarOnRoad(map, mapGridGUIDecorator, sp, 9, 1);
 
             testCar = generateCarOnRoad(map, mapGridGUIDecorator, sp, 7, 1);
