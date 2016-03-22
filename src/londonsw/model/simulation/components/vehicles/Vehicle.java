@@ -56,19 +56,38 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         id = ++counter;
     }
 
+    /**
+     * sets the vehicle priority to turn
+     * @param vehiclePriorityToTurn the Priority Of vehicle To turn first int type of integer
+     * in each intersection if there are more than vehicle, vehicles are given priorities to decide which turn first
+     * so they do not crash
+     */
     public void setVehiclePriorityToTurn(int vehiclePriorityToTurn) {
         this.vehiclePriorityToTurn = vehiclePriorityToTurn;
     }
 
 
-
+    /**
+     * gets vehicle priority to turn ,
+     * @return the Priority Of vehicle To which turn first ib type of integer
+     *depends on its priority its turns or stops
+     */
     public int getVehiclePriorityToTurn() {
         return vehiclePriorityToTurn;
     }
+
+    /**
+     * gets a unique vehicle ID
+     * @return  ID of vehicle in type of integer
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * sets a unique ID for vehicle
+     * @param id  unique ID for vehicle in type of integer
+     */
     public void setId(int id) {
         this.id = id;
     }
@@ -136,7 +155,6 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
     /**
      * Gets the previous lane which vehicle was in
-     *
      * @return the previous lane in type of Lane
      */
     public Lane getPreviousLane() {
@@ -146,6 +164,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     public void setPreviousCoordinate(Coordinate prev) {
         this.previousCoordinate = prev;
     }
+
 
     public void setPreviousLane(Lane previousLane) {
         this.previousLane = previousLane;
@@ -293,51 +312,6 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
             return step;
         }
 
-        /*
-            if (step == 0) {
-                currentLane.setCell(null, curCell);
-                curCell += step;
-                this.setCurrentCell(curCell, this.getCurrentLane());
-                currentLane.setCell(this, curCell);
-                return false;
-            }
-
-            if (curCell + step >= this.currentLane.getLength() || !this.currentLane.isCellEmpty(curCell + step)) {
-                moveVehicle(step - 1);
-            } else {
-                currentLane.setCell(null, curCell);
-                curCell += step;
-                this.setCurrentCell(curCell, this.getCurrentLane());
-                currentLane.setCell(this, curCell);
-                return true;
-            }
-
-            return false;
-*/
-
-   // }
-        /*
-      public boolean moveVehicle(int step) throws Exception {
-        int curCell= this.getCurrentCell();
-        int validStep=0;
-        for (int i=1;i<=step;i++){
-            if (curCell+i >=this.currentLane.getLength()|| (!this.currentLane.isCellEmpty(curCell+i)))
-                break;
-            else
-                validStep=i;
-        }
-        if(curCell+validStep >= this.currentLane.getLength() || (!this.currentLane.isCellEmpty(curCell+validStep)) ) {
-            return false;
-        }
-        else {
-            currentLane.setCell(null,curCell);
-            curCell= curCell+validStep;
-            this.setCurrentCell(curCell,this.getCurrentLane());
-            currentLane.setCell(this,curCell);
-            return true;
-       }
-
-       */
 
 
     /**
@@ -541,6 +515,11 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     }
 
 
+    /**
+     * Chooses lane randomly from lanes options
+     * @return a random lane in type of Lane
+     * @throws Exception
+     */
     public Lane chooseLane() throws Exception {
         int num = 0;
 
@@ -559,13 +538,17 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     }
 
 
-
     /**
-     * Chooses lane randomly from lanes options
-     * vehicle turn to new chosen lane
-     * if there is no lane to move to, vehicle stops
+     * there are four condition for vehicle to turn:
+     * 1. if the lane is exist and
+     * 2. the vehicle is at the last cell of the lane
+     * 3. the first cell is empty
+     * 4. the vehicle priority to turn is 1
+     * if these conditions are obtained vehicle turn
+     * otherwise vehicle stops
+     * @param l a random lane to move to in type of Lane
+     * @return integer representation of booleans
      * @throws Exception
-     * method returns integer representation of booleans
      */
     public int vehicleTurn(Lane l) throws Exception {
         Lane oldLane = this.currentLane;

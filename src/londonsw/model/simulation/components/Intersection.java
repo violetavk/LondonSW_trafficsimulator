@@ -236,6 +236,11 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
     }
 
 
+    /**
+     * generate a list of 4 items form 1 to 4
+     * these items are placed in the array randomly
+     * @return list of integer in type of ArrayList
+     */
     public static ArrayList<Integer> generateRandom (){
         int size =4;
         ArrayList<Integer> list = new ArrayList<Integer>(size);
@@ -256,6 +261,19 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
     }
 
 
+    /**
+     * intersection gives each vehicle on it a priority to turn first
+     * first it checks :
+     * 1. if there is a road connected to it.
+     * 2. if in the road there is a lane which its direction to this intersection
+     * 3. if there is a vehicle at the last cell in this lane, which is this intersection
+     * if these conditions are obtained , then the intersection gives this vehicle a priority to turn
+     * and put these vehicle in arrayList .
+     * @param randomPriority a list 4 items form 1 to 4, arranged randomly in the array list
+     * @return vehicleInIntersection an arrayList in type of integer , which contains all vehicles which
+     * has priority to turn
+     * @throws
+     */
     public ArrayList<Vehicle> giveVehiclePriorities (ArrayList<Integer>  randomPriority) throws Exception {
 
        // ArrayList<Integer>  randomPriority = (ArrayList<Integer>)this.generateRandom(4).clone();
@@ -308,12 +326,20 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
 
     }
 
+    /**
+     * checks the vehicle with higher priority to turn
+     * if a vehicle has a higher priority
+     * it sets its priority to turn to 1
+     * otherwise sets it to 0
+     * @param vehicles an array list in type of integer which contains all vehicles which has priority to turn
+     * @return
+     * @throws Exception
+     */
     public boolean vehicleTurnFirst (ArrayList<Vehicle> vehicles)throws Exception{
         int max=0;
 
-        for (int i=0; i<vehicles.size();i++)
-        {System.out.println("ID is: " + vehicles.get(i).getId()+ "  priority is : "+ vehicles.get(i).getVehiclePriorityToTurn());}
-
+       // for (int i=0; i<vehicles.size();i++)
+       // {System.out.println("ID is: " + vehicles.get(i).getId()+ "  priority is : "+ vehicles.get(i).getVehiclePriorityToTurn());}
 
 
         if (vehicles != null) {
@@ -335,20 +361,32 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
     }
 
 
+    /**
+     * This is the method that gets called when the ticker terminates
+     *  Left not implemented on purpose
+     */
     @Override
     public void onCompleted() {
 
     }
 
+    /**
+     * If there's some error with the ticker and this subscriber, this method would call.
+     * Left not implemented on purpose
+     * @param throwable
+     */
     @Override
     public void onError(Throwable throwable) {
 
     }
 
+    /**
+     * This is like the onTick method. This is what intersection would do when the ticker ticks.
+     * @param aLong this gives the current time in the system to the intersection (although it is probably not required)
+     */
     @Override
     public void onNext(Long aLong){
         try {
-            //System.out.println("Here Iam ..................");
 
             IntersectionController.vehicleTurnFirst(this, this.giveVehiclePriorities(this.generateRandom()));
         } catch (Exception e) {
