@@ -28,6 +28,11 @@ public class VehicleController {
         allVehicles.add(vehicle);
     }
 
+    public ArrayList<Vehicle> getVehicleList(){
+        return allVehicles;
+    }
+
+
     /**
      * Retrieve the CarGuiDecorator for the vehicle, for operations that happen outside this class
      * @param vehicle the Vehicle to retrieve the decorator for

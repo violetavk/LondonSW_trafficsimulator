@@ -8,13 +8,17 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.converter.LongStringConverter;
+import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Map;
+import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.ResizeFactor;
 import javafx.scene.control.Button;
 import javafx.scene.text.FontWeight;
@@ -25,6 +29,10 @@ import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.model.simulation.Map;
 import javafx.scene.text.Text;
 import javafx.util.converter.IntegerStringConverter;
+import londonsw.model.simulation.components.vehicles.Vehicle;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class SimulationScreen {
 
@@ -61,7 +69,7 @@ public class SimulationScreen {
         Pane mapPane = new Pane();
         Map map = this.map;
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0 / map.getWidth(), 5.0 / map.getHeight()));
+        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0 / map.getWidth(), 5.0/ map.getHeight()));
         GridPane mapGridPane = mapGridGUIDecorator.drawComponents();
         mapPane.setPadding(new Insets(0, 0, 5, 5));
         mapPane.getChildren().add(mapSceneIndex, mapGridPane);
@@ -92,8 +100,6 @@ public class SimulationScreen {
         Button ambulanceAddDelete = new Button("Add/Delete Ambulance");
         ambulanceAddDelete.setPrefSize(160,30);
         simulationControl.getChildren().add(ambulanceAddDelete);
-        StackPane sp = new StackPane();
-        generateAmbulance(map, mapGridGUIDecorator, sp);
 
         //carSlider
         VBox sliderControl = new VBox();
@@ -120,15 +126,18 @@ public class SimulationScreen {
                 initCar = oldValue.intValue();
                 int newCar = newValue.intValue() - oldValue.intValue();
 
-                StackPane sp = new StackPane();
-                mapPane.getChildren().add(mapSceneIndex, sp);
+                StackPane carStackPane = new StackPane();
+                mapPane.getChildren().add(mapSceneIndex, carStackPane);
                 mapSceneIndex++;
+                //increase carNumber
                 if (newCar >= 0) {
                     for (int i = 0; i < newCar; i++) {
-                        generateCar(map, mapGridGUIDecorator, sp);
+                        generateCar(map, mapGridGUIDecorator, carStackPane);
                  }
-             } else {
-                //TODO
+                }
+                //decrease carNumber
+                else {
+
                 }
                 carNumberSituation.setText("There are " + String.valueOf(initCar) + " cars in the system");
             }
@@ -168,19 +177,32 @@ public class SimulationScreen {
         //StackPane sp = new StackPane();
 
         /**
-         * To start simulation
+         * Set TickerInterval first
          */
-        startSimulation.setOnMouseClicked(click -> {
-            System.out.println("Start Simulation");
-            systemState = 1;
-            StackPane carStackPane = new StackPane();
-            initCar = (int) slider.getValue();
-            carNumberSituation.setText("There are " + String.valueOf(initCar) + " cars in the system");
-            for (int i = 0; i < initCar; i++) {
-                generateCar(map, mapGridGUIDecorator, carStackPane);
-            }
-            mapPane.getChildren().add(mapSceneIndex,carStackPane);
-            mapSceneIndex++;
+
+        startSimulation.setOnMouseClicked(click->{
+            TextInputDialog tickerSet = new TextInputDialog();
+            tickerSet.setTitle("Set Ticker Interval");
+            tickerSet.setHeaderText("Simulation Speed ");
+            tickerSet.setContentText("Please input a ticker interval number between 100 and 1000:");
+            Optional<String> tickerInterval = tickerSet.showAndWait();
+            tickerInterval.ifPresent(systemSpeed->{
+                Long speed = new Long(systemSpeed);
+                System.out.println(systemSpeed);
+                Ticker.setTickInterval(speed);
+                System.out.println("Start Simulation");
+                systemState = 1;
+                StackPane carStackPane = new StackPane();
+                initCar = (int) slider.getValue();
+                carNumberSituation.setText("There are " + String.valueOf(initCar) + " cars in the system");
+                for (int i = 0; i < initCar; i++) {
+                    generateCar(map, mapGridGUIDecorator, carStackPane);
+                }
+                mapPane.getChildren().add(mapSceneIndex,carStackPane);
+                mapSceneIndex++;
+                }
+            );
+
         });
 
         /**
