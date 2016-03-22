@@ -337,8 +337,8 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
     /**
      * checks the vehicle with higher priority to turn
      * if a vehicle has a higher priority
-     * it sets its priority to turn to 1
-     * otherwise sets it to 0
+     * it sets its priority to turn to 1 which means move
+     * otherwise sets it to 0 which means stop
      * @param vehicles an array list in type of integer which contains all vehicles which has priority to turn
      * @return
      * @throws Exception

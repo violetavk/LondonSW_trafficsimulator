@@ -166,7 +166,6 @@ public abstract class VehicleDecorator implements IVehicle {
     public TrafficLight getVehicleTrafficLight(){
         return decoratedVehicle.getVehicleTrafficLight();
     }
-
     @Override
     public void setVehicleTrafficLight(TrafficLight vehicleTrafficLight){
         decoratedVehicle.setVehicleTrafficLight(vehicleTrafficLight);

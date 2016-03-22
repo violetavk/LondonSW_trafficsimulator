@@ -39,7 +39,7 @@ public interface IVehicle {
     void setPreviousCoordinate(Coordinate coord);
      boolean turnFirst (Lane l) throws Exception;
      int getVehiclePriorityToTurn();
-    void setVehiclePriorityToTurn(int vehiclePriorityToTurn);
+     void setVehiclePriorityToTurn(int vehiclePriorityToTurn);
      TrafficLight getVehicleTrafficLight();
-    void setVehicleTrafficLight(TrafficLight vehicleTrafficLight);
+     void setVehicleTrafficLight(TrafficLight vehicleTrafficLight);
 }

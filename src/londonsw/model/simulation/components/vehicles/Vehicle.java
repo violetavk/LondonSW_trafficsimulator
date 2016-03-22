@@ -60,15 +60,15 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
     /**
      * gets the traffic light that vehicle must read
-     * @return trafiic light in front of a vehicle in type of traffic light
+     * @return traffic light in front of a vehicle in type of traffic light
      */
     public TrafficLight getVehicleTrafficLight() {
         return vehicleTrafficLight;
     }
 
     /**
-     * sets the traffic lighrt for vehicle
-     * @param vehicleTrafficLight trffic light in front of vehicle
+     * sets the traffic light for vehicle
+     * @param vehicleTrafficLight traffic light in front of vehicle
      */
     public void setVehicleTrafficLight(TrafficLight vehicleTrafficLight) {
         this.vehicleTrafficLight = vehicleTrafficLight;
