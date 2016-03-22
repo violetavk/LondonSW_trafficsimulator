@@ -251,7 +251,7 @@ public class MapExamples {
         i10.setWestRoad(r10);
         i10.setNorthRoad(r16);
         i10.setSouthRoad(r21);
-        //i10.setDefaultTrafficLightsForRoads();
+        i10.setDefaultTrafficLightsForRoads();
 
 
         Intersection i12 = new Intersection(new Coordinate(8, 10));

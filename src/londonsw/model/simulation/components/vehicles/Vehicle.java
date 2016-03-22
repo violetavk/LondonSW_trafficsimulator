@@ -32,6 +32,8 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     Coordinate currentCoordinate;
     private Coordinate previousCoordinate;
     private Lane previousLane;
+    int vehiclePriorityToTurn;
+
 
     // debug only
     int timesTicked;
@@ -54,6 +56,15 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         id = ++counter;
     }
 
+    public void setVehiclePriorityToTurn(int vehiclePriorityToTurn) {
+        this.vehiclePriorityToTurn = vehiclePriorityToTurn;
+    }
+
+
+
+    public int getVehiclePriorityToTurn() {
+        return vehiclePriorityToTurn;
+    }
     public int getId() {
         return id;
     }
@@ -561,7 +572,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
 
             //validate if its end of lane
-            if ((l != null) /*&& (turnFirst(l)) */&& (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) && this.getVehicleState()==2)
+            if ((l != null) /*&& (turnFirst(l)) */&& (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) && this.getVehiclePriorityToTurn()==1)
                 {
                     oldLane.setCell(null, oldLane.getLength() - 1);
                     this.setCurrentLane(l);

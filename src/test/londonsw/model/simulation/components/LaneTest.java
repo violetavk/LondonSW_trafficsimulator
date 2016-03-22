@@ -775,7 +775,7 @@ public class LaneTest extends Application {
                 c++;}*/
 
          Car testCar;
-        for (int i=0; i<3; i++) {
+        for (int i=0; i<20; i++) {
           //  testCar = generateCarOnRoad(map, mapGridGUIDecorator, sp, 8, 1);
             //testCar = generateCarOnRoad(map, mapGridGUIDecorator, sp, 8, 0);
 

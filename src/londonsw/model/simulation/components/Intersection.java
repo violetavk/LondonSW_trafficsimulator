@@ -265,7 +265,7 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
             for (int i = 0; i < this.getNorthRoad().getNumberLanes(); i++) {
                 if ((this.getNorthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.SOUTH)) {
                     if ((this.getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
-                        this.getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriority(randomPriority.get(0));
+                        this.getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriorityToTurn(randomPriority.get(0));
                         vehicleInIntersection.add( this.getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection());
                     }
                 }
@@ -276,7 +276,7 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
             for (int i = 0; i < this.getSouthRoad().getNumberLanes(); i++) {
                 if ((this.getSouthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.NORTH)) {
                     if ((this.getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
-                        this.getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriority(randomPriority.get(1));
+                        this.getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriorityToTurn(randomPriority.get(1));
                         vehicleInIntersection.add( this.getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection());
                     }
                 }
@@ -287,7 +287,7 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
             for (int i = 0; i < this.getEastRoad().getNumberLanes(); i++) {
                 if ((this.getEastRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.WEST)) {
                     if ((this.getEastRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
-                        this.getEastRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriority(randomPriority.get(2));
+                        this.getEastRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriorityToTurn(randomPriority.get(2));
                         vehicleInIntersection.add( this.getEastRoad().getLaneAtIndex(i).getVehicleInIntersection());
                     }
                 }
@@ -298,7 +298,7 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
             for (int i = 0; i < this.getWestRoad().getNumberLanes(); i++) {
                 if ((this.getWestRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.EAST)) {
                     if ((this.getWestRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
-                        this.getWestRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriority(randomPriority.get(3));
+                        this.getWestRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriorityToTurn(randomPriority.get(3));
                         vehicleInIntersection.add( this.getWestRoad().getLaneAtIndex(i).getVehicleInIntersection());
                     }
                 }
@@ -312,21 +312,22 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
         int max=0;
 
         for (int i=0; i<vehicles.size();i++)
-        {System.out.println("ID is: " + vehicles.get(i).getId()+ "  priority is : "+ vehicles.get(i).getVehiclePriority());}
+        {System.out.println("ID is: " + vehicles.get(i).getId()+ "  priority is : "+ vehicles.get(i).getVehiclePriorityToTurn());}
 
 
 
         if (vehicles != null) {
     for (int i = 0; i < vehicles.size(); i++) {
-            if (max <= vehicles.get(i).getVehiclePriority())
-                max = vehicles.get(i).getVehiclePriority();
+            if (max <= vehicles.get(i).getVehiclePriorityToTurn())
+                max = vehicles.get(i).getVehiclePriorityToTurn();
     }
 
 
     for (int i = 0; i < vehicles.size(); i++) {
-            if (vehicles.get(i).getVehiclePriority() != max)
+            if (vehicles.get(i).getVehiclePriorityToTurn() != max)
             {System.out.println(vehicles.get(i).getId()+ " has to stop");
-                vehicles.get(i).setVehicleState(0);}
+                vehicles.get(i).setVehiclePriorityToTurn(0);}
+        else vehicles.get(i).setVehiclePriorityToTurn(1);
     }
 }
 
