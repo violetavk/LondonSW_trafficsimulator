@@ -249,6 +249,7 @@ public class Map implements Serializable {
              *      - link each new TrafficLightDecorator to the corresponding field in the IntersectionDecorator
              * */
             for(Intersection i : map.getIntersections()) {
+                i.subscribeToTicker();
                 IntersectionDecorator decorator = new IntersectionDecorator(i);
                 TrafficLight north = i.getNorthTrafficLight();
                 TrafficLight south = i.getSouthTrafficLight();

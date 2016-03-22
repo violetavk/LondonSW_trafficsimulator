@@ -2,6 +2,7 @@ package londonsw.model.simulation.components.vehicles;
 
 import londonsw.model.simulation.components.Coordinate;
 import londonsw.model.simulation.components.Lane;
+import londonsw.model.simulation.components.TrafficLight;
 import londonsw.model.simulation.components.VehicleBehavior;
 
 import java.util.ArrayList;
@@ -37,4 +38,8 @@ public interface IVehicle {
     Coordinate getStoredCurrentCoordinate();
     void setPreviousCoordinate(Coordinate coord);
      boolean turnFirst (Lane l) throws Exception;
+     int getVehiclePriorityToTurn();
+     void setVehiclePriorityToTurn(int vehiclePriorityToTurn);
+     TrafficLight getVehicleTrafficLight();
+     void setVehicleTrafficLight(TrafficLight vehicleTrafficLight);
 }
