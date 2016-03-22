@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by felix on 26/02/2016.
+ * This is the controller for all vehicle movement. It keeps track of all vehicles and their decorators. It also
+ * has the methods that facilitates vehicle movement in the model and in the map.
  */
 public class VehicleController {
 
@@ -54,6 +55,12 @@ public class VehicleController {
         moveVehicle(decorator, step);
     }
 
+    /**
+     * Moves the vehicle in the model and in the GUI
+     * @param vehicleGUIDecorator the GUI decorator for this vehicle
+     * @param step how many slots to move
+     * @throws Exception
+     */
     public static void moveVehicle(VehicleGUIDecorator vehicleGUIDecorator, int step) throws Exception {
 
         int move = 0;
@@ -61,31 +68,29 @@ public class VehicleController {
         vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
         vehicleGUIDecorator.setPreviousCoordinate(vehicleGUIDecorator.getCurrentCoordinate());
 
+        // Vehicle is at an intersection
         if (vehicleGUIDecorator.getCurrentCoordinate().equals(vehicleGUIDecorator.getCurrentLane().getExit())) {
             //only read when intersection is available
             vehicleGUIDecorator.readTrafficLight();
 
-
-            if (vehicleGUIDecorator.getVehicleState() == 1) {
-                // ArrayList<Lane> lanes = vehicleGUIDecorator.getLaneOptions();
-                //check next lane available
+            if (vehicleGUIDecorator.getVehicleState() == 1) { // if vehicle was moving
+                // get next lane available to move to
                 Lane l = vehicleGUIDecorator.chooseLane();
 
-                //  vehicleGUIDecorator.turnFirst(l);
-
-                vehicleGUIDecorator.setVehicleState(2); //move vehicle to intersection
-                move = vehicleGUIDecorator.vehicleTurn(l);
+                vehicleGUIDecorator.setVehicleState(2); // set vehicle's state to "in intersection"
+                move = vehicleGUIDecorator.vehicleTurn(l); // move the vehicle in the model and get a result int
             }
         } else {
-            if (vehicleGUIDecorator.getVehicleState() != 0) {
+            if (vehicleGUIDecorator.getVehicleState() != 0) { // if not at intersection, and wasn't stopped, move forward
                 move = vehicleGUIDecorator.moveVehicle(step);
             }
         }
 
-        if (vehicleGUIDecorator.getVehicleState() == 3) //vehicle is deleted just move to next space
-        {
+        if (vehicleGUIDecorator.getVehicleState() == 3) { //vehicle is deleted just move to next space
             vehicleGUIDecorator.moveVehicleGUI(move, vehicleGUIDecorator.getVehicleState());
-        } else if (move > 0)
+        }
+        else if(move>0 && vehicleGUIDecorator.getVehicleState()!=0) { // move the vehicle in the GUI
             vehicleGUIDecorator.moveVehicleGUI(move, vehicleGUIDecorator.getVehicleState());
+        }
     }
 }

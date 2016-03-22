@@ -6,6 +6,8 @@ import londonsw.model.simulation.components.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
@@ -178,6 +180,19 @@ public class VehicleTest {
 
         car.getLaneOptions();
         assertEquals(car.getLaneOptions().size(),2);
+    }
+
+    @Test
+    public void testGenerateRandom() throws Exception {
+       /* ArrayList<Integer>  l=Vehicle.generateRandom(4);
+        for (int i=0; i<l.size();i++)
+        System.out.println(l.get(i));
+
+        System.out.println(l);
+        System.out.println(l.size());*/
+
+
+
     }
 
 

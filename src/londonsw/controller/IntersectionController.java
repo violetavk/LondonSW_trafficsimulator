@@ -2,11 +2,13 @@ package londonsw.controller;
 
 
 import londonsw.model.simulation.components.Intersection;
+import londonsw.model.simulation.components.vehicles.Vehicle;
 import londonsw.view.simulation.IntersectionDecorator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class IntersectionController {
     private static Map<Intersection,IntersectionDecorator> intersections = new HashMap<Intersection,IntersectionDecorator>();
@@ -44,5 +46,18 @@ public class IntersectionController {
     public ArrayList<Intersection> getAllIntersections() {
         return allIntersections;
     }
+
+
+    public static boolean vehicleTurnFirst(Intersection intersection, ArrayList<Vehicle> vehicles)throws Exception{
+
+        ArrayList<Integer>  randomPriority = (ArrayList < Integer>) intersection.generateRandom().clone();
+
+
+        intersection.vehicleTurnFirst(intersection.giveVehiclePriorities(randomPriority));
+
+
+
+        return true;}
+
 
 }

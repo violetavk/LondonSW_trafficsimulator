@@ -29,18 +29,15 @@ public class MapGridGUITestMain extends Application {
 
         String logFile = "Log_MapGridGUITestMain";
 
-
-        Map map = MapExamples.drawMap1();
+        //Map map = MapExamples.drawMap1();
+        Map map = MapExamples.dratMap4();
 
 //        Map map = MapExamples.drawTestMapExample();
+
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
         double width = mapGridGUIDecorator.getWidth();
         double height = mapGridGUIDecorator.getHeight();
-
-        //mapGridGUIDecorator.setResizeFactor(new ResizeFactor((map.getWidth()/(5*1.0)) / width, (map.getHeight()/(5*1.0)) / height));    //TODO HARDCODE
-
-        //mapGridGUIDecorator.setResizeFactor(new ResizeFactor(1,1));
 
         ResizeFactor rf = ResizeFactor.getSuggestedResizeFactor(map.getWidth(), map.getHeight());
         mapGridGUIDecorator.setResizeFactor(rf);
@@ -93,7 +90,7 @@ public class MapGridGUITestMain extends Application {
 
         Car testCar;
         int c=0;
-        for (int i=0; i<10; i++){
+        for (int i=0; i<20; i++){
             testCar = generateCar(map,mapGridGUIDecorator,sp);
             if (testCar!=null)
                 c++;}
@@ -136,12 +133,6 @@ public class MapGridGUITestMain extends Application {
 
 
         Scene scene = new Scene(sp);
-        primaryStage.setTitle("Map Layout");
-        primaryStage.setScene(scene);
-
-        primaryStage.show();
-        primaryStage.setResizable(false);
-
         primaryStage.setTitle("Map Layout");
         primaryStage.setScene(scene);
 
