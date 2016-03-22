@@ -1,7 +1,8 @@
 package londonsw.model.simulation.components;
 
 /**
- * Created by yakubu on 19/02/2016.
+ * This enum represents the types of colors that a TrafficLight could have. The system only uses RED and GREEN at the moment,
+ * but in case YELLOW was to be added in the future, it is included here as well.
  */
 public enum LightColour {
     GREEN, YELLOW, RED

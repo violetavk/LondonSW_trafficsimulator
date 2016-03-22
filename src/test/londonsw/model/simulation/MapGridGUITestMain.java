@@ -9,33 +9,38 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.ResizeFactor;
+import londonsw.model.simulation.components.TrafficLight;
 import londonsw.model.simulation.components.vehicles.Ambulance;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.view.simulation.MapExamples;
 import londonsw.view.simulation.MapGridGUIDecorator;
 import londonsw.view.simulation.VehicleGUIDecorator;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
 
 public class MapGridGUITestMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Map map = MapExamples.drawMap1();
+        //Delete log file if exists
 
-        //Map map = MapExamples.drawTestMapExample();
+        String logFile = "Log_MapGridGUITestMain";
+
+        //Map map = MapExamples.drawMap1();
+        Map map = MapExamples.dratMap4();
+
+//        Map map = MapExamples.drawTestMapExample();
 
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
 
         double width = mapGridGUIDecorator.getWidth();
         double height = mapGridGUIDecorator.getHeight();
 
-        //mapGridGUIDecorator.setResizeFactor(new ResizeFactor((map.getWidth()/(5*1.0)) / width, (map.getHeight()/(5*1.0)) / height));    //TODO HARDCODE
-
-        //mapGridGUIDecorator.setResizeFactor(new ResizeFactor(1,1));
-
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(.25,.25));
+        ResizeFactor rf = ResizeFactor.getSuggestedResizeFactor(map.getWidth(), map.getHeight());
+        mapGridGUIDecorator.setResizeFactor(rf);
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 
@@ -85,7 +90,7 @@ public class MapGridGUITestMain extends Application {
 
         Car testCar;
         int c=0;
-        for (int i=0; i<10; i++){
+        for (int i=0; i<20; i++){
             testCar = generateCar(map,mapGridGUIDecorator,sp);
             if (testCar!=null)
                 c++;}
@@ -95,6 +100,8 @@ public class MapGridGUITestMain extends Application {
          * We can now use a single button to spawn and un-spawn ambulance.
          * We can also remove it from simulation
          */
+
+        /*
         sp.setOnMouseClicked(event -> {
 
                     ArrayList subscribers = Ticker.getSubscribers();
@@ -121,6 +128,9 @@ public class MapGridGUITestMain extends Application {
 
 
         });
+        */
+
+
 
         Scene scene = new Scene(sp);
         primaryStage.setTitle("Map Layout");
@@ -129,14 +139,9 @@ public class MapGridGUITestMain extends Application {
         primaryStage.show();
         primaryStage.setResizable(false);
 
-        primaryStage.setTitle("Map Layout");
-        primaryStage.setScene(scene);
-
-        primaryStage.show();
-        primaryStage.setResizable(false);
+        Log log = new Log(logFile);
 
         //primaryStage.setFullScreen(true);
-
     }
 
     /**
@@ -208,7 +213,7 @@ public class MapGridGUITestMain extends Application {
                             sp.getChildren().add(carPane);
                             vehicleGUIDecorator.setPane(carPane);
                             vehicleGUIDecorator.setVehicleState(1);
-                            System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
+                            //System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
                             return C1;
 
                         }

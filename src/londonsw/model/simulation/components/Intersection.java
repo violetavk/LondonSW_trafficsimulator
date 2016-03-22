@@ -1,5 +1,10 @@
 package londonsw.model.simulation.components;
 
+import londonsw.controller.IntersectionController;
+import londonsw.model.simulation.components.vehicles.Vehicle;
+import rx.Subscriber;
+import londonsw.model.simulation.Ticker;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,7 +22,7 @@ import java.util.Random;
  */
 
 
-public class Intersection implements Component, Serializable {
+public class Intersection extends Subscriber<Long> implements Component, Serializable {
 
     private static final long serialVersionUID = -2621352799268337492L;
     private Road northRoad;
@@ -45,6 +50,7 @@ public class Intersection implements Component, Serializable {
         this.southTrafficLight = null;
         this.eastTrafficLight = null;
         this.westTrafficLight = null;
+        Ticker.subscribe(this);
 
         id=++counter;
     }
@@ -228,6 +234,168 @@ public class Intersection implements Component, Serializable {
             }
         }
     }
+
+
+    /**
+     * generate a list of 4 items form 1 to 4
+     * these items are placed in the array randomly
+     * @return list of integer in type of ArrayList
+     */
+    public static ArrayList<Integer> generateRandom (){
+        int size =4;
+        ArrayList<Integer> list = new ArrayList<Integer>(size);
+        ArrayList<Integer> l = new ArrayList<Integer>(size);
+
+        for(int i = 1; i <= size; i++) {
+            list.add(i);
+        }Random rand = new Random();
+        while(list.size() > 0) {
+            int index = rand.nextInt(list.size());
+            l.add(list.get(index));
+           // System.out.println("Selected: "+list.remove(index));
+            list.remove(index);
+        }
+
+        return l;
+
+    }
+
+
+    /**
+     * intersection gives each vehicle on it a priority to turn first
+     * first it checks :
+     * 1. if there is a road connected to it.
+     * 2. if in the road there is a lane which its direction to this intersection
+     * 3. if there is a vehicle at the last cell in this lane, which is this intersection
+     * if these conditions are obtained , then the intersection gives this vehicle a priority to turn
+     * and put these vehicle in arrayList .
+     * @param randomPriority a list 4 items form 1 to 4, arranged randomly in the array list
+     * @return vehicleInIntersection an arrayList in type of integer , which contains all vehicles which
+     * has priority to turn
+     * @throws
+     */
+    public ArrayList<Vehicle> giveVehiclePriorities (ArrayList<Integer>  randomPriority) throws Exception {
+
+       // ArrayList<Integer>  randomPriority = (ArrayList<Integer>)this.generateRandom(4).clone();
+        ArrayList<Vehicle> vehicleInIntersection= new ArrayList<>() ;
+
+        if (this.getNorthRoad() != null) {
+            for (int i = 0; i < this.getNorthRoad().getNumberLanes(); i++) {
+                if ((this.getNorthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.SOUTH)) {
+                    if ((this.getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                        this.getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriorityToTurn(randomPriority.get(0));
+                        vehicleInIntersection.add( this.getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection());
+                    }
+                }
+            }
+        }
+
+        if (this.getSouthRoad() != null) {
+            for (int i = 0; i < this.getSouthRoad().getNumberLanes(); i++) {
+                if ((this.getSouthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.NORTH)) {
+                    if ((this.getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                        this.getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriorityToTurn(randomPriority.get(1));
+                        vehicleInIntersection.add( this.getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection());
+                    }
+                }
+            }
+        }
+
+        if (this.getEastRoad() != null) {
+            for (int i = 0; i < this.getEastRoad().getNumberLanes(); i++) {
+                if ((this.getEastRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.WEST)) {
+                    if ((this.getEastRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                        this.getEastRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriorityToTurn(randomPriority.get(2));
+                        vehicleInIntersection.add( this.getEastRoad().getLaneAtIndex(i).getVehicleInIntersection());
+                    }
+                }
+            }
+        }
+
+        if (this.getWestRoad() != null) {
+            for (int i = 0; i < this.getWestRoad().getNumberLanes(); i++) {
+                if ((this.getWestRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.EAST)) {
+                    if ((this.getWestRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
+                        this.getWestRoad().getLaneAtIndex(i).getVehicleInIntersection().setVehiclePriorityToTurn(randomPriority.get(3));
+                        vehicleInIntersection.add( this.getWestRoad().getLaneAtIndex(i).getVehicleInIntersection());
+                    }
+                }
+            }
+        }
+        return vehicleInIntersection;
+
+    }
+
+    /**
+     * checks the vehicle with higher priority to turn
+     * if a vehicle has a higher priority
+     * it sets its priority to turn to 1
+     * otherwise sets it to 0
+     * @param vehicles an array list in type of integer which contains all vehicles which has priority to turn
+     * @return
+     * @throws Exception
+     */
+    public boolean vehicleTurnFirst (ArrayList<Vehicle> vehicles)throws Exception{
+        int max=0;
+
+       // for (int i=0; i<vehicles.size();i++)
+       // {System.out.println("ID is: " + vehicles.get(i).getId()+ "  priority is : "+ vehicles.get(i).getVehiclePriorityToTurn());}
+
+
+        if (vehicles != null) {
+    for (int i = 0; i < vehicles.size(); i++) {
+            if (max <= vehicles.get(i).getVehiclePriorityToTurn())
+                max = vehicles.get(i).getVehiclePriorityToTurn();
+    }
+
+
+    for (int i = 0; i < vehicles.size(); i++) {
+            if (vehicles.get(i).getVehiclePriorityToTurn() != max)
+            {System.out.println(vehicles.get(i).getId()+ " has to stop");
+                vehicles.get(i).setVehiclePriorityToTurn(0);}
+        else vehicles.get(i).setVehiclePriorityToTurn(1);
+    }
+}
+
+        return true;
+    }
+
+
+    /**
+     * This is the method that gets called when the ticker terminates
+     *  Left not implemented on purpose
+     */
+    @Override
+    public void onCompleted() {
+
+    }
+
+    /**
+     * If there's some error with the ticker and this subscriber, this method would call.
+     * Left not implemented on purpose
+     * @param throwable
+     */
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    /**
+     * This is like the onTick method. This is what intersection would do when the ticker ticks.
+     * @param aLong this gives the current time in the system to the intersection (although it is probably not required)
+     */
+    @Override
+    public void onNext(Long aLong){
+        try {
+
+            IntersectionController.vehicleTurnFirst(this, this.giveVehiclePriorities(this.generateRandom()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 }
 

@@ -6,25 +6,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by violet on 12/02/2016.
+ * This enum is to represent different types of behaviours vehicles can have. For instance, a Car might have average
+ * behaviour, but an Ambulance has aggressive behaviour.
  */
-/*public enum VehicleBehavior {
-    STRAIGHT, LEFT, RIGHT;
-
-
-    //To pick a direction randomly
-    private static final List<VehicleBehavior> VALUES= Collections.unmodifiableList(Arrays.asList(values()));
-    private static final int size = VALUES.size();
-    private static  final Random RANDOM= new Random();
-    public static VehicleBehavior randomLetter(){
-        return VALUES.get(RANDOM.nextInt(size));
-    }
-
-
-
-}*/
-//give vehicle Behavior randomly
-
 public enum VehicleBehavior{
     AVERAGE, CAUTIOUS, AGGRESSIVE;
 

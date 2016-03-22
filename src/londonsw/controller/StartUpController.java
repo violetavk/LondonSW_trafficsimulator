@@ -2,6 +2,7 @@ package londonsw.controller;
 
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,15 +47,6 @@ public class StartUpController extends Application{
     public Button simulationModeButton;
     public Button mapMakerButton;
 
-
-    @FXML private TextField width;
-
-    @FXML private TextField height;
-
-
-
-    @FXML public static String mapName;
-
     public void startSoftware(String[] args) {
         launch(args);
     }
@@ -66,6 +58,7 @@ public class StartUpController extends Application{
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show();
+        primaryStage.centerOnScreen();
     }
 
 
@@ -73,6 +66,8 @@ public class StartUpController extends Application{
         Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../view/startup/ChooseModeScreen.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(new Scene(chooseModeScreen));
+        stage.centerOnScreen();
+        stage.setResizable(false);
     }
 
     /**
@@ -81,50 +76,20 @@ public class StartUpController extends Application{
      * @throws Exception
      */
     public void goToSimulationMode(ActionEvent actionEvent) throws Exception {
-
-       // Parent simulationModeScreen  = FXMLLoader.load(getClass().getResource("../view/startup/SimulationMode" + ".fxml"));
-
-       // Node node = simulationModeScreen.lookup("#Scene");
-        //Pane p = (Pane) node;
-
-        //Create map
         FileChooser chooser=new FileChooser();
-        chooser.setTitle("Open File");
+        chooser.setTitle("Open Map");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Map File (*.map)", "*.map"));
         File file = chooser.showOpenDialog(new Stage());
-
-        mapName=file.getName();
 
         if(file!=null)
         {
-            Map map = Map.loadMap(file.getName());
-
-            // Map map = new Map(20,20);
+            String mapName = file.getName();
 
             //Decorate map to extend to GUI functionality
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             SimulationController simulationController = new SimulationController(stage);
             simulationController.setMapName(mapName);
             simulationController.drawScreen();
-
-           // MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
-
-            //Always apply resize
-           // mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
-
-
-            //Instantiate GridPane that will contain empty map with grass
-           // GridPane root = mapGridGUIDecorator.drawComponents();
-
-
-            //p.getChildren().add(root);
-
-           // Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-            //stage.setScene(new Scene(simulationModeScreen));
-        }
-        else
-        {
-            //TODO: no file selected
         }
     }
 
@@ -139,17 +104,18 @@ public class StartUpController extends Application{
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
-        ButtonType doneButton = new ButtonType("Done", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(doneButton, ButtonType.CANCEL);
+//        ButtonType doneButton = new ButtonType("Done", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         ObservableList<Integer> choices = FXCollections.observableArrayList();
-        for(int i = 5; i <= 50; i++) {
+        for(int i = 5; i <= 30; i++) {
             choices.add(i);
         }
 
         ChoiceBox<Integer> widthBox = new ChoiceBox<>();
         widthBox.setItems(choices);
         widthBox.setMinWidth(100);
+        Platform.runLater(() -> widthBox.requestFocus());
         ChoiceBox<Integer> heightBox = new ChoiceBox<>();
         heightBox.setItems(choices);
         heightBox.setMinWidth(100);
@@ -161,8 +127,15 @@ public class StartUpController extends Application{
 
         dialog.getDialogPane().setContent(grid);
 
+        Button doneBtn = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        doneBtn.setDisable(true);
+        doneBtn.disableProperty().bind(
+                widthBox.valueProperty().isNull()
+                .or(heightBox.valueProperty().isNull())
+        );
+
         dialog.setResultConverter(dialogButton -> {
-            if(dialogButton == doneButton) {
+            if(dialogButton == ButtonType.OK) {
                 return new Pair<>(widthBox.getValue().toString(),heightBox.getValue().toString());
             }
             return null;
@@ -185,35 +158,6 @@ public class StartUpController extends Application{
             }
         });
 
-
-
-    }
-
-    public void goToMapCreationScreen(ActionEvent actionEvent) throws Exception {
-
-        //String mapWidth=test
-
-
-        Parent mapCreation = FXMLLoader.load(getClass().getResource("../view/mapcreation/MapCreation" + ".fxml"));
-        int w = Integer.parseInt(width.getText());
-        int h= Integer.parseInt(height.getText());
-
-
-        Map map = new Map(w,h);
-        //Decorate map to extend to GUI functionality
-        MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
-        //Always apply resize
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0/map.getWidth(),5.0/map.getHeight()));
-        //Instantiate GridPane that will contain empty map with grass
-        GridPane root = mapGridGUIDecorator.drawComponents();
-
-        GridPane mapGrid =(GridPane) mapCreation.lookup("mapView");
-        mapGrid.getChildren().add(root);
-
-
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        stage.setScene(new Scene(mapCreation));
     }
 
 }

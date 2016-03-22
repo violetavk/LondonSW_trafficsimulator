@@ -27,7 +27,7 @@ public class LaneArrow extends Polygon {
     public LaneArrow(Lane lane, Line roadLine, ResizeFactor resizeFactor) {
         this.lane = lane;
 
-        double arrowResizeFactor = resizeFactor.getResizeX() * 1.75;
+        double arrowResizeFactor = resizeFactor.getResizeX() * 2.5;
 
         this.getPoints().addAll(
                 0.0 * arrowResizeFactor, 5.0 * arrowResizeFactor,

@@ -16,12 +16,14 @@ public class TrafficLightController {
 
     private Map<TrafficLight, TrafficLightDecorator> trafficLights;
     private ArrayList<TrafficLight> allLights;
+    private long DURATION;
 
     private static TrafficLightController instance;
 
     protected TrafficLightController() {
         trafficLights = new HashMap<>();
         allLights = new ArrayList<>();
+        DURATION = 3000;
     }
 
     public static TrafficLightController getInstance() {
@@ -48,7 +50,7 @@ public class TrafficLightController {
      */
     public void colourChanged(LightColour colour, TrafficLight tl) {
         if(trafficLights.get(tl) == null) {
-            System.out.println("No TrafficLightDecorator associated with this traffic light");
+            return;
         }
         trafficLights.get(tl).setGUIColour(colour);
     }
@@ -79,6 +81,22 @@ public class TrafficLightController {
      */
     public ArrayList<TrafficLight> getAllTrafficLights() {
         return allLights;
+    }
+
+    /**
+     * Gets the duration length for traffic lights. Traffic lights call this method to know how long to be a certain color.
+     * @return length of duration in millis
+     */
+    public long getDurationLength() {
+        return DURATION;
+    }
+
+    /**
+     * Sets the duration length for traffic lights
+     * @param duration the duration for the traffic lights in millis
+     */
+    public void setDurationLength(long duration) {
+        this.DURATION = duration;
     }
 
     /**

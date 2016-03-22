@@ -25,7 +25,7 @@ public class MapTest {
     @Test
     public void testLoadMap() throws Exception {
         System.out.println("Opening map...");
-        Map loaded = Map.loadMap("FixedMap.map");
+        Map loaded = Map.loadMap("BigMap.map");
 
 
 
