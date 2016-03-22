@@ -3,8 +3,11 @@ package londonsw.view.simulation;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -28,6 +31,7 @@ import javafx.scene.text.Text;
 import javafx.util.converter.IntegerStringConverter;
 import londonsw.model.simulation.components.vehicles.Vehicle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -75,20 +79,41 @@ public class SimulationScreen {
         mapSceneIndex++;
         borderPane.setCenter(mapPane);
 
+        //Back
+        StackPane backPane = new StackPane();
+        backPane.setPadding(new Insets(10,10,10,10));
+        Button backButton = new Button("Back");
+        backButton.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 16));
+        backButton.setStyle("-fx-base:Gold");
+        backPane.getChildren().add(backButton);
+        backPane.setAlignment(backButton,Pos.CENTER);
+        borderPane.setBottom(backPane);
+
         //Start&Reset
 
         VBox simulationControl = new VBox();
 
+        simulationControl.setPadding(new Insets(10,10,10,10));
+        simulationControl.setSpacing(10);
+        simulationControl.setAlignment(Pos.TOP_RIGHT);
+
         Label carNumberSituation = new Label();
-        carNumberSituation.setText("There are " + String.valueOf(initCar) + " car in the system");
+        carNumberSituation.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
+        carNumberSituation.setText("Car Number: " + String.valueOf(initCar));
         simulationControl.getChildren().add(carNumberSituation);
 
         Label tickerSituation = new Label();
+        tickerSituation.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
         tickerSituation.setText("Ticker Interval: 0 ");
         simulationControl.getChildren().add(tickerSituation);
 
         Button startSimulation = new Button("Start");
+        startSimulation.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
+        startSimulation.setStyle("-fx-base:Gold");
+
         Button resetSimulation = new Button("Reset");
+        resetSimulation.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
+        resetSimulation.setStyle("-fx-base:Gold");
 
         startSimulation.setPadding(new Insets(10, 10, 10, 10));
         startSimulation.setPrefSize(90, 30);
@@ -97,10 +122,10 @@ public class SimulationScreen {
         resetSimulation.setPadding(new Insets(10, 10, 10, 10));
         resetSimulation.setPrefSize(90, 30);
         simulationControl.getChildren().add(resetSimulation);
-        // borderPane.setRight(simulationControl);
 
-        //Add/Delete ambulance
         Button ambulanceAddDelete = new Button("Add/Delete Ambulance");
+        ambulanceAddDelete.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
+        ambulanceAddDelete.setStyle("-fx-base:Gold");
         ambulanceAddDelete.setPrefSize(160,30);
         simulationControl.getChildren().add(ambulanceAddDelete);
 
@@ -109,6 +134,7 @@ public class SimulationScreen {
         sliderControl.setPadding(new Insets(20, 20, 20, 20));
         Pane carLabel = new Pane();
         Label carNumber = new Label("Car Number");
+        carNumber.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         carLabel.getChildren().add(carNumber);
         sliderControl.getChildren().add(carLabel);
 
@@ -118,6 +144,10 @@ public class SimulationScreen {
         slider.setShowTickLabels(true);
         slider.setMajorTickUnit(10);
         //slider.setBlockIncrement(1);
+
+        backButton.setOnMouseClicked(click->{
+            //TODO
+        });
 
         /**
          * Using a slider control the number of cars in the system
