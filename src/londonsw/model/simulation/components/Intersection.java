@@ -107,6 +107,13 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
         this.id = id;
     }
 
+    /**
+     * Subscribes this intersection to the Ticker. This is expecially useful when loading maps from file!
+     */
+    public void subscribeToTicker() {
+        Ticker.subscribe(this);
+    }
+
 
     public void setNorthRoad(Road northRoad) throws Exception {
         if((this.location.getX() == northRoad.getEndLocation().getX()
