@@ -2,6 +2,7 @@ package londonsw.controller;
 
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -77,6 +78,7 @@ public class StartUpController extends Application{
     public void goToSimulationMode(ActionEvent actionEvent) throws Exception {
         FileChooser chooser=new FileChooser();
         chooser.setTitle("Open Map");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Map File (*.map)", "*.map"));
         File file = chooser.showOpenDialog(new Stage());
 
         if(file!=null)
@@ -102,17 +104,18 @@ public class StartUpController extends Application{
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
-        ButtonType doneButton = new ButtonType("Done", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(doneButton, ButtonType.CANCEL);
+//        ButtonType doneButton = new ButtonType("Done", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         ObservableList<Integer> choices = FXCollections.observableArrayList();
-        for(int i = 5; i <= 50; i++) {
+        for(int i = 5; i <= 30; i++) {
             choices.add(i);
         }
 
         ChoiceBox<Integer> widthBox = new ChoiceBox<>();
         widthBox.setItems(choices);
         widthBox.setMinWidth(100);
+        Platform.runLater(() -> widthBox.requestFocus());
         ChoiceBox<Integer> heightBox = new ChoiceBox<>();
         heightBox.setItems(choices);
         heightBox.setMinWidth(100);
@@ -124,8 +127,15 @@ public class StartUpController extends Application{
 
         dialog.getDialogPane().setContent(grid);
 
+        Button doneBtn = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        doneBtn.setDisable(true);
+        doneBtn.disableProperty().bind(
+                widthBox.valueProperty().isNull()
+                .or(heightBox.valueProperty().isNull())
+        );
+
         dialog.setResultConverter(dialogButton -> {
-            if(dialogButton == doneButton) {
+            if(dialogButton == ButtonType.OK) {
                 return new Pair<>(widthBox.getValue().toString(),heightBox.getValue().toString());
             }
             return null;
