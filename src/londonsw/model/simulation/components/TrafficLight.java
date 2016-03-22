@@ -14,27 +14,20 @@ public class TrafficLight extends Subscriber<Long> implements Serializable {
 
     private static final long serialVersionUID = 1299747948664926447L;
     private LightColour state;
-    private long duration = 1000;
+    private long duration;
     private long currentTime;
     private static int counter = 0;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     private int id;
 
     /**
      * Default constructor, initial light color is red
      */
     public TrafficLight() {
-        this.currentTime = 0;
-        Ticker.subscribe(this); // this line may not be necessary if we're only loading maps from files
-        state = LightColour.RED;
+        this.currentTime = 1000;
+        Ticker.subscribe(this);
+        this.state = LightColour.RED;
+        this.id = ++counter;
+        this.duration = TrafficLightController.getInstance().getDurationLength();
     }
 
     /**
@@ -42,10 +35,11 @@ public class TrafficLight extends Subscriber<Long> implements Serializable {
      * @param colour the initial color of the traffic light
      */
     public TrafficLight(LightColour colour) {
-        this.currentTime = 0;
+        this.currentTime = 1000;
         Ticker.subscribe(this);
         this.state = colour;
         this.id = ++counter;
+        this.duration = TrafficLightController.getInstance().getDurationLength();
     }
 
     /**
@@ -61,6 +55,22 @@ public class TrafficLight extends Subscriber<Long> implements Serializable {
      */
     public LightColour getState() {
         return state;
+    }
+
+    /**
+     * Gets the ID of the traffic light, useful for logging
+     * @return the id of this traffic light instance
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id of the traffic light
+     * @param id the desired id of the traffic light
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -135,10 +145,10 @@ public class TrafficLight extends Subscriber<Long> implements Serializable {
     @Override
     public void onNext(Long aLong) {
         if(currentTime < (duration)) {
-            currentTime += Ticker.getTickInterval();
+            currentTime += 1000;
         }
         else {
-            currentTime = Ticker.getTickInterval();
+            currentTime = 1000;
             nextState();
             TrafficLightController.getInstance().colourChanged(state, this);
         }

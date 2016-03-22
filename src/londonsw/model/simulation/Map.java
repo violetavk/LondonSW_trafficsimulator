@@ -279,7 +279,8 @@ public class Map implements Serializable {
             System.out.println("# TrafficLights's subscribed: " + Ticker.getSubscribers().size());
             System.out.println("# of lights added: " + TrafficLightController.getInstance().getAllTrafficLights().size());
             System.out.println("# of decorators: " + TrafficLightController.getInstance().getTrafficLightsMap().size());
-
+            long duration = TrafficLightController.getInstance().getDurationLength();
+            TrafficLightController.getInstance().setTrafficLightDuration(duration);
         } catch(IOException i) {
             System.out.println("IO Exception");
             i.printStackTrace();
