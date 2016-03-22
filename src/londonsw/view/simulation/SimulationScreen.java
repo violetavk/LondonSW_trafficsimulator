@@ -6,9 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -20,7 +18,6 @@ import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Map;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.ResizeFactor;
-import javafx.scene.control.Button;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import londonsw.model.simulation.components.Lane;
@@ -45,6 +42,7 @@ public class SimulationScreen {
     private int flag = 0;
 
     private int systemState = 0;
+
 
     public SimulationScreen(Map map) {
         this.map = map;
@@ -83,6 +81,10 @@ public class SimulationScreen {
         Label carNumberSituation = new Label();
         carNumberSituation.setText("There are " + String.valueOf(initCar) + " car in the system");
         simulationControl.getChildren().add(carNumberSituation);
+
+        Label tickerSituation = new Label();
+        tickerSituation.setText("Ticker Interval: 0 ");
+        simulationControl.getChildren().add(tickerSituation);
 
         Button startSimulation = new Button("Start");
         Button resetSimulation = new Button("Reset");
@@ -177,7 +179,7 @@ public class SimulationScreen {
         //StackPane sp = new StackPane();
 
         /**
-         * Set TickerInterval first
+         * Set TickerInterval first, if it is a valid number simulation will start
          */
 
         startSimulation.setOnMouseClicked(click->{
@@ -188,22 +190,40 @@ public class SimulationScreen {
             Optional<String> tickerInterval = tickerSet.showAndWait();
             tickerInterval.ifPresent(systemSpeed->{
                 Long speed = new Long(systemSpeed);
-                System.out.println(systemSpeed);
-                Ticker.setTickInterval(speed);
-                System.out.println("Start Simulation");
-                systemState = 1;
-                StackPane carStackPane = new StackPane();
-                initCar = (int) slider.getValue();
-                carNumberSituation.setText("There are " + String.valueOf(initCar) + " cars in the system");
-                for (int i = 0; i < initCar; i++) {
-                    generateCar(map, mapGridGUIDecorator, carStackPane);
+                if(speed>=100 && speed<=1000) {
+                    System.out.println(systemSpeed);
+                    tickerSituation.setText("Ticker Interval:" + speed);
+                    Ticker.setTickInterval(speed);
+                    System.out.println("Start Simulation");
+                    systemState = 1;
+                    StackPane carStackPane = new StackPane();
+                    initCar = (int) slider.getValue();
+                    carNumberSituation.setText("There are " + String.valueOf(initCar) + " cars in the system");
+                    for (int i = 0; i < initCar; i++) {
+                        generateCar(map, mapGridGUIDecorator, carStackPane);
+                    }
+                    mapPane.getChildren().add(mapSceneIndex, carStackPane);
+                    mapSceneIndex++;
                 }
-                mapPane.getChildren().add(mapSceneIndex,carStackPane);
-                mapSceneIndex++;
+                else
+                {
+                    Alert tickerIntervalAlert = new Alert(Alert.AlertType.ERROR);
+                    tickerIntervalAlert.setTitle("Error Dialog");
+                    tickerIntervalAlert.setHeaderText("Ooops, invalid Ticker Interval");
+                    tickerIntervalAlert.setContentText("Ticker Interval should be a number between 100 and 1000! ");
+                    tickerIntervalAlert.showAndWait().ifPresent(response->{
+                        if(response == ButtonType.OK){
+                            //TODO
+                        }
+                    });
+
+                }
                 }
             );
 
         });
+
+
 
         /**
          * To stop simulation
@@ -217,6 +237,8 @@ public class SimulationScreen {
             mapSceneIndex = 1;
         });
     }
+
+
 
     /**
      * Car generator
