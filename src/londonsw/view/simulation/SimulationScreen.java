@@ -71,7 +71,8 @@ public class SimulationScreen {
         Pane mapPane = new Pane();
         Map map = this.map;
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(5.0 / map.getWidth(), 5.0/ map.getHeight()));
+        ResizeFactor rf = ResizeFactor.getSuggestedResizeFactor(map.getWidth(), map.getHeight());
+        mapGridGUIDecorator.setResizeFactor(rf);
         GridPane mapGridPane = mapGridGUIDecorator.drawComponents();
         mapPane.setPadding(new Insets(0, 0, 5, 5));
         mapPane.getChildren().add(mapSceneIndex, mapGridPane);
