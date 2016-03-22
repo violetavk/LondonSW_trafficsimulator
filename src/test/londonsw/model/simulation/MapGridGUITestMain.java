@@ -42,7 +42,8 @@ public class MapGridGUITestMain extends Application {
 
         //mapGridGUIDecorator.setResizeFactor(new ResizeFactor(1,1));
 
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(.25,.25));
+        ResizeFactor rf = ResizeFactor.getSuggestedResizeFactor(map.getWidth(), map.getHeight());
+        mapGridGUIDecorator.setResizeFactor(rf);
 
         GridPane rootGP = mapGridGUIDecorator.drawComponents();
 

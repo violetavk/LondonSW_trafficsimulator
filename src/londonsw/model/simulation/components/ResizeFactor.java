@@ -1,120 +1,69 @@
 package londonsw.model.simulation.components;
 
+import java.math.BigDecimal;
+
 /**
- * Created by felix on 28/02/2016.
+ * This class represents how images will be resized to fit on the screen. Each image in our system is 100x100, but they
+ * need to be scaled down in order to be displayed properly. This is used throughout the system, for drawing the grid
+ * squares, vehicles, and determining the location to where vehicles will move.
  */
 public class ResizeFactor {
 
     private double resizeX;
     private double resizeY;
 
+    /**
+     * Creates a new ResizeFactor instance. There are two parameters, although only one is used in most situations. This
+     * is so that each square image maintains its aspect ratio. The typical range for resize factors is from 0 < ResizeFactor < 1.
+     * @param resizeX how much to resize the x direction by
+     * @param resizeY how much to resize the y direction by
+     */
     public ResizeFactor(double resizeX, double resizeY) {
-
         this.resizeX = resizeX;
         this.resizeY = resizeY;
     }
 
     /**
-     * Desc
-     * @return
+     * Gets the resize factor of the x-direction
+     * @return resize factor of x
      */
     public double getResizeX() {
         return resizeX;
     }
 
     /**
-     *
-     * @param resizeX
+     * Gets the resize factor of the y-direction
+     * @return resize factor of y
      */
-    public void setResizeX(double resizeX) {
-        this.resizeX = resizeX;
-    }
-
     public double getResizeY() {
         return resizeY;
     }
 
-    public void setResizeY(double resizeY) {
-        this.resizeY = resizeY;
-    }
+    /**
+     * Dynamically determines the resize factor for a map. Given a map width and height, determine the best
+     * resize factor so that the map best displays on the user's display. It uses the larger of the two dimensions
+     * to determine the best fitting resize factor.
+     * @param mapWidth width of the map to get a resize factor for
+     * @param mapHeight height of the map to get a resize factor for
+     * @return a ResizeFactor that is good for the given map dimensions
+     */
+    public static ResizeFactor getSuggestedResizeFactor(int mapWidth, int mapHeight) {
+        int larger = mapHeight > mapWidth ? mapHeight : mapWidth;
 
-//    public static ResizeFactor getSuggestedResizeFactor(int mapWidth, int mapHeight) {
-//        double resizeFactor = 1;
-//         // TODO just figure out some formula.. maybe.. make sure simulation doesn't break
-//
-//        if(mapWidth >= 5 && mapWidth <= 15) {
-//            if(mapHeight >= 5 && mapHeight <= 7) {
-//                resizeFactor = 0.7;
-//            }
-//            if(mapHeight >= 8 && mapHeight <= 9) {
-//                resizeFactor = 0.6;
-//            }
-//            if(mapHeight >= 10 && mapHeight <= 12) {
-//                resizeFactor = 0.5;
-//            }
-//            if(mapHeight >= 13 && mapHeight <= 15) {
-//                resizeFactor = 0.4;
-//            }
-//            if(mapHeight >= 16 && mapHeight <= 18) {
-//                resizeFactor = 0.35;
-//            }
-//            if(mapHeight >= 19 && mapHeight <= 22) {
-//                resizeFactor = 0.3;
-//            }
-//            if(mapHeight >= 23 && mapHeight <= 26) {
-//                resizeFactor = .25;
-//            }
-//            if(mapHeight >= 27 && mapHeight <= 30) {
-//                resizeFactor = 0.22;
-//            }
-//            if(mapHeight >= 31 && mapHeight <= 33) {
-//                resizeFactor = 0.2;
-//            }
-//            if(mapHeight >= 34 && mapHeight <= 38) {
-//                resizeFactor = 0.17;
-//            }
-//            if(mapHeight >= 39 && mapHeight <= 40) {
-//                resizeFactor = 0.15;
-//            }
-//        }
-//        if(mapWidth >= 16 && mapWidth <= 20) {
-//            if(mapHeight >= 5 && mapHeight <= 7) {
-//                resizeFactor = 0.6;
-//            }
-//            if(mapHeight >= 8 && mapHeight <= 9) {
-//                resizeFactor = 0.6;
-//            }
-//            if(mapHeight >= 10 && mapHeight <= 12) {
-//                resizeFactor = 0.5;
-//            }
-//            if(mapHeight >= 13 && mapHeight <= 15) {
-//                resizeFactor = 0.4;
-//            }
-//            if(mapHeight >= 16 && mapHeight <= 18) {
-//                resizeFactor = 0.35;
-//            }
-//            if(mapHeight >= 19 && mapHeight <= 22) {
-//                resizeFactor = 0.3;
-//            }
-//            if(mapHeight >= 23 && mapHeight <= 26) {
-//                resizeFactor = .25;
-//            }
-//            if(mapHeight >= 27 && mapHeight <= 30) {
-//                resizeFactor = 0.22;
-//            }
-//            if(mapHeight >= 31 && mapHeight <= 33) {
-//                resizeFactor = 0.2;
-//            }
-//            if(mapHeight >= 34 && mapHeight <= 38) {
-//                resizeFactor = 0.17;
-//            }
-//            if(mapHeight >= 39 && mapHeight <= 40) {
-//                resizeFactor = 0.15;
-//            }
-//        }
-//
-//        return new ResizeFactor(resizeFactor,resizeFactor);
-//    }
+        double rf = 1.0;
+        if(larger < 10 || larger < 10) {
+            rf = 1.0 / (mapHeight * 0.4);
+        }
+        else {
+            rf = 1.0 / (larger * 0.2);
+        }
+
+        BigDecimal resizeFactor = new BigDecimal(rf);
+        BigDecimal rounded = resizeFactor.setScale(2,BigDecimal.ROUND_HALF_UP);
+        double result = rounded.doubleValue();
+
+        return new ResizeFactor(result, result);
+    }
 
     public String toString() {
         return resizeX+","+resizeY;

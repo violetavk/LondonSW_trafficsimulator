@@ -73,8 +73,9 @@ public class MapMakerScreen {
         Pane mapPane = new Pane();
         Map map = new Map(width, height);
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
-        System.out.println("Using RF of " + .25);
-        mapGridGUIDecorator.setResizeFactor(new ResizeFactor(.5,.5));
+        ResizeFactor rf = ResizeFactor.getSuggestedResizeFactor(width, height);
+        System.out.println("Using RF of " + rf);
+        mapGridGUIDecorator.setResizeFactor(rf);
         GridPane mapGridPane = mapGridGUIDecorator.drawComponents();
         mapGridPane.setPadding(new Insets(0,0,5,5));
         mapPane.getChildren().add(mapGridPane);
@@ -248,7 +249,6 @@ public class MapMakerScreen {
 
         /* Add save button functionality */
         saveButton.setOnMouseClicked(click -> {
-            System.out.println("Clicked Save Map");
             TextInputDialog nameDialog = new TextInputDialog();
             nameDialog.setTitle("Save Map");
             nameDialog.setHeaderText("Please provide a name for your map (no spaces or special characters).\nSaved maps go into the /maps directory of your working directory.");
@@ -264,7 +264,6 @@ public class MapMakerScreen {
             Optional<String> result = nameDialog.showAndWait();
             result.ifPresent(name -> {
                 name = name.concat(".map");
-                System.out.println("Chose the name " + name);
                 try {
                     Map finalMap = buildAndSaveMap(map);
                     finalMap.saveMap(name);
