@@ -278,9 +278,8 @@ public class SimulationScreen {
         ambulanceAddDelete.setOnMouseClicked(click -> {
                 if (flag == 0) {
 
-                    StackPane ambulanceStackPane = new StackPane();
-                    generateAmbulance(map, mapGridGUIDecorator, ambulanceStackPane);
-                    mapStackPane.getChildren().add(ambulanceStackPane);
+                    generateAmbulance(map, mapGridGUIDecorator, mapStackPane);
+                    //mapStackPane.getChildren().add(ambulanceStackPane);
                     ambulanceAddDelete.setText("DELETE");
 
                     flag = 1;
