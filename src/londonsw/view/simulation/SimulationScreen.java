@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.util.converter.LongStringConverter;
 import londonsw.controller.SimulationController;
 import londonsw.controller.StartUpController;
+import londonsw.controller.TrafficLightController;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Map;
 import londonsw.model.simulation.Ticker;
@@ -129,8 +130,14 @@ public class SimulationScreen {
         Button ambulanceAddDelete = new Button("Add/Delete Ambulance");
         ambulanceAddDelete.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         ambulanceAddDelete.setStyle("-fx-base:Gold");
-        ambulanceAddDelete.setPrefHeight(30);
+        ambulanceAddDelete.setPrefSize(180, 30);
         simulationControl.getChildren().add(ambulanceAddDelete);
+
+        Button trafficLightInterval = new Button("Set Traffic Light Duration");
+        trafficLightInterval.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
+        trafficLightInterval.setStyle("-fx-base:Gold");
+        trafficLightInterval.setPrefSize(180, 30);
+        simulationControl.getChildren().add(trafficLightInterval);
 
         //carSlider
         VBox sliderControl = new VBox();
@@ -188,6 +195,38 @@ public class SimulationScreen {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        });
+
+        trafficLightInterval.setOnMouseClicked(click -> {
+            Dialog<Long> dialog = new Dialog<Long>();
+            dialog.setTitle("Choose Traffic Light Duration");
+            dialog.setHeaderText("Choose a duration (in milliseconds) for\nthe traffic lights in the system.");
+            dialog.setGraphic(null);
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 80, 10, 10));
+            grid.add(new Label("Duration: "), 0, 0);
+            Spinner<Double> spinner = new Spinner<Double>(1000, 10000, TrafficLightController.getInstance().getDurationLength(), 1000);
+            grid.add(spinner, 1, 0);
+            dialog.getDialogPane().setContent(grid);
+            Platform.runLater(() -> spinner.requestFocus());
+
+            dialog.setResultConverter(dialogButton -> {
+                if(dialogButton == ButtonType.OK) {
+                    double value =  spinner.getValue();
+                    return (long) value;
+                }
+                return null;
+            });
+
+            Optional<Long> result = dialog.showAndWait();
+            result.ifPresent((aLong -> {
+                TrafficLightController.getInstance().setDurationLength(aLong);
+                TrafficLightController.getInstance().setTrafficLightDuration(aLong);
+            }));
+
         });
 
         /**
