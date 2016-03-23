@@ -38,17 +38,12 @@ import java.util.Random;
 public class SimulationScreen {
 
     private Map map;
-
     private int mapSceneIndex = 0;
-
     private int initCar = 0;
-
     private int flag = 0;
-
     private int systemState = 0;
-
     private int maxCarSize;
-
+    Subscriber<Long> timeLabelSubscriber;
 
     public SimulationScreen(Map map) {
         this.map = map;
@@ -107,7 +102,6 @@ public class SimulationScreen {
         timeLabel.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
         timeLabel.setText("Times ticked: 0");
         simulationControl.getChildren().add(timeLabel);
-        startTimeLabelTicker(timeLabel);
 
         Button startSimulation = new Button("Start");
         startSimulation.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
@@ -206,6 +200,9 @@ public class SimulationScreen {
             }
         });
 
+        /**
+         * Allows the user to change the traffic light interval
+         */
         trafficLightInterval.setOnMouseClicked(click -> {
             Dialog<Long> dialog = new Dialog<Long>();
             dialog.setTitle("Choose Traffic Light Duration");
@@ -300,6 +297,9 @@ public class SimulationScreen {
         primaryStage.setScene(scene);
         primaryStage.centerOnScreen();
 
+        /**
+         * Starts the simulation
+         */
         startSimulation.setOnMouseClicked(click->{
             systemState = 1;
             slider.setDisable(false);
@@ -314,6 +314,7 @@ public class SimulationScreen {
             startSimulation.setDisable(true);
             resetSimulation.setDisable(false);
             Platform.runLater(() -> slider.requestFocus());
+            startTimeLabelTicker(timeLabel);
         });
 
 
@@ -334,6 +335,8 @@ public class SimulationScreen {
             carNumberSituation.setText("Number of cars: " + VehicleController.getVehicleList().size());
             mapSceneIndex = 1;
             Platform.runLater(() -> startSimulation.requestFocus());
+            endTimeLabelTicker();
+            timeLabel.setText("Times ticked: 0");
         });
     }
 
@@ -342,7 +345,7 @@ public class SimulationScreen {
      * @param timeLabel the label to update on every tick
      */
     private void startTimeLabelTicker(Label timeLabel) {
-        Subscriber<Long> timeLabelSubscriber = new Subscriber<Long>() {
+        timeLabelSubscriber = new Subscriber<Long>() {
             int timesTicked = 0;
             @Override
             public void onCompleted() {
@@ -361,6 +364,13 @@ public class SimulationScreen {
             }
         };
         Ticker.subscribe(timeLabelSubscriber);
+    }
+
+    /**
+     * Stops the time ticker label from listening to the ticker
+     */
+    private void endTimeLabelTicker() {
+        timeLabelSubscriber.unsubscribe();
     }
 
 
