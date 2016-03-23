@@ -20,12 +20,22 @@ public class TrafficLightController {
 
     private static TrafficLightController instance;
 
+    /**
+     * Creates a new instance of a TrafficLightController. It is set to protected so that the creation of this
+     * controller is controlled. This class follows the singleton pattern, so there can be at most one instance
+     * of this class in the system.
+     */
     protected TrafficLightController() {
         trafficLights = new HashMap<>();
         allLights = new ArrayList<>();
         DURATION = 3000;
     }
 
+    /**
+     * Gives an instance of this class. This is what needs to be called if an instance is needed. If there is
+     * not an instance created, it creates a new one, otherwise it returns an existing instance.
+     * @return
+     */
     public static TrafficLightController getInstance() {
         if(instance == null) {
             instance = new TrafficLightController();
@@ -111,7 +121,7 @@ public class TrafficLightController {
 
     /**
      * Gets the HashMap of all TrafficLight,TrafficLightDecorator pairs
-     * @return
+     * @return a Map of all TrafficLight, TrafficLightDecorator pairs
      */
     public Map getTrafficLightsMap() {
         return trafficLights;

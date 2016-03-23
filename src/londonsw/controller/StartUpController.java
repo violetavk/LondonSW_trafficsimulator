@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- *
+ *  This is the controller that gets called by the main SystemApp class. This controller initiates all GUI screens.
  */
 @SuppressWarnings("Duplicates")
 public class StartUpController extends Application{
@@ -41,6 +41,12 @@ public class StartUpController extends Application{
         launch(args);
     }
 
+    /**
+     * This is the first method that gets called in the system. It loads the StartScreen fxml file, which contains
+     * the START button.
+     * @param primaryStage the stage that initially loads
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../view/startup/StartScreen.fxml"));
@@ -51,7 +57,12 @@ public class StartUpController extends Application{
         primaryStage.centerOnScreen();
     }
 
-
+    /**
+     * This is the method that gets called when the user hits the START button on the initial screen. It
+     * loads the "Choose Mode" screen, which gives 2 options: Opening a pre-made map, or users building their own map.
+     * @param actionEvent the event that triggered this method
+     * @throws IOException
+     */
     public void goToChooseModeScreen(ActionEvent actionEvent) throws IOException {
         Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../view/startup/ChooseModeScreen.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -61,8 +72,10 @@ public class StartUpController extends Application{
     }
 
     /**
-     * when the user click "Choose Pre-made map..." button, it will go to SimulationMode screen
-     * @param actionEvent click action
+     * When the user click "Choose Pre-made map..." button, it will go to SimulationMode screen. It will first
+     * prompt the user to open a file (only Map files are allowed to be opened), set a ticker interval speed,
+     * and then it will go to draw the simulation mode screen.
+     * @param actionEvent the click that caused this method invocation
      * @throws Exception
      */
     public void goToSimulationMode(ActionEvent actionEvent) throws Exception {
@@ -104,7 +117,6 @@ public class StartUpController extends Application{
             result.ifPresent(aLong -> {
                 Ticker.setTickInterval(aLong);
                 Ticker.start();
-                System.out.println("Set ticker interval to " + Ticker.getTickInterval());
             });
 
             //Decorate map to extend to GUI functionality
@@ -115,6 +127,12 @@ public class StartUpController extends Application{
         }
     }
 
+    /**
+     * This method gets called when the user chooses to go to Map Maker mode. It will prompt the user for
+     * the width and height that they want for their new map, in the range from 5 to 30 for both width and
+     * height. It will then bring the user to the screen where they can build the map.
+     * @param actionEvent the click event that caused this method invocation
+     */
     public void goToMapMakerMode(ActionEvent actionEvent) {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Choose Map Size");
@@ -126,7 +144,6 @@ public class StartUpController extends Application{
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
-//        ButtonType doneButton = new ButtonType("Done", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         ObservableList<Integer> choices = FXCollections.observableArrayList();
@@ -168,7 +185,6 @@ public class StartUpController extends Application{
         result.ifPresent(widthAndHeight -> {
             int width = Integer.parseInt(widthAndHeight.getKey());
             int height = Integer.parseInt(widthAndHeight.getValue());
-            System.out.println("Width = " + width + ", Height = " + height);
 
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             MapMakerController mapMakerController = new MapMakerController(stage);
@@ -179,7 +195,6 @@ public class StartUpController extends Application{
                 e.printStackTrace();
             }
         });
-
     }
 
 }

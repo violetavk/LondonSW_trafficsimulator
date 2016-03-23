@@ -48,16 +48,20 @@ public class IntersectionController {
     }
 
 
-    public static boolean vehicleTurnFirst(Intersection intersection, ArrayList<Vehicle> vehicles)throws Exception{
-
+    /**
+     * This method is used for determining which vehicle will turn first in an intersection. By generating priorities,
+     * this will prevent cars from driving into each other in intersections.
+     * @param intersection the intersection where the vehicles are
+     * @param vehicles array list of vehicles with priorities set
+     * @return true if this method succeeds (always true)
+     * @throws Exception
+     */
+    public static boolean vehicleTurnFirst(Intersection intersection, ArrayList<Vehicle> vehicles) throws Exception {
         ArrayList<Integer>  randomPriority = (ArrayList < Integer>) intersection.generateRandom().clone();
-
-
         intersection.vehicleTurnFirst(intersection.giveVehiclePriorities(randomPriority));
 
-
-
-        return true;}
+        return true;
+    }
 
 
 }
