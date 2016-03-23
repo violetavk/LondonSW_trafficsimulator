@@ -36,6 +36,7 @@ import londonsw.model.simulation.components.vehicles.Vehicle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 
 import static javafx.fxml.FXMLLoader.load;
 
@@ -145,12 +146,13 @@ public class SimulationScreen {
 
         Pane carSlider = new Pane();
         carSlider.setPadding(new Insets(10,10,10,10));
-        Slider slider = new Slider(1, 60, 30);
+        Slider slider = new Slider(1, 30, 5);
         slider.setDisable(true);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
         slider.setMajorTickUnit(10);
-        slider.setBlockIncrement(1);
+        slider.setMinorTickCount(2);
+        slider.setBlockIncrement(2);
         carSlider.getChildren().add(slider);
         sliderControl.getChildren().add(carSlider);
         //sliderControl.setAlignment(slider,Pos.BOTTOM_RIGHT);
@@ -174,7 +176,7 @@ public class SimulationScreen {
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                System.out.println(newValue);
+//                System.out.println(newValue);
                 initCar = oldValue.intValue();
                 int newCar = newValue.intValue() - oldValue.intValue();
 
@@ -191,6 +193,13 @@ public class SimulationScreen {
                 else {
                     ArrayList<Vehicle> vehicles = VehicleController.getVehicleList();
                     System.out.println("Num vehicles: " + vehicles.size());
+                    Random rand = new Random();
+                    int min = 0;
+                    int max = vehicles.size();
+                    int randomIndex = rand.nextInt((max - min)) + min;
+                    System.out.println("Chose random index of " + randomIndex);
+
+                    VehicleController.removeVehicle(randomIndex);
                 }
                 carNumberSituation.setText("Number of cars: " + String.valueOf(initCar));
             }
@@ -233,6 +242,7 @@ public class SimulationScreen {
             mapPane.getChildren().add(mapSceneIndex, carStackPane);
             mapSceneIndex++;
         });
+
 
 
 

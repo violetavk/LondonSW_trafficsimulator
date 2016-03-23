@@ -40,6 +40,25 @@ public class VehicleController {
         return allVehicles;
     }
 
+    public static void removeVehicle(int index) {
+        try {
+            System.out.println("Removing vehicle at index " + index);
+            Vehicle v = allVehicles.get(index);
+            VehicleGUIDecorator decorator = vehiclesAndDecorators.get(v);
+            decorator.getPane().getChildren().remove(decorator.getRectangle());
+            v.setVehicleState(3);
+            v.unsubscribe();
+            Lane currLane = v.getCurrentLane();
+            int currCell = v.getCurrentCell();
+            currLane.setCell(null, currCell);
+            allVehicles.remove(index);
+            vehiclesAndDecorators.remove(v);
+            v = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Retrieve the CarGuiDecorator for the vehicle, for operations that happen outside this class
