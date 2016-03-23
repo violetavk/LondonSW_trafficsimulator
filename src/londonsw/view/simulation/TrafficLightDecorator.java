@@ -35,12 +35,10 @@ public class TrafficLightDecorator implements Serializable {
     public void setGUIColour(LightColour colour) {
         switch (colour) {
             case RED:
-//                System.out.println("Changing colour to red for " + thisLight);
                 circle.setFill(Color.RED);
                 break;
 
             case GREEN:
-//                System.out.println("Changing colour to green for " + thisLight);
                 circle.setFill(Color.GREEN);
                 break;
         }

@@ -5,62 +5,101 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
 import londonsw.model.simulation.components.*;
 import java.util.ArrayList;
 
 /**
- * Created by felix on 25/02/2016.
+ * This class defines how roads are drawn and displayed in the view. Each Road instance will
+ * have exactly one of these decorators associated with it.
  */
 public class RoadGUIDecorator extends RoadDecorator {
+
+    private ResizeFactor resizeFactor;
+    private Coordinate gridPaneCoordinates;
+    private Pane paneRoad;
+    private int Cell;
+
+    /**
+     * Creates a new instance of this decorator class for the given Road instance
+     * @param decoratedRoad the Road instance to associate this decorator with
+     */
     public RoadGUIDecorator(Road decoratedRoad) {
         super(decoratedRoad);
     }
 
-    private ResizeFactor resizeFactor;
-    private Coordinate gridPaneCoordinates;
-
+    /**
+     * Gets the pane associated with this decorator
+     * @return the pane for this decorator
+     */
     public Pane getPane() {
         return paneRoad;
     }
 
+    /**
+     * Sets the pane for this decorator
+     * @param paneRoad the pane to set for this decorator
+     */
     public void setPane(Pane paneRoad) {
         this.paneRoad = paneRoad;
     }
 
-    private Pane paneRoad;
-
+    /**
+     * Gets the cell for this road
+     * @return the cell
+     */
     public int getCell() {
         return Cell;
     }
 
+    /**
+     * Sets the cell for this road
+     * @param cell the cell for this road
+     */
     public void setCell(int cell) {
         Cell = cell;
     }
 
+    /**
+     * Gets the grid pane coordinate of this road
+     * @return the coordinate for this road
+     */
     public Coordinate getGridPaneCoordinates() {
         return gridPaneCoordinates;
     }
 
+    /**
+     * Sets the grid pane coordinate for this road
+     * @param gridPaneCoordinates the coordinate for this road
+     */
     public void setGridPaneCoordinates(Coordinate gridPaneCoordinates) {
         gridPaneCoordinates = gridPaneCoordinates;
     }
 
-    private int Cell;
-
+    /**
+     * Gets the resize factor for this road
+     * @return the resize factor for this road
+     */
     public ResizeFactor getResizeFactor() {
         return resizeFactor;
     }
 
+    /**
+     * Sets the resize factor for this road
+     * @param resizeFactor the resize factor to set for this road
+     */
     public void setResizeFactor(ResizeFactor resizeFactor) {
         this.resizeFactor = resizeFactor;
     }
 
+    /**
+     * This method draws the road and returns the StackPane representation of this road. Each cell has a road background
+     * image. Each cell also contains an arrow that displays the moving direction of that cell.
+     * @return the StackPane representation of this road cell
+     */
     public StackPane drawRoad() {
 
-        String roadBackgroundPath = "RoadBackground.png";   //TODO avoid hardcode
+        String roadBackgroundPath = "RoadBackground.png";
 
         Image image = new Image(roadBackgroundPath);
 
