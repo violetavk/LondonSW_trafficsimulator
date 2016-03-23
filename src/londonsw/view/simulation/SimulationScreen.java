@@ -87,23 +87,12 @@ public class SimulationScreen {
         mapSceneIndex++;
         borderPane.setCenter(mapPane);
 
-        //Back
-        StackPane backPane = new StackPane();
-        backPane.setPadding(new Insets(10,10,10,10));
-        Button backButton = new Button("Back");
-        backButton.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 16));
-        backButton.setStyle("-fx-base:Gold");
-        backPane.getChildren().add(backButton);
-        backPane.setAlignment(backButton,Pos.CENTER);
-        borderPane.setBottom(backPane);
-
         //Start&Reset
-
         VBox simulationControl = new VBox();
 
         simulationControl.setPadding(new Insets(10,10,10,10));
         simulationControl.setSpacing(10);
-        simulationControl.setAlignment(Pos.TOP_RIGHT);
+        simulationControl.setAlignment(Pos.TOP_CENTER);
 
         Label carNumberSituation = new Label();
         carNumberSituation.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
@@ -112,7 +101,7 @@ public class SimulationScreen {
 
         Label tickerSituation = new Label();
         tickerSituation.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
-        tickerSituation.setText("Ticker Interval: 0 ");
+        tickerSituation.setText("Ticker Interval: 1000");
         simulationControl.getChildren().add(tickerSituation);
 
         Button startSimulation = new Button("Start");
@@ -122,6 +111,10 @@ public class SimulationScreen {
         Button resetSimulation = new Button("Reset");
         resetSimulation.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         resetSimulation.setStyle("-fx-base:Gold");
+
+        Button backButton = new Button("Back");
+        backButton.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 16));
+        backButton.setStyle("-fx-base:Gold");
 
         startSimulation.setPadding(new Insets(10, 10, 10, 10));
         startSimulation.setPrefSize(90, 30);
@@ -134,7 +127,7 @@ public class SimulationScreen {
         Button ambulanceAddDelete = new Button("Add/Delete Ambulance");
         ambulanceAddDelete.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         ambulanceAddDelete.setStyle("-fx-base:Gold");
-        ambulanceAddDelete.setPrefSize(160,30);
+        ambulanceAddDelete.setPrefHeight(30);
         simulationControl.getChildren().add(ambulanceAddDelete);
 
         //carSlider
@@ -145,24 +138,40 @@ public class SimulationScreen {
         carNumber.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         carLabel.getChildren().add(carNumber);
         sliderControl.getChildren().add(carLabel);
-       // sliderControl.setAlignment(carLabel,Pos.TOP_RIGHT);
 
         Pane carSlider = new Pane();
         carSlider.setPadding(new Insets(10,10,10,10));
         Slider slider = new Slider();
-        slider.setPrefWidth(260);
-        slider.setMax(determineMaxCarSize(map));
+        int maxSize = determineMaxCarSize(map);
+        slider.setPrefWidth(250);
+        slider.setMax(maxSize);
         slider.setMin(1);
         slider.setDisable(true);
         slider.setShowTickMarks(true);
-        slider.setShowTickLabels(true);
-        slider.setMajorTickUnit(10);
-        slider.setMinorTickCount(2);
-        slider.setBlockIncrement(2);
+        if(maxSize <= 20) {
+            slider.setMajorTickUnit(5);
+            slider.setMinorTickCount(2);
+            slider.setBlockIncrement(1);
+        }
+        else if(maxSize <= 50) {
+            slider.setMajorTickUnit(10);
+            slider.setMinorTickCount(4);
+            slider.setBlockIncrement(1);
+        }
+        else if(maxSize <= 100) {
+            slider.setMajorTickUnit(20);
+            slider.setMinorTickCount(10);
+            slider.setBlockIncrement(1);
+        }
+        else {
+            slider.setMajorTickUnit(20);
+            slider.setMinorTickCount(2);
+            slider.setBlockIncrement(1);
+        }
         carSlider.getChildren().add(slider);
         sliderControl.getChildren().add(carSlider);
-        //sliderControl.setAlignment(slider,Pos.BOTTOM_RIGHT);
         simulationControl.getChildren().add(sliderControl);
+        simulationControl.getChildren().add(backButton);
         borderPane.setRight(simulationControl);
 
         /**
@@ -185,7 +194,6 @@ public class SimulationScreen {
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                System.out.println(newValue);
                 initCar = oldValue.intValue();
                 int newCar = newValue.intValue() - oldValue.intValue();
 
@@ -196,23 +204,25 @@ public class SimulationScreen {
                 if (newCar >= 0) {
                     for (int i = 0; i < newCar; i++) {
                         generateCar(map, mapGridGUIDecorator, carStackPane);
-                 }
+                    }
                 }
                 //decrease carNumber
                 else {
-                    ArrayList<Vehicle> vehicles = VehicleController.getVehicleList();
-                    System.out.println("Num vehicles: " + vehicles.size());
-                    Random rand = new Random();
-                    int min = 0;
-                    int max = vehicles.size();
-                    int randomIndex = rand.nextInt((max - min)) + min;
-                    System.out.println("Chose random index of " + randomIndex);
-
-                    VehicleController.removeVehicle(randomIndex);
+                    int toDelete = newCar * -1;
+                    for(int i = 0; i < toDelete; i++) {
+                        ArrayList<Vehicle> vehicles = VehicleController.getVehicleList();
+                        if(vehicles.size() == 0) return;
+                        Random rand = new Random();
+                        int min = 0;
+                        int max = vehicles.size();
+                        int randomIndex = rand.nextInt((max - min)) + min;
+                        VehicleController.removeVehicle(randomIndex);
+                    }
                 }
-                carNumberSituation.setText("Number of cars: " + String.valueOf(initCar));
+                ArrayList<Vehicle> vehicles = VehicleController.getVehicleList();
+                carNumberSituation.setText("Number of cars: " + vehicles.size());
             }
-     });
+        });
 
         /**
          * "Add/Delete Ambulance" Button click control
@@ -253,8 +263,6 @@ public class SimulationScreen {
         });
 
 
-
-
         /**
          * To stop simulation
          */
@@ -263,7 +271,7 @@ public class SimulationScreen {
             systemState = 0;
             slider.setDisable(true);
             //StackPane sp = new StackPane();
-            carNumberSituation.setText("There are 0 car in the system");
+            carNumberSituation.setText("Number of cars: 0");
             mapPane.getChildren().remove(1, mapSceneIndex);
             mapSceneIndex = 1;
         });
@@ -279,7 +287,7 @@ public class SimulationScreen {
                 numberSlots += l.getLength();
             }
         }
-        maxCarSize = (int)(0.75 * numberSlots);
+        maxCarSize = (int)(0.6 * numberSlots);
         return maxCarSize;
     }
 

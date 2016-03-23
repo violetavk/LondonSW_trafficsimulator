@@ -42,7 +42,6 @@ public class VehicleController {
 
     public static void removeVehicle(int index) {
         try {
-            System.out.println("Removing vehicle at index " + index);
             Vehicle v = allVehicles.get(index);
             VehicleGUIDecorator decorator = vehiclesAndDecorators.get(v);
             decorator.getPane().getChildren().remove(decorator.getRectangle());
