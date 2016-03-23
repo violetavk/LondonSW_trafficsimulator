@@ -124,7 +124,7 @@ public class SimulationScreen {
         simulationControl.getChildren().add(resetSimulation);
         resetSimulation.setDisable(true);
 
-        Button ambulanceAddDelete = new Button("Add/Delete Ambulance");
+        Button ambulanceAddDelete = new Button("Add Ambulance");
         ambulanceAddDelete.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         ambulanceAddDelete.setStyle("-fx-base:Gold");
         ambulanceAddDelete.setPrefSize(180, 30);
@@ -265,6 +265,9 @@ public class SimulationScreen {
                         int min = 0;
                         int max = vehicles.size();
                         int randomIndex = rand.nextInt((max - min)) + min;
+                        while(vehicles.get(randomIndex) instanceof Ambulance) {
+                            randomIndex = rand.nextInt((max - min)) + min;
+                        }
                         VehicleController.removeVehicle(randomIndex);
                     }
                 }
@@ -292,6 +295,7 @@ public class SimulationScreen {
                 }
                 ambulanceAddDelete.setText("Add Ambulance");
             }
+            carNumberSituation.setText("Number of cars: " + VehicleController.getVehicleList().size());
         });
 
         Scene scene = new Scene(borderPane);
