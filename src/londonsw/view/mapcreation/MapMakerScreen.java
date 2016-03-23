@@ -20,6 +20,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import londonsw.controller.MapMakerController;
 import londonsw.model.simulation.Map;
+import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.*;
 import londonsw.view.simulation.MapGridGUIDecorator;
 
@@ -164,6 +165,8 @@ public class MapMakerScreen {
         buttonsPane.getChildren().add(backButtonPane);
 
         sideComponents.getChildren().add(buttonsPane);
+
+        Ticker.start();
 
         /* Add click processing for Map grid squares */
         for(int i = 0; i < height; i++) {
