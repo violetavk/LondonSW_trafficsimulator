@@ -189,9 +189,10 @@ public class SimulationScreen {
                 }
                 //decrease carNumber
                 else {
-
+                    ArrayList<Vehicle> vehicles = VehicleController.getVehicleList();
+                    System.out.println("Num vehicles: " + vehicles.size());
                 }
-                carNumberSituation.setText("There are " + String.valueOf(initCar) + " cars in the system");
+                carNumberSituation.setText("Number of cars: " + String.valueOf(initCar));
             }
      });
 
@@ -220,52 +221,17 @@ public class SimulationScreen {
         primaryStage.setScene(scene);
         primaryStage.centerOnScreen();
 
-        //StackPane sp = new StackPane();
-
-        /**
-         * Set TickerInterval first, if it is a valid number simulation will start
-         */
-
         startSimulation.setOnMouseClicked(click->{
-            TextInputDialog tickerSet = new TextInputDialog();
-            tickerSet.setTitle("Set Ticker Interval");
-            tickerSet.setHeaderText("Simulation Speed ");
-            tickerSet.setContentText("Please input a ticker interval number between 100 and 1000:");
-            Optional<String> tickerInterval = tickerSet.showAndWait();
-            tickerInterval.ifPresent(systemSpeed->{
-                Long speed = new Long(systemSpeed);
-                if(speed>=100 && speed<=1000) {
-                    System.out.println(systemSpeed);
-                    tickerSituation.setText("Ticker Interval:" + speed);
-                    Ticker.setTickInterval(speed);
-                    System.out.println("Start Simulation");
-                    systemState = 1;
-                    slider.setDisable(false);
-                    StackPane carStackPane = new StackPane();
-                    initCar = (int) slider.getValue();
-                    carNumberSituation.setText("There are " + String.valueOf(initCar) + " cars in the system");
-                    for (int i = 0; i < initCar; i++) {
-                        generateCar(map, mapGridGUIDecorator, carStackPane);
-                    }
-                    mapPane.getChildren().add(mapSceneIndex, carStackPane);
-                    mapSceneIndex++;
-                }
-                else
-                {
-                    Alert tickerIntervalAlert = new Alert(Alert.AlertType.ERROR);
-                    tickerIntervalAlert.setTitle("Error Dialog");
-                    tickerIntervalAlert.setHeaderText("Ooops, invalid Ticker Interval");
-                    tickerIntervalAlert.setContentText("Ticker Interval should be a number between 100 and 1000! ");
-                    tickerIntervalAlert.showAndWait().ifPresent(response->{
-                        if(response == ButtonType.OK){
-                            //TODO
-                        }
-                    });
-
-                }
-                }
-            );
-
+            systemState = 1;
+            slider.setDisable(false);
+            StackPane carStackPane = new StackPane();
+            initCar = (int) slider.getValue();
+            carNumberSituation.setText("Number of cars: " + initCar);
+            for (int i = 0; i < initCar; i++) {
+                generateCar(map, mapGridGUIDecorator, carStackPane);
+            }
+            mapPane.getChildren().add(mapSceneIndex, carStackPane);
+            mapSceneIndex++;
         });
 
 
@@ -294,16 +260,11 @@ public class SimulationScreen {
      * @return
      */
     public Car generateCar(Map map, MapGridGUIDecorator mapGridGUIDecorator, StackPane sp) {
-
         Lane L1 = map.getRandomLane();
-        //Lane L1 =map.getRoads().get(0).getLanes().get(1);
-
-        Lane L2;
-
-        if (L1 != null)
+        if (L1 != null) {
             for (int a = 0; a < map.getRoads().size(); a++) {
                 for (int b = 0; b < map.getRoads().get(a).getNumberLanes(); b++) {
-                    L2 = map.getRoads().get(a).getLanes().get(b);
+                    Lane L2 = map.getRoads().get(a).getLanes().get(b);
                     for (int i = 0; i < L1.getLength(); i++) {
                         if (L1.isCellEmpty(i)) {
                             Car C1 = new Car(i, L1);
@@ -327,9 +288,8 @@ public class SimulationScreen {
                     }
                 }
             }
-
+        }
         return null;
-
     }
 
     /**

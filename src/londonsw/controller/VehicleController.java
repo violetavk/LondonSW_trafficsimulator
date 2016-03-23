@@ -32,7 +32,11 @@ public class VehicleController {
         allVehicles.add(vehicle);
     }
 
-    public ArrayList<Vehicle> getVehicleList(){
+    /**
+     * Gets all the vehicles in the system
+     * @return ArrayList with all vehicles in the system
+     */
+    public static ArrayList<Vehicle> getVehicleList(){
         return allVehicles;
     }
 
