@@ -39,15 +39,11 @@ import java.util.Random;
 public class SimulationScreen {
 
     private Map map;
-
     private int initCar = 0;
-
     private int flag = 0;
-
     private int systemState = 0;
-
     private int maxCarSize;
-
+    Subscriber<Long> timeLabelSubscriber;
 
     public SimulationScreen(Map map) {
         this.map = map;
@@ -106,7 +102,6 @@ public class SimulationScreen {
         timeLabel.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
         timeLabel.setText("Times ticked: 0");
         simulationControl.getChildren().add(timeLabel);
-        startTimeLabelTicker(timeLabel);
 
         Button startSimulation = new Button("Start");
         startSimulation.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
@@ -209,6 +204,9 @@ public class SimulationScreen {
             }
         });
 
+        /**
+         * Allows the user to change the traffic light interval
+         */
         trafficLightInterval.setOnMouseClicked(click -> {
             Dialog<Long> dialog = new Dialog<Long>();
             dialog.setTitle("Choose Traffic Light Duration");
@@ -280,27 +278,19 @@ public class SimulationScreen {
          * the first click adds an ambulance in the system, the next click will delete the ambulance, next add...
          */
         ambulanceAddDelete.setOnMouseClicked(click -> {
-
             if (flag == 0) {
-
                 generateAmbulance(map, mapGridGUIDecorator, mapStackPane);
                 ambulanceAddDelete.setText("Delete Ambulance");
-
                 flag = 1;
             } else {
-
                 flag = 0;
-
                 ArrayList<Vehicle> vehicles = VehicleController.getVehicleList();
-
                 for (int i = 0; i < vehicles.size(); i++) {
                     if (vehicles.get(i).getVehiclePriority() == 5) {
                         VehicleController.removeVehicle(i);
                     }
                 }
-
                 ambulanceAddDelete.setText("Add Ambulance");
-
             }
         });
 
@@ -309,8 +299,10 @@ public class SimulationScreen {
         primaryStage.setScene(scene);
         primaryStage.centerOnScreen();
 
+        /**
+         * Starts the simulation
+         */
         startSimulation.setOnMouseClicked(click->{
-
             systemState = 1;
             ambulanceAddDelete.setDisable(false);
             slider.setDisable(false);
@@ -324,6 +316,8 @@ public class SimulationScreen {
             startSimulation.setDisable(true);
             resetSimulation.setDisable(false);
 
+            Platform.runLater(() -> slider.requestFocus());
+            startTimeLabelTicker(timeLabel);
         });
 
 
@@ -347,6 +341,8 @@ public class SimulationScreen {
             }
             carNumberSituation.setText("Number of cars: " + VehicleController.getVehicleList().size());
             Platform.runLater(() -> startSimulation.requestFocus());
+            endTimeLabelTicker();
+            timeLabel.setText("Times ticked: 0");
         });
     }
 
@@ -355,7 +351,7 @@ public class SimulationScreen {
      * @param timeLabel the label to update on every tick
      */
     private void startTimeLabelTicker(Label timeLabel) {
-        Subscriber<Long> timeLabelSubscriber = new Subscriber<Long>() {
+        timeLabelSubscriber = new Subscriber<Long>() {
             int timesTicked = 0;
             @Override
             public void onCompleted() {
@@ -376,6 +372,12 @@ public class SimulationScreen {
         Ticker.subscribe(timeLabelSubscriber);
     }
 
+    /**
+     * Stops the time ticker label from listening to the ticker
+     */
+    private void endTimeLabelTicker() {
+        timeLabelSubscriber.unsubscribe();
+    }
 
     /**
      * Determines the maximum number of cars that should go in the system
