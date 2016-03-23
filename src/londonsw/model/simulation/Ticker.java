@@ -23,7 +23,7 @@ public class Ticker {
 
     private static Ticker instance;
 
-    private static Observable<Long> tickerObservable = Observable.interval(TICK_INTERVAL, TimeUnit.MILLISECONDS);
+    private static Observable<Long> tickerObservable;
 
     private static PublishSubject stop = PublishSubject.create();
 
@@ -40,6 +40,13 @@ public class Ticker {
             instance = new Ticker();
         }
         return instance;
+    }
+
+    /**
+     * Starts the ticker with the tick interval
+     */
+    public static void start() {
+        tickerObservable = Observable.interval(TICK_INTERVAL, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -72,15 +79,11 @@ public class Ticker {
      */
     public static void setTickInterval(long interval) { TICK_INTERVAL = interval; }
 
-    /**
-     * This method is a no-op. The ticker starts automatically as soon as something subscribes to it.
-     */
-    public void start() {    }
 
     /**
      * Ends the ticker. All subscribers must unsubscribe and a "stop" call is explicitly called, just in case.
      */
-    public void end() {
+    public static void end() {
         for(Subscriber s : subscribers)
             s.unsubscribe();
         stop.onNext(null);

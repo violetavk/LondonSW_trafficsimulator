@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -14,31 +13,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
-import javafx.scene.layout.AnchorPane;
 
+import javafx.stage.StageStyle;
 import javafx.util.Pair;
-import londonsw.model.simulation.Map;
-import londonsw.model.simulation.components.Lane;
-import londonsw.model.simulation.components.vehicles.Car;
-import londonsw.view.simulation.MapGridGUIDecorator;
-import londonsw.model.simulation.components.ResizeFactor;
-import londonsw.view.simulation.VehicleGUIDecorator;
+import londonsw.model.simulation.Ticker;
 
 //import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
  *
  */
+@SuppressWarnings("Duplicates")
 public class StartUpController extends Application{
 
     public Label londonSWlabel;
@@ -84,6 +74,38 @@ public class StartUpController extends Application{
         if(file!=null)
         {
             String mapName = file.getName();
+
+            Dialog<Long> dialog = new Dialog<>();
+            dialog.setTitle("Choose Ticker Interval Duration");
+            dialog.setHeaderText("Choose a duration (in milliseconds) for\nthe ticker in the system.");
+            dialog.setGraphic(null);
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+            dialog.initStyle(StageStyle.UNDECORATED);
+
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 80, 10, 10));
+            grid.add(new Label("Duration: "), 0, 0);
+            Spinner<Double> spinner = new Spinner<Double>(100, 2000, Ticker.getTickInterval(), 100);
+            grid.add(spinner, 1, 0);
+            dialog.getDialogPane().setContent(grid);
+            Platform.runLater(() -> spinner.requestFocus());
+
+            dialog.setResultConverter(dialogButton -> {
+                if(dialogButton == ButtonType.OK) {
+                    double value =  spinner.getValue();
+                    return (long) value;
+                }
+                return null;
+            });
+
+            Optional<Long> result = dialog.showAndWait();
+            result.ifPresent(aLong -> {
+                Ticker.setTickInterval(aLong);
+                Ticker.start();
+                System.out.println("Set ticker interval to " + Ticker.getTickInterval());
+            });
 
             //Decorate map to extend to GUI functionality
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

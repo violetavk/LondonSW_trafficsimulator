@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.Random;
 
 
+@SuppressWarnings("Duplicates")
 public class SimulationScreen {
 
     private Map map;
@@ -99,7 +100,7 @@ public class SimulationScreen {
 
         Label trafficLightLabel = new Label();
         trafficLightLabel.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
-        trafficLightLabel.setText("Traffic Light Duration: " + TrafficLightController.getInstance().getDurationLength() + " ms");
+        trafficLightLabel.setText("Traffic Light Duration: " + TrafficLightController.getInstance().getDurationLength()/1000 + " ticks");
         simulationControl.getChildren().add(trafficLightLabel);
 
         Label timeLabel = new Label();
@@ -194,7 +195,7 @@ public class SimulationScreen {
             for(int i = 0; i < size; i++) {
                 VehicleController.removeVehicle(0);
             }
-
+            Ticker.end();
             try {
                 Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../startup/ChooseModeScreen.fxml"));
                 primaryStage.setScene(new Scene(chooseModeScreen));
@@ -233,7 +234,7 @@ public class SimulationScreen {
             result.ifPresent((aLong -> {
                 TrafficLightController.getInstance().setDurationLength(aLong);
                 TrafficLightController.getInstance().setTrafficLightDuration(aLong);
-                trafficLightLabel.setText("Traffic Light Duration: " + TrafficLightController.getInstance().getDurationLength() + " ms");
+                trafficLightLabel.setText("Traffic Light Duration: " + TrafficLightController.getInstance().getDurationLength()/1000 + " ticks");
             }));
 
         });
