@@ -38,7 +38,6 @@ import java.util.Random;
 public class SimulationScreen {
 
     private Map map;
-    private int mapSceneIndex = 0;
     private int initCar = 0;
     private int flag = 0;
     private int systemState = 0;
@@ -65,16 +64,16 @@ public class SimulationScreen {
         borderPane.setTop(logo);
 
         //Map
-        Pane mapPane = new Pane();
+        StackPane mapStackPane = new StackPane();
         Map map = this.map;
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
         ResizeFactor rf = ResizeFactor.getSuggestedResizeFactor(map.getWidth(), map.getHeight());
         mapGridGUIDecorator.setResizeFactor(rf);
         GridPane mapGridPane = mapGridGUIDecorator.drawComponents();
-        mapPane.setPadding(new Insets(0, 0, 5, 5));
-        mapPane.getChildren().add(mapSceneIndex, mapGridPane);
-        mapSceneIndex++;
-        borderPane.setCenter(mapPane);
+        mapStackPane.setPadding(new Insets(0, 0, 5, 5));
+
+        mapStackPane.getChildren().add(mapGridPane);
+        borderPane.setCenter(mapStackPane);
 
         //Start&Reset
         VBox simulationControl = new VBox();
@@ -174,6 +173,7 @@ public class SimulationScreen {
             slider.setMinorTickCount(2);
             slider.setBlockIncrement(1);
         }
+
         carSlider.getChildren().add(slider);
         sliderControl.getChildren().add(carSlider);
         simulationControl.getChildren().add(sliderControl);
@@ -245,13 +245,10 @@ public class SimulationScreen {
                 initCar = oldValue.intValue();
                 int newCar = newValue.intValue() - oldValue.intValue();
 
-                StackPane carStackPane = new StackPane();
-                mapPane.getChildren().add(mapSceneIndex, carStackPane);
-                mapSceneIndex++;
                 //increase carNumber
                 if (newCar >= 0) {
                     for (int i = 0; i < newCar; i++) {
-                        generateCar(map, mapGridGUIDecorator, carStackPane);
+                        generateCar(map, mapGridGUIDecorator, mapStackPane);
                     }
                 }
                 //decrease carNumber
@@ -277,23 +274,28 @@ public class SimulationScreen {
          * the first click adds an ambulance in the system, the next click will delete the ambulance, next add...
          */
         ambulanceAddDelete.setOnMouseClicked(click -> {
-            while (systemState==1) {
-                System.out.println("Add/Delete ambulance");
-                int ambulanceIndex = mapSceneIndex;
                 if (flag == 0) {
+
                     StackPane ambulanceStackPane = new StackPane();
                     generateAmbulance(map, mapGridGUIDecorator, ambulanceStackPane);
-                    mapPane.getChildren().add(ambulanceIndex, ambulanceStackPane);
-                    mapSceneIndex++;
+                    mapStackPane.getChildren().add(ambulanceStackPane);
+                    ambulanceAddDelete.setText("DELETE");
+
                     flag = 1;
                 } else {
-                    mapPane.getChildren().remove(ambulanceIndex);
+                    //mapPane.getChildren().remove(ambulanceIndex);
+                    //mapPane.getChildren().remove(ambulanceIndex);
                     flag = 0;
+
+                    ambulanceAddDelete.setText("ADD");
+
                 }
-            }
         });
 
+        borderPane.setPickOnBounds(false);
+
         Scene scene = new Scene(borderPane);
+
         primaryStage.setScene(scene);
         primaryStage.centerOnScreen();
 
@@ -301,16 +303,16 @@ public class SimulationScreen {
          * Starts the simulation
          */
         startSimulation.setOnMouseClicked(click->{
+
             systemState = 1;
             slider.setDisable(false);
-            StackPane carStackPane = new StackPane();
             initCar = (int) slider.getValue();
             carNumberSituation.setText("Number of cars: " + initCar);
+
             for (int i = 0; i < initCar; i++) {
-                generateCar(map, mapGridGUIDecorator, carStackPane);
+                generateCar(map, mapGridGUIDecorator, mapStackPane);
             }
-            mapPane.getChildren().add(mapSceneIndex, carStackPane);
-            mapSceneIndex++;
+
             startSimulation.setDisable(true);
             resetSimulation.setDisable(false);
             Platform.runLater(() -> slider.requestFocus());
@@ -333,7 +335,6 @@ public class SimulationScreen {
                 VehicleController.removeVehicle(0);
             }
             carNumberSituation.setText("Number of cars: " + VehicleController.getVehicleList().size());
-            mapSceneIndex = 1;
             Platform.runLater(() -> startSimulation.requestFocus());
             endTimeLabelTicker();
             timeLabel.setText("Times ticked: 0");
