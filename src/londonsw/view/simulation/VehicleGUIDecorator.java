@@ -182,7 +182,7 @@ public class VehicleGUIDecorator extends VehicleDecorator {
     public void moveVehicleGUI(int step, int state) {
 
         final Timeline timeline = new Timeline();
-        timeline.setAutoReverse(true);
+        //timeline.setAutoReverse(true);
 
         /* move the car according to moving direction, below */
         if(state == 0) { // car must stop because red light, or something in the way

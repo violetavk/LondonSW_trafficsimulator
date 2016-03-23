@@ -55,8 +55,10 @@ public class Ticker {
      * @param sub the new subscriber to the ticker
      */
     public static void subscribe(Subscriber<Long> sub) {
-        tickerObservable.takeUntil(stop).observeOn(JavaFxScheduler.getInstance()).subscribe(sub);
-        subscribers.add(sub);
+        if(tickerObservable!=null) {
+            tickerObservable.takeUntil(stop).observeOn(JavaFxScheduler.getInstance()).subscribe(sub);
+            subscribers.add(sub);
+        }
     }
 
     /**

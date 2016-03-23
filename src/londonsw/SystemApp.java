@@ -11,5 +11,4 @@ public class SystemApp {
 		StartUpController sc = new StartUpController();
 		sc.startSoftware(args);
 	}
-
 }
