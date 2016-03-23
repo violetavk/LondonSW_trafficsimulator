@@ -26,6 +26,7 @@ import londonsw.model.simulation.components.ResizeFactor;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import londonsw.model.simulation.components.Lane;
+import londonsw.model.simulation.components.Road;
 import londonsw.model.simulation.components.vehicles.Ambulance;
 import londonsw.model.simulation.components.vehicles.Car;
 import londonsw.model.simulation.Map;
@@ -50,6 +51,8 @@ public class SimulationScreen {
     private int flag = 0;
 
     private int systemState = 0;
+
+    private int maxCarSize;
 
 
     public SimulationScreen(Map map) {
@@ -145,18 +148,24 @@ public class SimulationScreen {
 
         Pane carSlider = new Pane();
         carSlider.setPadding(new Insets(10,10,10,10));
-        Slider slider = new Slider(1, 60, 30);
+        Slider slider = new Slider();
+        slider.setPrefWidth(260);
+        slider.setMax(determineMaxCarSize(map));
+        slider.setMin(1);
         slider.setDisable(true);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
         slider.setMajorTickUnit(10);
-        slider.setBlockIncrement(1);
+        //slider.setBlockIncrement(1);
         carSlider.getChildren().add(slider);
         sliderControl.getChildren().add(carSlider);
         //sliderControl.setAlignment(slider,Pos.BOTTOM_RIGHT);
         simulationControl.getChildren().add(sliderControl);
         borderPane.setRight(simulationControl);
 
+        /**
+         * Back to ChooseSimulationMode Screen
+         */
         backButton.setOnMouseClicked(click->{
             try {
                 Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../startup/ChooseModeScreen.fxml"));
@@ -250,7 +259,19 @@ public class SimulationScreen {
         });
     }
 
-
+    //determine Max carNumber in the simulation
+    public int determineMaxCarSize(Map map){
+        int numberSlots = 0;
+        ArrayList<Road> roads = map.getRoads();
+        for(Road i:roads){
+            ArrayList<Lane> lanes = i.getLanes();
+            for(Lane l:lanes){
+                numberSlots += l.getLength();
+            }
+        }
+        maxCarSize = (int)(0.75 * numberSlots);
+        return maxCarSize;
+    }
 
     /**
      * Car generator
