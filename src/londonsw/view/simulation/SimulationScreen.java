@@ -186,6 +186,8 @@ public class SimulationScreen {
         simulationControl.getChildren().add(sliderControl);
         simulationControl.getChildren().add(backButton);
         borderPane.setRight(simulationControl);
+        borderPane.setPickOnBounds(false);
+
 
         /**
          * Back to ChooseSimulationMode Screen
@@ -282,38 +284,25 @@ public class SimulationScreen {
             if (flag == 0) {
 
                 generateAmbulance(map, mapGridGUIDecorator, mapStackPane);
-                ambulanceAddDelete.setText("DELETE");
+                ambulanceAddDelete.setText("Delete Ambulance");
 
                 flag = 1;
             } else {
-                //mapPane.getChildren().remove(ambulanceIndex);
-                //mapPane.getChildren().remove(ambulanceIndex);
-
-                //mapStackPane.getChildren().remove(a);
 
                 flag = 0;
 
                 ArrayList<Vehicle> vehicles = VehicleController.getVehicleList();
 
-
-                for(int i = 0; i< vehicles.size();i++)
-                {
-                    if(vehicles.get(i).getVehiclePriority()==5)
-                    {
+                for (int i = 0; i < vehicles.size(); i++) {
+                    if (vehicles.get(i).getVehiclePriority() == 5) {
                         VehicleController.removeVehicle(i);
                     }
                 }
 
-             //   vehicles.
-
-                ambulanceAddDelete.setText("ADD");
-
-
+                ambulanceAddDelete.setText("Add Ambulance");
 
             }
         });
-
-        borderPane.setPickOnBounds(false);
 
         Scene scene = new Scene(borderPane);
 
@@ -346,8 +335,10 @@ public class SimulationScreen {
             slider.setDisable(true);
             startSimulation.setDisable(false);
             resetSimulation.setDisable(true);
-            ambulanceAddDelete.setText("ADD");
+            ambulanceAddDelete.setText("Add Ambulance");
             ambulanceAddDelete.setDisable(true);
+
+            //reset lanes to enabled //TODO
 
             ArrayList<Vehicle> vehicles = VehicleController.getVehicleList();
             int size = vehicles.size();
@@ -464,6 +455,7 @@ public class SimulationScreen {
                             ambulanceGUIDecorator.setColor(Color.RED);
                             ambulanceGUIDecorator.drawCar();
                             Pane alPane = new Pane();
+                            alPane.setPickOnBounds(false);
                             alPane.getChildren().add(ambulanceGUIDecorator.getRectangle());
                             ambulanceGUIDecorator.setPane(alPane);
                             sp.getChildren().add(alPane);
