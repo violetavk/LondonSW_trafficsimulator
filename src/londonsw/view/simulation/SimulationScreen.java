@@ -7,41 +7,32 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.converter.LongStringConverter;
-import londonsw.controller.SimulationController;
-import londonsw.controller.StartUpController;
 import londonsw.controller.TrafficLightController;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Map;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.ResizeFactor;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import londonsw.model.simulation.components.Lane;
 import londonsw.model.simulation.components.Road;
 import londonsw.model.simulation.components.vehicles.Ambulance;
 import londonsw.model.simulation.components.vehicles.Car;
-import londonsw.model.simulation.Map;
-import javafx.scene.text.Text;
-import javafx.util.converter.IntegerStringConverter;
 import londonsw.model.simulation.components.vehicles.Vehicle;
+import rx.Subscriber;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 
-import static javafx.fxml.FXMLLoader.load;
 
 public class SimulationScreen {
 
@@ -98,13 +89,24 @@ public class SimulationScreen {
 
         Label carNumberSituation = new Label();
         carNumberSituation.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
-        carNumberSituation.setText("Car Number: " + String.valueOf(initCar));
+        carNumberSituation.setText("Number of cars: " + String.valueOf(initCar));
         simulationControl.getChildren().add(carNumberSituation);
 
         Label tickerSituation = new Label();
         tickerSituation.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
-        tickerSituation.setText("Ticker Interval: 1000");
+        tickerSituation.setText("Ticker Interval: " + Ticker.getTickInterval() + " ms");
         simulationControl.getChildren().add(tickerSituation);
+
+        Label trafficLightLabel = new Label();
+        trafficLightLabel.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
+        trafficLightLabel.setText("Traffic Light Duration: " + TrafficLightController.getInstance().getDurationLength() + " ms");
+        simulationControl.getChildren().add(trafficLightLabel);
+
+        Label timeLabel = new Label();
+        timeLabel.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
+        timeLabel.setText("Times ticked: 0");
+        simulationControl.getChildren().add(timeLabel);
+        startTimeLabelTicker(timeLabel);
 
         Button startSimulation = new Button("Start");
         startSimulation.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
@@ -187,6 +189,12 @@ public class SimulationScreen {
          * Back to ChooseSimulationMode Screen
          */
         backButton.setOnMouseClicked(click->{
+            ArrayList<Vehicle> vehicles = VehicleController.getVehicleList();
+            int size = vehicles.size();
+            for(int i = 0; i < size; i++) {
+                VehicleController.removeVehicle(0);
+            }
+
             try {
                 Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../startup/ChooseModeScreen.fxml"));
                 primaryStage.setScene(new Scene(chooseModeScreen));
@@ -225,6 +233,7 @@ public class SimulationScreen {
             result.ifPresent((aLong -> {
                 TrafficLightController.getInstance().setDurationLength(aLong);
                 TrafficLightController.getInstance().setTrafficLightDuration(aLong);
+                trafficLightLabel.setText("Traffic Light Duration: " + TrafficLightController.getInstance().getDurationLength() + " ms");
             }));
 
         });
@@ -327,7 +336,38 @@ public class SimulationScreen {
         });
     }
 
-    //determine Max carNumber in the simulation
+    /**
+     * Creates a subscriber that listens to the ticker to update the "times ticked" label
+     * @param timeLabel the label to update on every tick
+     */
+    private void startTimeLabelTicker(Label timeLabel) {
+        Subscriber<Long> timeLabelSubscriber = new Subscriber<Long>() {
+            int timesTicked = 0;
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Long aLong) {
+                timeLabel.setText("Times ticked: " + timesTicked);
+                timesTicked++;
+            }
+        };
+        Ticker.subscribe(timeLabelSubscriber);
+    }
+
+
+    /**
+     * Determines the maximum number of cars that should go in the system
+     * @param map the map the simulation is happening on
+     * @return an upper bound on the number of cars that should be in the system
+     */
     public int determineMaxCarSize(Map map){
         int numberSlots = 0;
         ArrayList<Road> roads = map.getRoads();
