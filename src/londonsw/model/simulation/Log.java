@@ -97,6 +97,9 @@ public class Log extends Subscriber<Long> {
                      sb.append("PRIORITY: " + vLog.getVehiclePriority());
                      sb.append(System.lineSeparator());
                      sb.append("STATE: " + vLog.getVehicleState());
+                     sb.append(System.lineSeparator());
+                     sb.append("SUBSCRIBED: " + (vLog.isUnsubscribed()==false?"YES":"NO"));
+
 
                  } else if (o instanceof TrafficLight) {
                      TrafficLight tLog = (TrafficLight) o;
