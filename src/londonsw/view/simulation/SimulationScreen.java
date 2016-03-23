@@ -1,6 +1,7 @@
 package londonsw.view.simulation;
 
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
@@ -123,6 +124,7 @@ public class SimulationScreen {
         resetSimulation.setPadding(new Insets(10, 10, 10, 10));
         resetSimulation.setPrefSize(90, 30);
         simulationControl.getChildren().add(resetSimulation);
+        resetSimulation.setDisable(true);
 
         Button ambulanceAddDelete = new Button("Add/Delete Ambulance");
         ambulanceAddDelete.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
@@ -260,6 +262,9 @@ public class SimulationScreen {
             }
             mapPane.getChildren().add(mapSceneIndex, carStackPane);
             mapSceneIndex++;
+            startSimulation.setDisable(true);
+            resetSimulation.setDisable(false);
+            Platform.runLater(() -> slider.requestFocus());
         });
 
 
@@ -267,13 +272,19 @@ public class SimulationScreen {
          * To stop simulation
          */
         resetSimulation.setOnMouseClicked(click -> {
-            System.out.println("Reset Simulation");
             systemState = 0;
             slider.setDisable(true);
-            //StackPane sp = new StackPane();
-            carNumberSituation.setText("Number of cars: 0");
-            mapPane.getChildren().remove(1, mapSceneIndex);
+            startSimulation.setDisable(false);
+            resetSimulation.setDisable(true);
+
+            ArrayList<Vehicle> vehicles = VehicleController.getVehicleList();
+            int size = vehicles.size();
+            for(int i = 0; i < size; i++) {
+                VehicleController.removeVehicle(0);
+            }
+            carNumberSituation.setText("Number of cars: " + VehicleController.getVehicleList().size());
             mapSceneIndex = 1;
+            Platform.runLater(() -> startSimulation.requestFocus());
         });
     }
 
@@ -320,7 +331,7 @@ public class SimulationScreen {
                             sp.getChildren().add(carPane);
                             vehicleGUIDecorator.setPane(carPane);
                             vehicleGUIDecorator.setVehicleState(1);
-                            System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
+//                            System.out.println(C1.getCurrentCoordinate().getX() + "," + C1.getCurrentCoordinate().getY());
                             return C1;
 
                         }
