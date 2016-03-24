@@ -39,7 +39,11 @@ public class Intersection extends Subscriber<Long> implements Component, Seriali
     private Coordinate location;
     private static  int counter=0;
 
-    /* constructor */
+
+    /**
+     * Creats
+     * @param location
+     */
     public Intersection(Coordinate location){
         this.northRoad = null;
         this.southRoad = null;
