@@ -511,6 +511,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
             l= this.getLaneOptions().get(size);
             return l;
         }
+
         return null;
     }
 
@@ -531,7 +532,6 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         Lane oldLane = this.currentLane;
 
 
-
             //validate if its end of lane
             if (((l != null) && (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) && this.getVehiclePriorityToTurn()==1) ||
                     (l != null && this.getCurrentCell() == this.currentLane.getLength()-1 && l.isCellEmpty(0) && !TrafficLightController.getInstance().areLightsEnabled()))
@@ -539,9 +539,12 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                     oldLane.setCell(null, oldLane.getLength() - 1);
                     this.setCurrentLane(l);
                     this.setCurrentCell(0, l);
+                    this.getCurrentLane().setCell(this,0);
                     return 1;
                 }
-            else {this.setVehicleState(0);
+
+            else {
+                this.setVehicleState(0);
                 return 0;}
 
     }
