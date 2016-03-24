@@ -44,6 +44,7 @@ public class SimulationScreen {
     private int systemState = 0;
     private int maxCarSize;
     Subscriber<Long> timeLabelSubscriber;
+    Label carNumberSituation;
 
     public SimulationScreen(Map map) {
         this.map = map;
@@ -83,7 +84,7 @@ public class SimulationScreen {
         simulationControl.setSpacing(10);
         simulationControl.setAlignment(Pos.TOP_CENTER);
 
-        Label carNumberSituation = new Label();
+        carNumberSituation = new Label();
         carNumberSituation.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
         carNumberSituation.setText("Number of cars: " + String.valueOf(initCar));
         simulationControl.getChildren().add(carNumberSituation);
@@ -371,6 +372,7 @@ public class SimulationScreen {
             public void onNext(Long aLong) {
                 timeLabel.setText("Times ticked: " + timesTicked);
                 timesTicked++;
+                carNumberSituation.setText("Number of cars: " + VehicleController.getVehicleList().size());
             }
         };
         Ticker.subscribe(timeLabelSubscriber);

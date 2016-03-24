@@ -388,8 +388,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
                 currentLane.setCell(null, curCell);
                 this.setVehicleState(3);
                 this.unsubscribe();
-
-
+                VehicleController.removeFromListAndMap(this);
             }
 
 

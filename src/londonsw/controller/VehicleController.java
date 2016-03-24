@@ -33,6 +33,15 @@ public class VehicleController {
     }
 
     /**
+     * Removes the vehicle instance from the list of all vehicles and the map of all vehicle,decorator pairs
+     * @param v the vehicle to remove
+     */
+    public static void removeFromListAndMap(Vehicle v) {
+        allVehicles.remove(v);
+        vehiclesAndDecorators.remove(v);
+    }
+
+    /**
      * Gets all the vehicles in the system
      * @return ArrayList with all vehicles in the system
      */
