@@ -49,6 +49,10 @@ public class VehicleController {
         return allVehicles;
     }
 
+    /**
+     * Given an index in the array, this removes the vehicle from existence.
+     * @param index the index in the list allVehicles that the vehicle occupies
+     */
     public static void removeVehicle(int index) {
         try {
             Vehicle v = allVehicles.get(index);
@@ -67,9 +71,33 @@ public class VehicleController {
         }
     }
 
+    /**
+     * Gets the total time spent standing for all vehicles in the system.
+     * @return the total time spent standing by all vehicles in the system
+     */
+    public static int getTotalTimeSpentStanding() {
+        int sum = 0;
+        for(Vehicle v : allVehicles) {
+            sum += v.getTimeSpentStanding();
+        }
+        return sum;
+    }
 
     /**
-     * Retrieve the CarGuiDecorator for the vehicle, for operations that happen outside this class
+     * Gets the total times ticked by all vehicles in the system. This is used in the calculation of
+     * average time spent standing in the system.
+     * @return
+     */
+    public static int getTotalTimesTicked() {
+        int sum = 0;
+        for(Vehicle v : allVehicles) {
+            sum += v.getTimesTicked();
+        }
+        return sum;
+    }
+
+    /**
+     * Retrieve the VehicleGGUIDecorator for the vehicle, for operations that happen outside this class
      *
      * @param vehicle the Vehicle to retrieve the decorator for
      * @return CarGuiDecorator instance associated with that specific Vehicle
@@ -120,6 +148,11 @@ public class VehicleController {
             if (vehicleGUIDecorator.getVehicleState() != 0) { // if not at intersection, and wasn't stopped, move forward
                 move = vehicleGUIDecorator.moveVehicle(step);
             }
+        }
+
+        if(move == 0) {
+            Vehicle thisVehicle = vehicleGUIDecorator.getVehicle();
+            thisVehicle.incrementTimeSpentStanding();
         }
 
         if (vehicleGUIDecorator.getVehicleState() == 3) { //vehicle is deleted just move to next space

@@ -106,6 +106,14 @@ public class VehicleGUIDecorator extends VehicleDecorator {
         this.color = color;
     }
 
+    /**
+     * Gets the vehicle associated with this decorator class
+     * @return the vehicle this decorator class is for
+     */
+    public Vehicle getVehicle() {
+        return decoratedVehicle;
+    }
+
 
     /**
      * Draws the vehicle to display in the simulation. Each vehicle would have this method called on it.

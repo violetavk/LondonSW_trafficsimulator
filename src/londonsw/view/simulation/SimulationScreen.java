@@ -45,6 +45,7 @@ public class SimulationScreen {
     private int maxCarSize;
     Subscriber<Long> timeLabelSubscriber;
     Label carNumberSituation;
+    Label timeStanding;
 
     public SimulationScreen(Map map) {
         this.map = map;
@@ -80,8 +81,8 @@ public class SimulationScreen {
         //Start&Reset
         VBox simulationControl = new VBox();
 
-        simulationControl.setPadding(new Insets(10,10,10,10));
-        simulationControl.setSpacing(10);
+        simulationControl.setPadding(new Insets(0,10,10,10));
+        simulationControl.setSpacing(8);
         simulationControl.setAlignment(Pos.TOP_CENTER);
 
         carNumberSituation = new Label();
@@ -103,6 +104,11 @@ public class SimulationScreen {
         timeLabel.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
         timeLabel.setText("Times ticked: 0");
         simulationControl.getChildren().add(timeLabel);
+
+        timeStanding = new Label();
+        timeStanding.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
+        timeStanding.setText("Vehicle Time Spent Standing: 0.0%");
+        simulationControl.getChildren().add(timeStanding);
 
         Button startSimulation = new Button("Start");
         startSimulation.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
@@ -151,7 +157,7 @@ public class SimulationScreen {
 
         //carSlider
         VBox sliderControl = new VBox();
-        sliderControl.setPadding(new Insets(10, 10, 10, 10));
+        sliderControl.setPadding(new Insets(10, 10, 5, 10));
         Pane carLabel = new Pane();
         Label carNumber = new Label("Car Number");
         carNumber.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
@@ -378,6 +384,7 @@ public class SimulationScreen {
             Platform.runLater(() -> startSimulation.requestFocus());
             endTimeLabelTicker();
             timeLabel.setText("Times ticked: 0");
+            timeStanding.setText("Vehicle Time Spent Standing: 0.0%");
         });
     }
 
@@ -403,6 +410,7 @@ public class SimulationScreen {
                 timeLabel.setText("Times ticked: " + timesTicked);
                 timesTicked++;
                 carNumberSituation.setText("Number of cars: " + VehicleController.getVehicleList().size());
+                timeStanding.setText("Vehicle Time Spent Standing: " + getPercentageStanding() + "%");
             }
         };
         Ticker.subscribe(timeLabelSubscriber);
@@ -413,6 +421,16 @@ public class SimulationScreen {
      */
     private void endTimeLabelTicker() {
         timeLabelSubscriber.unsubscribe();
+    }
+
+    private double getPercentageStanding() {
+        int timeSpentStanding = VehicleController.getTotalTimeSpentStanding();
+        int totalTimesTicked = VehicleController.getTotalTimesTicked();
+        if(totalTimesTicked == 0) {
+            return 0.0;
+        }
+        double ans = (double) timeSpentStanding / totalTimesTicked * 100;
+        return Math.round(ans * 100.0) / 100.0;
     }
 
     /**

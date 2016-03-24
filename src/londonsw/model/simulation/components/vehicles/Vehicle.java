@@ -20,28 +20,25 @@ import java.util.Random;
 public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
     private static final long serialVersionUID = -4552832373570448039L;
-    int vehicleLength;
-    double vehicleSpeed;
-    int currentCell;
-    int vehiclePriority;// 1 is the lowest
-    int vehicleState;
-    VehicleBehavior vehicleBehavior;
-    public Lane currentLane;
-    public ArrayList<Lane> laneOptions = new ArrayList<Lane>();
-    private Random randomDirection;
-    Lane l;
-    Coordinate currentCoordinate;
-    private Coordinate previousCoordinate;
-    private Lane previousLane;
-    int vehiclePriorityToTurn;
-    TrafficLight vehicleTrafficLight;
-
-
-
-    // debug only
-    int timesTicked;
+    protected int vehicleLength;
+    protected double vehicleSpeed;
+    protected int currentCell;
+    protected int vehiclePriority;// 1 is the lowest
+    protected int vehicleState;
+    protected VehicleBehavior vehicleBehavior;
+    protected  Lane currentLane;
+    protected  ArrayList<Lane> laneOptions = new ArrayList<Lane>();
+    protected  Random randomDirection;
+    protected Lane l;
+    protected Coordinate currentCoordinate;
+    protected  Coordinate previousCoordinate;
+    protected  Lane previousLane;
+    protected int vehiclePriorityToTurn;
+    protected TrafficLight vehicleTrafficLight;
+    protected int timesTicked;
     private static int counter = 0;
-    private int id;
+    protected int id;
+    protected int timeSpentStanding;
 
 
     /**
@@ -57,6 +54,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         Ticker.subscribe(this);
         timesTicked = 0;
         id = ++counter;
+        timeSpentStanding = 0;
     }
 
     /**
@@ -185,7 +183,6 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         this.previousCoordinate = prev;
     }
 
-
     public void setPreviousLane(Lane previousLane) {
         this.previousLane = previousLane;
     }
@@ -194,7 +191,36 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         return previousCoordinate;
     }
 
-    /* getting the current coordinate of the car */
+    /**
+     * Increments the time spent standing by this vehicle. This exists because the VehicleController needs
+     * to call this for all stationary vehicles.
+     */
+    public void incrementTimeSpentStanding() {
+        timeSpentStanding++;
+    }
+
+    /**
+     * Gets the time spent standing (not moving) in the system
+     * @return the total time spent standing by this vehicle in the system
+     */
+    public int getTimeSpentStanding() {
+        return timeSpentStanding;
+    }
+
+    /**
+     * Gets the times ticked by this vehicle in the system. This is used in the calculation for the average vehicle time
+     * standing in the system.
+     * @return the number of ticks this vehicle heard
+     */
+    public int getTimesTicked() {
+        return timesTicked;
+    }
+
+
+    /**
+     * Gets the current coordinate of this vehicle in the Map
+     * @return the current coordinate of this vehicle in the Map
+     */
     public Coordinate getCurrentCoordinate() {
         int currentCell = this.getCurrentCell();
         Lane currentLane = this.getCurrentLane();
@@ -546,6 +572,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     public void onNext(Long aLong) {
         System.out.print("Tick! " + aLong + "     ");
         System.out.println("Car: "+ this.getId()+"  Location: " + this.getCurrentCoordinate().getX() + "," + this.getCurrentCoordinate().getY());
+        timesTicked++;
         try {
             if (vehicleBehavior == VehicleBehavior.AVERAGE) {
                 VehicleController.moveOnTick(this,1);
