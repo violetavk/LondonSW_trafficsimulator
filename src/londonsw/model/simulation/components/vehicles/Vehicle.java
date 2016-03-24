@@ -169,7 +169,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
      * @return the behavior of a vehicle in type of enum VehicleBehavior
      */
     public VehicleBehavior getVehicleBehavior() {
-        return VehicleBehavior.randomLetter();
+        return this.vehicleBehavior;
     }
 
     /**
