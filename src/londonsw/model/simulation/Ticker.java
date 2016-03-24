@@ -76,7 +76,7 @@ public class Ticker {
     public static long getTickInterval() { return TICK_INTERVAL; }
 
     /**
-     * Change the length of a tick interval. //TODO currently does not work
+     * Change the length of a tick interval.
      * @param interval length of new interval
      */
     public static void setTickInterval(long interval) { TICK_INTERVAL = interval; }
