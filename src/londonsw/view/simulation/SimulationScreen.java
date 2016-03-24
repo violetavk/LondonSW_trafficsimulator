@@ -211,15 +211,15 @@ public class SimulationScreen {
         trafficLightInterval.setOnMouseClicked(click -> {
             Dialog<Long> dialog = new Dialog<Long>();
             dialog.setTitle("Choose Traffic Light Duration");
-            dialog.setHeaderText("Choose a duration (in milliseconds) for\nthe traffic lights in the system.");
+            dialog.setHeaderText("Choose a duration (in time ticks) for\nthe traffic lights in the system.");
             dialog.setGraphic(null);
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
             GridPane grid = new GridPane();
             grid.setHgap(10);
             grid.setVgap(10);
             grid.setPadding(new Insets(20, 80, 10, 10));
-            grid.add(new Label("Duration: "), 0, 0);
-            Spinner<Double> spinner = new Spinner<Double>(1000, 10000, TrafficLightController.getInstance().getDurationLength(), 1000);
+            grid.add(new Label("Duration:"), 0, 0);
+            Spinner<Double> spinner = new Spinner<Double>(1, 20, TrafficLightController.getInstance().getDurationLength()/1000, 1);
             grid.add(spinner, 1, 0);
             dialog.getDialogPane().setContent(grid);
             Platform.runLater(() -> spinner.requestFocus());
@@ -227,6 +227,7 @@ public class SimulationScreen {
             dialog.setResultConverter(dialogButton -> {
                 if(dialogButton == ButtonType.OK) {
                     double value =  spinner.getValue();
+                    value *= 1000;
                     return (long) value;
                 }
                 return null;
