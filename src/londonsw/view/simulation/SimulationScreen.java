@@ -138,6 +138,11 @@ public class SimulationScreen {
         trafficLightInterval.setPrefSize(180, 30);
         simulationControl.getChildren().add(trafficLightInterval);
 
+        Label instructions = new Label("Click on the lane arrows to\nenable and disable lanes.");
+        instructions.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
+        instructions.setPadding(new Insets(5,0,0,0));
+        simulationControl.getChildren().add(instructions);
+
         //carSlider
         VBox sliderControl = new VBox();
         sliderControl.setPadding(new Insets(10, 10, 10, 10));
