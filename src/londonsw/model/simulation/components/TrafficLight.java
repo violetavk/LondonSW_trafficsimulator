@@ -23,7 +23,7 @@ public class TrafficLight extends Subscriber<Long> implements Serializable {
      * Default constructor, initial light color is red
      */
     public TrafficLight() {
-        this.currentTime = 3000;
+        this.currentTime = 1000;
         Ticker.subscribe(this);
         this.state = LightColour.RED;
         this.id = ++counter;
