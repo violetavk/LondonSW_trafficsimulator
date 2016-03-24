@@ -16,24 +16,42 @@ import londonsw.view.mapcreation.ComponentType;
 import java.util.ArrayList;
 
 /**
- * Created by felix on 25/02/2016.
+ * This is the class that handles drawing of the entire map. It cycles through the Model grid and draws
+ * each map component on the screen.
  */
 public class MapGridGUIDecorator extends MapGridDecorator {
 
     private ResizeFactor resizeFactor;
 
+    /**
+     * Creates an instance of this decorator to represent a single Map
+     * @param decoratedMapGrid the MapGrid (underlying Map data structure) to represent graphically
+     */
     public MapGridGUIDecorator(MapGrid decoratedMapGrid) {
         super(decoratedMapGrid);
     }
 
+    /**
+     * Gets the resize factor for this decorator
+     * @return the resize factor for this decorator
+     */
     public ResizeFactor getResizeFactor() {
         return resizeFactor;
     }
 
+    /**
+     * Sets the resize factor for this decorator
+     * @param resizeFactor the resize factor to set for this decorator
+     */
     public void setResizeFactor(ResizeFactor resizeFactor) {
         this.resizeFactor = resizeFactor;
     }
 
+    /**
+     * Draws the components for this Map
+     * @return a GridPane representing the map, where every cell in the GridPane corresponds to a coordinate in the Map
+     * @throws Exception
+     */
     public GridPane drawComponents() throws Exception {
         GridPane rootGP = new GridPane();
         StackPane roadPane;
@@ -47,7 +65,7 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                 Component current = this.getGrid()[y][x];
 
-                if (current instanceof Road) {
+                if (current instanceof Road) { // draws a Road
 
                     RoadGUIDecorator roadGUIDecorator = new RoadGUIDecorator((Road) current);
 
@@ -98,23 +116,19 @@ public class MapGridGUIDecorator extends MapGridDecorator {
 
                     roadCounter++;
 
-                } else if (current instanceof Intersection) {
-
+                } else if (current instanceof Intersection) { // draws an Intersection
                     roadCounter = 0;
 
                     IntersectionDecorator intersectionDecorator = new IntersectionDecorator((Intersection) current);
                     intersectionDecorator.setResizeFactor(this.getResizeFactor());
                     roadPane = intersectionDecorator.drawIntersection();
-                } else {
-
+                } else { // draws Grass
                     roadCounter = 0;
 
                     LayoutGUI grassGUI = new LayoutGUI();
-
                     grassGUI.setHeight(this.getHeight());
                     grassGUI.setWidth(this.getWidth());
                     grassGUI.setResizeFactor(this.getResizeFactor());
-
                     roadPane = grassGUI.drawGrass();
                 }
 
@@ -128,6 +142,13 @@ public class MapGridGUIDecorator extends MapGridDecorator {
         return rootGP;
     }
 
+    /**
+     * Redraws the cell based on what is currently in the cell. Used by MapMaker mode.
+     * @param x the x coordinate of the new component to be redrawn
+     * @param y the y coordinate of the new component to be redrawn
+     * @param gp the GridPane representing the Map
+     * @return a StackPane representation of the newly redrawn grid cell
+     */
     public StackPane redrawCell(int x, int y, GridPane gp) {
         Component component = this.getGrid()[y][x];
         StackPane sp = new StackPane();

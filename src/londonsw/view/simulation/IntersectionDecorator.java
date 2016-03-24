@@ -50,26 +50,51 @@ public class IntersectionDecorator implements Serializable {
         IntersectionController.addIntersectionAndDecoratorPair(intersection,this);
     }
 
+    /**
+     * Sets the resize factor for this intersection GUI decorator
+     * @param rf the resize factor to set for this decorator
+     */
     public void setResizeFactor(ResizeFactor rf) {
         resizeFactor = rf;
     }
 
+    /**
+     * Sets the north traffic light decorator for this intersection to represent the north traffic light
+     * @param t the decorator representing the north traffic light
+     */
     public void setNorthTrafficLightDecorator(TrafficLightDecorator t) {
         northLight = t;
     }
 
+    /**
+     * Sets the west traffic light decorator for this intersection to represent the west traffic light
+     * @param t the decorator representing the west traffic light
+     */
     public void setWestTrafficLightDecorator(TrafficLightDecorator t) {
         westLight = t;
     }
 
+    /**
+     * Sets the south traffic light decorator for this intersection to represent the south traffic light
+     * @param t the decorator representing the south traffic light
+     */
     public void setSouthTrafficLightDecorator(TrafficLightDecorator t) {
         southLight = t;
     }
 
+    /**
+     * Sets the east traffic light decorator for this intersection to represent the east traffic light
+     * @param t the decorator representing the east traffic light
+     */
     public void setEastTrafficLightDecorator(TrafficLightDecorator t) {
         eastLight = t;
     }
 
+    /**
+     * Draws the intersection to display it in the GUI. It initializes all TrafficLightDecorators as well, to make
+     * them display properly.
+     * @return the StackPane to represent this intersection
+     */
     public StackPane drawIntersection() {
         StackPane stackPane = new StackPane();
 
@@ -107,15 +132,13 @@ public class IntersectionDecorator implements Serializable {
             lights.getChildren().add(westLight.getCircle());
         }
 
-//        stackPane.setOnMouseClicked(event -> System.out.println("Clicked " + this.intersection.getId()));
-
         stackPane.getChildren().add(iv);
         stackPane.getChildren().add(lights);
         return stackPane;
     }
 
     /**
-     * This method is only for DEBUG! Displays the intersection in the given stack pane
+     * This method is only for DEBUG and TESTING! Displays the intersection in the given stack pane
      * @param stage the Stage to display this Intersection in
      */
     public void showIntersection(Stage stage, StackPane s) {
