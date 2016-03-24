@@ -1,4 +1,5 @@
 package londonsw.model.simulation.components.vehicles;
+import londonsw.controller.TrafficLightController;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.*;
@@ -345,6 +346,12 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         if (this.getCurrentCell() == this.currentLane.getLength() - 1) {
             TrafficLight light;
 
+            // traffic lights are disabled, allow cars to move through lights
+            if(!TrafficLightController.getInstance().areLightsEnabled()) {
+                this.setVehicleState(1);
+                return;
+            }
+
             if (this.getCurrentLane().getEndIntersection() != null) {
                 switch (this.getCurrentLane().getMovingDirection()) {
                     case NORTH:
@@ -383,7 +390,6 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
                 }
             } else {
-                System.out.println("No Intersection assigned");
                 int curCell = this.getCurrentCell();
                 currentLane.setCell(null, curCell);
                 this.setVehicleState(3);
@@ -499,8 +505,10 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         Lane oldLane = this.currentLane;
 
 
+
             //validate if its end of lane
-            if ((l != null) && (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) && this.getVehiclePriorityToTurn()==1)
+            if (((l != null) && (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) && this.getVehiclePriorityToTurn()==1) ||
+                    (l != null && this.getCurrentCell() == this.currentLane.getLength()-1 && l.isCellEmpty(0) && !TrafficLightController.getInstance().areLightsEnabled()))
                 {
                     oldLane.setCell(null, oldLane.getLength() - 1);
                     this.setCurrentLane(l);

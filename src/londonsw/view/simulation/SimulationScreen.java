@@ -128,15 +128,21 @@ public class SimulationScreen {
         Button ambulanceAddDelete = new Button("Add Ambulance");
         ambulanceAddDelete.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         ambulanceAddDelete.setStyle("-fx-base:Gold");
-        ambulanceAddDelete.setPrefSize(180, 30);
+        ambulanceAddDelete.setPrefSize(200, 30);
         ambulanceAddDelete.setDisable(true);
         simulationControl.getChildren().add(ambulanceAddDelete);
 
         Button trafficLightInterval = new Button("Set Traffic Light Duration");
         trafficLightInterval.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         trafficLightInterval.setStyle("-fx-base:Gold");
-        trafficLightInterval.setPrefSize(180, 30);
+        trafficLightInterval.setPrefSize(200, 30);
         simulationControl.getChildren().add(trafficLightInterval);
+
+        Button enableDisableLights = new Button("Disable Traffic Lights");
+        enableDisableLights.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
+        enableDisableLights.setStyle("-fx-base:Gold");
+        enableDisableLights.setPrefSize(200, 30);
+        simulationControl.getChildren().add(enableDisableLights);
 
         Label instructions = new Label("Click on the lane arrows to\nenable and disable lanes.");
         instructions.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
@@ -245,6 +251,24 @@ public class SimulationScreen {
                 trafficLightLabel.setText("Traffic Light Duration: " + TrafficLightController.getInstance().getDurationLength()/1000 + " ticks");
             }));
 
+        });
+
+        /**
+         * Functionality for enabling and disabling the traffic lights
+         */
+        enableDisableLights.setOnMouseClicked(click -> {
+            if(TrafficLightController.getInstance().areLightsEnabled()) {
+                // disable the lights!
+                TrafficLightController.getInstance().disableLights(true);
+                enableDisableLights.setText("Enable Traffic Lights");
+                trafficLightLabel.setText("Traffic Light Duration: DISABLED");
+            }
+            else {
+                // enable the lights!
+                TrafficLightController.getInstance().disableLights(false);
+                enableDisableLights.setText("Disable Traffic Lights");
+                trafficLightLabel.setText("Traffic Light Duration: " + TrafficLightController.getInstance().getDurationLength()/1000 + " ticks");
+            }
         });
 
         /**
