@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import londonsw.controller.StartUpController;
 import londonsw.controller.TrafficLightController;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Map;
@@ -212,14 +213,10 @@ public class SimulationScreen {
                 VehicleController.removeVehicle(0);
             }
             Ticker.end();
-            try {
-                Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../startup/ChooseModeScreen.fxml"));
-                primaryStage.setScene(new Scene(chooseModeScreen));
-                primaryStage.centerOnScreen();
-                primaryStage.setResizable(false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            StartUpController.getInstance().goToChooseModeScreen(primaryStage);
+            primaryStage.centerOnScreen();
+            primaryStage.setResizable(false);
+
         });
 
         /**

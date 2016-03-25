@@ -8,7 +8,7 @@
  */
 public class SystemApp {
 	public static void main(String[] args) throws Exception {
-		StartUpController sc = new StartUpController();
+		StartUpController sc = StartUpController.getInstance();
 		sc.startSoftware(args);
 	}
 }

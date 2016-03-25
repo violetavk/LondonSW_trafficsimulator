@@ -229,12 +229,11 @@ public class Map implements Serializable {
      * @return an instance of a loaded Map that was opened from the disk
      */
     public static Map loadMap(String fileName) {
-        String path = MAP_DIR + fileName;
         Map map = null;
 
         try {
             // open the Map
-            FileInputStream fileIn = new FileInputStream(path);
+            FileInputStream fileIn = new FileInputStream(fileName);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             map = (Map) in.readObject();
             in.close();

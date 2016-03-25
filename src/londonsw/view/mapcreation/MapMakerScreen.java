@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import londonsw.controller.MapMakerController;
+import londonsw.controller.StartUpController;
 import londonsw.model.simulation.Map;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.*;
@@ -75,7 +76,6 @@ public class MapMakerScreen {
         Map map = new Map(width, height);
         MapGridGUIDecorator mapGridGUIDecorator = new MapGridGUIDecorator(map.getGrid());
         ResizeFactor rf = ResizeFactor.getSuggestedResizeFactor(width, height);
-        System.out.println("Using RF of " + rf);
         mapGridGUIDecorator.setResizeFactor(rf);
         GridPane mapGridPane = mapGridGUIDecorator.drawComponents();
         mapGridPane.setPadding(new Insets(0,0,5,5));
@@ -154,12 +154,18 @@ public class MapMakerScreen {
         Button saveButton = new Button("Save Map");
         StackPane saveButtonPane = new StackPane(saveButton);
         saveButtonPane.setPadding(padding);
+        saveButton.setStyle("-fx-base:Gold");
+        saveButton.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         buttonsPane.getChildren().add(saveButtonPane);
         Button resetButton = new Button("Reset Map");
+        resetButton.setStyle("-fx-base:Gold");
+        resetButton.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         StackPane resetButtonPane = new StackPane(resetButton);
         resetButtonPane.setPadding(padding);
         buttonsPane.getChildren().add(resetButtonPane);
         Button backButton = new Button("Go Back");
+        backButton.setStyle("-fx-base:Gold");
+        backButton.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         StackPane backButtonPane = new StackPane(backButton);
         backButtonPane.setPadding(padding);
         buttonsPane.getChildren().add(backButtonPane);
@@ -617,8 +623,7 @@ public class MapMakerScreen {
      * @throws Exception
      */
     private void goBack(Stage stage) throws Exception {
-        Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../startup/ChooseModeScreen.fxml"));
-        stage.setScene(new Scene(chooseModeScreen));
+        StartUpController.getInstance().goToChooseModeScreen(stage);
         stage.centerOnScreen();
         stage.setResizable(false);
     }

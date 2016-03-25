@@ -8,11 +8,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
@@ -29,13 +33,17 @@ import java.util.Optional;
  *  This is the controller that gets called by the main SystemApp class. This controller initiates all GUI screens.
  */
 @SuppressWarnings("Duplicates")
-public class StartUpController extends Application{
+public class StartUpController extends Application {
 
-    public Label londonSWlabel;
-    public Label trafficSimLabel;
-    public Button startButton;
-    public Button simulationModeButton;
-    public Button mapMakerButton;
+    private static StartUpController instance;
+
+    public StartUpController() { }
+
+    public static StartUpController getInstance() {
+        if(instance == null)
+            instance = new StartUpController();
+        return instance;
+    }
 
     public void startSoftware(String[] args) {
         launch(args);
@@ -49,44 +57,100 @@ public class StartUpController extends Application{
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../view/startup/StartScreen.fxml"));
         primaryStage.setTitle("LondonSW Traffic Simulator");
-        primaryStage.setScene(new Scene(root));
+
+        VBox vBox = new VBox();
+        vBox.setPrefSize(600,400);
+        vBox.setSpacing(10);
+        vBox.setStyle("-fx-background-color:papayawhip");
+        vBox.setAlignment(Pos.CENTER);
+
+        Label londonSWLabel = new Label("London SW");
+        londonSWLabel.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 20));
+        Label trafficSimLabel = new Label("Traffic Simulator");
+        trafficSimLabel.setFont(Font.font("System Bold Italic", FontWeight.EXTRA_BOLD, 22));
+        trafficSimLabel.setPadding(new Insets(0,0,50,0));
+        Button startButton = new Button("Start");
+        startButton.setPrefSize(300,150);
+        startButton.setStyle("-fx-base:Gold");
+        startButton.setFont(Font.font("System Bold Italic", FontWeight.EXTRA_BOLD, 26));
+
+        vBox.getChildren().add(londonSWLabel);
+        vBox.getChildren().add(trafficSimLabel);
+        vBox.getChildren().add(startButton);
+
+        Scene scene = new Scene(vBox);
+        primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.centerOnScreen();
+
+        startButton.setOnMouseClicked(click -> {
+            goToChooseModeScreen(primaryStage);
+        });
     }
 
     /**
      * This is the method that gets called when the user hits the START button on the initial screen. It
      * loads the "Choose Mode" screen, which gives 2 options: Opening a pre-made map, or users building their own map.
-     * @param actionEvent the event that triggered this method
-     * @throws IOException
+     * @param primaryStage the stage to display the screen in
      */
-    public void goToChooseModeScreen(ActionEvent actionEvent) throws IOException {
-        Parent chooseModeScreen = FXMLLoader.load(getClass().getResource("../view/startup/ChooseModeScreen.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(chooseModeScreen));
-        stage.centerOnScreen();
-        stage.setResizable(false);
+    public void goToChooseModeScreen(Stage primaryStage) {
+        VBox vBox = new VBox();
+        vBox.setPrefSize(600,400);
+        vBox.setSpacing(50);
+        vBox.setStyle("-fx-background-color:papayawhip");
+        vBox.setAlignment(Pos.CENTER);
+        Platform.runLater(() -> vBox.requestFocus());
+
+        Button openMap = new Button("Open a Pre-made Map");
+        openMap.setPrefSize(300, 90);
+        openMap.setStyle("-fx-base:Gold");
+        openMap.setFont(Font.font("System Bold Italic", FontWeight.EXTRA_BOLD, 16));
+
+        Button makeMap = new Button("Make a new Map");
+        makeMap.setPrefSize(300, 90);
+        makeMap.setStyle("-fx-base:Gold");
+        makeMap.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 16));
+
+        vBox.getChildren().add(openMap);
+        vBox.getChildren().add(makeMap);
+
+        Scene scene = new Scene(vBox);
+        primaryStage.setScene(scene);
+
+        openMap.setOnMouseClicked(click -> {
+            try {
+                goToSimulationMode(primaryStage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        makeMap.setOnMouseClicked(click -> {
+            goToMapMakerMode(primaryStage);
+        });
     }
 
     /**
      * When the user click "Choose Pre-made map..." button, it will go to SimulationMode screen. It will first
      * prompt the user to open a file (only Map files are allowed to be opened), set a ticker interval speed,
      * and then it will go to draw the simulation mode screen.
-     * @param actionEvent the click that caused this method invocation
+     * @param primaryStage the click that caused this method invocation
      * @throws Exception
      */
-    public void goToSimulationMode(ActionEvent actionEvent) throws Exception {
+    public void goToSimulationMode(Stage primaryStage) throws Exception {
         FileChooser chooser=new FileChooser();
         chooser.setTitle("Open Map");
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Map File (*.map)", "*.map"));
         File file = chooser.showOpenDialog(new Stage());
 
+
         if(file!=null)
         {
-            String mapName = file.getName();
+//            String mapName = file.getName();
+            String mapName = file.getAbsolutePath();
+
 
             Dialog<Long> dialog = new Dialog<>();
             dialog.setTitle("Choose Ticker Interval Duration");
@@ -120,8 +184,7 @@ public class StartUpController extends Application{
             });
 
             //Decorate map to extend to GUI functionality
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            SimulationController simulationController = new SimulationController(stage);
+            SimulationController simulationController = new SimulationController(primaryStage);
             simulationController.setMapName(mapName);
             simulationController.drawScreen();
         }
@@ -131,9 +194,9 @@ public class StartUpController extends Application{
      * This method gets called when the user chooses to go to Map Maker mode. It will prompt the user for
      * the width and height that they want for their new map, in the range from 5 to 30 for both width and
      * height. It will then bring the user to the screen where they can build the map.
-     * @param actionEvent the click event that caused this method invocation
+     * @param primaryStage the click event that caused this method invocation
      */
-    public void goToMapMakerMode(ActionEvent actionEvent) {
+    public void goToMapMakerMode(Stage primaryStage) {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Choose Map Size");
         dialog.setHeaderText("Choose new map's width and height");
@@ -186,8 +249,7 @@ public class StartUpController extends Application{
             int width = Integer.parseInt(widthAndHeight.getKey());
             int height = Integer.parseInt(widthAndHeight.getValue());
 
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            MapMakerController mapMakerController = new MapMakerController(stage);
+            MapMakerController mapMakerController = new MapMakerController(primaryStage);
             mapMakerController.setWidthAndHeight(width,height);
             try {
                 mapMakerController.drawScreen();
