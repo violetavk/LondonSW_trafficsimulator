@@ -17,6 +17,7 @@ public class TrafficLightController {
     private Map<TrafficLight, TrafficLightDecorator> trafficLights;
     private ArrayList<TrafficLight> allLights;
     private long DURATION;
+    private boolean lightsEnabled;
 
     private static TrafficLightController instance;
 
@@ -29,6 +30,7 @@ public class TrafficLightController {
         trafficLights = new HashMap<>();
         allLights = new ArrayList<>();
         DURATION = 3000;
+        lightsEnabled = true;
     }
 
     /**
@@ -41,6 +43,45 @@ public class TrafficLightController {
             instance = new TrafficLightController();
         }
         return instance;
+    }
+
+    /**
+     * Gets whether the traffic lights are enabled or not
+     * @return true if all traffic lights are working and enabled, false otherwise
+     */
+    public boolean areLightsEnabled() {
+        return lightsEnabled;
+    }
+
+    /**
+     * Sets the lights boolean to true. Useful if re-loading a map and wanting to go back to default state.
+     */
+    public void setLightsToEnabled() {
+        lightsEnabled = true;
+    }
+
+    /**
+     * Disables or enables all traffic lights in the system. If traffic lights are disabled, cars will
+     * move freely without stopping anywhere. If enabled, they listen to the traffic lights.
+     * @param disable true disables the lights, false enables the lights
+     */
+    public void disableLights(boolean disable) {
+        if(disable) {
+            lightsEnabled = false;
+            for(TrafficLight t : allLights) {
+                TrafficLightDecorator decorator = trafficLights.get(t);
+                if(decorator != null)
+                    decorator.hideCircle(true);
+            }
+        }
+        else {
+            lightsEnabled = true;
+            for(TrafficLight t : allLights) {
+                TrafficLightDecorator decorator = trafficLights.get(t);
+                if(decorator != null)
+                    decorator.hideCircle(false);
+            }
+        }
     }
 
     /**

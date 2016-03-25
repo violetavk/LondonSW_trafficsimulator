@@ -279,6 +279,7 @@ public class Map implements Serializable {
 
             long duration = TrafficLightController.getInstance().getDurationLength();
             TrafficLightController.getInstance().setTrafficLightDuration(duration);
+            TrafficLightController.getInstance().setLightsToEnabled();
         } catch(IOException i) {
             System.out.println("IO Exception");
             i.printStackTrace();

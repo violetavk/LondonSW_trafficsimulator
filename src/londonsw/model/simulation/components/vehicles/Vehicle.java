@@ -1,4 +1,5 @@
 package londonsw.model.simulation.components.vehicles;
+import londonsw.controller.TrafficLightController;
 import londonsw.controller.VehicleController;
 import londonsw.model.simulation.Ticker;
 import londonsw.model.simulation.components.*;
@@ -19,28 +20,25 @@ import java.util.Random;
 public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
     private static final long serialVersionUID = -4552832373570448039L;
-    int vehicleLength;
-    double vehicleSpeed;
-    int currentCell;
-    int vehiclePriority;// 1 is the lowest
-    int vehicleState;
-    VehicleBehavior vehicleBehavior;
-    public Lane currentLane;
-    public ArrayList<Lane> laneOptions = new ArrayList<Lane>();
-    private Random randomDirection;
-    Lane l;
-    Coordinate currentCoordinate;
-    private Coordinate previousCoordinate;
-    private Lane previousLane;
-    int vehiclePriorityToTurn;
-    TrafficLight vehicleTrafficLight;
-
-
-
-    // debug only
-    int timesTicked;
+    protected int vehicleLength;
+    protected double vehicleSpeed;
+    protected int currentCell;
+    protected int vehiclePriority;// 1 is the lowest
+    protected int vehicleState;
+    protected VehicleBehavior vehicleBehavior;
+    protected  Lane currentLane;
+    protected  ArrayList<Lane> laneOptions = new ArrayList<Lane>();
+    protected  Random randomDirection;
+    protected Lane l;
+    protected Coordinate currentCoordinate;
+    protected  Coordinate previousCoordinate;
+    protected  Lane previousLane;
+    protected int vehiclePriorityToTurn;
+    protected TrafficLight vehicleTrafficLight;
+    protected int timesTicked;
     private static int counter = 0;
-    private int id;
+    protected int id;
+    protected int timeSpentStanding;
 
 
     /**
@@ -56,6 +54,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         Ticker.subscribe(this);
         timesTicked = 0;
         id = ++counter;
+        timeSpentStanding = 0;
     }
 
     /**
@@ -169,7 +168,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
      * @return the behavior of a vehicle in type of enum VehicleBehavior
      */
     public VehicleBehavior getVehicleBehavior() {
-        return VehicleBehavior.randomLetter();
+        return this.vehicleBehavior;
     }
 
     /**
@@ -184,7 +183,6 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         this.previousCoordinate = prev;
     }
 
-
     public void setPreviousLane(Lane previousLane) {
         this.previousLane = previousLane;
     }
@@ -193,7 +191,36 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         return previousCoordinate;
     }
 
-    /* getting the current coordinate of the car */
+    /**
+     * Increments the time spent standing by this vehicle. This exists because the VehicleController needs
+     * to call this for all stationary vehicles.
+     */
+    public void incrementTimeSpentStanding() {
+        timeSpentStanding++;
+    }
+
+    /**
+     * Gets the time spent standing (not moving) in the system
+     * @return the total time spent standing by this vehicle in the system
+     */
+    public int getTimeSpentStanding() {
+        return timeSpentStanding;
+    }
+
+    /**
+     * Gets the times ticked by this vehicle in the system. This is used in the calculation for the average vehicle time
+     * standing in the system.
+     * @return the number of ticks this vehicle heard
+     */
+    public int getTimesTicked() {
+        return timesTicked;
+    }
+
+
+    /**
+     * Gets the current coordinate of this vehicle in the Map
+     * @return the current coordinate of this vehicle in the Map
+     */
     public Coordinate getCurrentCoordinate() {
         int currentCell = this.getCurrentCell();
         Lane currentLane = this.getCurrentLane();
@@ -345,6 +372,12 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
         if (this.getCurrentCell() == this.currentLane.getLength() - 1) {
             TrafficLight light;
 
+            // traffic lights are disabled, allow cars to move through lights
+            if(!TrafficLightController.getInstance().areLightsEnabled()) {
+                this.setVehicleState(1);
+                return;
+            }
+
             if (this.getCurrentLane().getEndIntersection() != null) {
                 switch (this.getCurrentLane().getMovingDirection()) {
                     case NORTH:
@@ -383,7 +416,6 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
                 }
             } else {
-                System.out.println("No Intersection assigned");
                 int curCell = this.getCurrentCell();
                 currentLane.setCell(null, curCell);
                 this.setVehicleState(3);
@@ -457,80 +489,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     }
 
 
-    public boolean turnFirst (Lane l)throws Exception{
-       /* switch (this.getCurrentLane().getMovingDirection()) {
-            case NORTH:
-                if(this.getCurrentLane().getEndIntersection().getNorthRoad()!=null) {
-                    for (int i = 0; i < this.currentLane.getEndIntersection().getNorthRoad().getNumberLanes(); i++) {
-                        if ((this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.SOUTH)){
-                               if ((this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
-                                if (this.getId()>this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection().getId())
-                                    return true;
-                                else{ System.out.println("smaller ID, cant move,NORTH my ID is  " + this.getId() + " yours is "
-                                        +this.currentLane.getEndIntersection().getNorthRoad().getLaneAtIndex(i).getVehicleInIntersection().getId());
-                                    return false;}
-                               }else {System.out.println("`there is no car so I can move, NORTH my ID is  " + this.getId());
-                                   return true;}
-                        }
-                    }
-                }else return true;
 
-            case SOUTH:
-                if(this.getCurrentLane().getEndIntersection().getSouthRoad()!=null) {
-                    for (int i = 0; i < this.currentLane.getEndIntersection().getSouthRoad().getNumberLanes(); i++) {
-                        if ((this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.NORTH)){
-                               if( (this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
-                            if (this.getId()>this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection().getId())
-                                    return true;
-                                else{ System.out.println("smaller ID, cant move, SOUTH my ID is  " + this.getId() + " yours is "
-                                    +this.currentLane.getEndIntersection().getSouthRoad().getLaneAtIndex(i).getVehicleInIntersection().getId());
-                                    return false;}
-                               }
-                               else {System.out.println("there is no car so I can move, SOUTH my ID is  " + this.getId());
-                                   return true;}
-                        }
-                    }
-                }else return true;
-
-            case EAST:
-                if(this.getCurrentLane().getEndIntersection().getEastRoad()!=null) {
-                    for (int i = 0; i < this.currentLane.getEndIntersection().getEastRoad().getNumberLanes(); i++) {
-                        if ((this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.WEST)){
-                            if( (this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
-                                if (this.getId()>this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getVehicleInIntersection().getId())
-                                    return true;
-                                else{ System.out.println("smaller ID, cant move,EAST my ID is  " + this.getId() + " yours is "
-                                        +this.currentLane.getEndIntersection().getEastRoad().getLaneAtIndex(i).getVehicleInIntersection().getId());
-                                    return false;}
-                            }
-                            else {System.out.println("there is no car so I can move, EAST my ID is  " + this.getId());
-                                return true;}
-                        }
-                    }
-                }else return true;
-
-            case WEST:
-                if(this.getCurrentLane().getEndIntersection().getWestRoad()!=null) {
-                    for (int i = 0; i < this.currentLane.getEndIntersection().getWestRoad().getNumberLanes(); i++) {
-                        if ((this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getMovingDirection() == MapDirection.EAST)){
-                            if( (this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getVehicleInIntersection() != null)) {
-                                if (this.getId()>this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getVehicleInIntersection().getId())
-                                    return true;
-                                else{ System.out.println("smaller ID, cant move, WEST my ID is  " + this.getId() + " yours is "
-                                        +this.currentLane.getEndIntersection().getWestRoad().getLaneAtIndex(i).getVehicleInIntersection().getId());
-                                    return false;}
-                            }
-                            else {System.out.println("there is no car so I can move, WEST my ID is  " + this.getId());
-                                return true;}
-                        }
-                    }
-                }else return true;
-
-                default:
-                    return true;
-        }*/
-        return true;
-    }
 
 
     /**
@@ -552,6 +511,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
             l= this.getLaneOptions().get(size);
             return l;
         }
+
         return null;
     }
 
@@ -573,15 +533,18 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
 
 
             //validate if its end of lane
-            if ((l != null) /*&& (turnFirst(l)) */&& (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) && this.getVehiclePriorityToTurn()==1)
+            if (((l != null) && (this.getCurrentCell() == this.currentLane.getLength() -1) && (l.isCellEmpty(0)) && this.getVehiclePriorityToTurn()==1) ||
+                    (l != null && this.getCurrentCell() == this.currentLane.getLength()-1 && l.isCellEmpty(0) && !TrafficLightController.getInstance().areLightsEnabled()))
                 {
                     oldLane.setCell(null, oldLane.getLength() - 1);
                     this.setCurrentLane(l);
                     this.setCurrentCell(0, l);
-                    //this.setVehicleState(2);
+                    this.getCurrentLane().setCell(this,0);
                     return 1;
                 }
-            else {this.setVehicleState(0);
+
+            else {
+                this.setVehicleState(0);
                 return 0;}
 
     }
@@ -612,6 +575,7 @@ public abstract class Vehicle extends Subscriber<Long> implements Serializable {
     public void onNext(Long aLong) {
         System.out.print("Tick! " + aLong + "     ");
         System.out.println("Car: "+ this.getId()+"  Location: " + this.getCurrentCoordinate().getX() + "," + this.getCurrentCoordinate().getY());
+        timesTicked++;
         try {
             if (vehicleBehavior == VehicleBehavior.AVERAGE) {
                 VehicleController.moveOnTick(this,1);

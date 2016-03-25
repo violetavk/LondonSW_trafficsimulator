@@ -8,3 +8,6 @@ This traffic simulator is a group project aimed to build a traffic simulation so
 
 ##Building and running the project:
 - TODO
+
+##User Guide:
+- TODO

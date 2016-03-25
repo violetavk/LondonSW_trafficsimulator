@@ -45,6 +45,7 @@ public class SimulationScreen {
     private int maxCarSize;
     Subscriber<Long> timeLabelSubscriber;
     Label carNumberSituation;
+    Label timeStanding;
 
     public SimulationScreen(Map map) {
         this.map = map;
@@ -80,8 +81,8 @@ public class SimulationScreen {
         //Start&Reset
         VBox simulationControl = new VBox();
 
-        simulationControl.setPadding(new Insets(10,10,10,10));
-        simulationControl.setSpacing(10);
+        simulationControl.setPadding(new Insets(0,10,10,10));
+        simulationControl.setSpacing(8);
         simulationControl.setAlignment(Pos.TOP_CENTER);
 
         carNumberSituation = new Label();
@@ -103,6 +104,11 @@ public class SimulationScreen {
         timeLabel.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
         timeLabel.setText("Times ticked: 0");
         simulationControl.getChildren().add(timeLabel);
+
+        timeStanding = new Label();
+        timeStanding.setFont(Font.font("System Bold Italic",FontWeight.BOLD,13));
+        timeStanding.setText("Vehicle Time Spent Standing: 0.0%");
+        simulationControl.getChildren().add(timeStanding);
 
         Button startSimulation = new Button("Start");
         startSimulation.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
@@ -128,19 +134,30 @@ public class SimulationScreen {
         Button ambulanceAddDelete = new Button("Add Ambulance");
         ambulanceAddDelete.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         ambulanceAddDelete.setStyle("-fx-base:Gold");
-        ambulanceAddDelete.setPrefSize(180, 30);
+        ambulanceAddDelete.setPrefSize(200, 30);
         ambulanceAddDelete.setDisable(true);
         simulationControl.getChildren().add(ambulanceAddDelete);
 
         Button trafficLightInterval = new Button("Set Traffic Light Duration");
         trafficLightInterval.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
         trafficLightInterval.setStyle("-fx-base:Gold");
-        trafficLightInterval.setPrefSize(180, 30);
+        trafficLightInterval.setPrefSize(200, 30);
         simulationControl.getChildren().add(trafficLightInterval);
+
+        Button enableDisableLights = new Button("Disable Traffic Lights");
+        enableDisableLights.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
+        enableDisableLights.setStyle("-fx-base:Gold");
+        enableDisableLights.setPrefSize(200, 30);
+        simulationControl.getChildren().add(enableDisableLights);
+
+        Label instructions = new Label("Click on the lane arrows to\nenable and disable lanes.");
+        instructions.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
+        instructions.setPadding(new Insets(5,0,0,0));
+        simulationControl.getChildren().add(instructions);
 
         //carSlider
         VBox sliderControl = new VBox();
-        sliderControl.setPadding(new Insets(10, 10, 10, 10));
+        sliderControl.setPadding(new Insets(10, 10, 5, 10));
         Pane carLabel = new Pane();
         Label carNumber = new Label("Car Number");
         carNumber.setFont(Font.font("System Bold Italic", FontWeight.BOLD, 13));
@@ -240,6 +257,24 @@ public class SimulationScreen {
                 trafficLightLabel.setText("Traffic Light Duration: " + TrafficLightController.getInstance().getDurationLength()/1000 + " ticks");
             }));
 
+        });
+
+        /**
+         * Functionality for enabling and disabling the traffic lights
+         */
+        enableDisableLights.setOnMouseClicked(click -> {
+            if(TrafficLightController.getInstance().areLightsEnabled()) {
+                // disable the lights!
+                TrafficLightController.getInstance().disableLights(true);
+                enableDisableLights.setText("Enable Traffic Lights");
+                trafficLightLabel.setText("Traffic Light Duration: DISABLED");
+            }
+            else {
+                // enable the lights!
+                TrafficLightController.getInstance().disableLights(false);
+                enableDisableLights.setText("Disable Traffic Lights");
+                trafficLightLabel.setText("Traffic Light Duration: " + TrafficLightController.getInstance().getDurationLength()/1000 + " ticks");
+            }
         });
 
         /**
@@ -349,6 +384,7 @@ public class SimulationScreen {
             Platform.runLater(() -> startSimulation.requestFocus());
             endTimeLabelTicker();
             timeLabel.setText("Times ticked: 0");
+            timeStanding.setText("Vehicle Time Spent Standing: 0.0%");
         });
     }
 
@@ -374,6 +410,7 @@ public class SimulationScreen {
                 timeLabel.setText("Times ticked: " + timesTicked);
                 timesTicked++;
                 carNumberSituation.setText("Number of cars: " + VehicleController.getVehicleList().size());
+                timeStanding.setText("Vehicle Time Spent Standing: " + getPercentageStanding() + "%");
             }
         };
         Ticker.subscribe(timeLabelSubscriber);
@@ -384,6 +421,16 @@ public class SimulationScreen {
      */
     private void endTimeLabelTicker() {
         timeLabelSubscriber.unsubscribe();
+    }
+
+    private double getPercentageStanding() {
+        int timeSpentStanding = VehicleController.getTotalTimeSpentStanding();
+        int totalTimesTicked = VehicleController.getTotalTimesTicked();
+        if(totalTimesTicked == 0) {
+            return 0.0;
+        }
+        double ans = (double) timeSpentStanding / totalTimesTicked * 100;
+        return Math.round(ans * 100.0) / 100.0;
     }
 
     /**

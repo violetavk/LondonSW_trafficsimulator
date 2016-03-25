@@ -53,6 +53,18 @@ public class TrafficLightDecorator implements Serializable {
     }
 
     /**
+     * Hides the circle representing the traffic light from the GUI. This is called when enabling and disabling
+     * traffic lights.
+     * @param hide true will hide the circle, false will display the circle
+     */
+    public void hideCircle(boolean hide) {
+        if(hide)
+            circle.setVisible(false);
+        else
+            circle.setVisible(true);
+    }
+
+    /**
      * Draws the circle for the GUI
      * @param x the x-position in its pane
      * @param y the y-position in its pane
