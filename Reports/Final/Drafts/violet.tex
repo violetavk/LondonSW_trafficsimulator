@@ -1,0 +1,56 @@
+\documentclass[a4paper]{article}
+\usepackage[a4paper]{geometry}
+\usepackage{listings}
+\usepackage{textcomp}
+\begin{document}
+\section{Ticker}
+\paragraph{}
+The ticker class is how time is kept in the simulation system. It would start at zero and increment at a given time increment, or granularity, such as every one second. Any type of object that wants to do some operation at every time increment must subscribe to this class. The ticker publishes the time to all subscribers at every time increment. Typical subscribers include vehicles and traffic lights, although other objects can subscribe as well. 
+\paragraph{}
+The Ticker class is located high up in the package hierarchy because of how important and central its role is. It was one of the tricker parts of the project implementation because we had to decide how to implement the publish-subscribe relationship and how to have the ticker ticking at a constant rate. The ticker had to be once re-worked because of some complexity that arose. However, the one aspect that remained constant was the importance of having the publish-subscribe relationship. 
+\subsection{First Implementation}
+\subsubsection{Initial Stages}
+\paragraph{}
+In the first implementation of the Ticker class, important things had to be decided on, such as how to notify all subscribers of time changes and how to handle time ticking on a periodic basis. Because we were starting from scratch, we had nothing to base it on, so the design was one of the more difficult parts of the implementation. 
+\subsubsection{Basic Structure}
+\paragraph{}
+The Ticker class followed the singleton pattern, so that the number of instances would be capped at one. The constructor was marked with the protected visibility so that only the class itself would be able to call the constructor (as well as any subclasses, but there are none). Any potential subscribers would implement an interface called TickerListener, which contained a method called "onTick(long time)" that needed to be implemented by the subscriber. This would be the method that would execute on every time increment in the ticker.
+\subsubsection{Ticking Support}
+\paragraph{}
+The actual underlying ticking relied on two main aspects: a Timer instance and a TimerTask instance (both part of the java.util package). In general, a Timer instance executes a TimerTask instance at the specified interval. The Ticker class had a class embedded in it, called TickerRunnable which extended the TimerTask class. It also followed a singleton pattern for the constructor and it had a "run()" method that would execute when required by the Timer. This is where each subscriber would be notified with the current time in the simulation. To start the Ticker ticking, it had a method called "start()", which initiated the Timer and gave it the task of running the TickerRunnable at the given interval specified by the variable of type long named TICK\_INTERVAL. So overall, after every interval, the TickerRunnable would execute its "run()" method, which would tell all subscribers that the time changed, which would execute some operation. For instance, vehicles would move forwards. 
+\subsubsection{Evaluation}
+\paragraph{}
+The Ticker class performed well with the model elements of the project. In the test cases performed, vehicles would move properly and traffic lights would change colour. However, there were many issues that had to be resolved. Firstly, we did not like the way in which subscribers were notified of time ticks. The Ticker held a list of all its subscribers, which already violates the key property of the publish-subscribe relationship (publishers of events do not know who its subscribers are, nor should they care). Because of this list, on every tick, we would cycle through this list and notify each subscriber one at a time. This was not ideal because some subscribers would hear the tick before others. This made us think of how we could try to notify all subscribers at once. 
+\paragraph{}
+Secondly, and more importantly, this implementation did not work with JavaFX threads. An exception would be thrown each time a thread other than the JavaFX thread would try to modify any graphical elements. This was first discovered when we tried to test the GUI representation of traffic lights. We would get the following exception:
+\begin{lstlisting}
+	Exception in thread "Timer-1" java.lang.IllegalStateException: 
+	Not on FX application thread; currentThread = Timer-1
+\end{lstlisting}
+This was a major cause for concern, because the goal was to have a fully functioning graphical user interface and not simply displaying vehicles in the console! Finally, a minor issue was that the Ticker had an instance, but all methods were static, so it made us think if having an instance was necessary at all. This is when we decided that the Ticker class must be re-worked in some other way, hence our second, and current, implementation. 
+\subsection{Second Implementation (Current)}
+\subsubsection{Initial Stages}
+\paragraph{}
+Given the issues faced with the first implementation, we needed a Ticker that would work with the JavaFX thread and that would ideally notify all subscribers at the same time of the tick. We decided to research potential ways the Ticker could be implemented. 
+\subsubsection{Getting Help from Libraries}
+\paragraph{ReactFX}
+This is a library that helps by adding support for "reactive event streams" that works with JavaFX. In short, it processes events that happen in the system, such as clicks. As the first solution, we used a type of event stream called "EventStreams.ticks(...)", which generated a tick after each time the given time  interval passes. This worked for small cases and test files using JavaFX, but due to lack of good documentation, we were unsure of how to proceed with this framework to support the whole simulation system. This library claimed to be inspired by RxJava, a more general reactive approach, so we investigated this next.
+\paragraph{RxJava}
+Made by ReactiveX and Netflix, this open-source library provides a reactive programming approach for Java. By the word "reactive", it means that there are some objects that react to something else, which means that many reactions can execute in parallel. There are observers (which are subscribers) that listen to some Observable (the publisher). The observable emits some sort of object and the subscribers react to it when they get the message. We decided to use this library as part of our implementation. Although this library can do many other things with  event streams, like filtering or debouncing, we are only skimming the surface of its functionality and only using its publish-subscribe facilitation. 
+
+\paragraph{RxJavaFX}
+Also made by ReactiveX, this is a library that allows an asynchronous reactive approach to JavaFX-specific events. It is useful for GUI event processing. Although we decided to use this in our Ticker implementation, we are using a very small amount of its functionality. The only aspect of this library that we are using is specifying that the publisher/observable should run on the JavaFX application thread.
+
+\subsubsection{Solution}
+\paragraph{}
+We decided to use a combination of RxJava and RxJavaFX for our Ticker implementation. The thing that does the actual ticking is defined as an Observable$<$Long$>$ from the RxJava package, rx. The type parameterization says that the message that this publisher sends is of type Long. This is so the current time in the system can be sent. Objects that wish to subscribe to the Ticker must extend the Subscriber$<$Long$>$ class, also from the rx package. This gives the subscriber three methods to implement: onCompleted(), which gets called once the Ticker terminates, onError(Throwable t), which gets called if there is an error with the Ticker, and most importantly, onNext(Long long), which gets called on every tick. Classes like Vehicle and TrafficLight implement this method to define functionality that must be performed on every tick. To subscribe to the observable's messages, each subscriber class is set to call Ticker.subscribe(...) in its constructor with itself as the parameter. This executes the following line for each subscriber:
+\begin{lstlisting}[language=Java,breaklines=true,basicstyle=\small]
+     tickerObservable.takeUntil(stop).observeOn(JavaFxScheduler.getInstance()).subscribe(sub);
+\end{lstlisting}
+This tells the observable/publisher to subscribe the subscriber "sub" (a vehicle, traffic light, or anything else), to run it on the JavaFX thread, and to make it run until a stop signal is sent to it (it can still unsubscribe sooner than the signal). The resulting behaviour is that when there is a subscriber for the observable, the Ticker starts and the subscribers perform their onNext operations when a tick is sent out.
+
+\subsubsection{Evaluation}
+\paragraph{}
+This approach works very well with the JavaFX thread because of explicitly specifying ".observeOn(JavaFxScheduler.getInstance())", thanks to RxJavaFx. It is simple to add more subscribers and have them perform some operation, thanks to RxJava. There are only a few downsides with this approach. First, the ticker speed must be set before the simulation begins. Once there is a subscriber, the ticker speed cannot change. For this reason, we request the user sets the ticker speed before beginning the simulation. It is possible in theory, but due to time constraints, we left it as-is. This, in turn, requires calling Ticker.start() once the ticker speed is set to initialize the observable in-charge of ticking. Second, whatever class that wants to subscribe to the ticker must extend the Subscriber$<$Long$>$ class. Therefore, this would be the only class that the subscriber would be able to extend, as Java does not support multiple inheritance. 
+
+\end{document}
