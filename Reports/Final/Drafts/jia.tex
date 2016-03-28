@@ -1,0 +1,45 @@
+\documentclass{article}
+\begin{document}
+\section{Simulation screen}
+Aim at making a user-oriented simulation system, we decided to have a main simulation screen where users can both monitor the simulation process and control the simulation system including start or reset simulation, set vehicle number, set ticker interval, disable or enable traffic light, etc.
+\subsection{JavaFX Scene Builder}
+Concerned that JavaFX Scene Builder is a visual layout tool that lets users to quickly design JavaFX application user interfaces, without coding but can just drag and drop UI component to a work area, modify their properties, apply style sheets, and the FXML code which is automatically generated in the background can be combined with a Java project by binding the UI to the application's logic to handle the events and actions taken on each element, we chose JavaFX Scene Builder as our main user interfaces development tool at first.
+
+Problems arose after we finished building FXML file and  tried to connect the UI interface with simulation models. We found only one controller can be used in a FXML file which means we need to figure out how to communicate between different controllers. This problem first arose when we loaded pre-made map into the simulation. 
+
+Users need to choose a pre-made map before going into simulation screen this will need an intermediate controller to deliver map name between two interfaces. There will be lots of this kind of communication so that lots of intermediate controllers need to be added which will increase complexity potentially. Thinking about this, we finally gave up JavaFX Scene Builder, decided to using pure JavaFX.
+
+\subsection{Simulation Screen}
+The simulation screen Interface was built using Model-View-Controller (MVC) architecture pattern. SimulationController.java is a the controller to draw the screen and generate the log for the simulation. SimulationScreen.java is the corresponding model used to manage UI components of the interface. 
+
+We used the built-in layout container classes, called panes that are available with the JavaFX SDK to manage UI components of simulation screen. The JavaFX SDK provides several layout panes for the easy setup and management of classic layouts such as rows, columns, stacks, titles, and others. As a window is resized, the layout pane automatically repositions and resizes the nodes that it contains according to the properties of the nodes. We used BorderPane layout pane for the simulation screen. The BorderPane layout pane provides five regions in which to place nodes: top, bottom, left, right and center. 
+
+To keep the interface simple and clear, only three parts were used in our simulation screen: top, center and right. Title of the simulation screen "LondonSW Simulation System" was set on the top of the BorderPane . We used the center part to load the chosen pre-made map in which simulation process will happen. The right part was mainly used to monitor and control the simulation process. Here we used the VBox layout pane to make sure nodes are arranged in a single column. 
+
+Labels including "Number of Cars", "Ticker interval", Traffic Light Duration", "Time Ticked", "Vehicle Time Spent Standing" were set for simulation monitor to help users have a better understand about how is the simulation process going. 
+
+"Start" and "Reset" buttons are used to control whether to start or stop the simulation process. Users can click "Add Ambulance" to add an ambulance whose behavior is aggressive and can also delete it since once an ambulance is added the button will be "Delete Ambulance". There is a "Set Traffic Light duration" button. Once it is clicked, there will be a dialog allows users to set traffic interval(100-1000 millisecond) by a spinner. "Disable Traffic Light" is used to delete all traffic lights of the map and "Enable Traffic Light" to restore all traffic lights to the map. This is to simulate situation in which traffic lights cannot work properly. We used a slider to control number of cars in the system. Users can set number of cars they want as long as  it is in the available range. The minimum car number is 1, and the maximum number is set automatically depends on the overall number of slots of all lanes in the map ($MaxCarNumber=0.6*SlotsNumber$). This means the simulation process won't crash due to too many cars results in no slot is available and to make sure the traffic can be coordinated properly. 
+
+\section{Teamwork}
+
+ \subsection{Communication}
+ 
+We use WhatsApp for general communication, like coordinating meeting times. We use Slack for project discussion, like discussing new ideas/problems and sharing documents. We have general discussion for all group members and private communication between two members to talked about issues like program interfaces without bothering others.
+ 
+ \subsection{Group meeting}
+ We have scheduled group meetings twice a week, mostly on Monday and Friday. We discussed task progress and assign new tasks normally on Monday. On Friday, there would be a long-duration meeting. we would talk about the project in detail and members would code together.
+ 
+ \subsection{Agile development with Mingle}
+ 
+Because of the nature of the project, continuous learning and adaptation to the emergent state of the project are unavoidable. We use Mingle for project management which is based on Agile software development principles. It is designed to integrate with a team's current workflow. We used Mingle's Planner feature to define objectives for each team members, track a plan's progress, and receive alerts when a plan changes. Mingle helps our team communicate and collaborate easily and effectively solve problems by having more efficient conversations with team members.
+ 
+At the task level, Mingle allows us to assign teammates to a specific action, so everyone can see who is working on what. At each end of our group meeting we will assign tasks to group members by adding a new story at Mingle planner including a specific task description, an estimate duration, status (new, in progress, complete), a task priority (must, should could), the owner of the task. 
+ 
+At the project level, we use Mingle to nudge teams to have a conversation if an upcoming deadline has not been met. Before each group meeting we will talked about task completion status to have a better grasp about how is the progress going.
+ 
+At the program level, Mingle sends us alerts so that everyone can follow up. we also exported the task file and uploaded to Github to make it available and more convenient  for everyone to check their tasks at any time.
+ 
+\subsection{Github}
+IntelliJ is our main platform for coding. We use Github as our main source-code repository. We have a master branch and four personal branches. Everyone is free to experiment and commit changes. Anything in the master branch is always deployable. Branch won't be merged until it's ready to be reviewed by master. Once we have done our tasks we may make a commit so that others can follow to understand after pulling. We would add an associated commit message, which is a description explaining why a particular change was made to make it clear for others what we have done. Master branch would close a merge and we could also rolled  back changes if a bug found since each commit is considered a separate unit of change.
+
+\end{document}
