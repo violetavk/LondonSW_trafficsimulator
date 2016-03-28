@@ -7,7 +7,7 @@
 \paragraph{}
 The ticker class is how time is kept in the simulation system. It would start at zero and increment at a given time increment, or granularity, such as every one second. Any type of object that wants to do some operation at every time increment must subscribe to this class. The ticker publishes the time to all subscribers at every time increment. Typical subscribers include vehicles and traffic lights, although other objects can subscribe as well. 
 \paragraph{}
-The Ticker class is located high up in the package hierarchy because of how important and central its role is. It was one of the tricker parts of the project implementation because we had to decide how to implement the publish-subscribe relationship and how to have the ticker ticking at a constant rate. The ticker had to be once re-worked because of some complexity that arose. However, the one aspect that remained constant was the importance of having the publish-subscribe relationship. 
+The Ticker class is located high up in the package hierarchy because of how central its role is. It was one of the tricker parts of the project implementation because we had to decide how to implement the publish-subscribe relationship and have the ticker ticking at a constant rate. The ticker had to once be re-worked because of some complexity that arose. However, the one aspect that remained constant was the importance of having the publish-subscribe relationship. 
 \subsection{First Implementation}
 \subsubsection{Initial Stages}
 \paragraph{}
@@ -27,7 +27,7 @@ Secondly, and more importantly, this implementation did not work with JavaFX thr
 	Exception in thread "Timer-1" java.lang.IllegalStateException: 
 	Not on FX application thread; currentThread = Timer-1
 \end{lstlisting}
-This was a major cause for concern, because the goal was to have a fully functioning graphical user interface and not simply displaying vehicles in the console! Finally, a minor issue was that the Ticker had an instance, but all methods were static, so it made us think if having an instance was necessary at all. This is when we decided that the Ticker class must be re-worked in some other way, hence our second, and current, implementation. 
+This was a major cause for concern, because the goal was to have a fully functioning graphical user interface and not simply displaying vehicles in the console! At first, this was solved by a call to the JavaFX application platform, called Platform. It contains a method "runLater(Runnable r)" that takes any sort of runnable task. This did make the animation work from the Ticker thread, but it was not ideal because it simply schedules the task for some "unspecified time in the future". Finally, a minor issue was that the Ticker had an instance, but all methods were static, so it made us think if having an instance was necessary at all. This is when we decided that the Ticker class must be re-worked in some other way, hence our second, and current, implementation. 
 \subsection{Second Implementation (Current)}
 \subsubsection{Initial Stages}
 \paragraph{}
@@ -52,5 +52,33 @@ This tells the observable/publisher to subscribe the subscriber "sub" (a vehicle
 \subsubsection{Evaluation}
 \paragraph{}
 This approach works very well with the JavaFX thread because of explicitly specifying ".observeOn(JavaFxScheduler.getInstance())", thanks to RxJavaFx. It is simple to add more subscribers and have them perform some operation, thanks to RxJava. There are only a few downsides with this approach. First, the ticker speed must be set before the simulation begins. Once there is a subscriber, the ticker speed cannot change. For this reason, we request the user sets the ticker speed before beginning the simulation. It is possible in theory, but due to time constraints, we left it as-is. This, in turn, requires calling Ticker.start() once the ticker speed is set to initialize the observable in-charge of ticking. Second, whatever class that wants to subscribe to the ticker must extend the Subscriber$<$Long$>$ class. Therefore, this would be the only class that the subscriber would be able to extend, as Java does not support multiple inheritance. 
+
+\section{Traffic Lights}
+\subsection{Basic Structure}
+\paragraph{}
+The TrafficLight class is a fairly simple class that implements traffic light functionality for the simulation. Each traffic light has a duration (how long it should last a single colour) and initial state (red or green). It subscribes to the Ticker upon creation. The nextState() method takes the state it is currently in and sets it to the state it should be in next. 
+
+\subsection{Ticker Interaction}
+\paragraph{}
+This is where most of the interesting implementation lies. Each traffic light holds an internal time. On each ticker tick, if its internal time is less than the duration, it increments its internal time. If it hits its duration, it changes to the next colour and resets its internal time. To tell the rest of the system of its colour change, it tells the traffic light controller of its new colour state.
+
+\subsection{Traffic Light Controller and Traffic Light Decorator}
+\paragraph{}
+The TrafficLightController class is the link between the model TrafficLight class and the GUI representation. It follows the singleton pattern, and includes global variables like the duration of all traffic lights and whether or not the traffic lights are enabled. It also includes two "database" type objects: a HashMap, with each TrafficLight instance registering to its GUI representation, and an ArrayList that holds all TrafficLight instances. 
+\paragraph{}
+The "colourChanged(LightColour colour, TrafficLight tl)" method gets called by the traffic light "tl" with the new "colour" it is. This method then takes the traffic light "tl" and uses it as a key to look up its corresponding GUI representation, a TrafficLightDecorator, in the HashTable. Each TrafficLightDecorator contains a TrafficLight that it is representing and a JavaFX Circle shape. The circle is what actually changes the colour upon request. First the circle is drawn, and when the "setGUIColour(LightColour colour)", the circle changes colour to the new colour. 
+\paragraph{}
+The TrafficLight controller also contains helper methods as well as support for disabling and enabling all traffic Lights and changing the duration of all traffic lights.
+
+\subsection{Evaluation}
+\paragraph{}
+We believe that using a HashTable to store (TrafficLight, TrafficLightDecorator) pairs in the controller was a good idea because of its O(1) retrieval time. At first, we were unsure of how to have many intances of TrafficLights linked to TrafficLightDecorators. We first considered having many instances of the controller, but that did not make logical sense, as the controller should be able to control all TrafficLights from one instance. Having the HashMap made it easier to look up which circles must change colour at any given time. However, a minor change that could be possible is removing the ArrayList of TrafficLight instances and only using the HashMap keys to get at a list of all traffic lights. This would remove a data redundancy. 
+
+
+
+\section{Map Maker Mode}
+\subsection{Introduction}
+\paragraph{}
+To make our system more flexible to different kinds of maps, we allow the user to build their own maps to run the simulation on.
 
 \end{document}
