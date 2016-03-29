@@ -282,7 +282,12 @@ Also made by ReactiveX, this is a library that allows an asynchronous reactive a
 
 \part{The Application}
 \section{Start-Up}
-
+\paragraph{}
+When the user starts the system, they get presented with a start screen. After pressing the start button, the user gets presented with a choice of modes: opening a map or creating a new map.
+\paragraph{}
+Opening a map opens a File dialog where the user can open a pre-made map file. The simulation comes with some map files pre-built for the user. This then brings the user to the simulation screen.
+\paragraph{}
+Choosing to make a map brings the user to the Map Maker screen. They choose a width and height of a map, place components on it, and save it as a new map. The user can then run the simulation on it. 
 \section{Simulation Screen}
 \paragraph{}
 Aimed at making a user-oriented simulation system, we decided to have a main simulation screen where users can both monitor the simulation process and control the simulation system including start or reset simulation, set vehicle number, set ticker interval, disable or enable traffic light, etc.
@@ -359,6 +364,50 @@ There are helper methods to calculate some of the steps. The method "directionTo
 
 \paragraph{}
 There are many advantages to this second implementation. First, there was a drastic reduction in code duplication. The process was converted to a set of simple steps, like a recipe, which works in any situation. In addition, because of each coordinate having a distinct location, the vehicle knows exactly where to move to. This makes it work flawlessly with any ticker speed. Finally, the vehicle does not shift out of its proper lane over time. 
+
+\subsection{Simulation Statistics}
+We have a couple of traffic management policies. These are:
+\begin{itemize}\itemsep1pt \parskip0pt \parsep0pt
+\item Changing the duration of traffic lights
+\item Disabling or enabling traffic lights
+\item Increasing or decreasing the number of vehicles
+\end{itemize}
+\paragraph{}
+By doing these three things, the effect of them can be seen in the "Vehicle Time Spent Standing" statistic. This is a percentage that gets calculated using all the vehicles in the map. Each vehicle has two variables associated with it for the calculation of this statistic: timeSpentStanding and timesTicked. Each time the vehicle was unable to move, its timeSpentStanding increases. A vehicle is unable to move if it is at a red light or if there was a vehicle in the slot in front of it. The increment happens VehicleController class when the "move" result is zero, i.e., it could not move forwards.
+\begin{lstlisting}
+	if(move == 0) {
+		Vehicle thisVehicle = vehicleGUIDecorator.getVehicle();
+		thisVehicle.incrementTimeSpentStanding();
+	}
+\end{lstlisting}
+\paragraph{}
+For the percentage calculation, there is a local subscriber to the ticker in the SimulationScreen class. It is used for doing anything operation when the ticker ticks, like increasing the "Times Ticked" label and doing this statistic calculation. Each time the ticker ticks, the method "getPercentageStanding()" is called and the output is set to the label.
+\paragraph{}
+In this function, the VehicleController gets queried for two values: the total time spent standing for all vehicles and the total times ticked for all vehicles. Each method gives the sum of all timeSpentStanding and timesTicked, respectively. 
+\begin{lstlisting}
+	int timeSpentStanding = VehicleController.getTotalTimeSpentStanding();
+	int totalTimesTicked = VehicleController.getTotalTimesTicked();
+\end{lstlisting}
+\paragraph{}
+To get the average time spent standing statistic, the following calculation is made:
+\begin{lstlisting}
+	double ans = (double) timeSpentStanding / totalTimesTicked * 100;
+	return Math.round(ans * 100.0) / 100.0;
+\end{lstlisting}
+\paragraph{}
+This statistic can tell us about the amount of congestion on the roads and how external factors like traffic lights can affect vehicle movement over time.
+
+\subsubsection{Interesting Trends}
+\paragraph{}
+Many interesting reactions to this statistic can be observed by manipulating the three controls available: increasing and decreasing the number of vehicles, disabling traffic lights, and setting the traffic light duration.
+\begin{itemize}
+\item The more vehicles there are, the higher the percentage of vehicle time spent standing is.
+\item When holding the simulation conditions stable (e.g. keeping a constant number of vehicles, not changing traffic light duration), the percentage of vehicle time spent standing stabilizes over time and does not differ by about one percentage.
+\item Increasing the duration of traffic lights increases the percentage of vehicles standing, and decreasing the duration of traffic lights decreases the percentage of vehicle time spent standing.
+\item Disabling traffic lights does not completely bring the percentage of vehicle time spent standing to zero. This is because there may still be other vehicles getting in the way.
+\item Setting the number of vehicles to zero resets the statistic because every car in the simulation is new.
+\item Adding one more vehicle to the simulation does not affect the statistic significantly.
+\end{itemize}
 
 \section{Map Maker Mode}
 \subsection{Map Making Basics}
