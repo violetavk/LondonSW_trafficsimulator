@@ -1,0 +1,45 @@
+\section{Requirements and Design}
+\par{}
+Prior to embarking on the design of the system, we researched the different traffic simulation models for better understanding of the domain, from which an appropriate model was chosen for our simulation software.\\
+In this section, we describe the requirements we set out for our project and the design choices taken to meet these requirements.
+ \subsection{Requirements}
+ \par{}
+To make development easier, priorities must be emphasised on the most important aspects of software. To achieve this, we hierarchically structured our aims using the MoSCoW prioritization method. This was used to classify the aims of the project into various levels of importance as presented:
+\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+	\item{Must}
+		\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+			\item{Adopt and adhere to cellular automaton model}
+			\item{Entry and exit  points for vehicles}
+			\item{Free movement and turning of vehicles}
+			\item{Traffic light functions}
+			\item{Default map}
+			\item{Display simple animation of vehicle movement}
+		\end{enumerate}
+	\item{Should}
+		\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+			\item{Users' can create and save maps}
+			\item{Traffic policies}
+			\item{Import pre-made maps}
+			\item{Control for simulation, i.e number of vehicle and simulation speed}
+			\item{Prioritize emergency services}
+		\end{enumerate}
+	\item{Could}
+		\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+			\item{Statistics, i.e time spent at traffic light e.t.c}
+			\item{Curve roads}
+			\item{External map sources, e.g OpenStreetMap, Google Maps }
+		\end{enumerate}
+\end{enumerate}
+\par{}
+Requirements under the "Must" classification are extremely important features of our system. They are the minimum building block of our simulation. That is, they are the minimum required features that must be implemented for the basic functioning of the system. Features in the next classification are also important because they provide added value to the system. However, the basic functioning of the overall system does not rely on them therefore not all features here might be present due certain constraints. Finally, the features listed on the last classification category "Could" are features which we regard to as non-functional however, if implemented provide additional functionalites.
+
+\subsection{Design}
+To design systems accurately, a correct system architecture is extremely important. It aids in ensuring that all requirement of a system are fulfilled and further helps with scalability, to meet future requirements.\\
+Our system was designed upon a simple form of microscopic traffic simulation known as the cellular automaton. This approach relies on updating vehicle positions based on a central timing clock (Ticker).
+\par{}
+We opted for the Model-View-Controler architectural style for the design of our system. The M-V-C style allows us to separate concerns thats is, tasks are grouped into either model or view component depending on what functions they perform in the system.
+\\
+The \textbf{\textit{model}} is responsible for maintaining domain knowledge. In our case, it encapsulates the cellular automaton logic which our system must adhere to. It also notifies the \textit{view} of changes in state.
+The \textbf{\textit{view}} is responsible for displaying information to the user. It displays the logic encapsulated by the model and maps users' actions to the \textit{controller}. Finally, the \textbf{\textit{controller}} manages interactions with the user. That is, as no direct communication is possible from the \textit{view} to the \textit{model}, the \textit{controller} therefore responsible for mapping user actions to \textit{model} updates.
+\par{}
+The singleton design pattern was also used in our system for the ticker class. The ticker class serves as a central clock for our system. We decided use this design pattern because we only needed one ticker object for coordination of timing across our system.

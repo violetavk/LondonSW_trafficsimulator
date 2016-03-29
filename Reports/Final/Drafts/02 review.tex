@@ -1,0 +1,28 @@
+\section{Review}
+There exist a variety of traffic simulation models which are categorised in accordance with numerous criteria, one of such criterion is the level of detail. However, within the scope of this report, only the two more  general classifications are considered. These are: Macroscopic, Microscopic which are also referred to as micro-simulation and macro-simulation. \\
+In this section, we give an analysis of the existing articles, literature related to the different classifications of traffic simulation models mentioned above.
+
+\subsection*{Macroscopic}
+Macro-simulations use high-level mathematical models usually derived from fluid dynamics for the modelling of traffic flow \cite{Ali, Serge} .
+In this modelling approach, all vehicle are treated in the same manner (i.e individual vehicles are not modelled) however, input and out put variables such as speed, density and flow are used. There is no differentiation between individual vehicles and there are usually no options of vehicle types in this approach.\\
+Macroscopic models lack the ability of modelling complex road networks, complicated traffic features or vehicle behaviour. Therefore, they are more widely used for scenarios that do not require detailed modelling such as motorway networks \cite{Schulze}.
+
+\subsection*{Microscopic}
+Unlike Macro-simulations, micro-simulations models individual entities separately at a very high level of detail and are classified as discrete models. Vehicle interactions with other vehicles and the environment are tracked, where interactions are governed by car-following or lane changing logic \cite{Ali}. Rules are set aside, to govern what action are permitted and what action are not permitted in the simulation. Microscopic simulations provide a more realistic modelling  traffic flow compared to the macroscopic due to the ability of modelling vehicles individually. Therefore microscopic simulations are ideal in the analysis of new or existing traffic policies \cite{Ali, Femke}.
+
+\par{}
+The car following model, also known as the time-continuos model is a categorisation of micro simulation. All car-following models are characterized using differential equations that  describe the entire dynamics of vehicle positions and their velocities. This model assumes that drivers input stimuli is restricted to their own velocity, the velocity of the leading vehicle, and their distance to the leading vehicle. The driving behaviour of a vehicles in this model might not only depend on the current vehicle in front, but the number of vehicles in front \cite{macrosim}.
+
+\par{}
+Another way of implementing micrcoscopic simulations is through agent based modelling. This approach allows many scenarios to be modelled efficiently because each individual in the scenario can be represented as an agent, with a set of rules governing their behaviour. Agents can be programmed with behaviours, so as to allow individuals' behaviour to be similar to those of the entities they are modelling. Though the programmed behaviour given to agents is often simple however, when agents are simulated as a group, the often exhibit new behaviours \cite{2}.
+Therefore agent based simulations are ideal for developing new models  because parameters of individuals can be changed easily to observe results.
+
+\par{}
+Cellular automata models are another categorization of microscopic models.The difference between the cellular automaton and the car following is that, cellular automaton is space discrete. In this model, roads are composed or series of cells, where each cell is either empty or occupied by a vehicle. Vehicle movement is restricted by the vehicle in front. That is, vehicles are only able to move forward when the next cell is unoccupied. Certain rules are defined  to determine when a vehicle moves to the next cell. This method is said to be very efficient due to its simple array structure \cite{Ali}.
+
+\section*{Related Work}
+\par{}
+Most literature on traffic flow modelling focus on either continuum-based or agent-based macroscopic models, with no consideration being given to the possibility of extending microscopic models to aid in the production of detailed 3D  animation of traffic flows. \\
+Sewall et al in \cite{Sewall} established a method for conducting efficient simulations of large scale traffic networks. The outcome of their technique produces real-time animations of large traffic flows.
+They use continuum dynamics which maintains discrete information about vehicles. Their approach describes behaviours realistically and more efficiently. They describe vehicle movement with a single computation cell  and adapt a single-lane continuum flow model to deal with multi-lane traffic through the introduction of new lane changing model that uses a discrete visual representation for individual vehicle.
+The efficiency of their technique is compared to that of some agent based simulation methods and is shown to be more effective in terms of performance and memory utilization.
