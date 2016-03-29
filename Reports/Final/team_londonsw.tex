@@ -1,0 +1,336 @@
+\documentclass[a4paper,11pt,titlepage]{article}
+\usepackage[a4paper]{geometry}
+\usepackage{listings}
+\usepackage{textcomp}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{latexsym}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\graphicspath{ {drafts/images/} }
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+  language=Java,  
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+\begin{document}
+\title{LondonSW: Traffic Simulator}
+\author{Violetta Avkhukova\\Felix Santiago Anda Basabe\\Rawan Mohammed Alrahili\\Jia Liu\\Yakubu Aliyu Doma}
+\maketitle
+
+\part{Introduction}
+\paragraph{}
+As population grows as a result of rapid development of cities, so does the volume of traffic and congestion. Managing traffic congestion is a serious issue, and  with the ever-increasing volume of traffic, this problem is expected to get worse.
+\paragraph{}
+A simple description of traffic congestion is given as a situation where the volume of traffic surpasses the capacity of the road. However, the Department for Transport provide a more quantifiable description of congestion as "the average delay experienced for each kilometre travelled compared to driving at speeds typical when traffic is light" \cite{2}.
+\paragraph{}
+A lot of attention has been given to modelling and simulation of traffic flows to determine the causes of traffic congestion, to determine the effectiveness of traffic policies, and how such road policies can be improved and also aid in the development and design or road infrastructures.
+
+\section{Problem Definition}
+\paragraph{}
+Many strategies have been proposed and implemented with the primary objective of relieving congestion. However, these strategies have varying effects and it is not always self-evident which strategy works best for a given scenario. A straightforward strategy is to construct new roads to increase the road capacity or improve already existing roads, but  this rarely serves as a long time solution.
+\paragraph{}
+Congestion is described as self managing, that is; as the capacity of the road increases, so does the traffic demand to fill the new capacity. This notion is described as Pigou-Knight analysis, which suggests improving road network capacity does not guarantee reduced congestion, on the contrary it can be counter-productive by making congestion worse \cite{1,2}. This strategy regarded as one of the most expensive ways of dealing with congestion \cite{2}.
+\paragraph{}
+Traffic simulation is important because it allows very complex traffic models to be studied and analysed. In situations where evaluating analytical and numerical data is not sufficient enough it provides visual description, of both existing and future scenarios. Another huge importance of traffic simulation is, it enables us see the outcome changes to road infrastructure will have.
+
+\section{Project Summary}
+\paragraph{}
+In this report, we give a detailed documentation of the process involved in developing a traffic simulation software. Our traffic simulation software consist of two parts: the simulation environment and the map builder. 
+\paragraph{}
+The first part of the system is the simulation environment where actual simulation runs. This part allows a user to load a map and run a simulation on it with some number of vehicles. 
+\paragraph{}
+The second part of the system is the map making mode. This part of our system allows the user to create a map. That is, it serves as an interface which provides all the necessary functionalities for designing road infrastructure (i.e lanes, intersections), which can then be parsed, loaded and executed in the simulation environment.
+\paragraph{}
+The rest of this report is structured as follows. In section 2, we review the various literature related to traffic simulation. Furthermore, we also review existing works related in this domain. We proceed to section 3 where we provide the description of our initial project requirements  and the design approach we have chosen.
+
+\part{Review}
+There exists a variety of traffic simulation models which are categorised in accordance with numerous criteria, one of such criterion is the level of detail. However, within the scope of this report, only the two more  general classifications are considered. These are: Macroscopic and Microscopic, which are also referred to as micro-simulation and macro-simulation. In this section, we give an analysis of the existing articles, literature related to the different classifications of traffic simulation models mentioned above.
+\subsection{Macroscopic}
+\paragraph{}
+Macro-simulations use high-level mathematical models usually derived from fluid dynamics for the modelling of traffic flow \cite{Ali, Serge}.
+In this modelling approach, all vehicle are treated in the same manner (i.e individual vehicles are not modelled) however, input and out put variables such as speed, density and flow are used. There is no differentiation between individual vehicles and there are usually no options of vehicle types in this approach.
+\paragraph{}
+Macroscopic models lack the ability of modelling complex road networks, complicated traffic features or vehicle behaviour. Therefore, they are more widely used for scenarios that do not require detailed modelling such as motorway networks \cite{Schulze}.
+\subsection{Microscopic}
+Unlike Macro-simulations, micro-simulations models individual entities separately at a very high level of detail and are classified as discrete models. Vehicle interactions with other vehicles and the environment are tracked, where interactions are governed by car-following or lane changing logic \cite{Ali}. Rules are set aside, to govern what action are permitted and what action are not permitted in the simulation. Microscopic simulations provide a more realistic modelling  traffic flow compared to the macroscopic due to the ability of modelling vehicles individually. Therefore microscopic simulations are ideal in the analysis of new or existing traffic policies \cite{Ali, Femke}.
+\paragraph{}
+The car following model, also known as the time-continuos model is a categorisation of micro simulation. All car-following models are characterized using differential equations that  describe the entire dynamics of vehicle positions and their velocities. This model assumes that drivers input stimuli is restricted to their own velocity, the velocity of the leading vehicle, and their distance to the leading vehicle. The driving behaviour of a vehicles in this model might not only depend on the current vehicle in front, but the number of vehicles in front \cite{macrosim}.
+\paragraph{}
+Another way of implementing micrcoscopic simulations is through agent based modelling. This approach allows many scenarios to be modelled efficiently because each individual in the scenario can be represented as an agent, with a set of rules governing their behaviour. Agents can be programmed with behaviours, so as to allow individuals' behaviour to be similar to those of the entities they are modelling. Though the programmed behaviour given to agents is often simple however, when agents are simulated as a group, the often exhibit new behaviours \cite{2}.
+Therefore agent based simulations are ideal for developing new models  because parameters of individuals can be changed easily to observe results.
+\paragraph{}
+Cellular automata models are another categorization of microscopic models.The difference between the cellular automaton and the car following is that, cellular automaton is space discrete. In this model, roads are composed or series of cells, where each cell is either empty or occupied by a vehicle. Vehicle movement is restricted by the vehicle in front. That is, vehicles are only able to move forward when the next cell is unoccupied. Certain rules are defined  to determine when a vehicle moves to the next cell. This method is said to be very efficient due to its simple array structure \cite{Ali}.
+
+\part{Requirements and Design}
+\paragraph{}
+Prior to embarking on the design of the system, we researched the different traffic simulation models for better understanding of the domain, from which an appropriate model was chosen for our simulation software.
+In this section, we describe the requirements we set out for our project and the design choices taken to meet these requirements.
+\section{Requirements}
+\paragraph{}
+To make development easier, priorities must be emphasised on the most important aspects of software. To achieve this, we hierarchically structured our aims using the MoSCoW prioritization method. This was used to classify the aims of the project into various levels of importance as presented:
+\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+	\item{Must}
+		\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+			\item{Adopt and adhere to cellular automaton model}
+			\item{Entry and exit  points for vehicles}
+			\item{Free movement and turning of vehicles}
+			\item{Traffic light functions}
+			\item{Default map}
+			\item{Display simple animation of vehicle movement}
+		\end{enumerate}
+	\item{Should}
+		\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+			\item{Users' can create and save maps}
+			\item{Traffic policies}
+			\item{Import pre-made maps}
+			\item{Control for simulation, i.e number of vehicle and simulation speed}
+			\item{Prioritize emergency services}
+		\end{enumerate}
+	\item{Could}
+		\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+			\item{Statistics, i.e time spent at traffic light e.t.c}
+			\item{Curve roads}
+			\item{External map sources, e.g OpenStreetMap, Google Maps }
+		\end{enumerate}
+\end{enumerate}
+\paragraph{}
+Requirements under the "Must" classification are extremely important features of our system. They are the minimum building block of our simulation. That is, they are the minimum required features that must be implemented for the basic functioning of the system. Features in the next classification are also important because they provide added value to the system. However, the basic functioning of the overall system does not rely on them therefore not all features here might be present due certain constraints. Finally, the features listed on the last classification category "Could" are features which we regard to as non-functional however, if implemented provide additional functionalites.
+\section{Design}
+\paragraph{}
+To design systems accurately, a correct system architecture is extremely important. It aids in ensuring that all requirement of a system are fulfilled and further helps with scalability, to meet future requirements.
+Our system was designed upon a simple form of microscopic traffic simulation known as the cellular automaton. This approach relies on updating vehicle positions based on a central timing clock (Ticker).
+\paragraph{}
+We opted for the Model-View-Controler architectural style for the design of our system. The M-V-C style allows us to separate concerns thats is, tasks are grouped into either model or view component depending on what functions they perform in the system.
+\paragraph{}
+The \textbf{\textit{model}} is responsible for maintaining domain knowledge. In our case, it encapsulates the cellular automaton logic which our system must adhere to. It also notifies the \textit{view} of changes in state.
+The \textbf{\textit{view}} is responsible for displaying information to the user. It displays the logic encapsulated by the model and maps users' actions to the \textit{controller}. Finally, the \textbf{\textit{controller}} manages interactions with the user. That is, as no direct communication is possible from the \textit{view} to the \textit{model}, the \textit{controller} therefore responsible for mapping user actions to \textit{model} updates.
+\paragraph{}
+The singleton design pattern is also used for most controllers in the system. We decided use this design pattern because we only needed one instance of controller objects for manage each type of map component.
+
+\part{Implementation}
+\section{Map}
+The Map class represents maps that the simulation runs on. Vehicles interact with the map by driving through roads that they choose. The sections below describe how this class is structured.
+\subsection{The Basics}
+\paragraph{}
+There are a number of low-level basic controls that make our maps possible. They are listed and described below.
+\subsubsection{Coordinates}
+\paragraph{}
+Our basic unit for positioning is the Coordinate class which contains a pair of integers which denote  x- and y-positions in a two dimensional cartesian coordinate system. The former represents the vertical axis and the latter represents the horizontal axis. This class is used by the whole system in many classes, like locations of intersections, vehicles, and the start and end points of roads and lanes.
+
+Besides the getters and setters for the x- and y- positions, the most useful features are the overloading of the equals operator to enable Coordinate comparisons, addition and subtraction methods of Coordinates and the capability to add a step to a position regarding the cardinal direction.
+\subsubsection{Components}
+\paragraph{}
+There is an interface in our system called Component that acts as a common denominator between objects that we are able to add to a map. We have two types of components, Roads and Intersections, but this can be expanded to more types in the future if necessary. The actual interface is empty, because no common functionality is necessary between all components. It is most useful for the MapGrid class, which stores the underlying map structures as a 2d-array of Components. This makes storing and looping through map components easiest. Like the Coordinate, the components are used widely in the whole system. To use components, we capture the object and cast it to an instance of either a Road or an Intersection, and then we are able to interact with the component treating it as the former or the latter. For instance:
+\begin{lstlisting}
+	Component component = ...;
+	if(component instanceof Intersection) {
+	  ...
+	}
+	else if(component instanceof Road) {
+	  ...        
+	}
+\end{lstlisting}
+
+\subsection{Structure}
+The map consists of three important components: a MapGrid instance, Roads, and Intersections. In general, a map consists of a mixture of roads and intersections that build a type of graph, where intersections are nodes and roads are directed edges between nodes. Each map has a constant width and height. The Map class has functions that allows communication with components deeper down the Map hierarchy, like Roads to Lanes to Cells. 
+\paragraph{MapGrid}
+The MapGrid class is the underlying structure of our Map. It contains a 2D-array of the Component instances, which can be Roads, Intersections or empty. The map grid has a width and height which represents the size of the map. An important method that it contains is "addComponent(Component c)" which takes a generic component and adds it to the grid structure.
+\paragraph{Roads} For more information about roads in the map, refer to section \ref{roadsection} on page \pageref{roadsection}.
+\paragraph{Intersections} For more information about intersections in the map, refer to section \ref{intersectionsection} on page \pageref{intersectionsection}.
+\subsection{Testing}
+We were able to test the model of our maps in a text-based fashion then subsequently when the relevant tests were passed, we were able to integrate it with a graphic user interface view.
+\centerline{\includegraphics[scale=0.5]{test_mapgrid}}
+
+\section{Roads}\label{roadsection}
+\subsection{Basic Structure}
+\paragraph{}
+A road is defined as a container for one or more lanes with a start point and an end point of type Coordinate. This allows us to track the position of the road and consequently add an Intersection or not to the end of the road. Each road is connected to at most two intersections. Our roads can be of size 1 to n and only can be drawn horizontally or vertically according to the start and end point locations. Our simulation system has limited the number of lanes of a road to 2 with a left-hand driving traffic pattern with a maximum length of 30, due to map dimension constraints. If we do not assign an intersection to the end of the road, the vehicle will leave the simulation after reaching the end.
+\subsection{Lanes}
+\paragraph{}
+A lane is part of a road where the vehicles actually move. A lane's length is defined by the road it is part of. The number of cells that vehicles can be in is equal to the length of the lane. Vehicles enter the lanes at the start position and exit through the end position. Lanes are like queues that follow the cellular automata model, i.e. it is first-in-first-out and vehicles can only move forwards if the cell in front of them is empty. 
+\paragraph{}
+Lanes have a moving direction associated with them by the MapDirection enumeration, which consists of values NORTH, SOUTH, EAST, and WEST. We set this explicitly because if a lane has a length of 1, its start and end locations are the same, therefore making it impossible to determine which way traffic would need to flow. When adding lanes to a road, the lanes travelling north must be added before the ones travelling south and the lanes travelling east must be added before the ones travelling west to maintain the left-hand style of driving.
+
+\section{Traffic Lights}\label{trafficlights}
+\subsection{Basic Structure}
+\paragraph{}
+The TrafficLight class is a fairly simple class that implements traffic light functionality for the simulation. Each traffic light has a duration (how long it should last a single colour) and initial state (red or green). It subscribes to the Ticker upon creation. The nextState() method takes the state it is currently in and sets it to the state it should be in next.
+
+\subsection{Ticker Interaction}
+\paragraph{}
+This is where most of the interesting implementation lies. Each traffic light holds an internal time. On each ticker tick, if its internal time is less than the duration, it increments its internal time. If it hits its duration, it changes to the next colour and resets its internal time. To tell the rest of the system of its colour change, it tells the traffic light controller of its new colour state.
+
+\subsection{Traffic Light Controller and Traffic Light Decorator}
+\paragraph{}
+The TrafficLightController class is the link between the model TrafficLight class and the GUI representation. It follows the singleton pattern, and includes global variables like the duration of all traffic lights and whether or not the traffic lights are enabled. It also includes two "database" type objects: a HashMap, with each TrafficLight instance registering to its GUI representation, and an ArrayList that holds all TrafficLight instances.
+\paragraph{}
+The "colourChanged(LightColour colour, TrafficLight tl)" method gets called by the traffic light "tl" with the new "colour" it is. This method then takes the traffic light "tl" and uses it as a key to look up its corresponding GUI representation, a TrafficLightDecorator, in the HashTable. Each TrafficLightDecorator contains a TrafficLight that it is representing and a JavaFX Circle shape. The circle is what actually changes the colour upon request. First the circle is drawn, and when the "setGUIColour(LightColour colour)", the circle changes colour to the new colour.
+\paragraph{}
+The TrafficLight controller also contains helper methods as well as support for disabling and enabling all traffic Lights and changing the duration of all traffic lights.
+
+\subsection{Evaluation}
+\paragraph{}
+We believe that using a HashTable to store (TrafficLight, TrafficLightDecorator) pairs in the controller was a good idea because of its O(1) retrieval time. At first, we were unsure of how to have many intances of TrafficLights linked to TrafficLightDecorators. We first considered having many instances of the controller, but that did not make logical sense, as the controller should be able to control all TrafficLights from one instance. Having the HashMap made it easier to look up which circles must change colour at any given time. However, a minor change that could be possible is removing the ArrayList of TrafficLight instances and only using the HashMap keys to get at a list of all traffic lights. This would remove a data redundancy.
+
+\section{Intersections}\label{intersectionsection}
+\subsection{Basic Structure}
+\paragraph{}
+An intersection is a special type of component that connects roads together. It connects at least two roads and a maximum of four. To represent the connections, the intersection has four variables, one for each road. Road positioning relative to that intersection instance is specified by the names of the variables. For example, a road that is north of the intersection gets set as the intersection's north road.
+\paragraph{}
+An intersection also contains up to four traffic lights. Traffic lights can be determined automatically by the method "setDefaultTrafficLightsForRoads()", which looks at each road that is set to the intersection and sees if there is a lane in that road that is driving towards the intersection. If there is such a lane, then the traffic light is added. To prevent all the traffic lights from starting with the same initial colour, north and south traffic lights start red, and west and east traffic lights start green, but only if there is a traffic light in the north or south slot. If there are no north or south lights, then the east and west traffic lights start at red. For more information about the traffic lights in the intersection, look at Section \ref{trafficlights} on page \pageref{trafficlights}.
+\subsection{Intersection Controller and Decorator}
+\paragraph{}
+The intersections have a controller to act as a link between their model and view representations. A HashMap is used in the controller to keep a sort of "database" where each intersection is registered with exactly one instance of an intersection GUI representation.
+\paragraph{}
+Each IntersectionDecorator class is associated with a single intersection instance. Each has up to 4 TrafficLightDecorators that live inside this GUI. The Intersection does not have any explicit circles itself, it relies on the circles of each TrafficLightDecorator that is associated with each TrafficLight in the Intersection instance. Exactly one IntersectionDecorator is created for exactly one Intersection.
+\paragraph{}
+The most important functionality of the Intersection decorator is the drawIntersection method that draws the wrapped Intersection and produces a visual representation with traffic lights embodied in a stack pane:
+\begin{lstlisting}
+	public StackPane drawIntersection() {
+		...
+		return stackPane;	
+	}
+\end{lstlisting}
+The locations for each traffic light are determined. Then, for each traffic light, if it is not null, its circle representation gets added to the interection GUI representation.
+\subsection{Evaluation}
+We believe that our intersections are well designed. At first, we were unsure of how to display up to four traffic lights at once. By embedding TrafficLightDecorators inside the IntersectionDecorator we were able to display all traffic light circles at once. There was an issue that we had to solve which involved only one of the circles changing colour, despite them all being visible and set to the correct initial states. This was solved by including a method in the TrafficLightDecorator class to return the circle to the IntersectionDecorator and have it manage the drawing and adding the actual circle to the view. This may have been a simple issue with JavaFX panes, because it was always the last added traffic light that would change colour. However, this way, there is a controller that manages combining a few traffic lights into one grid cell view. 
+
+\section{Ticker}
+\paragraph{}
+The ticker class is how time is kept in the simulation system. It would start at zero and increment at a given time increment, or granularity, such as every one second. Any type of object that wants to do some operation at every time increment must subscribe to this class. The ticker publishes the time to all subscribers at every time increment. Typical subscribers include vehicles and traffic lights, although other objects can subscribe as well.
+\paragraph{}
+The Ticker class is located high up in the package hierarchy because of how central its role is. It was one of the tricker parts of the project implementation because we had to decide how to implement the publish-subscribe relationship and have the ticker ticking at a constant rate. The ticker had to once be re-worked because of some complexity that arose. However, the one aspect that remained constant was the importance of having the publish-subscribe relationship.
+\subsection{First Implementation}
+\subsubsection{Initial Stages}
+\paragraph{}
+In the first implementation of the Ticker class, important things had to be decided on, such as how to notify all subscribers of time changes and how to handle time ticking on a periodic basis. Because we were starting from scratch, we had nothing to base it on, so the design was one of the more difficult parts of the implementation.
+\subsubsection{Basic Structure}
+\paragraph{}
+The Ticker class followed the singleton pattern, so that the number of instances would be capped at one. The constructor was marked with the protected visibility so that only the class itself would be able to call the constructor (as well as any subclasses, but there are none). Any potential subscribers would implement an interface called TickerListener, which contained a method called "onTick(long time)" that needed to be implemented by the subscriber. This would be the method that would execute on every time increment in the ticker.
+\subsubsection{Ticking Support}
+\paragraph{}
+The actual underlying ticking relied on two main aspects: a Timer instance and a TimerTask instance (both part of the java.util package). In general, a Timer instance executes a TimerTask instance at the specified interval. The Ticker class had a class embedded in it, called TickerRunnable which extended the TimerTask class. It also followed a singleton pattern for the constructor and it had a "run()" method that would execute when required by the Timer. This is where each subscriber would be notified with the current time in the simulation. To start the Ticker ticking, it had a method called "start()", which initiated the Timer and gave it the task of running the TickerRunnable at the given interval specified by the variable of type long named TICK\_INTERVAL. So overall, after every interval, the TickerRunnable would execute its "run()" method, which would tell all subscribers that the time changed, which would execute some operation. For instance, vehicles would move forwards.
+\subsubsection{Evaluation}
+\paragraph{}
+The Ticker class performed well with the model elements of the project. In the test cases performed, vehicles would move properly and traffic lights would change colour. However, there were many issues that had to be resolved. Firstly, we did not like the way in which subscribers were notified of time ticks. The Ticker held a list of all its subscribers, which already violates the key property of the publish-subscribe relationship (publishers of events do not know who its subscribers are, nor should they care). Because of this list, on every tick, we would cycle through this list and notify each subscriber one at a time. This was not ideal because some subscribers would hear the tick before others. This made us think of how we could try to notify all subscribers at once.
+\paragraph{}
+Secondly, and more importantly, this implementation did not work with JavaFX threads. An exception would be thrown each time a thread other than the JavaFX thread would try to modify any graphical elements. This was first discovered when we tried to test the GUI representation of traffic lights. We would get the following exception:
+\begin{lstlisting}
+	Exception in thread "Timer-1" java.lang.IllegalStateException:
+	Not on FX application thread; currentThread = Timer-1
+\end{lstlisting}
+This was a major cause for concern, because the goal was to have a fully functioning graphical user interface and not simply displaying vehicles in the console! At first, this was solved by a call to the JavaFX application platform, called Platform. It contains a method "runLater(Runnable r)" that takes any sort of runnable task. This did make the animation work from the Ticker thread, but it was not ideal because it simply schedules the task for some "unspecified time in the future". Finally, a minor issue was that the Ticker had an instance, but all methods were static, so it made us think if having an instance was necessary at all. This is when we decided that the Ticker class must be re-worked in some other way, hence our second, and current, implementation.
+\subsection{Second Implementation (Current)}
+\subsubsection{Initial Stages}
+\paragraph{}
+Given the issues faced with the first implementation, we needed a Ticker that would work with the JavaFX thread and that would ideally notify all subscribers at the same time of the tick. We decided to research potential ways the Ticker could be implemented.
+\subsubsection{Getting Help from Libraries}
+\paragraph{ReactFX}
+This is a library that helps by adding support for "reactive event streams" that works with JavaFX. In short, it processes events that happen in the system, such as clicks. As the first solution, we used a type of event stream called "EventStreams.ticks(...)", which generated a tick after each time the given time  interval passes. This worked for small cases and test files using JavaFX, but due to lack of good documentation, we were unsure of how to proceed with this framework to support the whole simulation system. This library claimed to be inspired by RxJava, a more general reactive approach, so we investigated this next.
+\paragraph{RxJava}
+Made by ReactiveX and Netflix, this open-source library provides a reactive programming approach for Java. By the word "reactive", it means that there are some objects that react to something else, which means that many reactions can execute in parallel. There are observers (which are subscribers) that listen to some Observable (the publisher). The observable emits some sort of object and the subscribers react to it when they get the message. We decided to use this library as part of our implementation. Although this library can do many other things with  event streams, like filtering or debouncing, we are only skimming the surface of its functionality and only using its publish-subscribe facilitation.
+\paragraph{RxJavaFX}
+Also made by ReactiveX, this is a library that allows an asynchronous reactive approach to JavaFX-specific events. It is useful for GUI event processing. Although we decided to use this in our Ticker implementation, we are using a very small amount of its functionality. The only aspect of this library that we are using is specifying that the publisher/observable should run on the JavaFX application thread.
+
+\subsubsection{Solution}
+\paragraph{}
+We decided to use a combination of RxJava and RxJavaFX for our Ticker implementation. The thing that does the actual ticking is defined as an Observable$<$Long$>$ from the RxJava package, rx. The type parameterization says that the message that this publisher sends is of type Long. This is so the current time in the system can be sent. Objects that wish to subscribe to the Ticker must extend the Subscriber$<$Long$>$ class, also from the rx package. This gives the subscriber three methods to implement: onCompleted(), which gets called once the Ticker terminates, onError(Throwable t), which gets called if there is an error with the Ticker, and most importantly, onNext(Long long), which gets called on every tick. Classes like Vehicle and TrafficLight implement this method to define functionality that must be performed on every tick. To subscribe to the observable's messages, each subscriber class is set to call Ticker.subscribe(...) in its constructor with itself as the parameter. This executes the following line for each subscriber:
+\begin{lstlisting}[language=Java,breaklines=true,basicstyle=\small]
+     tickerObservable.takeUntil(stop).observeOn(JavaFxScheduler.getInstance()).subscribe(sub);
+\end{lstlisting}
+This tells the observable/publisher to subscribe the subscriber "sub" (a vehicle, traffic light, or anything else), to run it on the JavaFX thread, and to make it run until a stop signal is sent to it (it can still unsubscribe sooner than the signal). The resulting behaviour is that when there is a subscriber for the observable, the Ticker starts and the subscribers perform their onNext operations when a tick is sent out.
+
+\subsubsection{Evaluation}
+\paragraph{}
+This approach works very well with the JavaFX thread because of explicitly specifying ".observeOn(JavaFxScheduler.getInstance())", thanks to RxJavaFx. It is simple to add more subscribers and have them perform some operation, thanks to RxJava. There are only a few downsides with this approach. First, the ticker speed must be set before the simulation begins. Once there is a subscriber, the ticker speed cannot change. For this reason, we request the user sets the ticker speed before beginning the simulation. It is possible in theory, but due to time constraints, we left it as-is. This, in turn, requires calling Ticker.start() once the ticker speed is set to initialize the observable in-charge of ticking. Second, whatever class that wants to subscribe to the ticker must extend the Subscriber$<$Long$>$ class. Therefore, this would be the only class that the subscriber would be able to extend, as Java does not support multiple inheritance.
+
+Also made by ReactiveX, this is a library that allows an asynchronous reactive approach to JavaFX-specific events. It is useful for GUI event processing. Although we decided to use this in our Ticker implementation, we are using a very small amount of its functionality. The only aspect of this library that we are using is specifying that the publisher/observable should run on the JavaFX application thread.
+
+\section{Vehicles}
+
+\section{Log}
+
+\part{The Application}
+\section{Start-Up}
+
+\section{Simulation Screen}
+\subsection{Map Graphics}
+\paragraph{}
+For the map creation we are using a suite of Panes which are included in the JavaFX Software Platform. We use stacked panes which allow us to treat different panes like layers and that grants us major management. The whole grid layout consists on a GridPane which is a flexible grid of rows and columns that holds in each row and column a specific pane. Each pane is a box which can either be grass (empty square), a Road, or an Intersection. All are drawings are of our own authorship because we have used the tool GIMP, an open source graphic editor. The size of each stack pane is dynamic and we are able to change it by changing a resize factor, which is an important attribute used in many of our drawings. 
+\subsection{Decorators}
+\paragraph{}
+Our implementation is using the Decorator Pattern to extend the functionalities of each component so that the objects can be drawn by wrapping the original object and invoking a draw method for each component. There are 5 main wrappers MapGridGUIDecorator, IntersectionDecorator, RoadGUIDecorator, TrafficLightDecorator and VehicleGUIDecorator.
+\subsubsection{MapGridGUIDecorator}
+\paragraph{}
+This is the class that manages the drawing of the entire map. By traversing the MapGrid representing the Map, we check what type of component is in each cell. We call the corresponding decorator class for that type of component. 
+\subsubsection{RoadGUIDecorator}
+\paragraph{}
+The Road is a stack pane that has a rough grey background and the arrows of the lane representing which way traffic flows are drawn programatically in each square.
+\subsubsection{IntersectionDecorator}
+\paragraph{}
+The intersection is drawn with the same background as a Road but in addition it has a yellow diagonal cross. For information about drawing intersections, please refer to section \ref{intersectionsection} on page \pageref{intersectionsection}.
+\subsubsection{TrafficLightDecorator}
+\paragraph{}
+The traffic lights are also drawn programatically using its decorator class. For information about drawing traffic lights, please refer to section \ref{trafficlights} on page \pageref{trafficlights}.
+
+\subsection{Vehicle Graphics}
+Vehicle movement is displayed by using the VehicleGUIDecorator class. 
+Each vehicle will have exactly one VehicleGUIDecorator associated with it. We have defined different states of the vehicle so we can track their movements and make them move properly:
+\begin{itemize}\itemsep1pt \parskip0pt \parsep0pt
+\item State 0 is when a vehicle isn\textsc{\char13}t moving
+\item State 1 means that the vehicle is moving straight.
+\item State 2 means that the vehicle has entered an intersection
+\item State 3 is a state where the vehicle has been deleted or has exited the simulation.
+\end{itemize} 
+\subsection{Overall Structure}
+
+\section{Map Maker Mode}
+\subsection{Map Making Basics}
+\paragraph{}
+To make our system more flexible to different kinds of maps, we allow the user to build their own maps to run the simulation on if they do not like any of the pre-made maps. When starting the system, if the user chooses to "Make a new Map", they are prompted to choose a width and height. To prevent maps that are too small or large to view, the width and height are limited to the range of 5 to 30. An empty map of the width and height that they chose is generated. The user can then proceed to put map components into the grid by clicking on the desired component and clicking to where on the map they want the component to be. Map components include: intersections, roads that run vertically (North-South), roads that run horizontally (East-West), and grass (an empty, or null, square). Roads are always added with a lane going in each direction. If a component was placed in a square by accident, the "grass" component can be added to empty that map grid square. The user keeps doing this until the map they build is complete. At that point, the user would press the "Save Map" button to save the map to disk. If the user does not like their map, the "Reset Map" button removes all components from the map. If they decide to not build a map anymore, the "Go Back" button brings them back to the mode selection screen. 
+
+\subsection{Implementation}
+\paragraph{The Empty Map}
+The empty map is represented by the Map class, which contains the MapGrid of no components. To allow clicking on the map, we traverse through the map, visiting each cell, and adding an on-click listener to each cell. Since the Map is represented by a JavaFX GridPane, getting the node to add the on-click listener to at the specified location was not trivial. We included a function called "getNodeFromIndex" that takes the x- and y-coordinates and the GridPane as parameters. It gets the node by looking throught all the children of that GridPane cell for every GridPane cell, and if that Node's location equals the location that we requested, that Node from the GridPane is returned. Now we know when the user clicks on the map to place a map component.
+\paragraph{Placement of Map Components}
+When the user selects a component from the right of the screen and clicks on a location in the map, an instance of that component is actually created in the map. For instance, when placing an intersection in the map, an Intersection object gets created and placed in that space. It is set with no roads attached and no traffic lights. When placing a bit of road, either North-South or East-West, an instance of the Road class is created every time. The Road instance's start and end coordinate locations are the same, so a road of length 1 is created. Two lanes are added, with each going in opposite directions.
+\paragraph{Keeping Focus}
+At first, building maps was a very annoying task. The user would have to click on the map component on the right, then click on the empty grid square, then go back to click on the map component again, followed by an empty grid square, and so on. This was solved by tracking of what on the screen gets focus and what held the focus previously. Focus means what was last clicked or selected  by the user, that is, the mouse cursor was "focused" on a specific element on the screen. The focus is represented by a Java enum, with entries like ROADNS (for a road that travels vertically) and INTERSECTION. When this mode starts up, the current focus is set to nothing, and the previous is null. The values are stored in the MapMakerController. As an example, if the user first clicks on the Intersection component image, that image gains focus. A blue glow surrounds the image to represent that it has focus. If the user then clicks on an empty map grid square, that map grid square gains focus and the previous focused gets set to Intersection. The map grid checks was was previously focused. It will see that Intersection ws previously focused, and place the component in the clicked map grid square. However, to make it easier on the user, focus is then placed back on the Intersection component image so they can keep clicking intersections into the map. The same applies for all other component images. 
+\paragraph{Saving the Map}
+When the user decides to save the map, they first get prompted for a file name. The file name cannot be empty, and this is enforced by disabling the "OK" button in the Save dialog while the name text field is empty. When the user hits the "OK" button, the saving process begins. Because of the way the map components were placed into the map, all the roads are separate and disconnected and all intersections are not connected to any roads. In other words, if there is a road of length 5 moving vertically, there are actually 5 separate roads moving vertically. We need to "glue" together all the bits of roads, connect those roads to the relevant intersections, and add all traffic lights. 
+
+There is a method in the MapMakerScreen class called "buildAndSaveMap(Map m)" that takes the map "m" that the user built. Using that map's width and height, the method creates a new empty map that will serve as the "glued together" and final verison of the user built map. We traverse the broken map, and when we discover a component, we process it. Discovering an intersection is the simplest case. We remove the intersection from the old map and place a new intersection into the old map at the same location. For bits of Road instances, it is trickier. If we discover a bit of road that is moving horizontally (east-west), we then have a while loop moving down the map row to see how long the road is. This way we determine the start location of this road (the original found piece) and the end location of this road (the last bit of road discovered moving horizontally that was not null). We create a new road, add 2 lanes, remove all the bits of road from the old map (so they do not get added again to the fixed map), and add the new road to the new map. A similar process is done for roads moving vertically. Each time a new stretch of road bits is discovered in the old map, this process is followed to "glue" all road sections together.
+
+Now that we added all Roads and Intersections to the new map, we must connect the "edges" and "nodes" of our map, i.e. our roads and intersections. There is a method called "assignRoadsToIntersections(Map m)" that takes the fixed map that we just built as a parameter. We retrieve the list of all intersections from the map, and determine the surrounding coordinates for that intersection. If there is a road component in any of the coordinates, the intersection gets assigned that road. For example, if there is a Road component at the location one coordinate north of the intersection, that road gets assigned as the north road of that intersection. This is done for all intersections. Now that all roads are glued and all intersections have been assigned roads, the map can now finally be saved to disk.
+
+We are using Java serialization to save the map. First, we check if the maps directory exists. The maps directory is set to the current working location from where the system was invoked. If it does not exist, it is created. Using the file name that the user provided in the Save dialog, we save it into the maps directory. Once this is complete, the user gets taken to the previous screen in the system, the choose mode screen. Now they can choose to open their newly built map or build a new one.
+\paragraph{Map Validation and Robustness}
+When saving the map, there is no map validation. We do not check whether all roads connect to some intersection and that no intersections are floating alone with no roads. Therefore, the user is able to build any meaningless or broken maps. However, this is completely fine. The simulation is robust against these kinds of map designs by having the vehicles behave in appropriate ways. For instance, if there is a road without an intersection at the end of it, the vehicle simply leaves the simulation. If there is a road connected to an intersection, but no other roads to go to, the vehicle simply stays in place once it reaches the intersection because it has nowhere else to go. So overall, no matter how poorly built the map is, the vehicles will act accordingly and there will be no system crashes.
+
+\subsection{Evaluation}
+Although the map building process was optimized by keeping focus and quick map component placement, there are a few areas where the process could have been improved. Some sort of click-and-drag functionality would make it easier to place a lot of components in big maps. Some of the non-GUI functionality, like saving the map or helper methods like getting a Node at some coordinate, could have been moved to the controller to keep GUI and logical methods separate. When saving the map, we should have probably checked if each newly discovered adjacent bit of road is moving in the same direction as the first piece of discovered road. Some map validation would be nice to have, regardless of how robust the system is. Finally, a dialog saying where the map was saved to would be useful so the user would know exactly where to look when trying to load their map for the simulation screen.
+
+
+\newpage
+\bibliographystyle{plain}
+\bibliography{literature}
+\end{document}
