@@ -274,6 +274,32 @@ This approach works very well with the JavaFX thread because of explicitly speci
 Also made by ReactiveX, this is a library that allows an asynchronous reactive approach to JavaFX-specific events. It is useful for GUI event processing. Although we decided to use this in our Ticker implementation, we are using a very small amount of its functionality. The only aspect of this library that we are using is specifying that the publisher/observable should run on the JavaFX application thread.
 
 \section{Vehicles}
+\paragraph{}
+The simulation system is, after all, about vehicles and how they behave in different maps and conditions. This section will go in-depth into how vehicles move and the different types that are possible.
+\subsection{The Vehicle Class}
+\paragraph{}
+The Vehicle class is the main class that encapsulates vehicle behaviour. It is an abstract class because a vehicle is a generic category for things that move in the roads. Vehicles are created with two parameters in their constructor: a Lane and a cell for the vehicle to go in that Lane. The Vehicle subscribes to the ticker, gives itself an ID number, and initializes all other variables to their initial values. 
+\paragraph{}
+Vehicles have a lot of attributes that are either global for all types of instances or are specific to an implementation. Attributes that define vehicles are: priority, behaviour, location, and state. Vehicle priority is represented by an integer, with 1 being the lowest. Vehicle behaviour is represented by an enumeration called VehicleBehaviour, with possible values of average, aggressive, or cautious. Coordinate location is determined dynamically by the "getCurrentCoordinate()" method. Finally, state is determined dynamically by calling all relevant vehicle movement methods and assigning it based on the outcome, which is based on the current state of the simulation.
+\subsubsection{Car}
+\paragraph{}
+Instances of Cars are the most common in the simulation. This class extends the Vehicle class to gain all vehicle functionality but with some Car specific attributes. Cars represents basic vehicles, with basic vehicle behaviour. Cars are initialized with average behaviour and with the lowest priority of 1.
+\subsubsection{Ambulance}
+Instances of ambulances represent a vehicle with high priority. It is initialized with aggressive behaviour and a priority of 5, which is the highest in our system so far.
+\subsection{Vehicle Movement and Ticker Interaction}
+\paragraph{}
+All significant vehicle behaviour is because of its interaction with the Ticker. On every tick by the ticker, the vehicle calls the VehicleController to move. The controller finds the corresponding VehicleDecorator, the GUI representation, in a HashMap of (Vehicle, VehicleDecorator) pairs. Then we begin processing the vehicle's request to move in the moveVehicle method. First we set the previous lane and coordinate of the vehicle to it's current lane and coordinate keep track of.
+\begin{lstlisting}
+vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
+vehicleGUIDecorator.setPreviousCoordinate(vehicleGUIDecorator.getCurrentCoordinate());
+\end{lstlisting}
+Then we check if the vehicle is at an intersection. If it is, the vehicle has to read the traffic light that it sees in front of it. This is done by the readTrafficLight() method which sets the state of the vehicle based on what colour the light was. If the light is red, the vehicle state gets set to 0, otherwise it gets set to 1. At this point, if the light was green, the vehicle chooses a random lane out of the lane possibilities that it has, sets its state to 2 (representing at an intersection), and does the vehicle turning turning. If the vehicle was not at an intersection to begin with, and there is nothing in front of it, we move it forward. 
+\paragraph{}
+Note that all movement methods, such as turning or moving straight, return an integer, which we call "move". It is like a boolean, except with more information about the result. If move gets set to zero, that means the vehicle did not move and therefore we should not animate the vehicle movement. If move is greater than one, then the vehicle can be animated to move. However, if move was set to three, that means the vehicle should be removed from the simulation.
+
+\subsection{Vehicle Priorities}
+\paragraph{}
+Because each vehicle decides where to go by itself, sometimes two vehicles would choose to go into the same lane at the same time. 
 
 \section{Log}
 
@@ -310,7 +336,12 @@ To keep the interface simple and clear, only three parts were used in our simula
 \paragraph{}
 Labels including "Number of Cars", "Ticker interval", Traffic Light Duration", "Time Ticked", "Vehicle Time Spent Standing" were set for simulation monitor to help users have a better understand about how is the simulation process going. 
 \paragraph{}
-"Start" and "Reset" buttons are used to control whether to start or stop the simulation process. Users can click "Add Ambulance" to add an ambulance whose behavior is aggressive and can also delete it since once an ambulance is added the button will be "Delete Ambulance". There is a "Set Traffic Light duration" button. Once it is clicked, there will be a dialog allows users to set traffic interval(100-1000 millisecond) by a spinner. "Disable Traffic Light" is used to delete all traffic lights of the map and "Enable Traffic Light" to restore all traffic lights to the map. This is to simulate situation in which traffic lights cannot work properly. We used a slider to control number of cars in the system. Users can set number of cars they want as long as  it is in the available range. The minimum car number is 1, and the maximum number is set automatically depends on the overall number of slots of all lanes in the map ($MaxCarNumber=0.6*SlotsNumber$). This means the simulation process won't crash due to too many cars results in no slot is available and to make sure the traffic can be coordinated properly.
+"Start" and "Reset" buttons are used to control whether to start or stop the simulation process. Users can click "Add Ambulance" to add an ambulance whose behavior is aggressive and can also delete it since once an ambulance is added the button will be "Delete Ambulance". There is a "Set Traffic Light duration" button. Once it is clicked, there will be a dialog allows users to set traffic interval(100-1000 millisecond) by a spinner. "Disable Traffic Light" is used to delete all traffic lights of the map and "Enable Traffic Light" to restore all traffic lights to the map. This is to simulate situation in which traffic lights cannot work properly. 
+\paragraph{}
+We used a slider to control number of cars in the system. Users can set number of cars they want as long as  it is in the available range. The minimum car number is 1, and the maximum number is set automatically depends on the overall number of slots of all lanes in the map ($MaxCarNumber=0.6*SlotsNumber$). This means the simulation process won't crash due to too many cars results in no slot is available and to make sure the traffic can be coordinated properly. 
+\paragraph{}
+In JavaFX a property is more than just a simple value. Each Property provides methods to observe changes made to its value so that we can listen for changes.The valueProperty of the slider can indicate if the slider is in the process of being changed. And it is an observable property, so we registered a change listener to the slider's valueProperty to know when the slider's value is changing. slider.valueProperty() gives us access to the Property. AddListener(...) expects a ChangeListener of type Number. We created a new class to implement the ChangListener interface. Since we will use this class only once, it's a bit overkill to create an instance of this class and pass it to addListener(...). Instead we used a short form of creating a class and instantiating it which is actually an anonymous inner class that does not have a name. Every time a change occurs, ChangeListener must have a changed(..) method that will be called. Then we decided whether to generate new cars to the system or remove cars from the system by calculating the difference between the oldValue and the newValue of the slider.
+If oldValue is smaller than newValue, new cars $(newValue - oldVlue)$ would be generated to the map. Otherwise, system would delete $(oldValue - newValue)$ cars randomly from the vehicle list. 
 
 \subsection{Map Graphics}
 \paragraph{}
@@ -460,6 +491,11 @@ At the program level, Mingle sends us alerts so that everyone can follow up. we 
 IntelliJ is our main platform for coding. We use Github as our main source-code repository. We have a master branch and four personal branches. Everyone is free to experiment and commit changes. Anything in the master branch is always deployable. Branch won't be merged until it's ready to be reviewed by master. Once we have done our tasks we may make a commit so that others can follow to understand after pulling. We would add an associated commit message, which is a description explaining why a particular change was made to make it clear for others what we have done. Master branch would close a merge and we could also rolled  back changes if a bug found since each commit is considered a separate unit of change.
 
 \part{General Project Evaluation}
+\section{Things that went well}
+
+\section{Things that did not go well and what we did}
+
+\section{Possibilities for the future}
 
 \part{Peer Assessment}
 \paragraph{}
