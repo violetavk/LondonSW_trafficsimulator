@@ -13,6 +13,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{url}
 \graphicspath{ {drafts/images/} }
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -157,8 +158,10 @@ The MapGrid class is the underlying structure of our Map. It contains a 2D-array
 \paragraph{Roads} For more information about roads in the map, refer to section \ref{roadsection} on page \pageref{roadsection}.
 \paragraph{Intersections} For more information about intersections in the map, refer to section \ref{intersectionsection} on page \pageref{intersectionsection}.
 \subsection{Testing}
+\paragraph{}
 We were able to test the model of our maps in a text-based fashion then subsequently when the relevant tests were passed, we were able to integrate it with a graphic user interface view.
-\centerline{\includegraphics[scale=0.5]{test_mapgrid}}
+\paragraph{}
+\centerline{ \includegraphics[scale=0.5]{test_mapgrid}}
 
 \section{Roads}\label{roadsection}
 \subsection{Basic Structure}
@@ -177,6 +180,10 @@ To create a lane we must consider 4 aspects regarding the cardinality:
 \item If the map direction is East,  then the lane\textsc{\char13}s start point is the road\textsc{\char13}s start point and the lane\textsc{\char13}s end point is the road\textsc{\char13}s end point.
 \item If the map direction is West,  then the lane\textsc{\char13}s start point is the road\textsc{\char13}s end point and the lane\textsc{\char13}s end point is the road\textsc{\char13}s start point.
 \end{itemize}
+
+\subsection{Evaluation}
+\paragraph{}
+We believe are roads are well implemented. They fulfill their task of holding a number of lanes without any excess overhead. However, a few possible improvements could be possible, such defining a better way of keeping track which lanes are moving in what direction. In other words, lane orientation in the map is defined only by the order in which lanes are added to the road. So if the requirement is to have left-hand side driving, then the north-moving lane must be added before the south-moving lane. Removing this kind of dependency could make it easier adding lanes to roads. Also, our system was only tested with roads with up to two lanes, so including support for more lanes would be possible.
 
 \section{Traffic Lights}\label{trafficlights}
 \subsection{Basic Structure}
@@ -253,11 +260,11 @@ This was a major cause for concern, because the goal was to have a fully functio
 Given the issues faced with the first implementation, we needed a Ticker that would work with the JavaFX thread and that would ideally notify all subscribers at the same time of the tick. We decided to research potential ways the Ticker could be implemented.
 \subsubsection{Getting Help from Libraries}
 \paragraph{ReactFX}
-This is a library that helps by adding support for "reactive event streams" that works with JavaFX. In short, it processes events that happen in the system, such as clicks. As the first solution, we used a type of event stream called "EventStreams.ticks(...)", which generated a tick after each time the given time  interval passes. This worked for small cases and test files using JavaFX, but due to lack of good documentation, we were unsure of how to proceed with this framework to support the whole simulation system. This library claimed to be inspired by RxJava, a more general reactive approach, so we investigated this next.
+This is a library that helps by adding support for "reactive event streams" that works with JavaFX. In short, it processes events that happen in the system, such as clicks \cite{reactfx}. As the first solution, we used a type of event stream called "EventStreams.ticks(...)", which generated a tick after each time the given time  interval passes. This worked for small cases and test files using JavaFX, but due to lack of good documentation, we were unsure of how to proceed with this framework to support the whole simulation system. This library claimed to be inspired by RxJava, a more general reactive approach, so we investigated this next.
 \paragraph{RxJava}
-Made by ReactiveX and Netflix, this open-source library provides a reactive programming approach for Java. By the word "reactive", it means that there are some objects that react to something else, which means that many reactions can execute in parallel. There are observers (which are subscribers) that listen to some Observable (the publisher). The observable emits some sort of object and the subscribers react to it when they get the message. We decided to use this library as part of our implementation. Although this library can do many other things with  event streams, like filtering or debouncing, we are only skimming the surface of its functionality and only using its publish-subscribe facilitation.
+Made by ReactiveX and Netflix, this open-source library provides a reactive programming approach for Java \cite{rxjava}. By the word "reactive", it means that there are some objects that react to something else, which means that many reactions can execute in parallel. There are observers (which are subscribers) that listen to some Observable (the publisher). The observable emits some sort of object and the subscribers react to it when they get the message \cite{reactivex}. We decided to use this library as part of our implementation. Although this library can do many other things with  event streams, like filtering or debouncing, we are only skimming the surface of its functionality and only using its publish-subscribe facilitation.
 \paragraph{RxJavaFX}
-Also made by ReactiveX, this is a library that allows an asynchronous reactive approach to JavaFX-specific events. It is useful for GUI event processing. Although we decided to use this in our Ticker implementation, we are using a very small amount of its functionality. The only aspect of this library that we are using is specifying that the publisher/observable should run on the JavaFX application thread.
+Also made by ReactiveX, this is a library that allows an asynchronous reactive approach to JavaFX-specific events. It is useful for GUI event processing \cite{rxjavafx}. Although we decided to use this in our Ticker implementation, we are using a very small amount of its functionality. The only aspect of this library that we are using is specifying that the publisher/observable should run on the JavaFX application thread.
 
 \subsubsection{Solution}
 \paragraph{}
@@ -295,25 +302,39 @@ vehicleGUIDecorator.setPreviousCoordinate(vehicleGUIDecorator.getCurrentCoordina
 \end{lstlisting}
 Then we check if the vehicle is at an intersection. If it is, the vehicle has to read the traffic light that it sees in front of it. This is done by the readTrafficLight() method which sets the state of the vehicle based on what colour the light was. If the light is red, the vehicle state gets set to 0, otherwise it gets set to 1. At this point, if the light was green, the vehicle chooses a random lane out of the lane possibilities that it has, sets its state to 2 (representing at an intersection), and does the vehicle turning turning. If the vehicle was not at an intersection to begin with, and there is nothing in front of it, we move it forward. 
 \paragraph{}
-Note that all movement methods, such as turning or moving straight, return an integer, which we call "move". It is like a boolean, except with more information about the result. If move gets set to zero, that means the vehicle did not move and therefore we should not animate the vehicle movement. If move is greater than one, then the vehicle can be animated to move. However, if move was set to three, that means the vehicle should be removed from the simulation.
-
+Note that all movement methods, such as turning or moving straight, return an integer, which we call "move". It is like a boolean, except with more information about the result. If move gets set to zero, that means the vehicle did not move and therefore we should not animate the vehicle movement. If move is greater than one, then the vehicle can be animated to move. However, if move was set to three, that means the vehicle should be removed from the simulation. All the movement methods may or may not actually move the vehicle in the model. When we go to do the vehicle animation, this is where the previous lane and coordinate come in. We must now animate the vehicle from its previous lane and coordinates, not its new ones, otherwise the vehicle would be moved twice. 
 \subsection{Vehicle Priorities}
 \paragraph{}
-Because each vehicle decides where to go by itself, sometimes two vehicles would choose to go into the same lane at the same time. 
+Because each vehicle decides where to go by itself, sometimes two vehicles would choose to go into the same lane at the same time. To solve this problem, vehicles had to randomly be assigned priorities and Intersections were made in charge of this. The key was to make the Intersection a subscriber of the Ticker so it can read who is at the intersection at the same time the vehicles are deciding where to go. On ticker tick, the intersection calls the IntersectionController method "vehicleTurnFirst(...)", which takes the current intersection and a list of all vehicles at that intersection with priorities assigned randomly as parameters. Finally, the vehicle with the highest random priority is chosen to turn in the intersection. All other vehicles that have a green light have to wait for the vehicle with higher priority to turn. They will get another chance to turn on the next ticker tick. This process greatly improved the animation and simulation experience because vehicles no longer drive into each other at intersections.
+
+\subsection{Evaluation}
+Making the Vehicle class an abstract class was a good idea because this makes our system extensible to new types of vehicles in the future. Fixing the vehicle movement bugs, namely when two vehicles would drive into the same lane at the same time, was a large accomplishment due to its real-time complexity. In terms of general vehicle movement, an area for improvement could be the steps taken to move. Maybe there is a better way of doing the animation, instead of setting the previous lane and coordinates and doing the animation based on that. But other than that, we believe that the Vehicle class performs very well regarding the different states a vehicle can hold and the different movement results that can be returned. Therefore, vehicles are robust to any kind of map or driving conditions.
 
 \section{Log}
+\paragraph{}
+The simulation system writes a log file with the corresponding timestamp each time the simulation starts. The log file name is with the form "Log\_Year-Month-Day-Hour-Minute-Second" and it gets stored in the "logs" directory in the working directory, i.e. where the source code is or where the executable is placed. Each object that is subscribed to the ticker is appended to the log with all its attributes. We are able to trace on each tick the activity generated by the object and it is useful for debugging processes, audits, and statistics.
+\paragraph{}
+To achieve the logging functionality we use the java.util.logging.Logger and we also extend the log class to the subscriber so it can interact easily with the Ticker to write the state of every subscriber on each tick.
 
 \section{Testing the System}
-
+\paragraph{}
+Before we had our GUI screens, we tested the logic of our system using JUnit testing. In the src directory, we have a "test" package. This is where all of our test files went. We used JUnit tags such as @assertEquals(...), @assertNotNull(...), @Before(), and more. This allowed us to see whether the outputs we were expecting were achieved. 
+\paragraph{}
+However, tests involving the Ticker were done using main() methods, because we found that JUnit did not support multiple threads in its text environment. We researched into this some more, but found it easiest to use the main() methods in our test cases for our testing purposes. Additionally, once we had some GUI screens, we relied less on JUnit testing and more on integration testing using those screens.
 
 \part{The Application}
 \section{Start-Up}
 \paragraph{}
-When the user starts the system, they get presented with a start screen. After pressing the start button, the user gets presented with a choice of modes: opening a map or creating a new map.
+When the user starts the system, they get presented with a start screen. After pressing the start button, the user gets presented with a choice of modes: opening a map or creating a new map. The screens are loaded using a series of controllers. A singleton instance of the StartUpController is made, which controls the first few screens.
 \paragraph{}
-Opening a map opens a File dialog where the user can open a pre-made map file. The simulation comes with some map files pre-built for the user. This then brings the user to the simulation screen.
+Opening a map opens a File dialog where the user can open a pre-made map file. The simulation comes with some map files pre-built for the user. This then brings the user to the simulation screen. The StartUpController hands control over to the SimulationController, which handles drawing the SimulationScreen. 
 \paragraph{}
-Choosing to make a map brings the user to the Map Maker screen. They choose a width and height of a map, place components on it, and save it as a new map. The user can then run the simulation on it. 
+Choosing to make a map brings the user to the Map Maker screen. They choose a width and height of a map, place components on it, and save it as a new map. The user can then run the simulation on it. The StartUpController hands control over to the MapMakerController, which handles drawing the MapMakerScreen.
+\paragraph{}
+Here is a use-case diagram that describes the steps the user can take in our system:
+\paragraph{}
+\centerline{ \includegraphics[scale=0.5]{UseCase}}
+
 \section{Simulation Screen}
 \paragraph{}
 Aimed at making a user-oriented simulation system, we decided to have a main simulation screen where users can both monitor the simulation process and control the simulation system including start or reset simulation, set vehicle number, set ticker interval, disable or enable traffic light, etc.
