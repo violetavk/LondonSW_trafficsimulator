@@ -40,42 +40,42 @@
 
 \part{Introduction}
 \paragraph{}
-As population grows as a result of rapid development of cities, so does the volume of traffic and congestion. Managing traffic congestion is a serious issue, and  with the ever-increasing volume of traffic, this problem is expected to get worse.
+As population grows as a result of rapid development of cities, so does the volume of traffic and congestion. Managing traffic congestion is a serious issue, and with the ever-increasing volume of traffic, this problem is expected to get worse.
 \paragraph{}
-A simple description of traffic congestion is given as a situation where the volume of traffic surpasses the capacity of the road. However, the Department for Transport provide a more quantifiable description of congestion as "the average delay experienced for each kilometre travelled compared to driving at speeds typical when traffic is light" \cite{2}.
+A simple description of traffic congestion is given as a situation where the volume of traffic surpasses the capacity of the road. However, the Department for Transport provides a more quantifiable description of congestion as "the average delay experienced for each kilometre travelled compared to driving at speeds typical when traffic is light" \cite{2}.
 \paragraph{}
-A lot of attention has been given to modelling and simulation of traffic flows to determine the causes of traffic congestion, to determine the effectiveness of traffic policies, and how such road policies can be improved and also aid in the development and design or road infrastructures.
+A lot of attention has been given to modelling and simulation of traffic flows to determine the causes of traffic congestion, to determine the effectiveness of traffic policies, and how such road policies can be improved and also aid in the development and design of road infrastructures.
 
 \section{Problem Definition}
 \paragraph{}
-Many strategies have been proposed and implemented with the primary objective of relieving congestion. However, these strategies have varying effects and it is not always self-evident which strategy works best for a given scenario. A straightforward strategy is to construct new roads to increase the road capacity or improve already existing roads, but  this rarely serves as a long time solution.
+Many strategies have been proposed and implemented with the primary objective of relieving congestion. However, these strategies have varying effects and it is not always self-evident which strategy works best for a given scenario. A straightforward strategy is to construct new roads to increase the road capacity or improve already existing roads, but this rarely serves as a long time solution.
 \paragraph{}
-Congestion is described as self managing, that is; as the capacity of the road increases, so does the traffic demand to fill the new capacity. This notion is described as Pigou-Knight analysis, which suggests improving road network capacity does not guarantee reduced congestion, on the contrary it can be counter-productive by making congestion worse \cite{1,2}. This strategy regarded as one of the most expensive ways of dealing with congestion \cite{2}.
+Congestion is described as self managing, that is; as the capacity of the road increases, so does the traffic demand to fill the new capacity. This notion is described as Pigou-Knight analysis, which suggests improving road network capacity does not guarantee reduced congestion, on the contrary it can be counter-productive by making congestion worse \cite{1,2}. This strategy is regarded as one of the most expensive ways of dealing with congestion \cite{2}.
 \paragraph{}
-Traffic simulation is important because it allows very complex traffic models to be studied and analysed. In situations where evaluating analytical and numerical data is not sufficient enough it provides visual description, of both existing and future scenarios. Another huge importance of traffic simulation is, it enables us see the outcome changes to road infrastructure will have.
+Traffic simulation is important because it allows very complex traffic models to be studied and analysed. In situations where evaluating analytical and numerical data is not sufficient enough, it provides a visual description, of both existing and future scenarios. Another huge importance of traffic simulation is that it enables us see the outcome changes to road infrastructure will have.
 
 \section{Project Summary}
 \paragraph{}
 In this report, we give a detailed documentation of the process involved in developing a traffic simulation software. Our traffic simulation software consist of two parts: the simulation environment and the map builder. 
 \paragraph{}
-The first part of the system is the simulation environment where actual simulation runs. This part allows a user to load a map and run a simulation on it with some number of vehicles. 
+The first part of the system is the simulation environment where actual simulations run. This part allows a user to load a map and run a simulation on it with some number of vehicles. 
 \paragraph{}
-The second part of the system is the map making mode. This part of our system allows the user to create a map. That is, it serves as an interface which provides all the necessary functionalities for designing road infrastructure (i.e lanes, intersections), which can then be parsed, loaded and executed in the simulation environment.
+The second part of the system is the map making mode. This part of our system allows the user to create a map. It serves as an interface which provides all the necessary functionalities for designing road infrastructure (i.e lanes, intersections), which can then be parsed, loaded and executed in the simulation environment.
 \paragraph{}
 The rest of this report is structured as follows. In section 2, we review the various literature related to traffic simulation. Furthermore, we also review existing works related in this domain. We proceed to section 3 where we provide the description of our initial project requirements  and the design approach we have chosen.
 
 \part{Review}
-There exists a variety of traffic simulation models which are categorised in accordance with numerous criteria, one of such criterion is the level of detail. However, within the scope of this report, only the two more  general classifications are considered. These are: Macroscopic and Microscopic, which are also referred to as micro-simulation and macro-simulation. In this section, we give an analysis of the existing articles, literature related to the different classifications of traffic simulation models mentioned above.
+There exists a variety of traffic simulation models which are categorised in accordance with numerous criteria, one of such criterion is the level of detail. However, within the scope of this report, only the two more  general classifications are considered. These are: Macroscopic and Microscopic, which are also referred to as micro-simulation and macro-simulation. In this section, we give an analysis of the existing articles and literature related to the different classifications of traffic simulation models mentioned above.
 \subsection{Macroscopic}
 \paragraph{}
 Macro-simulations use high-level mathematical models usually derived from fluid dynamics for the modelling of traffic flow \cite{Ali, Serge}.
-In this modelling approach, all vehicle are treated in the same manner (i.e individual vehicles are not modelled) however, input and out put variables such as speed, density and flow are used. There is no differentiation between individual vehicles and there are usually no options of vehicle types in this approach.
+In this modelling approach, all vehicle are treated in the same manner (i.e individual vehicles are not modelled) however, input and output variables such as speed, density and flow are used. There is no differentiation between individual vehicles and there are usually no options of vehicle types in this approach.
 \paragraph{}
 Macroscopic models lack the ability of modelling complex road networks, complicated traffic features or vehicle behaviour. Therefore, they are more widely used for scenarios that do not require detailed modelling such as motorway networks \cite{Schulze}.
 \subsection{Microscopic}
-Unlike Macro-simulations, micro-simulations models individual entities separately at a very high level of detail and are classified as discrete models. Vehicle interactions with other vehicles and the environment are tracked, where interactions are governed by car-following or lane changing logic \cite{Ali}. Rules are set aside, to govern what action are permitted and what action are not permitted in the simulation. Microscopic simulations provide a more realistic modelling  traffic flow compared to the macroscopic due to the ability of modelling vehicles individually. Therefore microscopic simulations are ideal in the analysis of new or existing traffic policies \cite{Ali, Femke}.
+Unlike Macro-simulations, micro-simulations model individual entities separately at a very high level of detail and are classified as discrete models. Vehicle interactions with other vehicles and the environment are tracked, where interactions are governed by car-following or lane changing logic \cite{Ali}. Rules are set aside, to govern what action are permitted and what action are not permitted in the simulation. Microscopic simulations provide a more realistic modelling  traffic flow compared to the macroscopic due to the ability of modelling vehicles individually. Therefore microscopic simulations are ideal in the analysis of new or existing traffic policies \cite{Ali, Femke}.
 \paragraph{}
-The car following model, also known as the time-continuos model is a categorisation of micro simulation. All car-following models are characterized using differential equations that  describe the entire dynamics of vehicle positions and their velocities. This model assumes that drivers input stimuli is restricted to their own velocity, the velocity of the leading vehicle, and their distance to the leading vehicle. The driving behaviour of a vehicles in this model might not only depend on the current vehicle in front, but the number of vehicles in front \cite{macrosim}.
+The car-following model, also known as the time-continuous model is a categorisation of micro simulation. All car-following models are characterized using differential equations that  describe the entire dynamics of vehicle positions and their velocities. This model assumes that drivers input stimuli is restricted to their own velocity, the velocity of the leading vehicle, and their distance to the leading vehicle. The driving behaviour of a vehicles in this model might not only depend on the current vehicle in front, but the number of vehicles in front \cite{macrosim}.
 \paragraph{}
 Another way of implementing micrcoscopic simulations is through agent based modelling. This approach allows many scenarios to be modelled efficiently because each individual in the scenario can be represented as an agent, with a set of rules governing their behaviour. Agents can be programmed with behaviours, so as to allow individuals' behaviour to be similar to those of the entities they are modelling. Though the programmed behaviour given to agents is often simple however, when agents are simulated as a group, the often exhibit new behaviours \cite{2}.
 Therefore agent based simulations are ideal for developing new models  because parameters of individuals can be changed easily to observe results.
@@ -136,12 +136,12 @@ The Map class represents maps that the simulation runs on. Vehicles interact wit
 There are a number of low-level basic controls that make our maps possible. They are listed and described below.
 \subsubsection{Coordinates}
 \paragraph{}
-Our basic unit for positioning is the Coordinate class which contains a pair of integers which denote  x- and y-positions in a two dimensional cartesian coordinate system. The former represents the vertical axis and the latter represents the horizontal axis. This class is used by the whole system in many classes, like locations of intersections, vehicles, and the start and end points of roads and lanes.
+Our basic unit for positioning is the Coordinate class which contains a pair of integers which denote  x- and y-positions in a two dimensional coordinate system. The former represents the vertical axis and the latter represents the horizontal axis. This class is used by the whole system in many classes, like locations of intersections, vehicles, and the start and end points of roads and lanes.
 
 Besides the getters and setters for the x- and y- positions, the most useful features are the overloading of the equals operator to enable Coordinate comparisons, addition and subtraction methods of Coordinates and the capability to add a step to a position regarding the cardinal direction.
 \subsubsection{Components}
 \paragraph{}
-There is an interface in our system called Component that acts as a common denominator between objects that we are able to add to a map. We have two types of components, Roads and Intersections, but this can be expanded to more types in the future if necessary. The actual interface is empty, because no common functionality is necessary between all components. It is most useful for the MapGrid class, which stores the underlying map structures as a 2d-array of Components. This makes storing and looping through map components easiest. Like the Coordinate, the components are used widely in the whole system. To use components, we capture the object and cast it to an instance of either a Road or an Intersection, and then we are able to interact with the component treating it as the former or the latter. 
+There is an interface in our system called Component that acts as a common denominator between objects that we are able to add to a map. We have two types of components, Roads and Intersections, but this can be expanded to more types if necessary. The actual interface is empty, because no common functionality is necessary between all components. It is most useful for the MapGrid class, which stores the underlying map structures as a 2d-array of Components. This makes storing and looping through map components easy. Like the Coordinate, the components are used widely in the whole system. To use components, we capture the object and cast it to an instance of either a Road or an Intersection, and then we are able to interact with the component treating it as the former or the latter. 
 \subsection{Structure}
 The map consists of three important components: a MapGrid instance, Roads, and Intersections. In general, a map consists of a mixture of roads and intersections that build a type of graph, where intersections are nodes and roads are directed edges between nodes. Each map has a constant width and height. The Map class has functions that allows communication with components deeper down the Map hierarchy, like Roads to Lanes to Cells. 
 \paragraph{MapGrid}
@@ -350,9 +350,9 @@ This is a use-case diagram that describes the steps the user can take in our sys
 \paragraph{}
 Aimed at making a user-oriented simulation system, we have a main simulation screen where users can both monitor the simulation process and control the simulation system by using various controls. Users would load maps from file to run the simulation on.
 \subsection{Loading Maps}
-
-\subsection{Overall Screen Structure}
-\subsubsection{JavaFX Scene Builder}
+\paragraph{}
+When loading a map from file, we first had an issue where the traffic lights appeared, but never changed colour. This was fixed by making the traffic lights re-register with the Ticker and the TrafficLightController. Intersections also re-register with the Ticker.
+\subsection{JavaFX Scene Builder}
 \paragraph{}
 JavaFX Scene Builder is a visual layout tool that lets users to quickly design JavaFX application user interfaces by dragging and dropping UI component to a work area, modifying their properties and applying style sheets. The FXML code which is automatically generated can be combined with Java projects by binding the UI to the application's logic to handle the events and actions taken on each element. At first, we chose JavaFX Scene Builder as our main GUI development tool.
 \paragraph{}
@@ -360,7 +360,7 @@ Problems arose after we finished building FXML files and tried to connect the UI
 \paragraph{}
 Users need to choose a pre-made map before going into simulation screen, this needed an intermediate controller to deliver map name between two interfaces. There will be lots of this kind of communication so many intermediate controllers need to be added which could increase complexity. Thinking about this, we finally gave up JavaFX Scene Builder, decided to use pure JavaFX.
 
-\subsubsection{Simulation Screen}
+\subsection{Simulation Screen}
 \paragraph{}
 The simulation screen was built using Model-View-Controller (MVC) architecture pattern. SimulationController.java is the controller to draw the screen and generate the log for the simulation. SimulationScreen.java is the corresponding view used to manage UI components of the interface. The model is read from the Map components that are loaded.
 \paragraph{}
@@ -522,7 +522,7 @@ At the program level, Mingle sends us alerts so that everyone can follow up. We 
  
 \subsection{Github}
 \paragraph{}
-IntelliJ is our main platform for coding. We use Github as our main source-code repository. We have a master branch and four personal branches. Everyone is free to experiment and commit changes. Anything in the master branch is always deployable. Branches aren't merged until the change was reviewed. Once we have done our tasks, we commit and add an associated commit message, which is a description explaining why a particular change was made. The master branch would close a merge request and sometimes roll back changes if a bug was found, since each commit is considered a separate unit of change. Our Slack chat was configured to include a GitHub bot to tell us when changes were made.
+IntelliJ is our main platform for coding. We use Github as our main source-code repository. We have a master branch and four personal branches. Everyone is free to experiment and commit changes. Anything in the master branch is always deployable. Branches aren't merged until the change was reviewed. Once we have done our tasks, we commit and add an associated commit message, which is a description explaining why a particular change was made. The master branch would close a merge request and sometimes roll back changes if a bug was found, since each commit is considered a separate unit of change. Our Slack chat was configured to include a GitHub bot to tell us when changes were made. Our team became very proficient at Git over the course of development.
 
 \part{General Project Evaluation}
 \section{Things that went well}
@@ -559,12 +559,13 @@ We have decided to distribute the points as follows:
 \end{center}
 \paragraph{}
 We distributed the points evenly because we believe that each member contributed a lot to the project. Each person has something that they implemented and was their idea, and many hours were spent by all on this project.
+
 \part{Appendix}
 \section{Git Log}
 \input{gitlog}
 
-
 \newpage
 \bibliographystyle{plain}
 \bibliography{literature}
+
 \end{document}
