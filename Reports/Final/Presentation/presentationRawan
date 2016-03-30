@@ -1,0 +1,82 @@
+\documentclass{beamer}
+\usetheme{CambridgeUS}
+\useoutertheme{infolines}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\graphicspath{ {images/} }
+\newcommand\RBox[1]{%
+ \tikz\node[draw,rounded corners,align=center] {#1};%
+}  
+\author[Team LondonSW]
+{%
+   \texorpdfstring{
+        \begin{columns}
+            \column{.30\linewidth}
+            \RBox{ Violetta Avkhukova}
+        \end{columns}
+        \begin{columns}
+            \column{.30\linewidth}
+            \RBox{Yakubu Aliyu Doma}
+        \end{columns}
+        \begin{columns}
+            \column{.30\linewidth}
+            \RBox{Rawan Mohammed Alrahili}
+        \end{columns}
+        \begin{columns}
+            \column{.30\linewidth}
+            \RBox{Felix Santiago Anda Basabe}
+        \end{columns}
+        \begin{columns}
+            \column{.30\linewidth}
+            \RBox{Jia Liu}
+        \end{columns}
+        \vspace{-0.3cm}
+        \begin{columns}
+          \column{0.3\linewidth}
+          \raggedleft
+           \includegraphics[width=2.0 cm]{logo_map}
+            \vspace{-3 cm}
+            \column{0.6\linewidth}
+            \raggedright
+            \textbf{7CCSMGPR}\\
+            \vspace{-4.8cm}
+        \end{columns}
+   }
+   {}
+}
+\title{Traffic Simulator}
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\begin{frame}
+\frametitle {Vehicles Movements }
+\begin{wrapfigure}{r}{0.35\textwidth}
+   \fbox{ \includegraphics[scale=.5]{lane}}
+\end{wrapfigure}
+Vehicles movement can be divided into two main categories:
+\begin{enumerate}
+\item Moving in a lane:
+\begin{itemize}
+\item Each lane is an array list of vehicles.
+\item Vehicles are items in lanes.
+\end{itemize}
+
+\item Turning to a new lane
+\begin{itemize}
+\item Reading traffic light. \texttt {void readTrafficLight()}
+\item Choosing lane to move to. \texttt{ Lane chooseLane() }
+\item Ability to turn. boolean \texttt{vehicleTurnFirst (ArrayList<Vehicle> vehicles)}
+\begin{figure}[h]
+\fbox{\includegraphics[scale=.5]{intersection}}
+\end{figure}
+\end{itemize}
+\end{enumerate}
+Vehicle turns: \texttt{ int vehicleTurn(Lane l) } 
+
+\end{frame}
+
+\end{document}
+Group Logo
