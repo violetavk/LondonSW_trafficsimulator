@@ -15,6 +15,7 @@
 \usepackage{amssymb}
 \usepackage{tabu}
 \usepackage{url}
+\usepackage{pdfpages}
 \graphicspath{ {drafts/images/} }
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -154,7 +155,7 @@ The MapGrid class is the underlying structure of our Map. It contains a 2D-array
 \paragraph{}
 We were able to test the model of our maps in a text-based fashion then subsequently when the relevant tests were passed, we were able to integrate it with a graphic user interface view.
 \paragraph{}
-\centerline{ \includegraphics[scale=0.5]{test_mapgrid}}
+\centerline{ \includegraphics[scale=0.5,natheight=542,natwidth=1246]{test_mapgrid.png}}
 
 \section{Roads}\label{roadsection}
 \subsection{Basic Structure}
@@ -346,7 +347,7 @@ Choosing to make a map brings the user to the Map Maker screen. They choose a wi
 \paragraph{}
 This is a use-case diagram that describes the steps the user can take in our system:
 \paragraph{}
-\centerline{ \includegraphics[scale=0.5]{UseCase}}
+\centerline{ \includegraphics[scale=0.5,natwidth=690,natheight=700]{UseCase.png}}
 
 \section{Simulation Screen}
 \paragraph{}
@@ -562,12 +563,16 @@ We have decided to distribute the points as follows:
 \paragraph{}
 We distributed the points evenly because we believe that each member contributed a lot to the project. Each person has something that they implemented and was their idea, and many hours were spent by all on this project.
 
+\newpage
+\bibliographystyle{plain}
+\bibliography{literature}
+
+\appendix
 \part{Appendix}
 \section{Git Log}
 \input{gitlog}
 
-\newpage
-\bibliographystyle{plain}
-\bibliography{literature}
+\section{Source Code}
+\includepdf[pages=-]{output-letter}
 
 \end{document}
