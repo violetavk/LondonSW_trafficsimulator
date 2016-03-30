@@ -13,6 +13,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{tabu}
 \usepackage{url}
 \graphicspath{ {drafts/images/} }
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -285,7 +286,7 @@ Also made by ReactiveX, this is a library that allows an asynchronous reactive a
 The simulation system is, after all, about vehicles and how they behave in different maps and conditions. This section will go in-depth into how vehicles move and the different types that are possible.
 \subsection{The Vehicle Class}
 \paragraph{}
-The Vehicle class is the main class that encapsulates vehicle behaviour. It is an abstract class because a vehicle is a generic category for things that move in the roads. Vehicles are created with two parameters in their constructor: a Lane and a cell for the vehicle to go in that Lane. The Vehicle subscribes to the ticker, gives itself an ID number, and initializes all other variables to their initial values. 
+Vehicle is abstract class that all vehicles implement; it enapsulates all generic vehicle behaviour. It being abstract allows for scalability because we can add more types of vehicles such as cars and ambulances. There are two types of vehicles: cars and ambulances. The Car and Ambulance class extend Vehicle. To describe the vehicle movement in this program, it is important to mention that each lane is an array list of vehicles, and also lanes are queues (First-In-First-Out), so the first vehicle that enters a lane is the first vehicle to leave.   
 \paragraph{}
 Vehicles have a lot of attributes that are either global for all types of instances or are specific to an implementation. Attributes that define vehicles are: priority, behaviour, location, and state. Vehicle priority is represented by an integer, with 1 being the lowest. Vehicle behaviour is represented by an enumeration called VehicleBehaviour, with possible values of average, aggressive, or cautious. Coordinate location is determined dynamically by the "getCurrentCoordinate()" method. Finally, state is determined dynamically by calling all relevant vehicle movement methods and assigning it based on the outcome, which is based on the current state of the simulation.
 \subsubsection{Car}
@@ -295,20 +296,61 @@ Instances of Cars are the most common in the simulation. This class extends the 
 Instances of ambulances represent a vehicle with high priority. It is initialized with aggressive behaviour and a priority of 5, which is the highest in our system so far.
 \subsection{Vehicle Movement and Ticker Interaction}
 \paragraph{}
-All significant vehicle behaviour is because of its interaction with the Ticker. On every tick by the ticker, the vehicle calls the VehicleController to move. The controller finds the corresponding VehicleDecorator, the GUI representation, in a HashMap of (Vehicle, VehicleDecorator) pairs. Then we begin processing the vehicle's request to move in the moveVehicle method. First we set the previous lane and coordinate of the vehicle to it's current lane and coordinate keep track of.
-\begin{lstlisting}
-vehicleGUIDecorator.setPreviousLane(vehicleGUIDecorator.getCurrentLane());
-vehicleGUIDecorator.setPreviousCoordinate(vehicleGUIDecorator.getCurrentCoordinate());
-\end{lstlisting}
-Then we check if the vehicle is at an intersection. If it is, the vehicle has to read the traffic light that it sees in front of it. This is done by the readTrafficLight() method which sets the state of the vehicle based on what colour the light was. If the light is red, the vehicle state gets set to 0, otherwise it gets set to 1. At this point, if the light was green, the vehicle chooses a random lane out of the lane possibilities that it has, sets its state to 2 (representing at an intersection), and does the vehicle turning turning. If the vehicle was not at an intersection to begin with, and there is nothing in front of it, we move it forward. 
+All significant vehicle behaviour is because of its interaction with the Ticker. On every tick by the ticker, the vehicle calls the VehicleController to move. The controller finds the corresponding VehicleDecorator, the GUI representation, in a HashMap of (Vehicle, VehicleDecorator) pairs. Then we begin processing the vehicle's request to move in the moveVehicle method.
+\paragraph{}
+Vehicles movement can be divided into two main categories: moving in a lane and turning to a new lane. Before any movement happens, we set the previous lane and coordinate of the vehicle to it's current lane and coordinate keep track of.
+\subsubsection{Moving in a lane}
+As we mentioned, each lane is an array of vehicles, so the movement of vehicles is simply changing the vehicle's position in the lane by increasing its index by adding a number of steps. Vehicles only move forwards when the slot in front of it is empty. Cars are type of vehicle with AVERAGE behaviour, and our team decided to make an Average behaviour move vehidles one step each time. On the other hand, vehicles with AGGRESSIVE behaviour such as ambulances, move two steps each time if possible, otherwise one step at a time. To decide if a vehicle can move, there are two conditions: If the new cell is empty, which means no vehicle is already there, or if the new cell is in the lane boundary.
+If these conditions are met, the vehicle moves, otherwise it stops.
+To move it, we set the current cell to null, so other vehicle can move to this cell and increase the vehicle's index by the number of steps it moved.
+\subsubsection{Turning to a new lane}
+After controlling the vehicle movement in a lane, we went to manage the movement of vehicle to other lanes. Vehicle can turn to a new lane only throw intersections, which means it has to be at in the end of its current lane. To move to a new lane there are three main things we considered: Reading traffic lights, choosing the next lane to move to, and the ability to turn.
+\paragraph{Reading traffic lights}
+In our program, each road has two lanes, and each intersection can connect up to four Roads, which means each intersection can have up to four traffic lights. The readTrafficLight() method in the Vehicle class controls that each vehicle reads only its corresponding traffic light. Reading the correct traffic light depends on the map direction of a lane. For example, if the map direction of a lane is south, and the vehicle is at the end of its lane, that means this vehicle is in the north road for this intersection it has to read the north traffic light, and so on for other directions. If the traffic light is red, vehicle state is set to 0, which means vehicle stops, and if it is green, vehicle state sets to 1, which means vehicle can move. Vehicle with higher priority such as ambulances always can move even if the traffic light is red. After making vehicle listen to traffic lights, we moved to choose a new lane to move to.
+\paragraph{Choosing the next lane to move to} 
+Vehicles can only turn when they are at the end of the current lane. Vehicles reads the intersection in front if it and then read all roads connected to that intersection. From these roads, we take only go to lanes with a legal map direction for a given vehicle. For example, assume vehicle A is in a west road and its driving direction is East, and this vehicle want to move to the south road. As we mentioned, each road has two lanes with different map directions. For the south road, there are two lanes, one with north map direction and the other with south map direction. So, vehicle A can only choose lane which map direction is south. 
+"ArrayList$<Lane>$ getLaneOptions()" checks all connected lanes to an intersection and tests the validity of lanes in terms of the map direction and state. If the map direction is legal for a vehicle and the lane state is 1 (lane is enabled), this method put possible lanes in an array list. 
+"Lane chooseLane()" takes the array list of all valid lanes and chooses a random lane for the vehicle.
+\paragraph{The Ability to Turn}
+To avoid vehicle crashes in intersections when they turn, we have to regulate the vehicle movement in intersections, one vehicle at a time. The first idea was to use vehicle IDs. Since each vehicle has a unique ID we can compare them, vehicle with higher ID moves, other wait. After generating large numbers of vehicles on a map, we decided comparing IDss was not a good choice. Assuming there are 50 vehicles on a map (vehicles id will be from 1 to 50) and there are two full lanes of vehicles connected to an intersection, each vehicle in these lanes want to turn. If the vehicle at the front of the queue has an ID of 3, all vehicles behind that vehicle have to wait too. This made us give vehicles priorities to turn. The idea is to give vehicles at intersections a "vehiclePriorityToTurn" value which is a random number from one to four, all unique, in terms of the maximum number of vehicles in an intersection is four. The vehicle with the highest vehiclePriorityToTurn value moves, otherwise it waits.
+
+We first implemented a method to give vehicles vehiclePriorityToTurn values and to compare values to decide who moves first. Vehicle priorities are not like vehicle IDs because each vehicle has a unique and same ID all the time, so no need for setting new IDs each time they are at an intersection. But by using priority, we need to give each vehicle a new priority each time they are at an intersection. When we implemented a method to give vehicles vehiclePriorityToTurn values in the Vehicle class, each vehicle gives other vehicles new priority, in other words, assume we have 4 cars at an intersection C1, C2, C3, and C4: 
+\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+\item C1 will give it self and others priority
+\item C2, will give it self and other priority, witch C1 already did
+\item C3, will give it self and other priority, witch C1 and C2 already did
+\item C4, will give it self and other priority, witch C1, C2 and C3 already did
+\end{enumerate}
+Then each vehicle compares it own priorities. So, for example in number 1: C3 is the largest priority and it moves. But in number 2, C1 is the largest priority so it moves too, at the same time with C1. So the problem still remains.
+
+However, what we did next is implement "ArrayList<Vehicle> giveVehiclePriorities (ArrayList<Integer> randomPriority)" in the Intersection class, which makes giving priority comes from intersections, not vehicles, to give each vehicle a unique priority. Therefore, the Intersection became a subscriber of the Ticker, so it can decide on each tick who will turn next. The "giveVehiclePriorities" method has three major jobs:
+\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+\item Sets vehicles at intersections vehiclePriorityToTurn to a random number from one to four.
+\item Sets the corresponding traffic light for each vehicle at intersection.
+\item Return an array list of all vehicles at intersection.
+\end{enumerate}
+The "vehicleTurnFirst (ArrayList<Vehicle> vehicles)" method in the Intersection class takes the array list of vehicles at intersection as a parameter and compare the vehiclePriorityToTurn only for vehicles where their traffic light state is GREEN, then sets the vehiclePriorityToTurn to 1 for the  vehicle with higher vehiclePriorityToTurn, or vehicles with vehiclePriority equal to 5 such as ambulances, otherwise sets to 0 .
+
+The final step to make vehicles turn is in "int vehicleTurn(Lane l)" method in Vehicle class. This method checks four things:
+\begin{enumerate}\itemsep1pt \parskip0pt \parsep0pt
+\item If a vehicle is at the end of its lane.
+\item If the chosen lane is not null.
+\item If the first cell in the chosen lane is empty.
+\item If vehiclePriorityToTurn equals to 1.
+\end{enumerate}
+If these conditions are obtained, vehicle turns, otherwise stops.
+To sum up, vehicles read traffic light, if it is red vehicles stop except ambulances which can move. If traffic light is green, vehicles choose random available lanes and check their abilities to move. Vehicles which obtained the conditions move otherwise, stop.
+
 \paragraph{}
 Note that all movement methods, such as turning or moving straight, return an integer, which we call "move". It is like a boolean, except with more information about the result. If move gets set to zero, that means the vehicle did not move and therefore we should not animate the vehicle movement. If move is greater than one, then the vehicle can be animated to move. However, if move was set to three, that means the vehicle should be removed from the simulation. All the movement methods may or may not actually move the vehicle in the model. When we go to do the vehicle animation, this is where the previous lane and coordinate come in. We must now animate the vehicle from its previous lane and coordinates, not its new ones, otherwise the vehicle would be moved twice. 
-\subsection{Vehicle Priorities}
-\paragraph{}
-Because each vehicle decides where to go by itself, sometimes two vehicles would choose to go into the same lane at the same time. To solve this problem, vehicles had to randomly be assigned priorities and Intersections were made in charge of this. The key was to make the Intersection a subscriber of the Ticker so it can read who is at the intersection at the same time the vehicles are deciding where to go. On ticker tick, the intersection calls the IntersectionController method "vehicleTurnFirst(...)", which takes the current intersection and a list of all vehicles at that intersection with priorities assigned randomly as parameters. Finally, the vehicle with the highest random priority is chosen to turn in the intersection. All other vehicles that have a green light have to wait for the vehicle with higher priority to turn. They will get another chance to turn on the next ticker tick. This process greatly improved the animation and simulation experience because vehicles no longer drive into each other at intersections.
 
 \subsection{Evaluation}
 Making the Vehicle class an abstract class was a good idea because this makes our system extensible to new types of vehicles in the future. Fixing the vehicle movement bugs, namely when two vehicles would drive into the same lane at the same time, was a large accomplishment due to its real-time complexity. In terms of general vehicle movement, an area for improvement could be the steps taken to move. Maybe there is a better way of doing the animation, instead of setting the previous lane and coordinates and doing the animation based on that. But other than that, we believe that the Vehicle class performs very well regarding the different states a vehicle can hold and the different movement results that can be returned. Therefore, vehicles are robust to any kind of map or driving conditions.
+
+However, vehicles do not know, if there is an ambulance behind them. In future work, we would vehicles cleverer in their movement, so if there is an ambulance behind them they should have the higher vehiclePriorityToTurn, so ambulance can move faster.  Vehicles do not step on each other in intersection, they always follow their priority to turn. It would be better if more than one vehicle can move at the same time if their paths do not clash.
+If there are no traffic lights in an intersection, vehicles turns depending on their priority to turn, so they never crash in intersections.
+
+Vehicles can choose any valid lane connected to their intersection. So, they always have a list of all available lane options and they can choose a random lane only form the list. Vehicles never go to a wrong lane. However, making U-turn is not allowed yet in the system.
 
 \section{Log}
 \paragraph{}
@@ -337,7 +379,9 @@ Here is a use-case diagram that describes the steps the user can take in our sys
 
 \section{Simulation Screen}
 \paragraph{}
-Aimed at making a user-oriented simulation system, we decided to have a main simulation screen where users can both monitor the simulation process and control the simulation system including start or reset simulation, set vehicle number, set ticker interval, disable or enable traffic light, etc.
+Aimed at making a user-oriented simulation system, we decided to have a main simulation screen where users can both monitor the simulation process and control the simulation system by using various controls. Users would load maps from file to run the simulation on.
+\subsection{Loading Maps}
+
 \subsection{Overall Screen Structure}
 \subsubsection{JavaFX Scene Builder}
 \paragraph{}
@@ -513,14 +557,29 @@ IntelliJ is our main platform for coding. We use Github as our main source-code 
 
 \part{General Project Evaluation}
 \section{Things that went well}
+\paragraph{}
+We had clear goals for each development stage, i.e. what must/should/could be achieved for each iteration. Before and after each iteration, we would check and make sure everything has been achieved. This ensures our entire development process is progressing well. By following Agile development principles, our team did a good job responding to unpredictability through incremental and iterative work. 
+\paragraph{}
+From the perspective of software development, we adhered to the MVC architecture. We have clear hierarchical model structures, e.g., a map contains roads and intersections, traffic light and lane are owned by intersection and road respectively.
+\paragraph{}
+We made the system an user-friendly application. Users can monitor and control the simulation process by going into simulation mode. The map maker mode allows users to design maps with any dimensions or map components. A simulation log is available after each simulation for users to analyze the whole simulation process. 
+\paragraph{}
+In general, we worked well as a team, with each member focusing on a different aspect of the system. There were no major conflicts and everyone understood the importance of good, hard work for this project.
 
-\section{Things that did not go well and what we did}
+\subsection{Things that did not go well and what we did}
+We had many difficulties along the way, but we always managed to pull through and resolve them. The ticker went through several iterations itself, with improvements being made each time. The animation started off basic, which also got improved several times over the course of the project. Bugs like traffic lights not working in loaded maps got fixed promptly. And finally, the resize factor used to display maps poorly, but now does a good job for all map sizes.
 
-\section{Possibilities for the future}
+\subsection{Possibilities for the future}
+\paragraph{}
+It is impossible to implement all ideas we had because of short term. In the future, we can add more vehicle types like police cars, bicycle, buses, etc. as well as more road types including railroads and overpasses. There can be arc intersections instead of cross intersections. We can make our system adapt to real maps like Google Maps. By providing a real location, users can get traffic situations through our system. By connecting background log files to real maps, it would be possible to deliver these log files to real traffic monitoring stations for furthter-step traffic analysis.
 
 \part{Peer Assessment}
 \paragraph{}
 We have decided to distribute the points as follows:
+
+\part{Appendix}
+\section{Git Log}
+\input{gitlog}
 
 
 \newpage
