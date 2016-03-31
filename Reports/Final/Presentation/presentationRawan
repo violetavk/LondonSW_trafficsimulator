@@ -52,7 +52,22 @@
 
 
 \begin{frame}
-\frametitle {Vehicles Movements }
+\frametitle{Vehicle Class}
+\begin{itemize}
+\item Vehicle is abstract class that all vehicles implement.
+\item Vehicles have a lot of attributes that are either global or specific.
+\item There are two types of vehicles: 
+\begin{itemize}
+\item Cars.
+\item Ambulances.
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}
+	  
+\begin{frame}
+\frametitle {Vehicle Movement and Ticker Interaction}
 \begin{wrapfigure}{r}{0.35\textwidth}
    \fbox{ \includegraphics[scale=.5]{lane}}
 \end{wrapfigure}
