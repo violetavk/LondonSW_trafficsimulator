@@ -10,7 +10,13 @@
 9. In the review screen, you will see "team_londonsw" in the modules, and "lib" in the Module dependencies. Hit Next.
 10. Select a project SDK. Make sure it is at least Java 1.8 update 40.
 11. No frameworks detected. Hit Finish.
-12. Run the main method in src/londonsw/SystemApp.java.  Done!
+12. Go into project settings "Project Structure" (File -> Project Structure)
+13. Click the Modules tab on the left under Project Structure.
+14. Click the Sources tab on the right.
+15. Locate the "resources" directory in the root of the project structure. Click on it and mark as "Resources".
+16. Locate the "test" directory in src/londonsw/. Click on it and mark it as "Tests".
+17. Click OK.
+18. Run the main method in src/londonsw/SystemApp.java.  Done!
 ##############################################
 
 ############## GitHub Setup ##################
