@@ -1,29 +1,29 @@
 ############## IntelliJ Setup #################
-Open IntelliJ.
-File -> Open -> (Find the root of the project, i.e. the folder this readme is in)
-Make sure the following libraries are configured in Project Structure -> Libraries
-    reactfx-2.0-M4u1.jar
-    rxjava-1.0.10.jar
-    rxjavafx-0.1.0.jar
-    ** Each Library is found in the lib/ directory**
-Run SystemApp.java
+1. Open IntelliJ.
+2. File -> New -> Project from Existing Sources...
+3. Navigate to the root directory of this project (the parent of this readme file "team_londonsw")
+4. Choose "Create project from existing sources" option and hit Next
+5. Keep "Project name" and "Project location" as is, hit Next
+6. If it asks to overwrite .idea files, it OK, do overwrite
+7. For source files, keep /team_londonsw/src ticked, untick /Demo/src
+8. For the libraries, untick "jung-2_0_1" and "jung2-2_0_1-sources" (they are for the Demo src), keep "lib" ticked. "lib" contains libraries such as rxjava, rxjavafx, etc.
+9. In the review screen, you will see "team_londonsw" in the modules, and "lib" in the Module dependencies. Hit Next.
+10. Select a project SDK. Make sure it is at least Java 1.8 update 40.
+11. No frameworks detected. Hit Finish.
+12. Run the main method in src/londonsw/SystemApp.java.  Done!
 ##############################################
 
 ############## GitHub Setup ##################
-Open IntelliJ.
-File -> New -> Project from Version Control -> GitHub
-Paste this link into the box: https://github.com/violetavk/LondonSW_trafficsimulator.git
-Make sure the following libraries are configured in Project Structure -> Libraries
-    reactfx-2.0-M4u1.jar
-    rxjava-1.0.10.jar
-    rxjavafx-0.1.0.jar
-    ** Each Library is found in the lib/ directory**
-Run SystemApp.java
+1. Open IntelliJ.
+2. File -> New -> Project from Version Control -> GitHub
+3. Paste this link into the Git Repository URL: https://github.com/violetavk/LondonSW_trafficsimulator.git and hit Clone
+4. Go into project settings "Project Structure" (File -> Project Structure)
+5. Look at the Project SDK in the Project tab in Project Settings. Make sure it is at least Java 1.8 update 40.
+6. Run the main method in src/londonsw/SystemApp.java.  Done!
 ##############################################
 
 ############## Jar Execution #################
-Double click on the LondonSW_TrafficSimulator-v0.1-alpha.jar file
- - or - 
-Run this command in the terminal:   java -jar LondonSW_TrafficSimulator-v0.1-alpha.jar
-*** The jar file is found on https://github.com/violetavk/LondonSW_trafficsimulator/releases/tag/v0.1
+1. Download a jar file from our releases page on https://github.com/violetavk/LondonSW_trafficsimulator/releases.
+2. Double click on the downloaded Jar file -OR- run this command from the command line:
+java -jar "name of jar file"
 ##############################################

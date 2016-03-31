@@ -10,25 +10,25 @@ This traffic simulator is a group project aimed to build a traffic simulation so
 ### GitHub Setup
 1. Open IntelliJ.
 2. File -> New -> Project from Version Control -> GitHub
-3. Paste this into the git url box: `git clone https://github.com/violetavk/LondonSW_trafficsimulator.git`
-4. Make sure the following libraries are configured in Project Structure -> Libraries
-  * `lib/reactfx-2.0-M4u1.jar`
-  * `lib/rxjava-1.0.10.jar`
-  * `lib/rxjavafx-0.1.0.jar`
-5. Run `SystemApp.java`
+3. Paste this link into the Git Repository URL: `git clone https://github.com/violetavk/LondonSW_trafficsimulator.git` and hit Clone
+4. Go into project settings "Project Structure" (File -> Project Structure)
+5. Look at the Project SDK in the Project tab in Project Settings. Make sure it is at least Java 1.8 update 40.
+6. Run the main method in `src/londonsw/SystemApp.java`. Done!
 
 ### IntelliJ Setup
-1. Open IntelliJ.
-2. File -> Open -> LondonSW_TrafficSimulator directory
-3. Make sure the following libraries are configured in Project Structure -> Libraries
-  * `lib/reactfx-2.0-M4u1.jar`
-  * `lib/rxjava-1.0.10.jar`
-  * `lib/rxjavafx-0.1.0.jar`
-4. Run `SystemApp.java`
+1. Download a tar.gz file from [our release page](https://github.com/violetavk/LondonSW_trafficsimulator/releases) and open IntelliJ.
+2. File -> New -> Project from Existing Sources...
+3. Navigate to the root directory of this project
+4. Choose "Create project from existing sources" option and hit Next
+5. Keep "Project name" and "Project location" as is, hit Next
+6. If it asks to overwrite .idea files, it OK, do overwrite
+7. For source files, keep `/team_londonsw/src` ticked, untick `/Demo/src`
+8. For the libraries, untick "jung-2_0_1" and "jung2-2_0_1-sources" (they are for the Demo src), keep "lib" ticked. "lib" contains libraries such as rxjava, rxjavafx, etc.
+9. In the review screen, you will see "team_londonsw" in the modules, and "lib" in the Module dependencies. Hit Next.
+10. Select a project SDK. Make sure it is at least Java 1.8 update 40.
+11. No frameworks detected. Hit Finish.
+12. Run the main method in `src/londonsw/SystemApp.java`.  Done!
 
 ### Jar File Execution
 1. Download the latest release from [our release page](https://github.com/violetavk/LondonSW_trafficsimulator/releases)
 2. Double-click on the jar file or run the command `java -jar <name of release>`
-
-##User Guide:
-- TODO
